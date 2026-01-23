@@ -95,8 +95,8 @@ final class DefaultUserGroupCheck extends AbstractHealthCheck
     protected function performCheck(): HealthCheckResult
     {
         // Read com_users configuration to get default user group for new registrations
-        $params = ComponentHelper::getParams('com_users');
-        $defaultGroup = (int) $params->get('new_usertype', 2); // Default: 2 = Registered
+        $registry = ComponentHelper::getParams('com_users');
+        $defaultGroup = (int) $registry->get('new_usertype', 2); // Default: 2 = Registered
 
         // Check if default group is Administrator (7) or Super Users (8)
         if (in_array($defaultGroup, self::DANGEROUS_GROUPS, true)) {

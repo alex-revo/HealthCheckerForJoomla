@@ -86,7 +86,7 @@ final class MediaManagerThumbnailsCheck extends AbstractHealthCheck
         $plugin = $database->setQuery($query)
             ->loadObject();
 
-        if (! $plugin) {
+        if ($plugin === null) {
             return $this->warning(
                 'Filesystem - Local plugin not found. This core plugin is required for the Media Manager.',
             );

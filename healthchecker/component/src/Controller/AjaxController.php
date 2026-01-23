@@ -66,7 +66,7 @@ class AjaxController extends BaseController
 
         $user = $cmsApplication->getIdentity();
 
-        if ($user === null || ! $user->authorise('core.manage', 'com_healthchecker')) {
+        if (! $user instanceof \Joomla\CMS\User\User || ! $user->authorise('core.manage', 'com_healthchecker')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, Text::_('JERROR_ALERTNOAUTHOR'), true);
             $cmsApplication->close();
@@ -118,7 +118,7 @@ class AjaxController extends BaseController
 
         $user = $cmsApplication->getIdentity();
 
-        if ($user === null || ! $user->authorise('core.manage', 'com_healthchecker')) {
+        if (! $user instanceof \Joomla\CMS\User\User || ! $user->authorise('core.manage', 'com_healthchecker')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, Text::_('JERROR_ALERTNOAUTHOR'), true);
             $cmsApplication->close();
@@ -128,7 +128,7 @@ class AjaxController extends BaseController
         $category = $cmsApplication->getInput()
             ->getString('category', '');
 
-        if (empty($category)) {
+        if ($category === '' || $category === '0') {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, 'Missing category', true);
             $cmsApplication->close();
@@ -188,7 +188,7 @@ class AjaxController extends BaseController
 
         $user = $cmsApplication->getIdentity();
 
-        if ($user === null || ! $user->authorise('core.manage', 'com_healthchecker')) {
+        if (! $user instanceof \Joomla\CMS\User\User || ! $user->authorise('core.manage', 'com_healthchecker')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, Text::_('JERROR_ALERTNOAUTHOR'), true);
             $cmsApplication->close();
@@ -198,7 +198,7 @@ class AjaxController extends BaseController
         $slug = $cmsApplication->getInput()
             ->getString('slug', '');
 
-        if (empty($slug)) {
+        if ($slug === '' || $slug === '0') {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, 'Missing check slug', true);
             $cmsApplication->close();
@@ -264,7 +264,7 @@ class AjaxController extends BaseController
 
         $user = $cmsApplication->getIdentity();
 
-        if ($user === null || ! $user->authorise('core.manage', 'com_healthchecker')) {
+        if (! $user instanceof \Joomla\CMS\User\User || ! $user->authorise('core.manage', 'com_healthchecker')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, Text::_('JERROR_ALERTNOAUTHOR'), true);
             $cmsApplication->close();
@@ -331,7 +331,7 @@ class AjaxController extends BaseController
 
         $user = $cmsApplication->getIdentity();
 
-        if ($user === null || ! $user->authorise('core.manage', 'com_healthchecker')) {
+        if (! $user instanceof \Joomla\CMS\User\User || ! $user->authorise('core.manage', 'com_healthchecker')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, Text::_('JERROR_ALERTNOAUTHOR'), true);
             $cmsApplication->close();
@@ -392,7 +392,7 @@ class AjaxController extends BaseController
 
         $user = $cmsApplication->getIdentity();
 
-        if ($user === null || ! $user->authorise('core.manage', 'com_healthchecker')) {
+        if (! $user instanceof \Joomla\CMS\User\User || ! $user->authorise('core.manage', 'com_healthchecker')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, Text::_('JERROR_ALERTNOAUTHOR'), true);
             $cmsApplication->close();
