@@ -121,13 +121,13 @@ No code changes needed - automatic discovery via Symfony Event Dispatcher.
 
 The best way to support this project is by subscribing to **[mySites.guru](https://mysites.guru)** for unlimited Joomla site management:
 
-- Automated health monitoring (powered by this extension!)
+- Automated health monitoring 
 - One-click updates for Joomla core and extensions
-- Automated backups with offsite storage
-- Security scanning and malware detection
+- Automated backups with offsite storage with Akeeba Backup
+- Security auditing and malware/suspect content detection
 - Performance monitoring and optimization
 - 24/7 uptime monitoring
-- Expert support from Joomla professionals
+- Expert support from Phil himself.
 
 Your subscription directly funds the development and maintenance of Health Checker for Joomla and other open-source tools for the community.
 
