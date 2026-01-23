@@ -17,6 +17,10 @@
     "psr-4": {
       "MySitesGuru\\HealthChecker\\Component\\Administrator\\": "healthchecker/component/src/",
       "MySitesGuru\\HealthChecker\\Plugin\\Core\\": "healthchecker/plugins/core/src/",
+      "MySitesGuru\\HealthChecker\\Plugin\\Example\\": "healthchecker/plugins/example/src/",
+      "MySitesGuru\\HealthChecker\\Plugin\\MySitesGuru\\": "healthchecker/plugins/mysitesguru/src/",
+      "MySitesGuru\\HealthChecker\\Plugin\\AkeebaBackup\\": "healthchecker/plugins/akeebabackup/src/",
+      "MySitesGuru\\HealthChecker\\Plugin\\AkeebaAdminTools\\": "healthchecker/plugins/akeebaadmintools/src/",
       "MySitesGuru\\HealthChecker\\Module\\Administrator\\": "healthchecker/module/src/"
     }
   },

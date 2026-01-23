@@ -254,6 +254,7 @@ class Factory
 namespace Joomla\CMS\Application;
 
 use Joomla\CMS\User\User;
+use Joomla\Event\DispatcherInterface;
 use Joomla\Input\Input;
 
 class CMSApplication
@@ -267,6 +268,8 @@ class CMSApplication
     private array $headers = [];
 
     private bool $closed = false;
+
+    private ?DispatcherInterface $dispatcher = null;
 
     public function input(): mixed
     {
@@ -336,6 +339,27 @@ class CMSApplication
         $old = $this->config[$name] ?? null;
         $this->config[$name] = $value;
         return $old;
+    }
+
+    public function getDispatcher(): DispatcherInterface
+    {
+        if ($this->dispatcher === null) {
+            $this->dispatcher = new class implements DispatcherInterface {
+                public function dispatch(
+                    string $name,
+                    ?\Joomla\Event\EventInterface $event = null,
+                ): \Joomla\Event\EventInterface {
+                    return $event ?? new \Joomla\Event\Event($name);
+                }
+            };
+        }
+
+        return $this->dispatcher;
+    }
+
+    public function setDispatcher(DispatcherInterface $dispatcher): void
+    {
+        $this->dispatcher = $dispatcher;
     }
 }
 
@@ -501,16 +525,42 @@ class BaseDatabaseModel
 
 namespace Joomla\CMS\MVC\View;
 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 class HtmlView
 {
     protected mixed $document;
 
+    private ?BaseDatabaseModel $model = null;
+
     public function display(?string $tpl = null): void {}
+
+    public function getModel(?string $name = null): ?BaseDatabaseModel
+    {
+        return $this->model;
+    }
+
+    public function setModel(BaseDatabaseModel $model): void
+    {
+        $this->model = $model;
+    }
 }
 
 class JsonView
 {
+    private ?BaseDatabaseModel $model = null;
+
     public function display(?string $tpl = null): void {}
+
+    public function getModel(?string $name = null): ?BaseDatabaseModel
+    {
+        return $this->model;
+    }
+
+    public function setModel(BaseDatabaseModel $model): void
+    {
+        $this->model = $model;
+    }
 }
 
 namespace Joomla\CMS\Extension;
@@ -527,13 +577,43 @@ class MVCComponent
 
 namespace Joomla\CMS\Plugin;
 
+use Joomla\Database\DatabaseInterface;
+
 class CMSPlugin
 {
-    protected mixed $db;
+    protected ?DatabaseInterface $db = null;
 
     protected mixed $app;
 
-    public function __construct(mixed $subject, array $config = []) {}
+    /**
+     * Plugin parameters - public property used by plugins
+     * Note: No type hint to allow child classes to override without type
+     *
+     * @var mixed
+     */
+    public $params;
+
+    /**
+     * Constructor supports both legacy and modern Joomla plugin patterns
+     *
+     * Legacy: new CMSPlugin($dispatcher, $config)
+     * Modern: new CMSPlugin(dispatcher: $dispatcher, pluginParams: $params)
+     */
+    public function __construct(
+        mixed $subject = null,
+        array $config = [],
+        mixed $dispatcher = null,
+        mixed $pluginParams = null,
+    ) {
+        // Handle modern named parameter style
+        if ($dispatcher !== null) {
+            $subject = $dispatcher;
+        }
+
+        if ($pluginParams !== null) {
+            $this->params = $pluginParams;
+        }
+    }
 
     public function setApplication(mixed $app): void
     {
@@ -585,9 +665,185 @@ class ToolbarHelper
 
 class Toolbar
 {
+    private static array $instances = [];
+
+    private array $buttons = [];
+
     public static function getInstance(string $name = 'toolbar'): static
     {
-        return new static();
+        if (! isset(self::$instances[$name])) {
+            self::$instances[$name] = new static();
+        }
+
+        return self::$instances[$name];
+    }
+
+    public static function clearInstances(): void
+    {
+        self::$instances = [];
+    }
+
+    public function standardButton(string $type, string $text = ''): ToolbarButton
+    {
+        $button = new ToolbarButton($type, $text);
+        $this->buttons[] = $button;
+
+        return $button;
+    }
+
+    public function dropdownButton(string $name): ToolbarDropdownButton
+    {
+        $button = new ToolbarDropdownButton($name);
+        $this->buttons[] = $button;
+
+        return $button;
+    }
+
+    public function linkButton(string $name): ToolbarButton
+    {
+        $button = new ToolbarButton($name);
+        $this->buttons[] = $button;
+
+        return $button;
+    }
+
+    public function getButtons(): array
+    {
+        return $this->buttons;
+    }
+}
+
+class ToolbarButton
+{
+    private string $type;
+
+    private string $text;
+
+    private string $icon = '';
+
+    private string $onclick = '';
+
+    private string $buttonClass = '';
+
+    private string $url = '';
+
+    private array $attributes = [];
+
+    public function __construct(string $type, string $text = '')
+    {
+        $this->type = $type;
+        $this->text = $text;
+    }
+
+    public function text(string $text): self
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    public function icon(string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function onclick(string $onclick): self
+    {
+        $this->onclick = $onclick;
+
+        return $this;
+    }
+
+    public function buttonClass(string $class): self
+    {
+        $this->buttonClass = $class;
+
+        return $this;
+    }
+
+    public function url(string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function attributes(array $attributes): self
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getText(): string
+    {
+        return $this->text;
+    }
+}
+
+class ToolbarDropdownButton
+{
+    private string $name;
+
+    private string $text = '';
+
+    private bool $toggleSplit = true;
+
+    private string $icon = '';
+
+    private string $buttonClass = '';
+
+    private ?Toolbar $childToolbar = null;
+
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+        $this->childToolbar = new Toolbar();
+    }
+
+    public function text(string $text): self
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    public function toggleSplit(bool $split): self
+    {
+        $this->toggleSplit = $split;
+
+        return $this;
+    }
+
+    public function icon(string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function buttonClass(string $class): self
+    {
+        $this->buttonClass = $class;
+
+        return $this;
+    }
+
+    public function getChildToolbar(): Toolbar
+    {
+        return $this->childToolbar;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 }
 
@@ -698,9 +954,30 @@ namespace Joomla\Registry;
 
 class Registry
 {
+    private array $data = [];
+
+    public function __construct(mixed $data = null)
+    {
+        if (is_string($data) && $data !== '') {
+            $decoded = json_decode($data, true);
+            if (is_array($decoded)) {
+                $this->data = $decoded;
+            }
+        } elseif (is_array($data)) {
+            $this->data = $data;
+        }
+    }
+
     public function get(string $path, mixed $default = null): mixed
     {
-        return null;
+        return $this->data[$path] ?? $default;
+    }
+
+    public function set(string $path, mixed $value): mixed
+    {
+        $previous = $this->data[$path] ?? null;
+        $this->data[$path] = $value;
+        return $previous;
     }
 }
 
@@ -711,5 +988,78 @@ class HTMLHelper
     public static function _(string $type, mixed ...$args): mixed
     {
         return null;
+    }
+}
+
+namespace Joomla\CMS\Dispatcher;
+
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\Registry\Registry;
+
+abstract class AbstractModuleDispatcher
+{
+    protected ?CMSApplication $app = null;
+
+    protected array $module = [];
+
+    protected ?Registry $params = null;
+
+    public function __construct(\stdClass $module, CMSApplication $app)
+    {
+        $this->app = $app;
+        $this->module = (array) $module;
+        $this->params = new Registry($module->params ?? '{}');
+    }
+
+    protected function getApplication(): CMSApplication
+    {
+        return $this->app;
+    }
+
+    protected function getLayoutData(): array
+    {
+        return [
+            'params' => $this->params,
+            'module' => (object) $this->module,
+            'app' => $this->app,
+        ];
+    }
+
+    public function dispatch(): void
+    {
+        // Base dispatch - renders template
+    }
+}
+
+namespace Joomla\CMS\Helper;
+
+interface HelperFactoryAwareInterface
+{
+    public function setHelperFactory(HelperFactoryInterface $helperFactory): void;
+
+    public function getHelperFactory(): HelperFactoryInterface;
+}
+
+interface HelperFactoryInterface
+{
+    public function getHelper(string $name, array $config = []): mixed;
+}
+
+trait HelperFactoryAwareTrait
+{
+    protected ?HelperFactoryInterface $helperFactory = null;
+
+    public function setHelperFactory(HelperFactoryInterface $helperFactory): void
+    {
+        $this->helperFactory = $helperFactory;
+    }
+
+    public function getHelperFactory(): HelperFactoryInterface
+    {
+        if ($this->helperFactory === null) {
+            throw new \UnexpectedValueException('Helper factory not set');
+        }
+
+        return $this->helperFactory;
     }
 }

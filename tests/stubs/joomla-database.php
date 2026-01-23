@@ -85,6 +85,11 @@ trait DatabaseAwareTrait
     public function getDatabase(): DatabaseInterface
     {
         return $this->db ?? new class implements DatabaseInterface {
+            public function getVersion(): string
+            {
+                return '8.0.30';
+            }
+
             public function getQuery(bool $new = false): QueryInterface
             {
                 return new class implements QueryInterface {
@@ -140,7 +145,7 @@ trait DatabaseAwareTrait
                 };
             }
 
-            public function setQuery(QueryInterface|string $query): self
+            public function setQuery(QueryInterface|string $query, int $offset = 0, int $limit = 0): self
             {
                 return $this;
             }
@@ -160,7 +165,7 @@ trait DatabaseAwareTrait
                 return null;
             }
 
-            public function loadAssocList(): array
+            public function loadAssocList(string $key = '', string $column = ''): array
             {
                 return [];
             }

@@ -53,7 +53,7 @@ namespace MySitesGuru\HealthChecker\Plugin\Example\Checks;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 
-\defined("_JEXEC") || die();
+\defined('_JEXEC') || die();
 
 /**
  * Example health check demonstrating external service monitoring.
@@ -82,7 +82,7 @@ final class ThirdPartyServiceCheck extends AbstractHealthCheck
      */
     public function getSlug(): string
     {
-        return "example.thirdparty_service";
+        return 'example.thirdparty_service';
     }
 
     /**
@@ -103,7 +103,7 @@ final class ThirdPartyServiceCheck extends AbstractHealthCheck
     public function getCategory(): string
     {
         // Using a custom category registered by this plugin
-        return "thirdparty";
+        return 'thirdparty';
     }
 
     /**
@@ -115,7 +115,7 @@ final class ThirdPartyServiceCheck extends AbstractHealthCheck
      */
     public function getProvider(): string
     {
-        return "example";
+        return 'example';
     }
 
     /**
@@ -141,7 +141,7 @@ final class ThirdPartyServiceCheck extends AbstractHealthCheck
     {
         // PATTERN: In a real plugin, replace with your own service URL
         // This example uses Joomla's public API as a test endpoint
-        $serviceUrl = "https://api.joomla.org/";
+        $serviceUrl = 'https://api.joomla.org/';
 
         // PATTERN: Extract complex checks to helper methods
         $isReachable = $this->checkServiceReachability($serviceUrl);
@@ -152,22 +152,22 @@ final class ThirdPartyServiceCheck extends AbstractHealthCheck
         // PATTERN: Use CRITICAL for complete failures
         if ($isReachable === false) {
             return $this->critical(
-                "[EXAMPLE CHECK] Cannot reach Joomla API service. Check your internet connection or firewall settings." .
+                '[EXAMPLE CHECK] Cannot reach Joomla API service. Check your internet connection or firewall settings.' .
                     $disableNote,
             );
         }
 
         // PATTERN: Use WARNING for degraded performance
-        if ($isReachable === "slow") {
+        if ($isReachable === 'slow') {
             return $this->warning(
-                "[EXAMPLE CHECK] Joomla API service is reachable but responding slowly." .
+                '[EXAMPLE CHECK] Joomla API service is reachable but responding slowly.' .
                     $disableNote,
             );
         }
 
         // PATTERN: GOOD status confirms everything is working
         return $this->good(
-            "[EXAMPLE CHECK] Joomla API service is reachable and responding normally." .
+            '[EXAMPLE CHECK] Joomla API service is reachable and responding normally.' .
                 $disableNote,
         );
     }
@@ -199,7 +199,7 @@ final class ThirdPartyServiceCheck extends AbstractHealthCheck
     private function checkServiceReachability(string $url): bool|string
     {
         // PATTERN: Always check for required PHP extensions
-        if (!\function_exists("curl_init")) {
+        if (! \function_exists('curl_init')) {
             // Can't check without cURL, assume it's fine rather than failing
             // This prevents false negatives on servers without cURL
             return true;
@@ -232,7 +232,7 @@ final class ThirdPartyServiceCheck extends AbstractHealthCheck
 
         // PATTERN: Warn about slow responses (may indicate issues)
         if ($duration > 3.0) {
-            return "slow";
+            return 'slow';
         }
 
         return true;
