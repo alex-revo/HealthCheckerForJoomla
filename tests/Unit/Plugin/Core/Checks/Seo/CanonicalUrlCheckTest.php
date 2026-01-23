@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\Seo;
 
+use HealthChecker\Tests\Utilities\MockDatabaseFactory;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
-use HealthChecker\Tests\Utilities\MockDatabaseFactory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo\CanonicalUrlCheck;
 use PHPUnit\Framework\Attributes\CoversClass;

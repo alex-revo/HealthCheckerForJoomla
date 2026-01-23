@@ -269,7 +269,10 @@ JS;
             ->text('mySites.guru')
             ->url('https://mySites.guru')
             ->icon('icon-tachometer-alt')
-            ->attributes(['target' => '_blank', 'style' => 'text-decoration:none'])
+            ->attributes([
+                'target' => '_blank',
+                'style' => 'text-decoration:none',
+            ])
             ->buttonClass('btn btn-primary healthchecker-no-external-icon');
     }
 }

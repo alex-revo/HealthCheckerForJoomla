@@ -59,7 +59,9 @@ class MaxPacketCheckTest extends TestCase
     public function testRunReturnsCriticalWhenPacketTooSmall(): void
     {
         // 512 KB - below minimum 1MB
-        $object = (object) ['Value' => 512 * 1024];
+        $object = (object) [
+            'Value' => 512 * 1024,
+        ];
         $database = MockDatabaseFactory::createWithObject($object);
         $this->check->setDatabase($database);
 
@@ -72,7 +74,9 @@ class MaxPacketCheckTest extends TestCase
     public function testRunReturnsWarningWhenPacketBelowRecommended(): void
     {
         // 8 MB - above minimum but below recommended 16MB
-        $object = (object) ['Value' => 8 * 1024 * 1024];
+        $object = (object) [
+            'Value' => 8 * 1024 * 1024,
+        ];
         $database = MockDatabaseFactory::createWithObject($object);
         $this->check->setDatabase($database);
 
@@ -85,7 +89,9 @@ class MaxPacketCheckTest extends TestCase
     public function testRunReturnsGoodWhenPacketSufficient(): void
     {
         // 16 MB - meets recommended threshold
-        $object = (object) ['Value' => 16 * 1024 * 1024];
+        $object = (object) [
+            'Value' => 16 * 1024 * 1024,
+        ];
         $database = MockDatabaseFactory::createWithObject($object);
         $this->check->setDatabase($database);
 
@@ -98,7 +104,9 @@ class MaxPacketCheckTest extends TestCase
     public function testRunReturnsGoodWhenPacketLarge(): void
     {
         // 64 MB - well above recommended
-        $object = (object) ['Value' => 64 * 1024 * 1024];
+        $object = (object) [
+            'Value' => 64 * 1024 * 1024,
+        ];
         $database = MockDatabaseFactory::createWithObject($object);
         $this->check->setDatabase($database);
 

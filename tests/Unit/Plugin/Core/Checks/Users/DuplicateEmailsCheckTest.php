@@ -70,8 +70,14 @@ class DuplicateEmailsCheckTest extends TestCase
     public function testRunReturnsWarningWhenDuplicatesFound(): void
     {
         $duplicates = [
-            (object) ['email' => 'test@example.com', 'cnt' => 2],
-            (object) ['email' => 'another@example.com', 'cnt' => 3],
+            (object) [
+                'email' => 'test@example.com',
+                'cnt' => 2,
+            ],
+            (object) [
+                'email' => 'another@example.com',
+                'cnt' => 3,
+            ],
         ];
         $database = MockDatabaseFactory::createWithObjectList($duplicates);
         $this->check->setDatabase($database);

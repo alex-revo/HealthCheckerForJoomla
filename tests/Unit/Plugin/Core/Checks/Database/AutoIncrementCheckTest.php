@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\Database;
 
+use HealthChecker\Tests\Utilities\MockDatabaseFactory;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
-use HealthChecker\Tests\Utilities\MockDatabaseFactory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\Database\AutoIncrementCheck;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -71,8 +71,14 @@ class AutoIncrementCheckTest extends TestCase
     public function testRunReturnsGoodWhenAutoIncrementValuesLow(): void
     {
         $tables = [
-            (object) ['Name' => 'jos_content', 'Auto_increment' => 100],
-            (object) ['Name' => 'jos_users', 'Auto_increment' => 50],
+            (object) [
+                'Name' => 'jos_content',
+                'Auto_increment' => 100,
+            ],
+            (object) [
+                'Name' => 'jos_users',
+                'Auto_increment' => 50,
+            ],
         ];
         $database = MockDatabaseFactory::createWithObjectList($tables);
         $this->check->setDatabase($database);
@@ -87,7 +93,10 @@ class AutoIncrementCheckTest extends TestCase
     {
         // 80% of INT_MAX (2147483647) = 1717986918
         $tables = [
-            (object) ['Name' => 'jos_content', 'Auto_increment' => 1800000000],
+            (object) [
+                'Name' => 'jos_content',
+                'Auto_increment' => 1800000000,
+            ],
         ];
         $database = MockDatabaseFactory::createWithObjectList($tables);
         $this->check->setDatabase($database);
@@ -101,8 +110,14 @@ class AutoIncrementCheckTest extends TestCase
     public function testRunSkipsTablesWithNullAutoIncrement(): void
     {
         $tables = [
-            (object) ['Name' => 'jos_content', 'Auto_increment' => null],
-            (object) ['Name' => 'jos_users', 'Auto_increment' => 50],
+            (object) [
+                'Name' => 'jos_content',
+                'Auto_increment' => null,
+            ],
+            (object) [
+                'Name' => 'jos_users',
+                'Auto_increment' => 50,
+            ],
         ];
         $database = MockDatabaseFactory::createWithObjectList($tables);
         $this->check->setDatabase($database);

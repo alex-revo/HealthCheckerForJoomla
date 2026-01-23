@@ -63,10 +63,7 @@ class PhpVersionCheckTest extends TestCase
         $result = $this->check->run();
 
         // For PHP 8.2+ we expect Good, otherwise Warning
-        $this->assertContains(
-            $result->healthStatus,
-            [HealthStatus::Good, HealthStatus::Warning],
-        );
+        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
         $this->assertStringContainsString(PHP_VERSION, $result->description);
     }
 

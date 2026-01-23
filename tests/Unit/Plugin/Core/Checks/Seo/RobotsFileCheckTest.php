@@ -54,9 +54,6 @@ class RobotsFileCheckTest extends TestCase
         // but we can verify it returns a valid status
         $result = $this->check->run();
 
-        $this->assertContains(
-            $result->healthStatus,
-            [HealthStatus::Good, HealthStatus::Warning],
-        );
+        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
     }
 }

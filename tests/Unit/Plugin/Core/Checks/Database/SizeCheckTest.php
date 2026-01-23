@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\Database;
 
+use HealthChecker\Tests\Utilities\MockDatabaseFactory;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
-use HealthChecker\Tests\Utilities\MockDatabaseFactory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\Database\SizeCheck;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -72,8 +72,16 @@ class SizeCheckTest extends TestCase
     {
         // Small database - 10MB each table
         $tables = [
-            (object) ['Name' => 'jos_content', 'Data_length' => 5 * 1024 * 1024, 'Index_length' => 5 * 1024 * 1024],
-            (object) ['Name' => 'jos_users', 'Data_length' => 1 * 1024 * 1024, 'Index_length' => 1 * 1024 * 1024],
+            (object) [
+                'Name' => 'jos_content',
+                'Data_length' => 5 * 1024 * 1024,
+                'Index_length' => 5 * 1024 * 1024,
+            ],
+            (object) [
+                'Name' => 'jos_users',
+                'Data_length' => 1 * 1024 * 1024,
+                'Index_length' => 1 * 1024 * 1024,
+            ],
         ];
         $database = MockDatabaseFactory::createWithObjectList($tables);
         $this->check->setDatabase($database);
@@ -88,7 +96,11 @@ class SizeCheckTest extends TestCase
     {
         // 1.5GB database
         $tables = [
-            (object) ['Name' => 'jos_content', 'Data_length' => 750 * 1024 * 1024, 'Index_length' => 750 * 1024 * 1024],
+            (object) [
+                'Name' => 'jos_content',
+                'Data_length' => 750 * 1024 * 1024,
+                'Index_length' => 750 * 1024 * 1024,
+            ],
         ];
         $database = MockDatabaseFactory::createWithObjectList($tables);
         $this->check->setDatabase($database);
@@ -103,7 +115,11 @@ class SizeCheckTest extends TestCase
     {
         // 6GB database
         $tables = [
-            (object) ['Name' => 'jos_content', 'Data_length' => 3 * 1024 * 1024 * 1024, 'Index_length' => 3 * 1024 * 1024 * 1024],
+            (object) [
+                'Name' => 'jos_content',
+                'Data_length' => 3 * 1024 * 1024 * 1024,
+                'Index_length' => 3 * 1024 * 1024 * 1024,
+            ],
         ];
         $database = MockDatabaseFactory::createWithObjectList($tables);
         $this->check->setDatabase($database);

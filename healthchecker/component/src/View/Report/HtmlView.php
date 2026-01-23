@@ -123,16 +123,17 @@ class HtmlView extends BaseHtmlView
             ->text('COM_HEALTHCHECKER_GITHUB')
             ->url('https://github.com/mySites-guru/HealthCheckerForJoomla')
             ->icon('icon-code-branch')
-            ->attributes(['target' => '_blank', 'style' => 'text-decoration:none'])
+            ->attributes([
+                'target' => '_blank',
+                'style' => 'text-decoration:none',
+            ])
             ->buttonClass('btn btn-primary healthchecker-no-external-icon');
 
         // Dispatch event to allow plugins to add toolbar buttons
         $cmsApplication = Factory::getApplication();
         $afterToolbarBuildEvent = new AfterToolbarBuildEvent($toolbar);
-        $cmsApplication->getDispatcher()->dispatch(
-            HealthCheckerEvents::AFTER_TOOLBAR_BUILD->value,
-            $afterToolbarBuildEvent,
-        );
+        $cmsApplication->getDispatcher()
+            ->dispatch(HealthCheckerEvents::AFTER_TOOLBAR_BUILD->value, $afterToolbarBuildEvent);
 
         $user = $cmsApplication->getIdentity();
 
