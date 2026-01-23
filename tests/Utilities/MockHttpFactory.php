@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Utilities;
 
-use Joomla\Http\HttpInterface;
+use Joomla\CMS\Http\Http;
 use Joomla\Http\Response;
 
 /**
@@ -28,46 +28,26 @@ class MockHttpFactory
      * @param string $body    Response body
      * @param array<string, string|array<string>>  $headers Response headers
      */
-    public static function createWithGetResponse(int $code, string $body = '', array $headers = []): HttpInterface
+    public static function createWithGetResponse(int $code, string $body = '', array $headers = []): Http
     {
-        return new class ($code, $body, $headers) implements HttpInterface {
+        return new class ($code, $body, $headers) extends Http {
             /**
              * @param array<string, string|array<string>> $headers
              */
             public function __construct(
                 private readonly int $code,
                 private readonly string $body,
-                private readonly array $headers,
+                private readonly array $responseHeaders,
             ) {}
 
             public function get(string $url, array $headers = [], int|float $timeout = 10): Response
             {
-                return new Response($this->code, $this->body, $this->headers);
+                return new Response($this->code, $this->body, $this->responseHeaders);
             }
 
             public function head(string $url, array $headers = [], int|float $timeout = 10): Response
             {
-                return new Response($this->code, '', $this->headers);
-            }
-
-            public function post(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(200, '', []);
-            }
-
-            public function put(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(200, '', []);
-            }
-
-            public function delete(string $url, array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(200, '', []);
-            }
-
-            public function patch(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(200, '', []);
+                return new Response($this->code, '', $this->responseHeaders);
             }
         };
     }
@@ -79,45 +59,25 @@ class MockHttpFactory
      * @param int   $code    HTTP status code
      * @param array<string, string|array<string>> $headers Response headers
      */
-    public static function createWithHeadResponse(int $code, array $headers = []): HttpInterface
+    public static function createWithHeadResponse(int $code, array $headers = []): Http
     {
-        return new class ($code, $headers) implements HttpInterface {
+        return new class ($code, $headers) extends Http {
             /**
              * @param array<string, string|array<string>> $headers
              */
             public function __construct(
                 private readonly int $code,
-                private readonly array $headers,
+                private readonly array $responseHeaders,
             ) {}
 
             public function get(string $url, array $headers = [], int|float $timeout = 10): Response
             {
-                return new Response($this->code, '', $this->headers);
+                return new Response($this->code, '', $this->responseHeaders);
             }
 
             public function head(string $url, array $headers = [], int|float $timeout = 10): Response
             {
-                return new Response($this->code, '', $this->headers);
-            }
-
-            public function post(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(200, '', []);
-            }
-
-            public function put(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(200, '', []);
-            }
-
-            public function delete(string $url, array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(200, '', []);
-            }
-
-            public function patch(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(200, '', []);
+                return new Response($this->code, '', $this->responseHeaders);
             }
         };
     }
@@ -127,9 +87,9 @@ class MockHttpFactory
      *
      * @param string $message Exception message
      */
-    public static function createThatThrows(string $message = 'Network error'): HttpInterface
+    public static function createThatThrows(string $message = 'Network error'): Http
     {
-        return new class ($message) implements HttpInterface {
+        return new class ($message) extends Http {
             public function __construct(
                 private readonly string $message,
             ) {}
@@ -144,12 +104,12 @@ class MockHttpFactory
                 throw new \RuntimeException($this->message);
             }
 
-            public function post(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
+            public function post(string $url, mixed $data = '', array $headers = [], int|float $timeout = 10): Response
             {
                 throw new \RuntimeException($this->message);
             }
 
-            public function put(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
+            public function put(string $url, mixed $data = '', array $headers = [], int|float $timeout = 10): Response
             {
                 throw new \RuntimeException($this->message);
             }
@@ -159,7 +119,7 @@ class MockHttpFactory
                 throw new \RuntimeException($this->message);
             }
 
-            public function patch(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
+            public function patch(string $url, mixed $data = '', array $headers = [], int|float $timeout = 10): Response
             {
                 throw new \RuntimeException($this->message);
             }
@@ -172,7 +132,7 @@ class MockHttpFactory
      * @param int          $code HTTP status code
      * @param array<mixed> $data Data to encode as JSON
      */
-    public static function createWithJsonResponse(int $code, array $data): HttpInterface
+    public static function createWithJsonResponse(int $code, array $data): Http
     {
         return self::createWithGetResponse($code, json_encode($data) ?: '[]', [
             'Content-Type' => 'application/json',

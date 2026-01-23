@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Component\Administrator\Check;
 
+use Joomla\CMS\Http\Http;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
-use Joomla\Http\HttpInterface;
 
 \defined('_JEXEC') || die;
 
@@ -54,7 +54,7 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
      *
      * @since 1.0.0
      */
-    protected ?HttpInterface $httpClient = null;
+    protected ?Http $httpClient = null;
 
     /**
      * Inject the Joomla database instance for use in database-dependent checks.
@@ -112,11 +112,11 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
      * This method allows tests to inject a mock HTTP client to avoid making
      * real network requests during unit testing.
      *
-     * @param HttpInterface $http The HTTP client instance
+     * @param Http $http The HTTP client instance
      *
      * @since 1.0.0
      */
-    public function setHttpClient(HttpInterface $http): void
+    public function setHttpClient(Http $http): void
     {
         $this->httpClient = $http;
     }
@@ -127,13 +127,13 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
      * Returns the injected HTTP client if one was set via setHttpClient(),
      * otherwise falls back to creating a new client via HttpFactory.
      *
-     * @return HttpInterface The HTTP client instance
+     * @return Http The HTTP client instance
      *
      * @since 1.0.0
      */
-    protected function getHttpClient(): HttpInterface
+    protected function getHttpClient(): Http
     {
-        if ($this->httpClient instanceof \Joomla\Http\HttpInterface) {
+        if ($this->httpClient instanceof Http) {
             return $this->httpClient;
         }
 

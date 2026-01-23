@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Example\Checks;
 
+use HealthChecker\Tests\Utilities\MockHttpFactory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Example\Checks\ThirdPartyServiceCheck;
@@ -48,15 +49,56 @@ class ThirdPartyServiceCheckTest extends TestCase
         $this->assertNotEmpty($title);
     }
 
-    public function testRunReturnsHealthCheckResult(): void
+    public function testRunReturnsGoodWhenServiceReachable(): void
     {
+        $httpClient = MockHttpFactory::createWithHeadResponse(200);
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
         $this->assertInstanceOf(HealthCheckResult::class, $result);
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('reachable', $result->description);
+        $this->assertStringContainsString('normally', $result->description);
+    }
+
+    public function testRunReturnsCriticalWhenServiceUnreachable(): void
+    {
+        $httpClient = MockHttpFactory::createThatThrows('Connection refused');
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('Cannot reach', $result->description);
+    }
+
+    public function testRunReturnsCriticalWhenHttpError(): void
+    {
+        $httpClient = MockHttpFactory::createWithHeadResponse(500);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('Cannot reach', $result->description);
+    }
+
+    public function testRunReturnsCriticalWhenResponseCodeZero(): void
+    {
+        $httpClient = MockHttpFactory::createWithHeadResponse(0);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
     }
 
     public function testResultHasCorrectSlug(): void
     {
+        $httpClient = MockHttpFactory::createWithHeadResponse(200);
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
         $this->assertSame('example.thirdparty_service', $result->slug);
@@ -64,6 +106,9 @@ class ThirdPartyServiceCheckTest extends TestCase
 
     public function testResultHasCorrectCategory(): void
     {
+        $httpClient = MockHttpFactory::createWithHeadResponse(200);
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
         $this->assertSame('thirdparty', $result->category);
@@ -71,6 +116,9 @@ class ThirdPartyServiceCheckTest extends TestCase
 
     public function testResultHasCorrectProvider(): void
     {
+        $httpClient = MockHttpFactory::createWithHeadResponse(200);
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
         $this->assertSame('example', $result->provider);
@@ -78,6 +126,9 @@ class ThirdPartyServiceCheckTest extends TestCase
 
     public function testResultDescriptionContainsExampleCheckMarker(): void
     {
+        $httpClient = MockHttpFactory::createWithHeadResponse(200);
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
         $this->assertStringContainsString('[EXAMPLE CHECK]', $result->description);
@@ -85,6 +136,9 @@ class ThirdPartyServiceCheckTest extends TestCase
 
     public function testResultDescriptionContainsDisableInstructions(): void
     {
+        $httpClient = MockHttpFactory::createWithHeadResponse(200);
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
         $this->assertStringContainsString('Health Checker - Example Provider', $result->description);
@@ -92,18 +146,34 @@ class ThirdPartyServiceCheckTest extends TestCase
         $this->assertStringContainsString('Plugins', $result->description);
     }
 
-    public function testResultStatusIsOneOfExpectedValues(): void
-    {
-        $result = $this->check->run();
-
-        $validStatuses = [HealthStatus::Good, HealthStatus::Warning, HealthStatus::Critical];
-        $this->assertContains($result->healthStatus, $validStatuses);
-    }
-
     public function testResultDescriptionMentionsJoomlaApi(): void
     {
+        $httpClient = MockHttpFactory::createWithHeadResponse(200);
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
         $this->assertStringContainsString('Joomla API', $result->description);
+    }
+
+    public function testRunReturnsCorrectStatusForClientError(): void
+    {
+        $httpClient = MockHttpFactory::createWithHeadResponse(404);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testRunReturnsGoodFor3xxRedirect(): void
+    {
+        // 3xx responses are still successful - server responded
+        $httpClient = MockHttpFactory::createWithHeadResponse(301);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
     }
 }

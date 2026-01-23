@@ -889,56 +889,60 @@ class Version
 
 namespace Joomla\CMS\Http;
 
-use Joomla\Http\HttpInterface;
 use Joomla\Http\Response;
+
+/**
+ * HTTP client class that mimics Joomla\CMS\Http\Http
+ */
+class Http
+{
+    public function get(string $url, array $headers = [], int|float $timeout = 10): Response
+    {
+        return new Response(0, '', []);
+    }
+
+    public function head(string $url, array $headers = [], int|float $timeout = 10): Response
+    {
+        return new Response(0, '', []);
+    }
+
+    public function post(string $url, mixed $data = '', array $headers = [], int|float $timeout = 10): Response
+    {
+        return new Response(0, '', []);
+    }
+
+    public function put(string $url, mixed $data = '', array $headers = [], int|float $timeout = 10): Response
+    {
+        return new Response(0, '', []);
+    }
+
+    public function delete(string $url, array $headers = [], int|float $timeout = 10): Response
+    {
+        return new Response(0, '', []);
+    }
+
+    public function patch(string $url, mixed $data = '', array $headers = [], int|float $timeout = 10): Response
+    {
+        return new Response(0, '', []);
+    }
+}
 
 class HttpFactory
 {
-    private static ?HttpInterface $mockHttp = null;
+    private static ?Http $mockHttp = null;
 
-    public static function setMockHttp(?HttpInterface $http): void
+    public static function setMockHttp(?Http $http): void
     {
         self::$mockHttp = $http;
     }
 
-    public static function getHttp(): HttpInterface
+    public static function getHttp(): Http
     {
         if (self::$mockHttp !== null) {
             return self::$mockHttp;
         }
 
-        // Return a default no-op HTTP client for tests
-        return new class implements HttpInterface {
-            public function get(string $url, array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(0, '', []);
-            }
-
-            public function head(string $url, array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(0, '', []);
-            }
-
-            public function post(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(0, '', []);
-            }
-
-            public function put(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(0, '', []);
-            }
-
-            public function delete(string $url, array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(0, '', []);
-            }
-
-            public function patch(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
-            {
-                return new Response(0, '', []);
-            }
-        };
+        return new Http();
     }
 }
 
