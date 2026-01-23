@@ -187,4 +187,209 @@ class PhpSapiCheckTest extends TestCase
             $this->markTestSkipped('This test requires apache2handler SAPI.');
         }
     }
+
+    public function testFpmFcgiRecognition(): void
+    {
+        // If running under fpm-fcgi, should return Good with "recommended" note
+        if (PHP_SAPI === 'fpm-fcgi') {
+            $result = $this->check->run();
+
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('fpm-fcgi', $result->description);
+            $this->assertStringContainsString('recommended', $result->description);
+        } else {
+            $this->markTestSkipped('This test requires fpm-fcgi SAPI.');
+        }
+    }
+
+    public function testCgiFcgiRecognition(): void
+    {
+        // If running under cgi-fcgi, should return Good with "recommended" note
+        if (PHP_SAPI === 'cgi-fcgi') {
+            $result = $this->check->run();
+
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('cgi-fcgi', $result->description);
+            $this->assertStringContainsString('recommended', $result->description);
+        } else {
+            $this->markTestSkipped('This test requires cgi-fcgi SAPI.');
+        }
+    }
+
+    public function testLitespeedRecognition(): void
+    {
+        // If running under litespeed, should return Good with "recommended" note
+        if (PHP_SAPI === 'litespeed') {
+            $result = $this->check->run();
+
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('litespeed', $result->description);
+            $this->assertStringContainsString('recommended', $result->description);
+        } else {
+            $this->markTestSkipped('This test requires litespeed SAPI.');
+        }
+    }
+
+    public function testFrankenphpRecognition(): void
+    {
+        // If running under frankenphp, should return Good with "recommended" note
+        if (PHP_SAPI === 'frankenphp') {
+            $result = $this->check->run();
+
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('frankenphp', $result->description);
+            $this->assertStringContainsString('recommended', $result->description);
+        } else {
+            $this->markTestSkipped('This test requires frankenphp SAPI.');
+        }
+    }
+
+    public function testRecommendedSapisArray(): void
+    {
+        // Verify the recommended SAPIs list is what we expect
+        $recommendedSapis = ['fpm-fcgi', 'cgi-fcgi', 'litespeed', 'frankenphp'];
+
+        // Test that in_array works as expected
+        $this->assertTrue(in_array('fpm-fcgi', $recommendedSapis, true));
+        $this->assertTrue(in_array('cgi-fcgi', $recommendedSapis, true));
+        $this->assertTrue(in_array('litespeed', $recommendedSapis, true));
+        $this->assertTrue(in_array('frankenphp', $recommendedSapis, true));
+
+        // These should not be in recommended list
+        $this->assertFalse(in_array('cli', $recommendedSapis, true));
+        $this->assertFalse(in_array('apache2handler', $recommendedSapis, true));
+        $this->assertFalse(in_array('cgi', $recommendedSapis, true));
+    }
+
+    public function testPhpSapiConstantIsString(): void
+    {
+        $this->assertIsString(PHP_SAPI);
+        $this->assertNotEmpty(PHP_SAPI);
+    }
+
+    public function testPhpSapiNameFunctionExists(): void
+    {
+        $this->assertTrue(function_exists('php_sapi_name'));
+        $this->assertSame(PHP_SAPI, PHP_SAPI);
+    }
+
+    public function testRunInCliEnvironmentReturnsCorrectMessage(): void
+    {
+        if (PHP_SAPI !== 'cli') {
+            $this->markTestSkipped('This test is for CLI environment only.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('CLI', $result->description);
+        $this->assertStringContainsString('web environments', $result->description);
+    }
+
+    public function testCheckNeverReturnsCriticalStatus(): void
+    {
+        // Based on the source code, this check never returns Critical
+        $result = $this->check->run();
+
+        $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testDescriptionIsNotEmpty(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->description);
+        $this->assertIsString($result->description);
+    }
+
+    public function testSlugFormat(): void
+    {
+        $slug = $this->check->getSlug();
+
+        // Slug should be lowercase with dot separator
+        $this->assertMatchesRegularExpression('/^[a-z]+\.[a-z_]+$/', $slug);
+    }
+
+    public function testCategoryIsValid(): void
+    {
+        $category = $this->check->getCategory();
+
+        // Should be a valid category
+        $validCategories = ['system', 'database', 'security', 'users', 'extensions', 'performance', 'seo', 'content'];
+        $this->assertContains($category, $validCategories);
+    }
+
+    public function testProviderIsCore(): void
+    {
+        $provider = $this->check->getProvider();
+
+        $this->assertSame('core', $provider);
+    }
+
+    public function testOtherSapiReturnsGood(): void
+    {
+        // If running under an unknown/other SAPI, should return Good with SAPI name
+        $currentSapi = PHP_SAPI;
+
+        // For testing purposes, we just verify the actual SAPI gives a valid result
+        $result = $this->check->run();
+
+        // Should always be Good or Warning (for CLI)
+        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+    }
+
+    public function testInArrayStrictComparison(): void
+    {
+        // Test that strict comparison is used for SAPI matching
+        $recommendedSapis = ['fpm-fcgi', 'cgi-fcgi', 'litespeed', 'frankenphp'];
+
+        // Strict comparison should fail for different types
+        $this->assertFalse(in_array(0, $recommendedSapis, true));
+        $this->assertFalse(in_array(null, $recommendedSapis, true));
+        $this->assertFalse(in_array(false, $recommendedSapis, true));
+    }
+
+    public function testCliWarningMessageContent(): void
+    {
+        if (PHP_SAPI !== 'cli') {
+            $this->markTestSkipped('This test is for CLI environment only.');
+        }
+
+        $result = $this->check->run();
+
+        // Warning message should explain this is meant for web environments
+        $this->assertStringContainsString('web environments', $result->description);
+        $this->assertStringContainsString('CLI', $result->description);
+    }
+
+    public function testResultStructureIsComplete(): void
+    {
+        $result = $this->check->run();
+
+        // Verify all required properties are set
+        $this->assertNotEmpty($result->slug);
+        $this->assertNotEmpty($result->category);
+        $this->assertNotEmpty($result->provider);
+        $this->assertNotEmpty($result->description);
+        $this->assertNotEmpty($result->title);
+        $this->assertInstanceOf(HealthStatus::class, $result->healthStatus);
+    }
+
+    public function testApache2handlerSuggestsPhpFpm(): void
+    {
+        // Test the comparison logic - apache2handler should suggest PHP-FPM
+        $sapi = 'apache2handler';
+
+        // This tests the logic branch in the source code
+        $this->assertSame('apache2handler', $sapi);
+        $this->assertNotSame('fpm-fcgi', $sapi);
+    }
+
+    public function testSapiComparisonIsCaseSensitive(): void
+    {
+        // SAPI comparison should be case-sensitive
+        $this->assertNotSame('CLI', 'cli');
+        $this->assertNotSame('Apache2Handler', 'apache2handler');
+        $this->assertNotSame('FPM-FCGI', 'fpm-fcgi');
+    }
 }

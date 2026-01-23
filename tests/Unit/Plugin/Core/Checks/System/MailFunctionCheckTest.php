@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Factory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\System\MailFunctionCheck;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -23,6 +25,21 @@ class MailFunctionCheckTest extends TestCase
     protected function setUp(): void
     {
         $this->check = new MailFunctionCheck();
+    }
+
+    protected function tearDown(): void
+    {
+        Factory::setApplication(null);
+    }
+
+    private function setupApplicationWithMailer(string $mailer, ?string $sendmailPath = null): void
+    {
+        $app = new CMSApplication();
+        $app->set('mailer', $mailer);
+        if ($sendmailPath !== null) {
+            $app->set('sendmail', $sendmailPath);
+        }
+        Factory::setApplication($app);
     }
 
     public function testGetSlugReturnsCorrectValue(): void
@@ -86,6 +103,70 @@ class MailFunctionCheckTest extends TestCase
         $this->assertTrue(function_exists('mail'));
     }
 
+    public function testGoodWhenMailerIsMailAndFunctionAvailable(): void
+    {
+        $this->setupApplicationWithMailer('mail');
+
+        // If mail() function is available and not disabled
+        if (function_exists('mail') && ! str_contains(ini_get('disable_functions'), 'mail')) {
+            $result = $this->check->run();
+
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('available', $result->description);
+        } else {
+            $this->markTestSkipped('mail() function is not available or is disabled');
+        }
+    }
+
+    public function testGoodWhenMailerIsSmtp(): void
+    {
+        $this->setupApplicationWithMailer('smtp');
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('SMTP', $result->description);
+    }
+
+    public function testGoodWhenMailerIsSendmailWithExecutablePath(): void
+    {
+        // Use a path that exists and is executable on most Unix systems
+        $sendmailPath = '/bin/sh'; // This exists on most systems
+        if (! is_executable($sendmailPath)) {
+            $this->markTestSkipped('No executable path available for testing');
+        }
+
+        $this->setupApplicationWithMailer('sendmail', $sendmailPath);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Sendmail', $result->description);
+    }
+
+    public function testWarningWhenMailerIsSendmailWithNonExecutablePath(): void
+    {
+        // Use a path that does not exist
+        $nonExecutablePath = '/nonexistent/path/to/sendmail';
+        $this->setupApplicationWithMailer('sendmail', $nonExecutablePath);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('may not be executable', $result->description);
+        $this->assertStringContainsString($nonExecutablePath, $result->description);
+    }
+
+    public function testGoodWhenMailerIsCustomValue(): void
+    {
+        $this->setupApplicationWithMailer('custom_mailer');
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('custom_mailer', $result->description);
+    }
+
     public function testCheckHandlesDisabledFunctionsCheck(): void
     {
         // Verify the check works when testing for disabled functions
@@ -109,6 +190,8 @@ class MailFunctionCheckTest extends TestCase
 
     public function testMultipleRunsReturnConsistentResults(): void
     {
+        $this->setupApplicationWithMailer('smtp');
+
         $result1 = $this->check->run();
         $result2 = $this->check->run();
 
@@ -171,17 +254,12 @@ class MailFunctionCheckTest extends TestCase
 
     public function testGoodResultForMailConfig(): void
     {
+        $this->setupApplicationWithMailer('smtp');
         $result = $this->check->run();
 
-        if ($result->healthStatus === HealthStatus::Good) {
-            // Good result should mention the mail method being available
-            $descLower = strtolower($result->description);
-            $this->assertTrue(
-                str_contains($descLower, 'available') ||
-                str_contains($descLower, 'configured') ||
-                str_contains($descLower, 'using'),
-            );
-        }
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $descLower = strtolower($result->description);
+        $this->assertTrue(str_contains($descLower, 'configured') || str_contains($descLower, 'using'));
     }
 
     public function testCriticalResultExplainsIssue(): void
@@ -200,19 +278,121 @@ class MailFunctionCheckTest extends TestCase
 
     public function testWarningResultForSendmailPath(): void
     {
+        $this->setupApplicationWithMailer('sendmail', '/nonexistent/sendmail');
         $result = $this->check->run();
 
-        if ($result->healthStatus === HealthStatus::Warning) {
-            // Warning might be about sendmail path
-            $descLower = strtolower($result->description);
-            $this->assertTrue(
-                str_contains($descLower, 'sendmail') ||
-                str_contains($descLower, 'executable') ||
-                str_contains($descLower, 'path'),
-            );
-        } else {
-            // Not warning, verify status is valid
-            $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Critical]);
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $descLower = strtolower($result->description);
+        $this->assertTrue(
+            str_contains($descLower, 'sendmail') ||
+            str_contains($descLower, 'executable') ||
+            str_contains($descLower, 'path'),
+        );
+    }
+
+    public function testDefaultSendmailPathIsUsedWhenNotConfigured(): void
+    {
+        // Set up sendmail mailer without explicit path
+        $app = new CMSApplication();
+        $app->set('mailer', 'sendmail');
+        // Don't set sendmail path - should use default /usr/sbin/sendmail
+        Factory::setApplication($app);
+
+        $result = $this->check->run();
+
+        // Result depends on whether default path is executable
+        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+    }
+
+    public function testSmtpConfigurationReturnsGoodWithoutValidation(): void
+    {
+        // SMTP configuration doesn't validate connection - just returns Good
+        $this->setupApplicationWithMailer('smtp');
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('SMTP', $result->description);
+        $this->assertStringContainsString('email delivery', $result->description);
+    }
+
+    public function testDefaultMailerWhenNotConfigured(): void
+    {
+        // Set up application without explicit mailer setting
+        // The stub's get() returns default when key not set
+        $app = new CMSApplication();
+        Factory::setApplication($app);
+
+        $result = $this->check->run();
+
+        // Should use default 'mail' mailer
+        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Critical]);
+    }
+
+    public function testFunctionExistsCheck(): void
+    {
+        // Verify function_exists works correctly for mail
+        $mailExists = function_exists('mail');
+        $this->assertIsBool($mailExists);
+    }
+
+    public function testIniGetForDisabledFunctions(): void
+    {
+        // Verify ini_get returns a string for disable_functions
+        $disabled = ini_get('disable_functions');
+        $this->assertIsString($disabled);
+    }
+
+    public function testStrContainsForMailInDisabledFunctions(): void
+    {
+        // Test the str_contains check used in the code
+        $testCases = [
+            ['mail,exec', 'mail', true],
+            ['exec,shell_exec', 'mail', false],
+            ['', 'mail', false],
+            ['mail', 'mail', true],
+            ['sendmail', 'mail', true], // 'mail' is substring of 'sendmail'
+        ];
+
+        foreach ($testCases as [$haystack, $needle, $expected]) {
+            $this->assertSame($expected, str_contains($haystack, $needle));
         }
+    }
+
+    public function testSendmailPathWithSpaces(): void
+    {
+        // Test sendmail path that contains spaces
+        $pathWithSpaces = '/path with spaces/sendmail';
+        $this->setupApplicationWithMailer('sendmail', $pathWithSpaces);
+
+        $result = $this->check->run();
+
+        // Path doesn't exist, should return warning
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testUnknownMailerReturnsGood(): void
+    {
+        // Test unknown/custom mailer configuration
+        $this->setupApplicationWithMailer('unknown_custom_mailer');
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('unknown_custom_mailer', $result->description);
+    }
+
+    public function testEmptyMailerConfigFallsBackToDefault(): void
+    {
+        // When mailer is empty string, it should use default behavior
+        // However, in our test, empty string is a valid config value
+        $app = new CMSApplication();
+        $app->set('mailer', '');
+        Factory::setApplication($app);
+
+        $result = $this->check->run();
+
+        // Empty string is treated as custom mailer
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
     }
 }

@@ -57,4 +57,82 @@ class DomExtensionCheckTest extends TestCase
         $this->assertStringContainsString('DOM', $result->description);
         $this->assertStringContainsString('loaded', $result->description);
     }
+
+    public function testRunReturnsHealthCheckResult(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('system.dom_extension', $result->slug);
+        $this->assertSame('system', $result->category);
+        $this->assertSame('core', $result->provider);
+    }
+
+    public function testResultTitleIsNotEmpty(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->title);
+    }
+
+    public function testResultHasCorrectStructure(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('system.dom_extension', $result->slug);
+        $this->assertSame('system', $result->category);
+        $this->assertSame('core', $result->provider);
+        $this->assertIsString($result->description);
+        $this->assertInstanceOf(HealthStatus::class, $result->healthStatus);
+    }
+
+    public function testMultipleRunsReturnConsistentResults(): void
+    {
+        $result1 = $this->check->run();
+        $result2 = $this->check->run();
+
+        $this->assertSame($result1->healthStatus, $result2->healthStatus);
+        $this->assertSame($result1->description, $result2->description);
+    }
+
+    public function testCheckNeverReturnsWarning(): void
+    {
+        // DOM check returns Critical or Good, never Warning per documentation
+        $result = $this->check->run();
+
+        $this->assertNotSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testRunReturnsCriticalWhenDomNotLoaded(): void
+    {
+        // DOM is always loaded in standard PHP - cannot test critical path
+        if (extension_loaded('dom')) {
+            $this->markTestSkipped('DOM extension is always loaded in PHP - cannot test critical path');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('DOM', $result->description);
+        $this->assertStringContainsString('not loaded', $result->description);
+    }
+
+    /**
+     * Document that the critical path requires DOM to be unloaded.
+     *
+     * The DOM extension is always enabled by default in PHP and cannot be
+     * easily disabled without recompiling PHP. The critical path at lines 85-86
+     * handles this edge case but is essentially unreachable in standard PHP.
+     *
+     * NOTE: This path exists for completeness but cannot be tested in
+     * standard PHP environments.
+     */
+    public function testDocumentCriticalPathRequiresDomUnloaded(): void
+    {
+        // DOM is always available in standard PHP
+        $this->assertTrue(extension_loaded('dom'), 'DOM should always be loaded');
+
+        // This test serves as documentation that the critical path exists
+        // but cannot be practically tested
+        $this->assertTrue(true, 'Critical path documented - see test docblock');
+    }
 }

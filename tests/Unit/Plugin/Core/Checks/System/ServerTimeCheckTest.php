@@ -365,4 +365,241 @@ class ServerTimeCheckTest extends TestCase
 
         $this->assertStringContainsString('NTP', $result->description);
     }
+
+    public function testFormatTimeDiff1Second(): void
+    {
+        // Test with exactly 1 second drift - should use singular form
+        $driftedTime = new \DateTimeImmutable('-31 seconds', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        // Should be warning (over 30s threshold)
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testFormatTimeDiff1Minute(): void
+    {
+        // Test with exactly 1 minute drift - should use singular "minute"
+        $driftedTime = new \DateTimeImmutable('-60 seconds', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('minute', $result->description);
+    }
+
+    public function testFormatTimeDiff1Hour(): void
+    {
+        // Test with 1 hour drift - should use singular "hour"
+        $driftedTime = new \DateTimeImmutable('-1 hour', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('hour', $result->description);
+    }
+
+    public function testFormatTimeDiffMultipleHours(): void
+    {
+        // Test with multiple hours drift - should use plural "hours"
+        $driftedTime = new \DateTimeImmutable('-3 hours', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('hours', $result->description);
+    }
+
+    public function testFormatTimeDiff1HourExactly(): void
+    {
+        // Test with exactly 3600 seconds (1 hour)
+        $driftedTime = new \DateTimeImmutable('-3600 seconds', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('hour', $result->description);
+    }
+
+    public function testFutureDriftAlsoDetected(): void
+    {
+        // Test with time in the future (positive drift)
+        $driftedTime = new \DateTimeImmutable('+10 minutes', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        // Should detect drift regardless of direction (uses abs())
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testInvalidDateHeaderFormat(): void
+    {
+        // Test with an invalid date format
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => 'invalid-date-format',
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        // Should fall back to "Unable to verify" message
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Unable to verify', $result->description);
+    }
+
+    public function testAlternativeDateFormat(): void
+    {
+        // Test with alternative date format (without day name)
+        // This tests the fallback parsing in tryFetchTimeFromUrl
+        $currentTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        // Alternative format: "21 Jan 2026 12:31:34 GMT" (no day name)
+        $dateHeader = $currentTime->format('d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        // Should parse the alternative format successfully
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testMultipleRunsWithSameHttpClient(): void
+    {
+        $currentTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $dateHeader = $currentTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result1 = $this->check->run();
+        $result2 = $this->check->run();
+
+        $this->assertSame($result1->healthStatus, $result2->healthStatus);
+    }
+
+    public function testWarningMentionsNtpSynchronization(): void
+    {
+        $driftedTime = new \DateTimeImmutable('-60 seconds', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('NTP', $result->description);
+    }
+
+    public function testGoodResultShowsVerifiedSource(): void
+    {
+        $currentTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $dateHeader = $currentTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        // Result should mention verification against Google (the source)
+        $this->assertStringContainsString('Google', $result->description);
+    }
+
+    public function testExactlyAtWarningThreshold(): void
+    {
+        // Test exactly at 30 second threshold (should be Good, not Warning)
+        $driftedTime = new \DateTimeImmutable('-30 seconds', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        // At exactly 30 seconds, should still be Good (threshold is > 30)
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testExactlyAtCriticalThreshold(): void
+    {
+        // Test exactly at 300 second (5 min) threshold (should be Warning, not Critical)
+        $driftedTime = new \DateTimeImmutable('-300 seconds', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        // At exactly 300 seconds, should still be Warning (threshold is > 300)
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testZeroDrift(): void
+    {
+        // Test with exactly zero drift
+        $currentTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $dateHeader = $currentTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        // Should show drift: 0s or similar
+        $this->assertMatchesRegularExpression('/drift:\s*\d+s/', $result->description);
+    }
 }

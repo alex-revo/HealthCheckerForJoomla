@@ -10,7 +10,10 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\MySitesGuru\Extension;
 
+use Joomla\CMS\Toolbar\Toolbar;
 use MySitesGuru\HealthChecker\Component\Administrator\Category\HealthCategory;
+use MySitesGuru\HealthChecker\Component\Administrator\Event\AfterToolbarBuildEvent;
+use MySitesGuru\HealthChecker\Component\Administrator\Event\BeforeReportDisplayEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectCategoriesEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectChecksEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectProvidersEvent;
@@ -215,5 +218,89 @@ class MySitesGuruPluginTest extends TestCase
 
         $providers = $event->getProviders();
         $this->assertSame('1.0.0', $providers[0]->version);
+    }
+
+    public function testOnBeforeReportDisplayAddsHtmlContent(): void
+    {
+        $plugin = new MySitesGuruPlugin(new \stdClass());
+        $event = new BeforeReportDisplayEvent();
+
+        $plugin->onBeforeReportDisplay($event);
+
+        $html = $event->getHtmlContent();
+        // The plugin adds a promotional banner for mySites.guru
+        $this->assertIsString($html);
+    }
+
+    public function testOnBeforeReportDisplayBannerContainsMySitesGuruLink(): void
+    {
+        $plugin = new MySitesGuruPlugin(new \stdClass());
+        $event = new BeforeReportDisplayEvent();
+
+        $plugin->onBeforeReportDisplay($event);
+
+        $html = $event->getHtmlContent();
+        // The banner should link to mySites.guru
+        $this->assertStringContainsString('mysites.guru', $html);
+    }
+
+    public function testOnBeforeReportDisplayBannerContainsBannerClass(): void
+    {
+        $plugin = new MySitesGuruPlugin(new \stdClass());
+        $event = new BeforeReportDisplayEvent();
+
+        $plugin->onBeforeReportDisplay($event);
+
+        $html = $event->getHtmlContent();
+        // The banner should use mysitesguru-banner class
+        $this->assertStringContainsString('mysitesguru-banner', $html);
+    }
+
+    public function testOnAfterToolbarBuildAddsButton(): void
+    {
+        // Clear any existing toolbar instances
+        Toolbar::clearInstances();
+
+        $plugin = new MySitesGuruPlugin(new \stdClass());
+        $toolbar = Toolbar::getInstance();
+        $event = new AfterToolbarBuildEvent($toolbar);
+
+        $plugin->onAfterToolbarBuild($event);
+
+        $buttons = $toolbar->getButtons();
+        $this->assertNotEmpty($buttons);
+    }
+
+    public function testOnAfterToolbarBuildButtonLinksToMySitesGuru(): void
+    {
+        // Clear any existing toolbar instances
+        Toolbar::clearInstances();
+
+        $plugin = new MySitesGuruPlugin(new \stdClass());
+        $toolbar = Toolbar::getInstance();
+        $event = new AfterToolbarBuildEvent($toolbar);
+
+        $plugin->onAfterToolbarBuild($event);
+
+        $buttons = $toolbar->getButtons();
+        // There should be a link button added
+        $hasLinkButton = false;
+        foreach ($buttons as $button) {
+            if (method_exists($button, 'getType') && $button->getType() !== '') {
+                $hasLinkButton = true;
+                break;
+            }
+        }
+        $this->assertTrue($hasLinkButton);
+    }
+
+    public function testEventValuesMatch(): void
+    {
+        // Test that the event string values match expected patterns
+        $this->assertSame('onHealthCheckerCollectCategories', HealthCheckerEvents::COLLECT_CATEGORIES->value);
+        $this->assertSame('onHealthCheckerCollectChecks', HealthCheckerEvents::COLLECT_CHECKS->value);
+        $this->assertSame('onHealthCheckerCollectProviders', HealthCheckerEvents::COLLECT_PROVIDERS->value);
+        $this->assertSame('onHealthCheckerBeforeReportDisplay', HealthCheckerEvents::BEFORE_REPORT_DISPLAY->value);
+        $this->assertSame('onHealthCheckerAfterToolbarBuild', HealthCheckerEvents::AFTER_TOOLBAR_BUILD->value);
     }
 }

@@ -271,9 +271,22 @@ class CMSApplication
 
     private ?DispatcherInterface $dispatcher = null;
 
+    /**
+     * @var array<string, mixed> Map of component names to component instances for testing
+     */
+    private array $components = [];
+
     public function input(): mixed
     {
         return $this->input;
+    }
+
+    /**
+     * Set a component instance for testing bootComponent() calls
+     */
+    public function setComponent(string $name, mixed $component): void
+    {
+        $this->components[$name] = $component;
     }
 
     public function getInput(): Input
@@ -322,7 +335,7 @@ class CMSApplication
 
     public function bootComponent(string $component): mixed
     {
-        return null;
+        return $this->components[$component] ?? null;
     }
 
     public function enqueueMessage(string $msg, string $type = 'info'): void {}

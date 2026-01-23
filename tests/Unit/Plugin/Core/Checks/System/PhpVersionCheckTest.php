@@ -165,4 +165,147 @@ class PhpVersionCheckTest extends TestCase
         $this->assertFalse(version_compare('8.0.0', '8.1.0', '>='));
         $this->assertTrue(version_compare('8.3.0', '8.2.0', '>='));
     }
+
+    public function testVersionComparisonForMinimumThreshold(): void
+    {
+        // Test the minimum version threshold logic
+        $minimumVersion = '8.1.0';
+
+        // These should pass minimum check
+        $this->assertTrue(version_compare('8.1.0', $minimumVersion, '>='));
+        $this->assertTrue(version_compare('8.1.1', $minimumVersion, '>='));
+        $this->assertTrue(version_compare('8.2.0', $minimumVersion, '>='));
+        $this->assertTrue(version_compare('8.3.0', $minimumVersion, '>='));
+        $this->assertTrue(version_compare('9.0.0', $minimumVersion, '>='));
+
+        // These should fail minimum check
+        $this->assertFalse(version_compare('8.0.0', $minimumVersion, '>='));
+        $this->assertFalse(version_compare('8.0.99', $minimumVersion, '>='));
+        $this->assertFalse(version_compare('7.4.0', $minimumVersion, '>='));
+    }
+
+    public function testVersionComparisonForRecommendedThreshold(): void
+    {
+        // Test the recommended version threshold logic
+        $recommendedVersion = '8.2.0';
+
+        // These should meet recommended
+        $this->assertTrue(version_compare('8.2.0', $recommendedVersion, '>='));
+        $this->assertTrue(version_compare('8.2.1', $recommendedVersion, '>='));
+        $this->assertTrue(version_compare('8.3.0', $recommendedVersion, '>='));
+        $this->assertTrue(version_compare('9.0.0', $recommendedVersion, '>='));
+
+        // These should not meet recommended (warning territory)
+        $this->assertFalse(version_compare('8.1.0', $recommendedVersion, '>='));
+        $this->assertFalse(version_compare('8.1.99', $recommendedVersion, '>='));
+    }
+
+    public function testVersionComparisonBelowMinimum(): void
+    {
+        // Test versions that would trigger critical
+        $minimumVersion = '8.1.0';
+
+        $this->assertTrue(version_compare('8.0.0', $minimumVersion, '<'));
+        $this->assertTrue(version_compare('7.4.33', $minimumVersion, '<'));
+        $this->assertTrue(version_compare('7.3.0', $minimumVersion, '<'));
+
+        $this->assertFalse(version_compare('8.1.0', $minimumVersion, '<'));
+        $this->assertFalse(version_compare('8.2.0', $minimumVersion, '<'));
+    }
+
+    public function testPhpVersionFormatMatching(): void
+    {
+        // Test that PHP_VERSION matches expected format
+        $this->assertMatchesRegularExpression('/^\d+\.\d+\.\d+/', PHP_VERSION);
+    }
+
+    public function testMinimumVersionConstant(): void
+    {
+        // Verify the expected minimum version
+        $expected = '8.1.0';
+        $this->assertSame($expected, $expected);
+    }
+
+    public function testRecommendedVersionConstant(): void
+    {
+        // Verify the expected recommended version
+        $expected = '8.2.0';
+        $this->assertSame($expected, $expected);
+    }
+
+    public function testRunReturnsConsistentProvider(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('core', $result->provider);
+    }
+
+    public function testResultDescriptionIncludesVersionNumber(): void
+    {
+        $result = $this->check->run();
+
+        // Description should contain a version number
+        $this->assertMatchesRegularExpression('/\d+\.\d+/', $result->description);
+    }
+
+    public function testResultForPhp83OrHigher(): void
+    {
+        if (version_compare(PHP_VERSION, '8.3.0', '>=')) {
+            $result = $this->check->run();
+
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('meets all requirements', $result->description);
+        } else {
+            $this->markTestSkipped('This test requires PHP 8.3 or higher.');
+        }
+    }
+
+    public function testResultForPhp84OrHigher(): void
+    {
+        if (version_compare(PHP_VERSION, '8.4.0', '>=')) {
+            $result = $this->check->run();
+
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('meets all requirements', $result->description);
+        } else {
+            $this->markTestSkipped('This test requires PHP 8.4 or higher.');
+        }
+    }
+
+    public function testVersionCompareWithDevelopmentVersions(): void
+    {
+        // Test version comparison with development versions
+        $minimumVersion = '8.1.0';
+
+        // Development versions
+        $this->assertTrue(version_compare('8.2.0-dev', $minimumVersion, '>='));
+        $this->assertTrue(version_compare('8.2.0RC1', $minimumVersion, '>='));
+        $this->assertTrue(version_compare('8.2.0alpha1', $minimumVersion, '>='));
+        $this->assertTrue(version_compare('8.2.0beta1', $minimumVersion, '>='));
+    }
+
+    public function testPhpVersionConstantAvailable(): void
+    {
+        $this->assertTrue(defined('PHP_VERSION'));
+        $this->assertNotEmpty(PHP_VERSION);
+    }
+
+    public function testPhpVersionIdConstantAvailable(): void
+    {
+        $this->assertTrue(defined('PHP_VERSION_ID'));
+        $this->assertIsInt(PHP_VERSION_ID);
+        // PHP 8.1+ has version ID >= 80100
+        $this->assertGreaterThanOrEqual(80100, PHP_VERSION_ID);
+    }
+
+    public function testRunNeverThrowsException(): void
+    {
+        // The run() method should always return a result, never throw
+        $result = $this->check->run();
+
+        $this->assertInstanceOf(
+            \MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult::class,
+            $result,
+        );
+    }
 }

@@ -20,9 +20,18 @@ class MaxInputVarsCheckTest extends TestCase
 {
     private MaxInputVarsCheck $check;
 
+    private string $originalMaxInputVars;
+
     protected function setUp(): void
     {
         $this->check = new MaxInputVarsCheck();
+        $this->originalMaxInputVars = ini_get('max_input_vars');
+    }
+
+    protected function tearDown(): void
+    {
+        // Restore original value
+        ini_set('max_input_vars', $this->originalMaxInputVars);
     }
 
     public function testGetSlugReturnsCorrectValue(): void
@@ -112,5 +121,162 @@ class MaxInputVarsCheckTest extends TestCase
 
         // Description should include the current value
         $this->assertStringContainsString((string) $maxInputVars, $result->description);
+    }
+
+    public function testReturnsCriticalWhenBelowMinimum(): void
+    {
+        // Set max_input_vars to 500 (below 1000 minimum)
+        if (! ini_set('max_input_vars', '500')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('500', $result->description);
+        $this->assertStringContainsString('1000', $result->description);
+        $this->assertStringContainsString('lose data', $result->description);
+    }
+
+    public function testReturnsWarningWhenBelowRecommended(): void
+    {
+        // Set max_input_vars to 1500 (above 1000 minimum but below 3000 recommended)
+        if (! ini_set('max_input_vars', '1500')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('1500', $result->description);
+        $this->assertStringContainsString('3000', $result->description);
+    }
+
+    public function testReturnsGoodWhenMeetsRequirements(): void
+    {
+        // Set max_input_vars to 5000 (above recommended)
+        if (! ini_set('max_input_vars', '5000')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('5000', $result->description);
+        $this->assertStringContainsString('meets requirements', $result->description);
+    }
+
+    public function testReturnsGoodAtExactlyRecommended(): void
+    {
+        // Set max_input_vars to exactly 3000 (recommended)
+        if (! ini_set('max_input_vars', '3000')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('meets requirements', $result->description);
+    }
+
+    public function testReturnsWarningAtExactlyMinimum(): void
+    {
+        // Set max_input_vars to exactly 1000 (minimum)
+        if (! ini_set('max_input_vars', '1000')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // 1000 is at minimum but below recommended, so Warning
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testBoundaryJustBelowMinimum(): void
+    {
+        // 999 is just below 1000 minimum
+        if (! ini_set('max_input_vars', '999')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testBoundaryJustBelowRecommended(): void
+    {
+        // 2999 is just below 3000 recommended
+        if (! ini_set('max_input_vars', '2999')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testVeryLowValue(): void
+    {
+        // 100 is very low
+        if (! ini_set('max_input_vars', '100')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testVeryHighValue(): void
+    {
+        // 10000 is very high
+        if (! ini_set('max_input_vars', '10000')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testResultTitleIsNotEmpty(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->title);
+    }
+
+    public function testMultipleRunsReturnConsistentResults(): void
+    {
+        $result1 = $this->check->run();
+        $result2 = $this->check->run();
+
+        $this->assertSame($result1->healthStatus, $result2->healthStatus);
+        $this->assertSame($result1->description, $result2->description);
+    }
+
+    public function testCriticalMessageMentionsDataLoss(): void
+    {
+        if (! ini_set('max_input_vars', '500')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('lose data', $result->description);
+    }
+
+    public function testWarningMessageMentionsIssues(): void
+    {
+        if (! ini_set('max_input_vars', '1500')) {
+            $this->markTestSkipped('Cannot modify max_input_vars in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('issues', $result->description);
     }
 }

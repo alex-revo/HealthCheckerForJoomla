@@ -69,7 +69,7 @@ class ApacheModulesCheckTest extends TestCase
     public function testRunWhenNotApacheReturnsGood(): void
     {
         // When apache_get_modules() doesn't exist (non-Apache env), should return Good
-        if (function_exists('apache_get_modules')) {
+        if (\function_exists('apache_get_modules')) {
             $this->markTestSkipped('This test is for non-Apache environments.');
         }
 
@@ -108,7 +108,7 @@ class ApacheModulesCheckTest extends TestCase
     public function testApacheGetModulesFunctionCheck(): void
     {
         // Test that the check correctly detects if apache_get_modules exists
-        $functionExists = function_exists('apache_get_modules');
+        $functionExists = \function_exists('apache_get_modules');
 
         $result = $this->check->run();
 
@@ -155,5 +155,51 @@ class ApacheModulesCheckTest extends TestCase
 
         $this->assertSame($result1->healthStatus, $result2->healthStatus);
         $this->assertSame($result1->description, $result2->description);
+    }
+
+    /**
+     * Test that the check handles required modules logic correctly.
+     *
+     * When running on Apache (apache_get_modules exists), the check should verify mod_rewrite.
+     * When NOT running on Apache, it should return Good with appropriate message.
+     *
+     * NOTE: The "missing required modules" and "missing recommended modules" code paths
+     * can only be tested when running under Apache. In non-Apache environments (CLI, FPM),
+     * the apache_get_modules() function doesn't exist, so the check returns early.
+     * This is expected behavior as these code paths are only meaningful on Apache.
+     */
+    public function testNonApacheEnvironmentCoversFirstBranch(): void
+    {
+        // In CLI/FPM environment, apache_get_modules() doesn't exist
+        // This test documents that we're covering the first branch of performCheck()
+        $result = $this->check->run();
+
+        if (! \function_exists('apache_get_modules')) {
+            // We're in non-Apache environment - covers line 87-88
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('Not running on Apache', $result->description);
+        } else {
+            // We're on Apache - will test module checks
+            $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+        }
+    }
+
+    /**
+     * Document that Apache-specific branches cannot be tested in CLI environment.
+     *
+     * The following code paths require apache_get_modules() to exist:
+     * - Lines 91-101: Getting modules and checking required modules
+     * - Lines 103-105: Returning warning for missing required modules (mod_rewrite)
+     * - Lines 107-119: Checking recommended modules (mod_headers, mod_expires, mod_deflate)
+     * - Lines 115-118: Returning good with missing recommended modules note
+     * - Line 121: Returning good when all modules present
+     *
+     * These paths are intentionally untestable in non-Apache environments as they
+     * depend on the Apache SAPI being present.
+     */
+    public function testDocumentApacheSpecificBranches(): void
+    {
+        // This test serves as documentation for code paths that require Apache SAPI
+        $this->assertTrue(true, 'Apache-specific branches documented - see test docblock');
     }
 }

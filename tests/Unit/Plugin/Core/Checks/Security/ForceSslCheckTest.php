@@ -82,12 +82,34 @@ class ForceSslCheckTest extends TestCase
     public function testRunWithForceSslDisabledAndNoHttpsReturnsCritical(): void
     {
         $this->app->set('force_ssl', 0);
-        // Uri::getInstance()->isSsl() will return false by default
+        // Uri::getInstance()->isSsl() returns false by default in stubs
 
         $result = $this->check->run();
 
         $this->assertSame(HealthStatus::Critical, $result->healthStatus);
         $this->assertStringContainsString('SSL', $result->description);
+    }
+
+    public function testRunWithForceSslNotSetAndNoHttpsReturnsCritical(): void
+    {
+        // Don't set force_ssl, default is -1 (not set in Joomla 5)
+        // Uri::getInstance()->isSsl() returns false by default
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('disabled', strtolower($result->description));
+    }
+
+    public function testRunWithForceSslMinusOneAndNoHttpsReturnsCritical(): void
+    {
+        $this->app->set('force_ssl', -1);
+        // Uri::getInstance()->isSsl() returns false by default
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('Enable SSL', $result->description);
     }
 
     public function testRunReturnsValidStatus(): void
@@ -98,5 +120,95 @@ class ForceSslCheckTest extends TestCase
             $result->healthStatus,
             [HealthStatus::Good, HealthStatus::Warning, HealthStatus::Critical],
         );
+    }
+
+    public function testRunResultContainsSlug(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('security.force_ssl', $result->slug);
+    }
+
+    public function testRunResultContainsTitle(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->title);
+    }
+
+    public function testRunResultHasProvider(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('core', $result->provider);
+    }
+
+    public function testRunResultHasCategory(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('security', $result->category);
+    }
+
+    public function testRunWithForceSslUnexpectedValueReturnsGood(): void
+    {
+        // Test fallback case for unexpected values (e.g., 3 or higher)
+        $this->app->set('force_ssl', 99);
+
+        $result = $this->check->run();
+
+        // Should hit the fallback case
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('appears correct', $result->description);
+    }
+
+    public function testRunWithForceSslStringValueZeroReturnsCritical(): void
+    {
+        // Test that string '0' is cast to int correctly
+        $this->app->set('force_ssl', '0');
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testRunWithForceSslStringValueOneReturnsWarning(): void
+    {
+        // Test that string '1' is cast to int correctly
+        $this->app->set('force_ssl', '1');
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testRunWithForceSslStringValueTwoReturnsGood(): void
+    {
+        // Test that string '2' is cast to int correctly
+        $this->app->set('force_ssl', '2');
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testCriticalDescriptionMentionsSecurity(): void
+    {
+        $this->app->set('force_ssl', 0);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('security', strtolower($result->description));
+    }
+
+    public function testWarningForAdminOnlyMentionsOption2(): void
+    {
+        $this->app->set('force_ssl', 1);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('option 2', $result->description);
     }
 }

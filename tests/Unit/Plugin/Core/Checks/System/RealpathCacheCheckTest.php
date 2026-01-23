@@ -20,9 +20,22 @@ class RealpathCacheCheckTest extends TestCase
 {
     private RealpathCacheCheck $check;
 
+    private string $originalRealpathCacheSize;
+
+    private string $originalRealpathCacheTtl;
+
     protected function setUp(): void
     {
         $this->check = new RealpathCacheCheck();
+        $this->originalRealpathCacheSize = ini_get('realpath_cache_size');
+        $this->originalRealpathCacheTtl = ini_get('realpath_cache_ttl');
+    }
+
+    protected function tearDown(): void
+    {
+        // Restore original values
+        ini_set('realpath_cache_size', $this->originalRealpathCacheSize);
+        ini_set('realpath_cache_ttl', $this->originalRealpathCacheTtl);
     }
 
     public function testGetSlugReturnsCorrectValue(): void
@@ -211,5 +224,198 @@ class RealpathCacheCheckTest extends TestCase
         // Both should be available
         $this->assertIsInt($currentUsage);
         $this->assertNotFalse($cacheSize);
+    }
+
+    public function testReturnsWarningWhenCacheSizeBelowRecommended(): void
+    {
+        // Set realpath_cache_size to 2M (below 4M recommended)
+        if (! ini_set('realpath_cache_size', '2M')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('2M', $result->description);
+        $this->assertStringContainsString('4M', $result->description);
+        $this->assertStringContainsString('below', $result->description);
+    }
+
+    public function testReturnsGoodWhenCacheSizeMeetsRecommended(): void
+    {
+        // Set realpath_cache_size to 4M (recommended)
+        if (! ini_set('realpath_cache_size', '4M')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // If usage is not > 90%, should be Good
+        // Note: In test environment usage is typically low
+        if ($result->healthStatus === HealthStatus::Good) {
+            $this->assertStringContainsString('TTL', $result->description);
+        }
+    }
+
+    public function testReturnsGoodWhenCacheSizeAboveRecommended(): void
+    {
+        // Set realpath_cache_size to 8M (above recommended)
+        if (! ini_set('realpath_cache_size', '8M')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Should be Good if usage is not > 90%
+        if ($result->healthStatus === HealthStatus::Good) {
+            $this->assertStringContainsString('TTL', $result->description);
+        }
+    }
+
+    public function testDescriptionIncludesConfiguredSize(): void
+    {
+        // Set a specific cache size
+        if (! ini_set('realpath_cache_size', '8M')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Description should include the configured size
+        $this->assertStringContainsString('8M', $result->description);
+    }
+
+    public function testConvertToBytesWithEmptyValue(): void
+    {
+        // Test with 0 value
+        if (! ini_set('realpath_cache_size', '0')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Should be Warning (below recommended)
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testConvertToBytesWithKilobytesSuffix(): void
+    {
+        // Set realpath_cache_size using K suffix
+        // 4096K = 4M (recommended)
+        if (! ini_set('realpath_cache_size', '4096K')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Should be Good if usage is not > 90%
+        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+    }
+
+    public function testConvertToBytesWithLowercaseSuffix(): void
+    {
+        // Set realpath_cache_size using lowercase suffix
+        if (! ini_set('realpath_cache_size', '4m')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Should be Good if usage is not > 90%
+        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+    }
+
+    public function testConvertToBytesWithPlainBytes(): void
+    {
+        // Set realpath_cache_size using plain bytes
+        // 4194304 = 4M (recommended)
+        if (! ini_set('realpath_cache_size', '4194304')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Should be Good if usage is not > 90%
+        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+    }
+
+    public function testVerySmallCacheSize(): void
+    {
+        // Set to very small value
+        if (! ini_set('realpath_cache_size', '16K')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Should be Warning (below 4M recommended)
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testVeryLargeCacheSize(): void
+    {
+        // Set to very large value
+        if (! ini_set('realpath_cache_size', '64M')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Should be Good (above recommended, usage will be low)
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testBoundaryAtExactlyRecommended(): void
+    {
+        // Set to exactly 4M
+        if (! ini_set('realpath_cache_size', '4M')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Should be Good (usage likely under 90% in test environment)
+        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+    }
+
+    public function testBoundaryJustBelowRecommended(): void
+    {
+        // Set to just below 4M
+        if (! ini_set('realpath_cache_size', '3M')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Should be Warning (below 4M recommended)
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testUsagePercentageCalculation(): void
+    {
+        // Set a known cache size and verify percentage is calculated
+        if (! ini_set('realpath_cache_size', '8M')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        // Description should include percentage
+        $this->assertStringContainsString('%', $result->description);
+    }
+
+    public function testTtlIncludedInDescription(): void
+    {
+        // Set a good cache size to get Good status
+        if (! ini_set('realpath_cache_size', '8M')) {
+            $this->markTestSkipped('Cannot modify realpath_cache_size in this environment.');
+        }
+
+        $result = $this->check->run();
+
+        if ($result->healthStatus === HealthStatus::Good) {
+            // Good result should include TTL
+            $this->assertStringContainsString('TTL', $result->description);
+        }
     }
 }

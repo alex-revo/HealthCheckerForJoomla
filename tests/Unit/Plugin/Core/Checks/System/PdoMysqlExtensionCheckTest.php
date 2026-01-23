@@ -74,4 +74,60 @@ class PdoMysqlExtensionCheckTest extends TestCase
         $this->assertStringContainsString('PDO MySQL', $result->description);
         $this->assertStringContainsString('not loaded', $result->description);
     }
+
+    public function testRunReturnsHealthCheckResult(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('system.pdo_mysql_extension', $result->slug);
+        $this->assertSame('system', $result->category);
+        $this->assertSame('core', $result->provider);
+    }
+
+    public function testResultTitleIsNotEmpty(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->title);
+    }
+
+    public function testResultHasCorrectStructure(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('system.pdo_mysql_extension', $result->slug);
+        $this->assertSame('system', $result->category);
+        $this->assertSame('core', $result->provider);
+        $this->assertIsString($result->description);
+        $this->assertInstanceOf(HealthStatus::class, $result->healthStatus);
+    }
+
+    public function testCheckNeverReturnsWarning(): void
+    {
+        // PDO MySQL check returns Critical or Good, never Warning per documentation
+        $result = $this->check->run();
+
+        $this->assertNotSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testMultipleRunsReturnConsistentResults(): void
+    {
+        $result1 = $this->check->run();
+        $result2 = $this->check->run();
+
+        $this->assertSame($result1->healthStatus, $result2->healthStatus);
+        $this->assertSame($result1->description, $result2->description);
+    }
+
+    public function testRunReturnsValidStatusBasedOnExtensionAvailability(): void
+    {
+        $result = $this->check->run();
+
+        // Based on whether pdo_mysql extension is loaded
+        if (extension_loaded('pdo_mysql')) {
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        } else {
+            $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        }
+    }
 }

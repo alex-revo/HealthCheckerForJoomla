@@ -10,11 +10,15 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Component\Controller;
 
+use HealthChecker\Tests\Utilities\MockHealthCheckerComponent;
+use HealthChecker\Tests\Utilities\MockHealthCheckRunner;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\User\User;
 use Joomla\Input\Input;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Component\Administrator\Controller\AjaxController;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -44,6 +48,30 @@ class AjaxControllerTest extends TestCase
         // Reset static state after each test
         Session::setTokenValid(true);
         Factory::setApplication(null);
+    }
+
+    /**
+     * Helper to set up an authorized user for testing
+     */
+    private function setUpAuthorizedUser(): User
+    {
+        $user = new User(1);
+        $user->setAuthorisation('core.manage', 'com_healthchecker', true);
+        $this->app->setIdentity($user);
+
+        return $user;
+    }
+
+    /**
+     * Helper to create a mock component with a mock runner
+     *
+     * @param MockHealthCheckRunner $runner The configured mock runner
+     */
+    private function setUpMockComponent(MockHealthCheckRunner $runner): void
+    {
+        $component = new MockHealthCheckerComponent();
+        $component->setHealthCheckRunner($runner);
+        $this->app->setComponent('com_healthchecker', $component);
     }
 
     public function testAjaxControllerExtendsBaseController(): void
@@ -458,5 +486,374 @@ class AjaxControllerTest extends TestCase
         ob_end_clean();
 
         $this->assertTrue($this->app->isClosed());
+    }
+
+    // =========================================================================
+    // SUCCESS PATH TESTS - metadata()
+    // =========================================================================
+
+    public function testMetadataReturnsSuccessfulResponseForAuthorizedUser(): void
+    {
+        $this->setUpAuthorizedUser();
+
+        $runner = new MockHealthCheckRunner();
+        $runner->setMetadata([
+            'categories' => [[
+                'slug' => 'system',
+                'label' => 'System',
+            ]],
+            'providers' => [[
+                'slug' => 'core',
+                'name' => 'Core',
+            ]],
+            'checks' => [[
+                'slug' => 'core.php_version',
+                'category' => 'system',
+                'title' => 'PHP Version',
+            ]],
+        ]);
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->metadata();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testMetadataHandlesExceptionGracefully(): void
+    {
+        $this->setUpAuthorizedUser();
+
+        $runner = new MockHealthCheckRunner();
+        $runner->throwExceptionOn('getMetadata', new \RuntimeException('Test error'));
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->metadata();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    // =========================================================================
+    // SUCCESS PATH TESTS - category()
+    // =========================================================================
+
+    public function testCategoryReturnsSuccessfulResponseForAuthorizedUser(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'category' => 'system',
+        ]));
+
+        $runner = new MockHealthCheckRunner();
+        $runner->setCategoryResults([
+            'core.php_version' => [
+                'status' => 'good',
+                'title' => 'PHP Version',
+                'description' => 'PHP version is good',
+                'slug' => 'core.php_version',
+                'category' => 'system',
+                'provider' => 'core',
+            ],
+        ]);
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->category();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testCategoryHandlesExceptionGracefully(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'category' => 'system',
+        ]));
+
+        $runner = new MockHealthCheckRunner();
+        $runner->throwExceptionOn('runCategory', new \RuntimeException('Test error'));
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->category();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testCategoryRejectsZeroAsCategory(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'category' => '0',
+        ]));
+
+        ob_start();
+        $this->controller->category();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+    }
+
+    // =========================================================================
+    // SUCCESS PATH TESTS - check()
+    // =========================================================================
+
+    public function testCheckReturnsSuccessfulResponseForAuthorizedUser(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'slug' => 'core.php_version',
+        ]));
+
+        $result = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'PHP Version',
+            description: 'PHP version is good',
+            slug: 'core.php_version',
+            category: 'system',
+            provider: 'core',
+        );
+
+        $runner = new MockHealthCheckRunner();
+        $runner->setSingleCheckResult($result);
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->check();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testCheckReturnsErrorForNonExistentSlug(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'slug' => 'nonexistent.check',
+        ]));
+
+        $runner = new MockHealthCheckRunner();
+        $runner->setSingleCheckResult(null);
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->check();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testCheckHandlesExceptionGracefully(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'slug' => 'core.php_version',
+        ]));
+
+        $runner = new MockHealthCheckRunner();
+        $runner->throwExceptionOn('runSingleCheck', new \RuntimeException('Test error'));
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->check();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testCheckRejectsZeroAsSlug(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'slug' => '0',
+        ]));
+
+        ob_start();
+        $this->controller->check();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+    }
+
+    // =========================================================================
+    // SUCCESS PATH TESTS - stats()
+    // =========================================================================
+
+    public function testStatsReturnsSuccessfulResponseWithoutCache(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'cache' => 0,
+        ]));
+
+        $runner = new MockHealthCheckRunner();
+        $runner->setCounts(1, 2, 10);
+        $runner->setLastRun(new \DateTimeImmutable('2026-01-23T10:00:00+00:00'));
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->stats();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testStatsReturnsSuccessfulResponseWithCache(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'cache' => 1,
+            'cache_ttl' => 900,
+        ]));
+
+        $runner = new MockHealthCheckRunner();
+        $runner->setStatsWithCache([
+            'critical' => 0,
+            'warning' => 3,
+            'good' => 15,
+            'total' => 18,
+            'lastRun' => '2026-01-23T10:00:00+00:00',
+        ]);
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->stats();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testStatsHandlesZeroCacheTtl(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([
+            'cache' => 1,
+            'cache_ttl' => 0,
+        ]));
+
+        $runner = new MockHealthCheckRunner();
+        $runner->setCounts(0, 0, 5);
+        $runner->setLastRun(null);
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->stats();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testStatsHandlesExceptionGracefully(): void
+    {
+        $this->setUpAuthorizedUser();
+        $this->app->setInput(new Input([]));
+
+        $runner = new MockHealthCheckRunner();
+        $runner->throwExceptionOn('run', new \RuntimeException('Test error'));
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->stats();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    // =========================================================================
+    // SUCCESS PATH TESTS - clearCache()
+    // =========================================================================
+
+    public function testClearCacheReturnsSuccessfulResponse(): void
+    {
+        $this->setUpAuthorizedUser();
+
+        $runner = new MockHealthCheckRunner();
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->clearCache();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testClearCacheHandlesExceptionGracefully(): void
+    {
+        $this->setUpAuthorizedUser();
+
+        $runner = new MockHealthCheckRunner();
+        $runner->throwExceptionOn('clearCache', new \RuntimeException('Test error'));
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->clearCache();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    // =========================================================================
+    // SUCCESS PATH TESTS - run()
+    // =========================================================================
+
+    public function testRunReturnsSuccessfulResponse(): void
+    {
+        $this->setUpAuthorizedUser();
+
+        $runner = new MockHealthCheckRunner();
+        $runner->setToArrayResult([
+            'lastRun' => '2026-01-23T10:00:00+00:00',
+            'summary' => [
+                'critical' => 0,
+                'warning' => 2,
+                'good' => 10,
+                'total' => 12,
+            ],
+            'categories' => [],
+            'providers' => [],
+            'results' => [],
+        ]);
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->run();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
+    }
+
+    public function testRunHandlesExceptionGracefully(): void
+    {
+        $this->setUpAuthorizedUser();
+
+        $runner = new MockHealthCheckRunner();
+        $runner->throwExceptionOn('run', new \RuntimeException('Test error'));
+        $this->setUpMockComponent($runner);
+
+        ob_start();
+        $this->controller->run();
+        ob_end_clean();
+
+        $this->assertTrue($this->app->isClosed());
+        $this->assertSame('application/json', $this->app->getHeaders()['Content-Type']);
     }
 }

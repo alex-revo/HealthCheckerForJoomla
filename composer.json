@@ -42,10 +42,10 @@
   "scripts": {
     "test": "phpunit",
     "test:coverage": "phpunit --coverage-html coverage/",
-    "ecs": "ecs check --ansi",
-    "ecs:fix": "ecs check --fix --ansi",
-    "rector": "rector process --dry-run --ansi",
-    "rector:fix": "rector process --ansi",
+    "ecs": "ecs check --ansi --clear-cache",
+    "ecs:fix": "ecs check --fix --ansi --clear-cache",
+    "rector": "rector process --dry-run --ansi --clear-cache",
+    "rector:fix": "rector process --ansi --clear-cache",
     "phpstan": "phpstan analyse --ansi --memory-limit=512M",
     "check": [
       "@ecs",
