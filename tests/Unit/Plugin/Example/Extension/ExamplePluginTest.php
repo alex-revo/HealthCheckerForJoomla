@@ -165,7 +165,10 @@ class ExamplePluginTest extends TestCase
         $plugin->onCollectProviders($event);
 
         $providers = $event->getProviders();
-        $this->assertSame('https://github.com/mySitesGuru/health-checker-for-joomla', $providers[0]->url);
+        $this->assertSame(
+            'https://github.com/mySites-guru/HealthCheckerForJoomla/tree/main/healthchecker/plugins/example',
+            $providers[0]->url,
+        );
     }
 
     public function testOnCollectProvidersRegistersCorrectIcon(): void

@@ -22,7 +22,7 @@ use MySitesGuru\HealthChecker\Component\Administrator\Provider\ProviderMetadata;
 use MySitesGuru\HealthChecker\Plugin\Example\Checks\CustomConfigCheck;
 use MySitesGuru\HealthChecker\Plugin\Example\Checks\ThirdPartyServiceCheck;
 
-\defined('_JEXEC') || die;
+\defined('_JEXEC') || die();
 
 /**
  * Example Health Checker Plugin
@@ -97,9 +97,12 @@ final class ExamplePlugin extends CMSPlugin implements SubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            HealthCheckerEvents::COLLECT_CATEGORIES->value => HealthCheckerEvents::COLLECT_CATEGORIES->getHandlerMethod(),
-            HealthCheckerEvents::COLLECT_CHECKS->value => HealthCheckerEvents::COLLECT_CHECKS->getHandlerMethod(),
-            HealthCheckerEvents::COLLECT_PROVIDERS->value => HealthCheckerEvents::COLLECT_PROVIDERS->getHandlerMethod(),
+            HealthCheckerEvents::COLLECT_CATEGORIES
+                ->value => HealthCheckerEvents::COLLECT_CATEGORIES->getHandlerMethod(),
+            HealthCheckerEvents::COLLECT_CHECKS
+                ->value => HealthCheckerEvents::COLLECT_CHECKS->getHandlerMethod(),
+            HealthCheckerEvents::COLLECT_PROVIDERS
+                ->value => HealthCheckerEvents::COLLECT_PROVIDERS->getHandlerMethod(),
         ];
     }
 
@@ -130,12 +133,14 @@ final class ExamplePlugin extends CMSPlugin implements SubscriberInterface
     {
         // Example: Register a custom "Third-Party" category
         // This demonstrates creating a new category for grouping plugin-specific checks
-        $collectCategoriesEvent->addResult(new HealthCategory(
-            slug: 'thirdparty',                              // Unique identifier (lowercase)
-            label: 'COM_HEALTHCHECKER_CATEGORY_THIRDPARTY',  // Language key
-            icon: 'fa-plug',                                  // FontAwesome 6 icon
-            sortOrder: 90,                                    // Appears after Content Quality (80)
-        ));
+        $collectCategoriesEvent->addResult(
+            new HealthCategory(
+                slug: 'thirdparty', // Unique identifier (lowercase)
+                label: 'COM_HEALTHCHECKER_CATEGORY_THIRDPARTY', // Language key
+                icon: 'fa-plug', // FontAwesome 6 icon
+                sortOrder: 90, // Appears after Content Quality (80)
+            ),
+        );
     }
 
     /**
@@ -203,13 +208,15 @@ final class ExamplePlugin extends CMSPlugin implements SubscriberInterface
      */
     public function onCollectProviders(CollectProvidersEvent $collectProvidersEvent): void
     {
-        $collectProvidersEvent->addResult(new ProviderMetadata(
-            slug: 'example',                                                         // Must match checks' getProvider()
-            name: 'Example Provider',                                                // Display name
-            description: 'Example health checks demonstrating the SDK',             // Brief description
-            url: 'https://github.com/mySitesGuru/health-checker-for-joomla',        // Link to docs/product
-            icon: 'fa-flask',                                                        // FontAwesome icon
-            version: '1.0.0',                                                        // Plugin version
-        ));
+        $collectProvidersEvent->addResult(
+            new ProviderMetadata(
+                slug: 'example', // Must match checks' getProvider()
+                name: 'Example Provider', // Display name
+                description: 'Example health checks demonstrating the SDK', // Brief description
+                url: 'https://github.com/mySites-guru/HealthCheckerForJoomla/tree/main/healthchecker/plugins/example', // Link to docs/product
+                icon: 'fa-flask', // FontAwesome icon
+                version: '1.0.0', // Plugin version
+            ),
+        );
     }
 }
