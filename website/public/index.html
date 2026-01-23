@@ -1393,1699 +1393,339 @@
 
                     <!-- SYSTEM -->
                     <div class="mb-10">
-                        <div
-                            class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700"
-                        >
+                        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-xl">🖥️</span>
-                            <h3
-                                class="text-lg font-semibold text-joomla-primary flex-1"
-                            >
-                                System &amp; Hosting
-                            </h3>
-                            <span
-                                class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full"
-                                >33 checks</span
-                            >
+                            <h3 class="text-lg font-semibold text-joomla-primary flex-1">System &amp; Hosting</h3>
+                            <span class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">33 checks</span>
                         </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                PHP Configuration
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">PHP Configuration</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/PhpVersionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>PHP Version</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/PhpEolCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>PHP End of Life Status</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/MemoryLimitCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Memory Limit</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/MaxExecutionTimeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Max Execution Time</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/MaxInputTimeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Max Input Time</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/MaxInputVarsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Max Input Variables</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/PostMaxSizeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Post Max Size</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/UploadMaxFilesizeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Upload Max Filesize</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/OutputBufferingCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Output Buffering</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/RealpathCacheCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Realpath Cache Size</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/PhpSapiCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>PHP SAPI Type</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    PHP Version (8.1+ required)
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Memory Limit (256M+ recommended)
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Max Execution Time
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Max Input Time
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Max Input Variables
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Post Max Size
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Upload Max Filesize
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Output Buffering
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Required PHP Extensions
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">PHP Extensions</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/JsonExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>JSON Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/SimpleXmlExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>SimpleXML Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/DomExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>DOM Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/PdoMysqlExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>PDO MySQL Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/GdOrImagickCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>GD or Imagick</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/ZipExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Zip Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/MbstringExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Mbstring Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/IntlExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Intl Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/CurlExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>cURL Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/OpenSslExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>OpenSSL Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/FileinfoExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Fileinfo Extension</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/ExifExtensionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>EXIF Extension</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    JSON Extension
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    SimpleXML Extension
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    DOM Extension
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    PDO MySQL Extension
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    GD or Imagick
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Zip Extension
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Mbstring Extension
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Intl Extension
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    cURL Extension
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    OpenSSL Extension
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Fileinfo Extension
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Server Environment
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Server Environment</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/DiskSpaceCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Disk Space Available</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/TempDirectoryCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Temp Directory Writable</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/ServerTimeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Server Time Sync</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/OpcacheCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>OPcache Status</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/ApacheModulesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Apache Modules</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/LogFileSizeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Log File Size</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/MailFunctionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Mail Function</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/SessionSavePathCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Session Save Path</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/OverdueTasksCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Overdue Scheduled Tasks</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/FailedTasksCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Failed Scheduled Tasks</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Disk Space Available
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Temp Directory Writable
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Server Time Sync
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    PHP SAPI Type
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    OPcache Status
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Realpath Cache Size
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Scheduler
-                            </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Overdue Scheduled Tasks
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Failed Scheduled Tasks
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
                     <!-- DATABASE -->
                     <div class="mb-10">
-                        <div
-                            class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700"
-                        >
+                        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-xl">🗄️</span>
-                            <h3
-                                class="text-lg font-semibold text-joomla-primary flex-1"
-                            >
-                                Database
-                            </h3>
-                            <span
-                                class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full"
-                                >18 checks</span
-                            >
+                            <h3 class="text-lg font-semibold text-joomla-primary flex-1">Database</h3>
+                            <span class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">18 checks</span>
                         </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Connection &amp; Server
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Connection &amp; Server</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/ConnectionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Database Connection</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/ServerVersionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Database Server Version</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/UserPrivilegesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Database User Privileges</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/ConnectionCharsetCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Connection Charset</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Database Connection
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Database Server Version
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Database User Privileges
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Connection Charset
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Table Health
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Table Health</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/TableEngineCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Table Engine Consistency</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/TableCharsetCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Table Charset/Collation</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/TableStatusCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Table Status</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/AutoIncrementCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Auto-increment Headroom</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/OrphanedTablesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Orphaned Tables</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/IndexUsageCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Index Usage</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Table Engine Consistency (InnoDB)
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Table Charset/Collation
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Table Status (no corruption)
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Auto-increment Headroom
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Orphaned Tables Detection
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Database Configuration
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Configuration</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/SqlModeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>SQL Mode Compatibility</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/MaxPacketCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Max Allowed Packet</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/WaitTimeoutCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Wait Timeout</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/TablePrefixCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Table Prefix Set</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/SizeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Database Size</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/SlowQueryCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Slow Query Log</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/BackupAgeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Backup Age</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/TransactionIsolationCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Transaction Isolation</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    SQL Mode Compatibility
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Max Allowed Packet
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Wait Timeout
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Table Prefix Set
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
                     <!-- SECURITY -->
                     <div class="mb-10">
-                        <div
-                            class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700"
-                        >
+                        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-xl">🔒</span>
-                            <h3
-                                class="text-lg font-semibold text-joomla-primary flex-1"
-                            >
-                                Security
-                            </h3>
-                            <span
-                                class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full"
-                                >21 checks</span
-                            >
+                            <h3 class="text-lg font-semibold text-joomla-primary flex-1">Security</h3>
+                            <span class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">21 checks</span>
                         </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Security Headers
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Headers &amp; Files</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/XFrameOptionsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>X-Frame-Options</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ContentSecurityPolicyCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Content-Security-Policy</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/CorsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>CORS Configuration</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/HttpsRedirectCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>HTTPS Redirect</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ConfigurationPhpPermissionsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>configuration.php Permissions</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/HtaccessProtectionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>.htaccess Protection</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    X-Frame-Options
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    X-Content-Type-Options
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    X-XSS-Protection
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Content-Security-Policy
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Referrer-Policy
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Permissions-Policy
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                File System Security
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Joomla Settings</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/DebugModeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Debug Mode Disabled</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ErrorReportingCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Error Reporting Level</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ForceSslCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Force SSL</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/DefaultSecretCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Secret Key Set</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/SessionHandlerCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Session Handler</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/SessionLifetimeCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Session Lifetime</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/TwoFactorAuthCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Two-Factor Auth</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/PasswordPolicyCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Password Policy</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    configuration.php Permissions
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    configuration.php Location
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Writable Directories Audit
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Index.html in Directories
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    .htaccess Present
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Installation Directory Removed
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Backup Files Exposed
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Joomla Security Settings
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Privacy &amp; API</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/AdminUsernameCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Admin Username Check</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/UserActionsLogCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>User Actions Log</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/PrivacyDashboardCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Privacy Dashboard</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ReCaptchaCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>reCAPTCHA/CAPTCHA</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ApiAuthCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>API Authentication</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ActionLogsEnabledCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Action Logs Enabled</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/MailerSecurityCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Mailer Security</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Debug Mode Disabled
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Error Reporting Level
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    FTP Layer Disabled
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Secret Key Set
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Database Password Strength
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Authentication Security
-                            </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Two-Factor Authentication Available
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Password Policy Configured
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Login Rate Limiting
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Remember Me Duration
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Session Handler Configured
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
                     <!-- USERS -->
                     <div class="mb-10">
-                        <div
-                            class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700"
-                        >
+                        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-xl">👥</span>
-                            <h3
-                                class="text-lg font-semibold text-joomla-primary flex-1"
-                            >
-                                Users
-                            </h3>
-                            <span
-                                class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full"
-                                >12 checks</span
-                            >
+                            <h3 class="text-lg font-semibold text-joomla-primary flex-1">Users</h3>
+                            <span class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">12 checks</span>
                         </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Admin User Security
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Admin Security</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/SuperAdminCountCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Super Admin Count</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/AdminEmailCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Admin Email Unique</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/LastLoginCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Last Login</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Super Admin Count (warn if &gt;3)
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Default Username Avoided
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Super Admin Emails Unique
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Super Admin Last Login (90 day warning)
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                User Account Health
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Account Health</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/InactiveUsersCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Inactive Users</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/BlockedUsersCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Blocked Users Count</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/DuplicateEmailsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Duplicate Emails</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/PasswordExpiryCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Password Expiry</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Inactive Admin Accounts (180 days)
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Blocked Users Count
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Unactivated Users
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Duplicate Email Addresses
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                User Configuration
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Configuration</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/UserRegistrationCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Registration Settings</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/DefaultUserGroupCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Default User Group</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/UserGroupsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>User Groups</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/UserFieldsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>User Fields</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/UserNotesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>User Notes</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    User Registration Settings
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    New User Group Assignment
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Guest User Group Configured
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    CAPTCHA on Registration
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Session Lifetime
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Shared Sessions Setting
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
                     <!-- EXTENSIONS -->
                     <div class="mb-10">
-                        <div
-                            class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700"
-                        >
+                        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-xl">🧩</span>
-                            <h3
-                                class="text-lg font-semibold text-joomla-primary flex-1"
-                            >
-                                Extensions
-                            </h3>
-                            <span
-                                class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full"
-                                >13 checks</span
-                            >
+                            <h3 class="text-lg font-semibold text-joomla-primary flex-1">Extensions</h3>
+                            <span class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">13 checks</span>
                         </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Core Updates
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Core &amp; Updates</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/JoomlaCoreVersionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Joomla Core Version</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/UpdateSitesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Update Sites Accessible</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/MissingUpdatesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Extensions with Updates</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/DisabledExtensionsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Disabled Extensions</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/LegacyExtensionsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Legacy Extensions</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/LanguagePacksCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Language Packs</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Joomla Core Version
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Update Server Accessible
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Update Channel (Stable)
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Extension Health
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Plugins</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/PluginOrderCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Plugin Order</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/CachePluginCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Cache Plugin</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/SearchPluginsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Search Plugins</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Extensions with Updates
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Disabled Extensions Present
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Missing Extension Files
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Extension Update Sites Valid
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Unsigned Extensions
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Extension Compatibility
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Modules &amp; Templates</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/ModulePositionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Module Positions</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/UnusedModulesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Unused Modules</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/TemplateCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Template Check</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/OverrideCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Template Overrides</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    PHP Version Compatibility
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Joomla Version Compatibility
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Deprecated API Usage
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Known Vulnerable Extensions
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Plugin Status
-                            </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    System Plugins Order
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Conflicting Plugins
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Orphaned Plugin Files
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Template Overrides
-                            </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Overrides Needing Review
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Outdated Override Files
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
                     <!-- PERFORMANCE -->
                     <div class="mb-10">
-                        <div
-                            class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700"
-                        >
+                        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-xl">⚡</span>
-                            <h3
-                                class="text-lg font-semibold text-joomla-primary flex-1"
-                            >
-                                Performance
-                            </h3>
-                            <span
-                                class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full"
-                                >10 checks</span
-                            >
+                            <h3 class="text-lg font-semibold text-joomla-primary flex-1">Performance</h3>
+                            <span class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">10 checks</span>
                         </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Caching
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Caching</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/SystemCacheCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>System Cache Enabled</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/PageCacheCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Page Cache for Guests</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/DatabaseQueryCacheCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Database Query Cache</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/BrowserCacheCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Browser Cache Headers</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    System Cache Enabled
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Cache Handler Type
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Page Cache for Guests
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Cache Lifetime Setting
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Cache Directory Writable
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Compression &amp; Optimization
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Compression &amp; Optimization</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/GzipCompressionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Gzip Compression</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/ImageOptimizationCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Image Optimization</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/LazyLoadCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Lazy Loading Enabled</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/MediaManagerThumbnailsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Media Manager Thumbnails</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Gzip Compression Enabled
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    CSS/JS Minification
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Image Optimization
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Lazy Loading Enabled
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Joomla Performance Settings
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Search &amp; Redirects</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/SmartSearchIndexCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Smart Search Index</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/RedirectsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Redirect Chains Detection</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Debug Plugin Disabled
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Debug Language Disabled
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    SEF URLs Enabled
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    URL Rewriting Working
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Server Performance
-                            </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    PHP OPcache Configured
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Admin Response Time
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Peak Memory Usage
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
                     <!-- SEO -->
                     <div class="mb-10">
-                        <div
-                            class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700"
-                        >
+                        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-xl">🔍</span>
-                            <h3
-                                class="text-lg font-semibold text-joomla-primary flex-1"
-                            >
-                                SEO
-                            </h3>
-                            <span
-                                class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full"
-                                >12 checks</span
-                            >
+                            <h3 class="text-lg font-semibold text-joomla-primary flex-1">SEO</h3>
+                            <span class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">12 checks</span>
                         </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Meta Information
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Site Configuration</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/SiteMetaDescriptionCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Site Meta Description</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/MetaKeywordsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Meta Keywords</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/RobotsFileCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Robots.txt Configuration</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/SitemapCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Sitemap.xml Present</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Site Meta Description Set
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Default Meta Keywords
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Site Name Configured
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Robots Meta Tag
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                URL Structure
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">URLs &amp; Links</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/SefUrlsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>SEF URLs Enabled</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/CanonicalUrlCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Canonical URLs</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/BrokenLinksCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Broken Links</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/AltTextCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Image Alt Text</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    SEF URLs Enabled
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    URL Rewriting Active
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Canonical URLs Configured
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Sitemap Present (XML)
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Content SEO
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Social &amp; Schema</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/OpenGraphCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Open Graph Tags</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/FacebookOpenGraphCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Facebook Open Graph</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/TwitterCardsCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Twitter Cards</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/StructuredDataCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Structured Data</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Articles Missing Meta Description
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Images Missing Alt Text
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Broken Internal Links
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Duplicate Title Tags
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Social Sharing
-                            </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Open Graph Tags
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Facebook Open Graph
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    X/Twitter Cards
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Structured Data (Schema.org)
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
                     <!-- CONTENT QUALITY -->
                     <div class="mb-10">
-                        <div
-                            class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700"
-                        >
+                        <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-xl">📄</span>
-                            <h3
-                                class="text-lg font-semibold text-joomla-primary flex-1"
-                            >
-                                Content Quality
-                            </h3>
-                            <span
-                                class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full"
-                                >11 checks</span
-                            >
+                            <h3 class="text-lg font-semibold text-joomla-primary flex-1">Content Quality</h3>
+                            <span class="text-xs text-gray-500 bg-white px-3 py-1 rounded-full">11 checks</span>
                         </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Content Health
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Articles</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/DraftArticlesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Draft Articles</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/ScheduledContentCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Scheduled Content</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/ExpiredContentCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Expired Content</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/TrashedContentCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Trashed Content</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Orphaned Articles (not in menu)
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Empty Categories
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Unpublished Draft Articles (stale)
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Articles with Broken Images
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-5">
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Menu &amp; Navigation
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Categories</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/ArchivedContentCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Archived Content</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/EmptyArticlesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Empty Articles</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/UncategorizedContentCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Uncategorized Content</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/CategoryDepthCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Category Depth</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Broken Menu Links
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Orphaned Menu Items
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Menu Items to Unpublished Content
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Duplicate Menu Aliases
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div
-                                class="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wider"
-                            >
-                                Media Management
+                            <div>
+                                <div class="text-xs font-medium text-gray-500 mb-4 uppercase tracking-wider">Organization</div>
+                                <ul class="space-y-2.5">
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/OrphanedArticlesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Orphaned Articles</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/MenuOrphansCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Menu Orphans</a></li>
+                                    <li><a href="https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/UnpublishedCategoryArticlesCheck.php" target="_blank" class="flex items-center gap-2 px-3 py-2.5 text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:border-joomla-primary hover:bg-gray-50 transition-colors"><span class="text-joomla-success font-semibold">✓</span>Unpublished Category Articles</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5"
-                            >
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Unused Media Files
-                                </li>
-                                <li
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-md"
-                                >
-                                    <span
-                                        class="text-joomla-success font-semibold"
-                                        >✓</span
-                                    >
-                                    Missing Media References
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
