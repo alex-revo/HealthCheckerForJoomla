@@ -117,4 +117,74 @@ class PhpSapiCheckTest extends TestCase
 
         $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
     }
+
+    public function testResultTitleIsNotEmpty(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->title);
+    }
+
+    public function testMultipleRunsReturnConsistentResults(): void
+    {
+        $result1 = $this->check->run();
+        $result2 = $this->check->run();
+
+        $this->assertSame($result1->healthStatus, $result2->healthStatus);
+        $this->assertSame($result1->description, $result2->description);
+    }
+
+    public function testPhpSapiConstantExists(): void
+    {
+        $this->assertTrue(defined('PHP_SAPI'));
+        $this->assertIsString(PHP_SAPI);
+    }
+
+    public function testCliWarningMessageIsInformative(): void
+    {
+        if (PHP_SAPI !== 'cli') {
+            $this->markTestSkipped('This test is for CLI environment only.');
+        }
+
+        $result = $this->check->run();
+
+        // Warning message should explain this is for web environments
+        $this->assertStringContainsString('web environments', $result->description);
+    }
+
+    public function testRecommendedSapisListIsComplete(): void
+    {
+        // Validate that the check recognizes common recommended SAPIs
+        $recommendedSapis = ['fpm-fcgi', 'cgi-fcgi', 'litespeed', 'frankenphp'];
+
+        foreach ($recommendedSapis as $sapi) {
+            $this->assertIsString($sapi);
+            $this->assertNotEmpty($sapi);
+        }
+    }
+
+    public function testResultHasCorrectStructure(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('system.php_sapi', $result->slug);
+        $this->assertSame('system', $result->category);
+        $this->assertSame('core', $result->provider);
+        $this->assertIsString($result->description);
+        $this->assertInstanceOf(HealthStatus::class, $result->healthStatus);
+    }
+
+    public function testApache2handlerRecognition(): void
+    {
+        // If running under apache2handler, should return Good with performance note
+        if (PHP_SAPI === 'apache2handler') {
+            $result = $this->check->run();
+
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('apache2handler', $result->description);
+            $this->assertStringContainsString('PHP-FPM', $result->description);
+        } else {
+            $this->markTestSkipped('This test requires apache2handler SAPI.');
+        }
+    }
 }

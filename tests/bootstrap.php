@@ -13,6 +13,25 @@ if (! defined('_JEXEC')) {
     define('_JEXEC', 1);
 }
 
+// Define JPATH constants for tests - use process-isolated temp directories
+if (! defined('JPATH_ROOT')) {
+    define('JPATH_ROOT', sys_get_temp_dir() . '/joomla-healthchecker-tests/' . getmypid());
+}
+if (! defined('JPATH_SITE')) {
+    define('JPATH_SITE', JPATH_ROOT);
+}
+if (! defined('JPATH_ADMINISTRATOR')) {
+    define('JPATH_ADMINISTRATOR', JPATH_ROOT . '/administrator');
+}
+if (! defined('JPATH_BASE')) {
+    define('JPATH_BASE', JPATH_ROOT);
+}
+
+// Create the temp directory structure if it doesn't exist
+if (! is_dir(JPATH_ROOT)) {
+    mkdir(JPATH_ROOT, 0777, true);
+}
+
 // Load Composer autoloader
 require_once __DIR__ . '/../vendor/autoload.php';
 

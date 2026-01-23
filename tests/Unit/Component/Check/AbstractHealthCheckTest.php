@@ -180,6 +180,49 @@ class AbstractHealthCheckTest extends TestCase
         $this->assertSame('test.check', $result->title);
     }
 
+    public function testRequireDatabaseThrowsExceptionWhenNotInjected(): void
+    {
+        $check = $this->createTestCheckWithRequireDatabase();
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('requires database access but no database was injected');
+
+        $check->callRequireDatabase();
+    }
+
+    public function testRequireDatabaseReturnsDatabaseWhenInjected(): void
+    {
+        $check = $this->createTestCheckWithRequireDatabase();
+        $db = $this->createStub(DatabaseInterface::class);
+        $check->setDatabase($db);
+
+        $result = $check->callRequireDatabase();
+
+        $this->assertSame($db, $result);
+    }
+
+    public function testSetHttpClientInjectsHttpClient(): void
+    {
+        $check = $this->createTestCheckWithHttpClient();
+        $http = $this->createStub(\Joomla\CMS\Http\Http::class);
+
+        $check->setHttpClient($http);
+        $result = $check->callGetHttpClient();
+
+        $this->assertSame($http, $result);
+    }
+
+    public function testGetHttpClientReturnsInjectedClient(): void
+    {
+        $check = $this->createTestCheckWithHttpClient();
+        $http = $this->createStub(\Joomla\CMS\Http\Http::class);
+        $check->setHttpClient($http);
+
+        $result = $check->callGetHttpClient();
+
+        $this->assertInstanceOf(\Joomla\CMS\Http\Http::class, $result);
+    }
+
     /**
      * Create a test check instance with exposed protected methods
      */
@@ -215,6 +258,62 @@ class AbstractHealthCheckTest extends TestCase
             public function exposeGood(string $description): HealthCheckResult
             {
                 return $this->good($description);
+            }
+        };
+    }
+
+    /**
+     * Create a test check with exposed requireDatabase method
+     */
+    private function createTestCheckWithRequireDatabase(): object
+    {
+        return new class extends AbstractHealthCheck {
+            public function getSlug(): string
+            {
+                return 'test.require_database';
+            }
+
+            public function getCategory(): string
+            {
+                return 'system';
+            }
+
+            protected function performCheck(): HealthCheckResult
+            {
+                return $this->good('OK');
+            }
+
+            public function callRequireDatabase(): DatabaseInterface
+            {
+                return $this->requireDatabase();
+            }
+        };
+    }
+
+    /**
+     * Create a test check with exposed getHttpClient method
+     */
+    private function createTestCheckWithHttpClient(): object
+    {
+        return new class extends AbstractHealthCheck {
+            public function getSlug(): string
+            {
+                return 'test.http_client';
+            }
+
+            public function getCategory(): string
+            {
+                return 'system';
+            }
+
+            protected function performCheck(): HealthCheckResult
+            {
+                return $this->good('OK');
+            }
+
+            public function callGetHttpClient(): \Joomla\CMS\Http\Http
+            {
+                return $this->getHttpClient();
             }
         };
     }

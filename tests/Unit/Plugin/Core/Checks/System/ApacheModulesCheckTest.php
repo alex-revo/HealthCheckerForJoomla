@@ -89,4 +89,71 @@ class ApacheModulesCheckTest extends TestCase
             str_contains(strtolower($result->description), 'module'),
         );
     }
+
+    public function testCheckNeverReturnsCritical(): void
+    {
+        // This check should never return Critical status
+        $result = $this->check->run();
+
+        $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testResultTitleIsNotEmpty(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->title);
+    }
+
+    public function testApacheGetModulesFunctionCheck(): void
+    {
+        // Test that the check correctly detects if apache_get_modules exists
+        $functionExists = function_exists('apache_get_modules');
+
+        $result = $this->check->run();
+
+        // If function doesn't exist, must return Good with "Not running on Apache"
+        if (! $functionExists) {
+            $this->assertSame(HealthStatus::Good, $result->healthStatus);
+            $this->assertStringContainsString('Not running on Apache', $result->description);
+        } else {
+            // If function exists, we're on Apache - check should test modules
+            $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+        }
+    }
+
+    public function testResultHasCorrectStructure(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('system.apache_modules', $result->slug);
+        $this->assertSame('system', $result->category);
+        $this->assertSame('core', $result->provider);
+        $this->assertIsString($result->description);
+        $this->assertInstanceOf(HealthStatus::class, $result->healthStatus);
+    }
+
+    public function testDescriptionMentionsModulesOrApache(): void
+    {
+        $result = $this->check->run();
+
+        $descLower = strtolower($result->description);
+
+        // Description should mention Apache, modules, or running status
+        $this->assertTrue(
+            str_contains($descLower, 'apache') ||
+            str_contains($descLower, 'module') ||
+            str_contains($descLower, 'running'),
+            'Description should contain relevant context about Apache modules',
+        );
+    }
+
+    public function testMultipleRunsReturnConsistentResults(): void
+    {
+        $result1 = $this->check->run();
+        $result2 = $this->check->run();
+
+        $this->assertSame($result1->healthStatus, $result2->healthStatus);
+        $this->assertSame($result1->description, $result2->description);
+    }
 }

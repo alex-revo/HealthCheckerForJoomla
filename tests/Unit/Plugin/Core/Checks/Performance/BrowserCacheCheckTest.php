@@ -20,9 +20,31 @@ class BrowserCacheCheckTest extends TestCase
 {
     private BrowserCacheCheck $check;
 
+    private string $htaccessPath;
+
     protected function setUp(): void
     {
         $this->check = new BrowserCacheCheck();
+
+        // Create temp directory if it doesn't exist
+        if (! is_dir(JPATH_ROOT)) {
+            mkdir(JPATH_ROOT, 0777, true);
+        }
+
+        $this->htaccessPath = JPATH_ROOT . '/.htaccess';
+
+        // Remove any existing .htaccess
+        if (file_exists($this->htaccessPath)) {
+            unlink($this->htaccessPath);
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        // Clean up .htaccess after each test
+        if (file_exists($this->htaccessPath)) {
+            unlink($this->htaccessPath);
+        }
     }
 
     public function testGetSlugReturnsCorrectValue(): void
@@ -48,12 +70,225 @@ class BrowserCacheCheckTest extends TestCase
         $this->assertNotEmpty($title);
     }
 
-    public function testRunReturnsValidStatus(): void
+    public function testRunReturnsWarningWhenHtaccessNotFound(): void
     {
-        // The actual check depends on the .htaccess file existence and content
-        // but we can verify it returns a valid status
+        // No .htaccess file exists
         $result = $this->check->run();
 
-        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('.htaccess file not found', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenHtaccessIsEmpty(): void
+    {
+        file_put_contents($this->htaccessPath, '');
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('.htaccess file is empty', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenExpiresByTypeFound(): void
+    {
+        $htaccessContent = <<<'HTACCESS'
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+</IfModule>
+HTACCESS;
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Expires headers', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenExpiresDefaultFound(): void
+    {
+        $htaccessContent = <<<'HTACCESS'
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+</IfModule>
+HTACCESS;
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Expires headers', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenCacheControlFound(): void
+    {
+        $htaccessContent = <<<'HTACCESS'
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif|ico)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+</IfModule>
+HTACCESS;
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Cache-Control headers', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenBothExpiresAndCacheControlFound(): void
+    {
+        $htaccessContent = <<<'HTACCESS'
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+</IfModule>
+<IfModule mod_headers.c>
+    Header set Cache-Control "max-age=31536000, public"
+</IfModule>
+HTACCESS;
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Expires headers', $result->description);
+        $this->assertStringContainsString('Cache-Control headers', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenOnlyModExpiresReferenced(): void
+    {
+        $htaccessContent = <<<'HTACCESS'
+<IfModule mod_expires.c>
+    # Browser caching will be configured later
+</IfModule>
+HTACCESS;
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('mod_expires module reference found', $result->description);
+        $this->assertStringContainsString('no ExpiresByType rules detected', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenNoCachingRulesFound(): void
+    {
+        $htaccessContent = <<<'HTACCESS'
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [L]
+HTACCESS;
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('No browser caching rules detected', $result->description);
+    }
+
+    public function testRunIsCaseInsensitiveForDirectives(): void
+    {
+        // Test lowercase expiresByType
+        $htaccessContent = 'expiresbytype image/jpeg "access plus 1 year"';
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunNeverReturnsCritical(): void
+    {
+        // Even with no caching rules, should only return warning
+        file_put_contents($this->htaccessPath, 'RewriteEngine On');
+
+        $result = $this->check->run();
+
+        $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testRunIsCaseInsensitiveForCacheControl(): void
+    {
+        $htaccessContent = 'header set cache-control "max-age=31536000"';
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunIsCaseInsensitiveForExpiresDefault(): void
+    {
+        $htaccessContent = 'expiresdefault "access plus 1 month"';
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunDescriptionMentionsBothMethodsWhenPresent(): void
+    {
+        $htaccessContent = <<<'HTACCESS'
+ExpiresByType image/jpeg "access plus 1 year"
+Header set Cache-Control "max-age=31536000"
+HTACCESS;
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Expires headers', $result->description);
+        $this->assertStringContainsString('Cache-Control headers', $result->description);
+        $this->assertStringContainsString(' and ', $result->description);
+    }
+
+    public function testRunHandlesHtaccessWithOnlyComments(): void
+    {
+        $htaccessContent = <<<'HTACCESS'
+# This is a comment
+# Another comment
+# No actual directives
+HTACCESS;
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('No browser caching rules', $result->description);
+    }
+
+    public function testRunHandlesHtaccessWithModExpiresAndRules(): void
+    {
+        // If mod_expires is referenced AND has ExpiresByType, should be good
+        $htaccessContent = <<<'HTACCESS'
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+</IfModule>
+HTACCESS;
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunWarningMessageSuggestsAction(): void
+    {
+        $htaccessContent = 'RewriteEngine On';
+        file_put_contents($this->htaccessPath, $htaccessContent);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Consider adding', $result->description);
     }
 }

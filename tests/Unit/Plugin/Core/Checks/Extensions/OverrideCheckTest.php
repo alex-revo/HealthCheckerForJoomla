@@ -173,6 +173,151 @@ class OverrideCheckTest extends TestCase
         $this->assertStringContainsString('templates', strtolower($result->description));
     }
 
+    public function testRunWithSiteTemplateOverridesShowsSiteLabel(): void
+    {
+        $outdatedOverrides = [
+            (object) [
+                'template' => 'cassiopeia',
+                'hash_id' => base64_encode('mod_menu/default.php'),
+                'action' => 'changed',
+                'modified_date' => '2025-01-01 12:00:00',
+                'client_id' => 0, // Site (frontend)
+            ],
+        ];
+        $database = $this->createDatabaseWithOverrides($outdatedOverrides, 10);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('site', strtolower($result->description));
+    }
+
+    public function testRunWithMoreThan10OverridesShowsTruncatedMessage(): void
+    {
+        // Create more than MAX_DETAILS_TO_SHOW (10) overrides
+        $outdatedOverrides = [];
+
+        for ($i = 1; $i <= 15; $i++) {
+            $outdatedOverrides[] = (object) [
+                'template' => 'cassiopeia',
+                'hash_id' => base64_encode("mod_file{$i}/default.php"),
+                'action' => 'changed',
+                'modified_date' => '2025-01-01 12:00:00',
+                'client_id' => 0,
+            ];
+        }
+        $database = $this->createDatabaseWithOverrides($outdatedOverrides, 20);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('15', $result->description);
+        // Should show "and X more" for truncated output
+        $this->assertStringContainsString('and 5 more', $result->description);
+    }
+
+    public function testRunWithInvalidBase64HashIdSkipsEntry(): void
+    {
+        $outdatedOverrides = [
+            (object) [
+                'template' => 'cassiopeia',
+                'hash_id' => 'not-valid-base64!!!',
+                'action' => 'changed',
+                'modified_date' => '2025-01-01 12:00:00',
+                'client_id' => 0,
+            ],
+            (object) [
+                'template' => 'cassiopeia',
+                'hash_id' => base64_encode('valid/path.php'),
+                'action' => 'changed',
+                'modified_date' => '2025-01-01 12:00:00',
+                'client_id' => 0,
+            ],
+        ];
+        $database = $this->createDatabaseWithOverrides($outdatedOverrides, 10);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        // Should still mention 2 overrides but only show 1 valid one in details
+        $this->assertStringContainsString('2 template override', $result->description);
+        $this->assertStringContainsString('valid/path.php', $result->description);
+    }
+
+    public function testRunWithMultipleTemplatesGroupsByTemplate(): void
+    {
+        $outdatedOverrides = [
+            (object) [
+                'template' => 'cassiopeia',
+                'hash_id' => base64_encode('com_content/article/default.php'),
+                'action' => 'changed',
+                'modified_date' => '2025-01-01 12:00:00',
+                'client_id' => 0,
+            ],
+            (object) [
+                'template' => 'cassiopeia',
+                'hash_id' => base64_encode('mod_menu/default.php'),
+                'action' => 'changed',
+                'modified_date' => '2025-01-02 12:00:00',
+                'client_id' => 0,
+            ],
+            (object) [
+                'template' => 'atum',
+                'hash_id' => base64_encode('mod_login/default.php'),
+                'action' => 'changed',
+                'modified_date' => '2025-01-03 12:00:00',
+                'client_id' => 1,
+            ],
+        ];
+        $database = $this->createDatabaseWithOverrides($outdatedOverrides, 10);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('3', $result->description);
+        // Check templates are mentioned
+        $this->assertStringContainsString('cassiopeia', strtolower($result->description));
+        $this->assertStringContainsString('atum', strtolower($result->description));
+    }
+
+    public function testRunWithLeadingSlashInPathRemovesIt(): void
+    {
+        $outdatedOverrides = [
+            (object) [
+                'template' => 'cassiopeia',
+                'hash_id' => base64_encode('/com_content/article/default.php'),
+                'action' => 'changed',
+                'modified_date' => '2025-01-01 12:00:00',
+                'client_id' => 0,
+            ],
+        ];
+        $database = $this->createDatabaseWithOverrides($outdatedOverrides, 10);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        // Should show path without leading slash
+        $this->assertStringContainsString('com_content/article/default.php', $result->description);
+        // Should NOT have double slashes
+        $this->assertStringNotContainsString('//com_content', $result->description);
+    }
+
+    public function testRunWithZeroTotalOverridesReturnsGoodWithZeroCount(): void
+    {
+        $database = $this->createDatabaseWithOverrides([], 0);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('0 template override(s) tracked', $result->description);
+    }
+
     /**
      * Create a mock database without the template_overrides table
      */

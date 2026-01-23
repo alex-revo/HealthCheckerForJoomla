@@ -89,4 +89,41 @@ class OrphanedArticlesCheckTest extends TestCase
         $this->assertSame(HealthStatus::Warning, $result->healthStatus);
         $this->assertStringContainsString('15 published articles', $result->description);
     }
+
+    public function testRunWithExactlyTenOrphanedArticlesReturnsGood(): void
+    {
+        // Boundary test: exactly 10 orphaned articles should return good (>10 triggers warning)
+        $database = MockDatabaseFactory::createWithResult(10);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('10 published articles', $result->description);
+        $this->assertStringContainsString('intentional', $result->description);
+    }
+
+    public function testRunWithElevenOrphanedArticlesReturnsWarning(): void
+    {
+        // Boundary test: 11 orphaned articles should return warning (>10)
+        $database = MockDatabaseFactory::createWithResult(11);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('11 published articles', $result->description);
+    }
+
+    public function testRunReturnsWarningOnDatabaseException(): void
+    {
+        $database = MockDatabaseFactory::createWithException(new \RuntimeException('Database connection failed'));
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Unable to check', $result->description);
+        $this->assertStringContainsString('Database connection failed', $result->description);
+    }
 }

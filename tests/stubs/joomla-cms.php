@@ -623,9 +623,33 @@ class CMSPlugin
 
 class PluginHelper
 {
+    /**
+     * @var array<string, bool>
+     */
+    private static array $enabledPlugins = [];
+
     public static function isEnabled(string $type, ?string $plugin = null): bool
     {
-        return false;
+        $key = $type . ':' . ($plugin ?? '');
+
+        return self::$enabledPlugins[$key] ?? false;
+    }
+
+    /**
+     * Set plugin enabled status for testing
+     */
+    public static function setEnabled(string $type, ?string $plugin, bool $enabled): void
+    {
+        $key = $type . ':' . ($plugin ?? '');
+        self::$enabledPlugins[$key] = $enabled;
+    }
+
+    /**
+     * Reset all plugin enabled statuses for test isolation
+     */
+    public static function resetEnabled(): void
+    {
+        self::$enabledPlugins = [];
     }
 
     public static function importPlugin(string $folder = '', ?string $plugin = null): void {}
@@ -648,9 +672,24 @@ use Joomla\Registry\Registry;
 
 class ComponentHelper
 {
+    /**
+     * @var array<string, Registry>
+     */
+    private static array $params = [];
+
     public static function getParams(string $name): Registry
     {
-        return new Registry();
+        return self::$params[$name] ?? new Registry();
+    }
+
+    public static function setParams(string $name, Registry $params): void
+    {
+        self::$params[$name] = $params;
+    }
+
+    public static function resetParams(): void
+    {
+        self::$params = [];
     }
 }
 
@@ -990,6 +1029,50 @@ namespace Joomla\CMS\Extension;
 interface BootableExtensionInterface
 {
     public function boot(\Psr\Container\ContainerInterface $container): void;
+}
+
+namespace Joomla\CMS\Log;
+
+/**
+ * Joomla Log class stub for PHPStan
+ */
+class Log
+{
+    public const ALL = 30719;
+
+    public const EMERGENCY = 1;
+
+    public const ALERT = 2;
+
+    public const CRITICAL = 4;
+
+    public const ERROR = 8;
+
+    public const WARNING = 16;
+
+    public const NOTICE = 32;
+
+    public const INFO = 64;
+
+    public const DEBUG = 128;
+
+    public static function add(
+        string $message,
+        int $priority = self::INFO,
+        string $category = '',
+        ?string $date = null,
+    ): void {
+        // Stub - does nothing in tests
+    }
+
+    public static function addLogger(
+        array $options,
+        int $priorities = self::ALL,
+        array|string $categories = [],
+        bool $exclude = false,
+    ): void {
+        // Stub - does nothing in tests
+    }
 }
 
 namespace Joomla\CMS\Cache;

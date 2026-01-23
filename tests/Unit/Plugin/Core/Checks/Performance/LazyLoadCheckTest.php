@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\Performance;
 
 use HealthChecker\Tests\Utilities\MockDatabaseFactory;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\QueryInterface;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -26,6 +27,14 @@ class LazyLoadCheckTest extends TestCase
     protected function setUp(): void
     {
         $this->check = new LazyLoadCheck();
+        // Reset plugin helper state for test isolation
+        PluginHelper::resetEnabled();
+    }
+
+    protected function tearDown(): void
+    {
+        // Reset plugin helper state after each test
+        PluginHelper::resetEnabled();
     }
 
     public function testGetSlugReturnsCorrectValue(): void
@@ -61,6 +70,9 @@ class LazyLoadCheckTest extends TestCase
 
     public function testRunWithLazyLoadEnabledReturnsGood(): void
     {
+        // Enable the plugin
+        PluginHelper::setEnabled('content', 'joomla', true);
+
         $params = json_encode([
             'lazy_images' => 1,
         ]);
@@ -69,12 +81,14 @@ class LazyLoadCheckTest extends TestCase
 
         $result = $this->check->run();
 
-        // Plugin enabled check happens via PluginHelper which uses stub
-        $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
     }
 
     public function testRunWithLazyLoadDisabledReturnsWarning(): void
     {
+        // Enable the plugin
+        PluginHelper::setEnabled('content', 'joomla', true);
+
         $params = json_encode([
             'lazy_images' => 0,
         ]);
@@ -88,6 +102,9 @@ class LazyLoadCheckTest extends TestCase
 
     public function testRunWithEmptyParamsReturnsWarning(): void
     {
+        // Enable the plugin
+        PluginHelper::setEnabled('content', 'joomla', true);
+
         $database = MockDatabaseFactory::createWithResult('');
         $this->check->setDatabase($database);
 
@@ -98,6 +115,9 @@ class LazyLoadCheckTest extends TestCase
 
     public function testRunWithInvalidJsonParamsReturnsWarning(): void
     {
+        // Enable the plugin
+        PluginHelper::setEnabled('content', 'joomla', true);
+
         $database = MockDatabaseFactory::createWithResult('invalid-json{');
         $this->check->setDatabase($database);
 
@@ -108,6 +128,9 @@ class LazyLoadCheckTest extends TestCase
 
     public function testRunWithMissingLazyImagesParamReturnsWarning(): void
     {
+        // Enable the plugin
+        PluginHelper::setEnabled('content', 'joomla', true);
+
         $params = json_encode([
             'other_setting' => 1,
         ]);
@@ -124,6 +147,72 @@ class LazyLoadCheckTest extends TestCase
         $result = $this->check->run();
 
         $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testRunWithNullParamsReturnsWarning(): void
+    {
+        // Enable the plugin so we get to the params check
+        PluginHelper::setEnabled('content', 'joomla', true);
+
+        $database = MockDatabaseFactory::createWithResult(null);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Unable to determine', $result->description);
+    }
+
+    public function testRunWithLazyImagesStringValueEnabledReturnsGood(): void
+    {
+        // Enable the plugin
+        PluginHelper::setEnabled('content', 'joomla', true);
+
+        // Test with string '1' instead of integer
+        $params = json_encode([
+            'lazy_images' => '1',
+        ]);
+        $database = $this->createDatabaseWithPluginParams($params);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunWithLazyImagesStringValueDisabledReturnsWarning(): void
+    {
+        // Enable the plugin
+        PluginHelper::setEnabled('content', 'joomla', true);
+
+        // Test with string '0' instead of integer
+        $params = json_encode([
+            'lazy_images' => '0',
+        ]);
+        $database = $this->createDatabaseWithPluginParams($params);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Lazy loading for images is disabled', $result->description);
+    }
+
+    public function testRunDescriptionMentionsLazyLoadingEnabled(): void
+    {
+        // Enable the plugin
+        PluginHelper::setEnabled('content', 'joomla', true);
+
+        $params = json_encode([
+            'lazy_images' => 1,
+        ]);
+        $database = $this->createDatabaseWithPluginParams($params);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('enabled', $result->description);
     }
 
     /**

@@ -132,4 +132,36 @@ class MockHttpFactory
             'Content-Type' => 'application/json',
         ]);
     }
+
+    /**
+     * Create a mock HTTP client that simulates a slow response for HEAD requests
+     *
+     * @param int   $code    HTTP status code
+     * @param float $delaySeconds Simulated delay in seconds
+     * @param array<string, string|array<string>> $headers Response headers
+     */
+    public static function createWithSlowHeadResponse(int $code, float $delaySeconds, array $headers = []): Http
+    {
+        return new class ($code, $delaySeconds, $headers) extends Http {
+            public function __construct(
+                private readonly int $code,
+                private readonly float $delaySeconds,
+                private readonly array $responseHeaders,
+            ) {}
+
+            public function get(string $url, array $headers = [], int|float $timeout = 10): Response
+            {
+                usleep((int) ($this->delaySeconds * 1000000));
+
+                return new Response($this->code, '', $this->responseHeaders);
+            }
+
+            public function head(string $url, array $headers = [], int|float $timeout = 10): Response
+            {
+                usleep((int) ($this->delaySeconds * 1000000));
+
+                return new Response($this->code, '', $this->responseHeaders);
+            }
+        };
+    }
 }

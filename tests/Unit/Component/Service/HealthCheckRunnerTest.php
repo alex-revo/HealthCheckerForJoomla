@@ -262,4 +262,316 @@ class HealthCheckRunnerTest extends TestCase
         $this->assertIsArray($stats);
         $this->assertArrayHasKey('critical', $stats);
     }
+
+    public function testRunWithCacheReturnsCachedResultsOnCacheHit(): void
+    {
+        // Create a cache factory that returns cached data
+        $cachedData = json_encode([
+            'results' => [
+                [
+                    'slug' => 'test.cached_check',
+                    'title' => 'Cached Check',
+                    'category' => 'system',
+                    'provider' => 'test',
+                    'status' => 'good',
+                    'description' => 'This is a cached result',
+                ],
+            ],
+            'lastRun' => '2026-01-15T12:00:00+00:00',
+        ]);
+
+        $cacheFactory = new class ($cachedData) implements \Joomla\CMS\Cache\CacheControllerFactoryInterface {
+            public function __construct(
+                private readonly string $cachedData,
+            ) {}
+
+            public function createCacheController(string $type, array $options = []): mixed
+            {
+                $data = $this->cachedData;
+
+                return new class ($data) {
+                    public function __construct(
+                        private readonly string $data,
+                    ) {}
+
+                    public function get(string $id): mixed
+                    {
+                        return $this->data;
+                    }
+
+                    public function store(string $data, string $id): bool
+                    {
+                        return true;
+                    }
+
+                    public function clean(): bool
+                    {
+                        return true;
+                    }
+                };
+            }
+        };
+
+        $runner = new HealthCheckRunner(
+            $this->dispatcher,
+            $this->categoryRegistry,
+            $this->providerRegistry,
+            $this->database,
+            $cacheFactory,
+        );
+
+        $runner->runWithCache(300);
+
+        // Verify results come from cache
+        $results = $runner->getResults();
+        $this->assertCount(1, $results);
+        $this->assertSame('test.cached_check', $results[0]->slug);
+        $this->assertSame('This is a cached result', $results[0]->description);
+
+        // Verify lastRun comes from cache
+        $lastRun = $runner->getLastRun();
+        $this->assertInstanceOf(\DateTimeImmutable::class, $lastRun);
+        $this->assertSame('2026-01-15', $lastRun->format('Y-m-d'));
+    }
+
+    public function testRunWithCacheRunsChecksOnCacheMiss(): void
+    {
+        // Create a cache factory that returns false (cache miss)
+        $cacheFactory = new class implements \Joomla\CMS\Cache\CacheControllerFactoryInterface {
+            public bool $storeWasCalled = false;
+
+            public function createCacheController(string $type, array $options = []): mixed
+            {
+                $parent = $this;
+
+                return new class ($parent) {
+                    public function __construct(
+                        private object $parent,
+                    ) {}
+
+                    public function get(string $id): mixed
+                    {
+                        return false; // Cache miss
+                    }
+
+                    public function store(string $data, string $id): bool
+                    {
+                        $this->parent->storeWasCalled = true;
+
+                        return true;
+                    }
+
+                    public function clean(): bool
+                    {
+                        return true;
+                    }
+                };
+            }
+        };
+
+        $runner = new HealthCheckRunner(
+            $this->dispatcher,
+            $this->categoryRegistry,
+            $this->providerRegistry,
+            $this->database,
+            $cacheFactory,
+        );
+
+        $runner->runWithCache(300);
+
+        // Verify checks were run (indicated by lastRun being set)
+        $this->assertInstanceOf(\DateTimeImmutable::class, $runner->getLastRun());
+        // Verify store was called to cache the results
+        $this->assertTrue($cacheFactory->storeWasCalled);
+    }
+
+    public function testRunWithCacheHandlesInvalidCacheData(): void
+    {
+        // Create a cache factory that returns invalid JSON
+        $cacheFactory = new class implements \Joomla\CMS\Cache\CacheControllerFactoryInterface {
+            public function createCacheController(string $type, array $options = []): mixed
+            {
+                return new class {
+                    public function get(string $id): mixed
+                    {
+                        return 'invalid json{';
+                    }
+
+                    public function store(string $data, string $id): bool
+                    {
+                        return true;
+                    }
+
+                    public function clean(): bool
+                    {
+                        return true;
+                    }
+                };
+            }
+        };
+
+        $runner = new HealthCheckRunner(
+            $this->dispatcher,
+            $this->categoryRegistry,
+            $this->providerRegistry,
+            $this->database,
+            $cacheFactory,
+        );
+
+        // Should not throw, should fall back to running checks
+        $runner->runWithCache(300);
+
+        $this->assertInstanceOf(\DateTimeImmutable::class, $runner->getLastRun());
+    }
+
+    public function testRunWithCacheHandlesMissingResultsKey(): void
+    {
+        // Create a cache factory that returns JSON without 'results' key
+        $cachedData = json_encode([
+            'lastRun' => '2026-01-15T12:00:00+00:00',
+            // Missing 'results' key
+        ]);
+
+        $cacheFactory = new class ($cachedData) implements \Joomla\CMS\Cache\CacheControllerFactoryInterface {
+            public function __construct(
+                private readonly string $cachedData,
+            ) {}
+
+            public function createCacheController(string $type, array $options = []): mixed
+            {
+                $data = $this->cachedData;
+
+                return new class ($data) {
+                    public function __construct(
+                        private readonly string $data,
+                    ) {}
+
+                    public function get(string $id): mixed
+                    {
+                        return $this->data;
+                    }
+
+                    public function store(string $data, string $id): bool
+                    {
+                        return true;
+                    }
+
+                    public function clean(): bool
+                    {
+                        return true;
+                    }
+                };
+            }
+        };
+
+        $runner = new HealthCheckRunner(
+            $this->dispatcher,
+            $this->categoryRegistry,
+            $this->providerRegistry,
+            $this->database,
+            $cacheFactory,
+        );
+
+        // Should fall back to running checks when cached data is incomplete
+        $runner->runWithCache(300);
+
+        $this->assertInstanceOf(\DateTimeImmutable::class, $runner->getLastRun());
+    }
+
+    public function testGetStatsWithCacheWithPositiveTtlCallsRunWithCache(): void
+    {
+        // Create a cache factory that tracks whether cache methods are called
+        $cacheFactory = new class implements \Joomla\CMS\Cache\CacheControllerFactoryInterface {
+            public bool $getCalled = false;
+
+            public function createCacheController(string $type, array $options = []): mixed
+            {
+                $parent = $this;
+
+                return new class ($parent) {
+                    public function __construct(
+                        private object $parent,
+                    ) {}
+
+                    public function get(string $id): mixed
+                    {
+                        $this->parent->getCalled = true;
+
+                        return false; // Cache miss
+                    }
+
+                    public function store(string $data, string $id): bool
+                    {
+                        return true;
+                    }
+
+                    public function clean(): bool
+                    {
+                        return true;
+                    }
+                };
+            }
+        };
+
+        $runner = new HealthCheckRunner(
+            $this->dispatcher,
+            $this->categoryRegistry,
+            $this->providerRegistry,
+            $this->database,
+            $cacheFactory,
+        );
+
+        $runner->getStatsWithCache(300);
+
+        // Verify cache was checked (indicating runWithCache was called)
+        $this->assertTrue($cacheFactory->getCalled);
+    }
+
+    public function testClearCacheCallsCacheClean(): void
+    {
+        // Create a cache factory that tracks whether clean was called
+        $cacheFactory = new class implements \Joomla\CMS\Cache\CacheControllerFactoryInterface {
+            public bool $cleanCalled = false;
+
+            public function createCacheController(string $type, array $options = []): mixed
+            {
+                $parent = $this;
+
+                return new class ($parent) {
+                    public function __construct(
+                        private object $parent,
+                    ) {}
+
+                    public function get(string $id): mixed
+                    {
+                        return false;
+                    }
+
+                    public function store(string $data, string $id): bool
+                    {
+                        return true;
+                    }
+
+                    public function clean(): bool
+                    {
+                        $this->parent->cleanCalled = true;
+
+                        return true;
+                    }
+                };
+            }
+        };
+
+        $runner = new HealthCheckRunner(
+            $this->dispatcher,
+            $this->categoryRegistry,
+            $this->providerRegistry,
+            $this->database,
+            $cacheFactory,
+        );
+
+        $runner->clearCache();
+
+        $this->assertTrue($cacheFactory->cleanCalled);
+    }
 }

@@ -68,4 +68,142 @@ class UserPrivilegesCheckTest extends TestCase
         $this->assertSame(HealthStatus::Good, $result->healthStatus);
         $this->assertStringContainsString('all required privileges', $result->description);
     }
+
+    public function testRunReturnsGoodWhenAllIndividualPrivilegesGranted(): void
+    {
+        // All 8 required privileges granted individually: SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX
+        $database = MockDatabaseFactory::createWithColumn([
+            "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX ON `test_db`.* TO 'user'@'localhost'",
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('all required privileges', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenPrivilegesSpreadAcrossMultipleGrants(): void
+    {
+        // Privileges split across multiple GRANT statements
+        $database = MockDatabaseFactory::createWithColumn([
+            "GRANT SELECT, INSERT, UPDATE, DELETE ON `test_db`.* TO 'user'@'localhost'",
+            "GRANT CREATE, DROP ON `test_db`.* TO 'user'@'localhost'",
+            "GRANT ALTER, INDEX ON `test_db`.* TO 'user'@'localhost'",
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('all required privileges', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenSomePrivilegesMissing(): void
+    {
+        // Missing CREATE, DROP, ALTER, INDEX privileges
+        $database = MockDatabaseFactory::createWithColumn([
+            "GRANT SELECT, INSERT, UPDATE, DELETE ON `test_db`.* TO 'user'@'localhost'",
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('may be missing privileges', $result->description);
+        $this->assertStringContainsString('CREATE', $result->description);
+        $this->assertStringContainsString('DROP', $result->description);
+        $this->assertStringContainsString('ALTER', $result->description);
+        $this->assertStringContainsString('INDEX', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenOnlySelectGranted(): void
+    {
+        // Only SELECT privilege granted
+        $database = MockDatabaseFactory::createWithColumn(["GRANT SELECT ON `test_db`.* TO 'user'@'localhost'"]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('may be missing privileges', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenExceptionThrown(): void
+    {
+        $database = MockDatabaseFactory::createWithException(new \RuntimeException('Access denied'));
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Unable to check', $result->description);
+        $this->assertStringContainsString('Access denied', $result->description);
+    }
+
+    public function testRunReturnsGoodWithCaseInsensitiveAllPrivileges(): void
+    {
+        // ALL PRIVILEGES in different cases
+        $database = MockDatabaseFactory::createWithColumn([
+            "GRANT all privileges ON `test_db`.* TO 'user'@'localhost'",
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunReturnsGoodWithCaseInsensitivePrivileges(): void
+    {
+        // Individual privileges in lowercase
+        $database = MockDatabaseFactory::createWithColumn([
+            "GRANT select, insert, update, delete, create, drop, alter, index ON `test_db`.* TO 'user'@'localhost'",
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunReturnsWarningWhenOnlyIndexMissing(): void
+    {
+        // Only INDEX privilege is missing
+        $database = MockDatabaseFactory::createWithColumn([
+            "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER ON `test_db`.* TO 'user'@'localhost'",
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('INDEX', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenPrivilegesFromGlobalAndDatabase(): void
+    {
+        // Privileges from global (*.*) and database grants
+        $database = MockDatabaseFactory::createWithColumn([
+            "GRANT SELECT, INSERT ON *.* TO 'user'@'localhost'",
+            "GRANT UPDATE, DELETE, CREATE, DROP, ALTER, INDEX ON `test_db`.* TO 'user'@'localhost'",
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunHandlesEmptyGrantsList(): void
+    {
+        // Empty grants list (somehow no grants returned)
+        $database = MockDatabaseFactory::createWithColumn([]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('may be missing privileges', $result->description);
+    }
 }

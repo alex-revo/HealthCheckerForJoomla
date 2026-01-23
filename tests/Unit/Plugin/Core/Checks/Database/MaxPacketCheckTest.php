@@ -115,4 +115,119 @@ class MaxPacketCheckTest extends TestCase
         $this->assertSame(HealthStatus::Good, $result->healthStatus);
         $this->assertStringContainsString('64 MB', $result->description);
     }
+
+    public function testRunReturnsCriticalWhenPacketZero(): void
+    {
+        // 0 bytes - null/missing value treated as 0
+        $object = (object) [
+            'Value' => 0,
+        ];
+        $database = MockDatabaseFactory::createWithObject($object);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('too small', $result->description);
+    }
+
+    public function testRunReturnsCriticalWhenValueMissing(): void
+    {
+        // Object without Value property (null coalesce to 0)
+        $object = (object) [];
+        $database = MockDatabaseFactory::createWithObject($object);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testRunReturnsCriticalAtExactlyBelowMinimum(): void
+    {
+        // 1 byte below 1MB minimum threshold
+        $object = (object) [
+            'Value' => (1024 * 1024) - 1,
+        ];
+        $database = MockDatabaseFactory::createWithObject($object);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testRunReturnsWarningAtExactlyMinimum(): void
+    {
+        // Exactly 1MB - meets minimum but below recommended
+        $object = (object) [
+            'Value' => 1024 * 1024,
+        ];
+        $database = MockDatabaseFactory::createWithObject($object);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('1 MB', $result->description);
+    }
+
+    public function testRunReturnsWarningAtJustBelowRecommended(): void
+    {
+        // 1 byte below 16MB recommended threshold
+        $object = (object) [
+            'Value' => (16 * 1024 * 1024) - 1,
+        ];
+        $database = MockDatabaseFactory::createWithObject($object);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testRunReturnsGoodWhenPacketVeryLarge(): void
+    {
+        // 1 GB - tests GB unit formatting
+        $object = (object) [
+            'Value' => 1024 * 1024 * 1024,
+        ];
+        $database = MockDatabaseFactory::createWithObject($object);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('1 GB', $result->description);
+    }
+
+    public function testRunFormatsKBCorrectly(): void
+    {
+        // 100 KB - tests KB formatting in critical message
+        $object = (object) [
+            'Value' => 100 * 1024,
+        ];
+        $database = MockDatabaseFactory::createWithObject($object);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('100 KB', $result->description);
+    }
+
+    public function testRunFormatsBytesCorrectly(): void
+    {
+        // 512 bytes - tests byte formatting
+        $object = (object) [
+            'Value' => 512,
+        ];
+        $database = MockDatabaseFactory::createWithObject($object);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('512 B', $result->description);
+    }
 }

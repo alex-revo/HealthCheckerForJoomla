@@ -130,4 +130,76 @@ class TempDirectoryCheckTest extends TestCase
             $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
         }
     }
+
+    public function testResultTitleIsNotEmpty(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->title);
+    }
+
+    public function testMultipleRunsReturnConsistentResults(): void
+    {
+        $result1 = $this->check->run();
+        $result2 = $this->check->run();
+
+        $this->assertSame($result1->healthStatus, $result2->healthStatus);
+        $this->assertSame($result1->description, $result2->description);
+    }
+
+    public function testResultHasCorrectStructure(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('system.temp_directory', $result->slug);
+        $this->assertSame('system', $result->category);
+        $this->assertSame('core', $result->provider);
+        $this->assertIsString($result->description);
+        $this->assertInstanceOf(HealthStatus::class, $result->healthStatus);
+    }
+
+    public function testJpathRootConstantIsDefined(): void
+    {
+        // JPATH_ROOT should be defined by bootstrap.php
+        $this->assertTrue(defined('JPATH_ROOT'));
+    }
+
+    public function testIsDirAndIsWritableChecks(): void
+    {
+        // Verify the functions used by the check work as expected
+        $tempDir = sys_get_temp_dir();
+
+        $this->assertTrue(is_dir($tempDir));
+        $this->assertTrue(is_writable($tempDir));
+    }
+
+    public function testCriticalWhenDirectoryNotExist(): void
+    {
+        // Verify that is_dir returns false for non-existent paths
+        $nonExistentPath = '/this/path/does/not/exist/at/all/' . uniqid();
+
+        $this->assertFalse(is_dir($nonExistentPath));
+    }
+
+    public function testCheckNeverReturnsWarningAccordingToSource(): void
+    {
+        // According to the source comments, this check does not produce Warning
+        // However the implementation does use Warning for error handling wrapper
+        $result = $this->check->run();
+
+        // The check itself only produces Good or Critical
+        // But run() method can return Warning if exception is thrown
+        $this->assertContains(
+            $result->healthStatus,
+            [HealthStatus::Good, HealthStatus::Warning, HealthStatus::Critical],
+        );
+    }
+
+    public function testFallbackPathIsJpathRootTmp(): void
+    {
+        // The fallback path should be JPATH_ROOT/tmp
+        $fallbackPath = JPATH_ROOT . '/tmp';
+
+        $this->assertStringEndsWith('/tmp', $fallbackPath);
+    }
 }

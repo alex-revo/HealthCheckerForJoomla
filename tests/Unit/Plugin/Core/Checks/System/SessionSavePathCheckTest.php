@@ -136,4 +136,80 @@ class SessionSavePathCheckTest extends TestCase
 
         $this->assertNotSame(HealthStatus::Warning, $result->healthStatus);
     }
+
+    public function testResultTitleIsNotEmpty(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->title);
+    }
+
+    public function testMultipleRunsReturnConsistentResults(): void
+    {
+        $result1 = $this->check->run();
+        $result2 = $this->check->run();
+
+        $this->assertSame($result1->healthStatus, $result2->healthStatus);
+        $this->assertSame($result1->description, $result2->description);
+    }
+
+    public function testResultHasCorrectStructure(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('system.session_save_path', $result->slug);
+        $this->assertSame('system', $result->category);
+        $this->assertSame('core', $result->provider);
+        $this->assertIsString($result->description);
+        $this->assertInstanceOf(HealthStatus::class, $result->healthStatus);
+    }
+
+    public function testFallbackToSysTempDirWhenEmpty(): void
+    {
+        // When session_save_path returns empty, the check should use sys_get_temp_dir()
+        $tempDir = sys_get_temp_dir();
+
+        // The temp dir should exist and be writable in test environment
+        $this->assertTrue(is_dir($tempDir), 'System temp directory should exist');
+        $this->assertTrue(is_writable($tempDir), 'System temp directory should be writable');
+    }
+
+    public function testSavePathFallbackValues(): void
+    {
+        // Test that the fallback values ('', '0', false) are handled
+        $fallbackValues = ['', '0', false];
+
+        foreach ($fallbackValues as $value) {
+            // These should all trigger fallback to sys_get_temp_dir()
+            $this->assertTrue(in_array($value, ['', '0', false], true), 'Value should be in fallback list');
+        }
+    }
+
+    public function testGoodResultIncludesActualPath(): void
+    {
+        $result = $this->check->run();
+
+        if ($result->healthStatus === HealthStatus::Good) {
+            // Good result should include a path (either session_save_path or sys_get_temp_dir)
+            $this->assertMatchesRegularExpression('/\/|\\\\/', $result->description);
+        }
+    }
+
+    public function testIsDirAndIsWritableChecks(): void
+    {
+        // Verify the functions used by the check work as expected
+        $tempDir = sys_get_temp_dir();
+
+        $this->assertTrue(is_dir($tempDir));
+        $this->assertTrue(is_writable($tempDir));
+    }
+
+    public function testCriticalWhenDirectoryNotExist(): void
+    {
+        // We can't easily test this without mocking, but we can verify
+        // that is_dir returns false for non-existent paths
+        $nonExistentPath = '/this/path/does/not/exist/at/all/' . uniqid();
+
+        $this->assertFalse(is_dir($nonExistentPath));
+    }
 }

@@ -132,4 +132,63 @@ class BrokenLinksCheckTest extends TestCase
 
         $this->assertSame(HealthStatus::Warning, $result->healthStatus);
     }
+
+    public function testRunWithDatabaseExceptionOnRedirectTableReturnsGood(): void
+    {
+        // First query: redirect component installed = 1
+        // Second query: throws exception (table missing)
+        $database = MockDatabaseFactory::createWithSequentialQueries([
+            [
+                'method' => 'loadResult',
+                'return' => 1,
+            ],
+            [
+                'method' => 'loadResult',
+                'exception' => new \RuntimeException('Table not found'),
+            ],
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Could not check', $result->description);
+    }
+
+    public function testRunNeverReturnsCritical(): void
+    {
+        // Even with many 404 errors, should only return warning
+        $database = MockDatabaseFactory::createWithSequentialResults([1, 500]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testRunWithZero404sReturnsGoodWithNoErrorsMessage(): void
+    {
+        // First query: redirect component installed = 1
+        // Second query: count of 404s = 0
+        $database = MockDatabaseFactory::createWithSequentialResults([1, 0]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('No unhandled 404 errors', $result->description);
+    }
+
+    public function testRunWithSingle404ErrorReturnsGoodWithCount(): void
+    {
+        // First query: redirect component installed = 1
+        // Second query: count of 404s = 1
+        $database = MockDatabaseFactory::createWithSequentialResults([1, 1]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('1 unhandled', $result->description);
+    }
 }

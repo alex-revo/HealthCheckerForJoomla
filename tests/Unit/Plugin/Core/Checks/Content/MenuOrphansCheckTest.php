@@ -78,4 +78,57 @@ class MenuOrphansCheckTest extends TestCase
         $this->assertStringContainsString('3 menu item(s)', $result->description);
         $this->assertStringContainsString('404', $result->description);
     }
+
+    public function testRunReturnsCriticalWhenSingleOrphanedMenuItemExists(): void
+    {
+        $database = MockDatabaseFactory::createWithResult(1);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('1 menu item(s)', $result->description);
+    }
+
+    public function testRunFallsBackToSubstringIndexOnRegexpError(): void
+    {
+        // First query throws exception (REGEXP_SUBSTR not supported), second succeeds with SUBSTRING_INDEX
+        $database = MockDatabaseFactory::createWithSequentialQueries([
+            [
+                'method' => 'loadResult',
+                'exception' => new \RuntimeException('REGEXP_SUBSTR not supported'),
+            ],
+            [
+                'method' => 'loadResult',
+                'return' => 2,
+            ],
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('2 menu item(s)', $result->description);
+    }
+
+    public function testRunReturnsGoodWithFallbackWhenNoOrphans(): void
+    {
+        // First query throws exception (REGEXP_SUBSTR not supported), second succeeds with 0 orphans
+        $database = MockDatabaseFactory::createWithSequentialQueries([
+            [
+                'method' => 'loadResult',
+                'exception' => new \RuntimeException('REGEXP_SUBSTR not supported'),
+            ],
+            [
+                'method' => 'loadResult',
+                'return' => 0,
+            ],
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('existing content', $result->description);
+    }
 }

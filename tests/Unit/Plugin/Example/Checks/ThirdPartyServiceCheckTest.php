@@ -176,4 +176,16 @@ class ThirdPartyServiceCheckTest extends TestCase
 
         $this->assertSame(HealthStatus::Good, $result->healthStatus);
     }
+
+    public function testRunReturnsWarningWhenResponseIsSlow(): void
+    {
+        // Create HTTP client that simulates slow response (>3 seconds threshold)
+        $httpClient = MockHttpFactory::createWithSlowHeadResponse(200, 3.5);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('slowly', $result->description);
+    }
 }

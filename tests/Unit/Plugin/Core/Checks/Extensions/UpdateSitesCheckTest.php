@@ -58,16 +58,61 @@ class UpdateSitesCheckTest extends TestCase
 
     public function testRunReturnsGoodWhenAllUpdateSitesEnabled(): void
     {
-        // This test uses default mock which returns null/0 for loadResult
-        // The check requires two queries: first for enabled count, second for disabled count
-        // With our default mock returning 0 for both, disabled=0 means Good status
-        $database = MockDatabaseFactory::createWithResult(0);
+        // First loadResult returns enabled count (10), second returns disabled count (0)
+        $database = MockDatabaseFactory::createWithSequentialResults([10, 0]);
         $this->check->setDatabase($database);
 
         $result = $this->check->run();
 
-        // When enabled=0 and disabled=0, returns Good with "0 update site(s) enabled"
         $this->assertSame(HealthStatus::Good, $result->healthStatus);
-        $this->assertStringContainsString('enabled', $result->description);
+        $this->assertStringContainsString('10 update site(s) enabled', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenSomeUpdateSitesDisabled(): void
+    {
+        // First loadResult returns enabled count (8), second returns disabled count (3)
+        $database = MockDatabaseFactory::createWithSequentialResults([8, 3]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('3 update site(s) disabled', $result->description);
+        $this->assertStringContainsString('security updates', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenOneUpdateSiteDisabled(): void
+    {
+        // First loadResult returns enabled count (5), second returns disabled count (1)
+        $database = MockDatabaseFactory::createWithSequentialResults([5, 1]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('1 update site(s) disabled', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenNoUpdateSites(): void
+    {
+        // No update sites at all - both counts are 0
+        $database = MockDatabaseFactory::createWithSequentialResults([0, 0]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('0 update site(s) enabled', $result->description);
+    }
+
+    public function testCheckNeverReturnsCritical(): void
+    {
+        // This check never returns critical status (per docblock)
+        $database = MockDatabaseFactory::createWithSequentialResults([0, 10]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
     }
 }

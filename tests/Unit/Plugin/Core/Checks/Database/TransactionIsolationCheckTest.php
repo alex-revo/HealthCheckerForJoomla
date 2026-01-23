@@ -98,4 +98,111 @@ class TransactionIsolationCheckTest extends TestCase
         $this->assertSame(HealthStatus::Warning, $result->healthStatus);
         $this->assertStringContainsString('performance', $result->description);
     }
+
+    public function testRunReturnsWarningWhenIsolationLevelNull(): void
+    {
+        // When isolation level query returns null
+        $database = MockDatabaseFactory::createWithResult(null);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Unable to determine', $result->description);
+    }
+
+    public function testRunNormalizesUnderscoresToHyphens(): void
+    {
+        // Some MySQL versions return underscores instead of hyphens
+        $database = MockDatabaseFactory::createWithResult('REPEATABLE_READ');
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('recommended', $result->description);
+    }
+
+    public function testRunNormalizesLowerCaseIsolationLevel(): void
+    {
+        // Handle lowercase isolation level values
+        $database = MockDatabaseFactory::createWithResult('repeatable-read');
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('recommended', $result->description);
+    }
+
+    public function testRunHandlesReadUncommittedWithUnderscores(): void
+    {
+        // READ_UNCOMMITTED with underscores
+        $database = MockDatabaseFactory::createWithResult('READ_UNCOMMITTED');
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('dirty reads', $result->description);
+    }
+
+    public function testRunHandlesReadCommittedWithUnderscores(): void
+    {
+        // READ_COMMITTED with underscores
+        $database = MockDatabaseFactory::createWithResult('READ_COMMITTED');
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunReturnsWarningWhenExceptionThrown(): void
+    {
+        // When database throws an exception on query
+        $database = MockDatabaseFactory::createWithException(new \RuntimeException('Connection lost'));
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Unable to check', $result->description);
+        $this->assertStringContainsString('Connection lost', $result->description);
+    }
+
+    public function testRunFallsBackToTxIsolationVariable(): void
+    {
+        // Simulates MySQL 8.0+ throwing exception on @@transaction_isolation
+        // then falling back to @@tx_isolation which returns valid value
+        // The sequential query mock will throw on first call, return on second
+        $database = MockDatabaseFactory::createWithSequentialQueries([
+            [
+                'method' => 'loadResult',
+                'exception' => new \RuntimeException('Unknown variable'),
+            ],
+            [
+                'method' => 'loadResult',
+                'return' => 'REPEATABLE-READ',
+            ],
+        ]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('recommended', $result->description);
+    }
+
+    public function testRunHandlesMixedCaseSerializable(): void
+    {
+        // Handle mixed case SERIALIZABLE
+        $database = MockDatabaseFactory::createWithResult('Serializable');
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('performance', $result->description);
+    }
 }

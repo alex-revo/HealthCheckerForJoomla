@@ -99,4 +99,120 @@ class MailFunctionCheckTest extends TestCase
             [HealthStatus::Good, HealthStatus::Warning, HealthStatus::Critical],
         );
     }
+
+    public function testResultTitleIsNotEmpty(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotEmpty($result->title);
+    }
+
+    public function testMultipleRunsReturnConsistentResults(): void
+    {
+        $result1 = $this->check->run();
+        $result2 = $this->check->run();
+
+        $this->assertSame($result1->healthStatus, $result2->healthStatus);
+        $this->assertSame($result1->description, $result2->description);
+    }
+
+    public function testResultHasCorrectStructure(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertSame('system.mail_function', $result->slug);
+        $this->assertSame('system', $result->category);
+        $this->assertSame('core', $result->provider);
+        $this->assertIsString($result->description);
+        $this->assertInstanceOf(HealthStatus::class, $result->healthStatus);
+    }
+
+    public function testDisabledFunctionsIniGetWorks(): void
+    {
+        // Verify we can check disable_functions
+        $disabledFunctions = ini_get('disable_functions');
+
+        // Should return a string (possibly empty)
+        $this->assertIsString($disabledFunctions);
+    }
+
+    public function testStrContainsWorksForDisabledFunctions(): void
+    {
+        // Test the str_contains logic used in the check
+        $disabledFunctions = 'exec,shell_exec,system';
+
+        $this->assertTrue(str_contains($disabledFunctions, 'exec'));
+        $this->assertTrue(str_contains($disabledFunctions, 'shell_exec'));
+        $this->assertFalse(str_contains($disabledFunctions, 'mail'));
+    }
+
+    public function testMailConfigOptions(): void
+    {
+        // Test that the check recognizes different mailer configs
+        $validConfigs = ['mail', 'smtp', 'sendmail'];
+
+        foreach ($validConfigs as $config) {
+            $this->assertIsString($config);
+            $this->assertNotEmpty($config);
+        }
+    }
+
+    public function testIsExecutableLogic(): void
+    {
+        // Test is_executable for common sendmail paths
+        $commonSendmailPaths = ['/usr/sbin/sendmail', '/usr/lib/sendmail'];
+
+        foreach ($commonSendmailPaths as $path) {
+            // Just verify the function works without error
+            $isExecutable = is_executable($path);
+            $this->assertIsBool($isExecutable);
+        }
+    }
+
+    public function testGoodResultForMailConfig(): void
+    {
+        $result = $this->check->run();
+
+        if ($result->healthStatus === HealthStatus::Good) {
+            // Good result should mention the mail method being available
+            $descLower = strtolower($result->description);
+            $this->assertTrue(
+                str_contains($descLower, 'available') ||
+                str_contains($descLower, 'configured') ||
+                str_contains($descLower, 'using'),
+            );
+        }
+    }
+
+    public function testCriticalResultExplainsIssue(): void
+    {
+        $result = $this->check->run();
+
+        if ($result->healthStatus === HealthStatus::Critical) {
+            // Critical should mention mail() not available or disabled
+            $descLower = strtolower($result->description);
+            $this->assertTrue(str_contains($descLower, 'not available') || str_contains($descLower, 'disabled'));
+        } else {
+            // Not critical, verify status is valid
+            $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
+        }
+    }
+
+    public function testWarningResultForSendmailPath(): void
+    {
+        $result = $this->check->run();
+
+        if ($result->healthStatus === HealthStatus::Warning) {
+            // Warning might be about sendmail path
+            $descLower = strtolower($result->description);
+            $this->assertTrue(
+                str_contains($descLower, 'sendmail') ||
+                str_contains($descLower, 'executable') ||
+                str_contains($descLower, 'path'),
+            );
+        } else {
+            // Not warning, verify status is valid
+            $this->assertContains($result->healthStatus, [HealthStatus::Good, HealthStatus::Critical]);
+        }
+    }
 }

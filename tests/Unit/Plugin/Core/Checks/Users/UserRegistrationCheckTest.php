@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\Users\UserRegistrationCheck;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -23,6 +25,11 @@ class UserRegistrationCheckTest extends TestCase
     protected function setUp(): void
     {
         $this->check = new UserRegistrationCheck();
+    }
+
+    protected function tearDown(): void
+    {
+        ComponentHelper::resetParams();
     }
 
     public function testGetSlugReturnsCorrectValue(): void
@@ -56,5 +63,49 @@ class UserRegistrationCheckTest extends TestCase
         // With default stub (null params), registration defaults to disabled (0)
         $this->assertSame(HealthStatus::Good, $result->healthStatus);
         $this->assertStringContainsString('disabled', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenRegistrationDisabled(): void
+    {
+        // Set up com_users params with registration disabled (0)
+        $params = new Registry([
+            'allowUserRegistration' => 0,
+        ]);
+        ComponentHelper::setParams('com_users', $params);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('disabled', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenRegistrationEnabled(): void
+    {
+        // Set up com_users params with registration enabled (1)
+        $params = new Registry([
+            'allowUserRegistration' => 1,
+        ]);
+        ComponentHelper::setParams('com_users', $params);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('enabled', $result->description);
+        $this->assertStringContainsString('CAPTCHA', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenRegistrationValueIsNotOne(): void
+    {
+        // Test that values other than 1 are treated as disabled
+        // (e.g., 2 for admin activation required is still considered enabled in some Joomla versions)
+        $params = new Registry([
+            'allowUserRegistration' => 2,
+        ]);
+        ComponentHelper::setParams('com_users', $params);
+
+        $result = $this->check->run();
+
+        // Value is cast to int and compared with === 1, so 2 should return good
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
     }
 }

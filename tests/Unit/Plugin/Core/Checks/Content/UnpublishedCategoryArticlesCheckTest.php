@@ -89,4 +89,27 @@ class UnpublishedCategoryArticlesCheckTest extends TestCase
         $this->assertSame(HealthStatus::Warning, $result->healthStatus);
         $this->assertStringContainsString('1 published article is', $result->description);
     }
+
+    public function testRunReturnsWarningPluralForMultipleArticles(): void
+    {
+        $database = MockDatabaseFactory::createWithResult(3);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('3 published articles are', $result->description);
+        $this->assertStringContainsString('are invisible', $result->description);
+    }
+
+    public function testRunReturnsWarningOnDatabaseException(): void
+    {
+        $database = MockDatabaseFactory::createWithException(new \RuntimeException('Database error'));
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Unable to check', $result->description);
+    }
 }

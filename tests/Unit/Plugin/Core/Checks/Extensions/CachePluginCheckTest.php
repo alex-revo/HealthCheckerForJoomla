@@ -12,6 +12,7 @@ namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\Extensions;
 
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions\CachePluginCheck;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -29,11 +30,13 @@ class CachePluginCheckTest extends TestCase
         $this->app = new CMSApplication();
         Factory::setApplication($this->app);
         $this->check = new CachePluginCheck();
+        PluginHelper::resetEnabled();
     }
 
     protected function tearDown(): void
     {
         Factory::setApplication(null);
+        PluginHelper::resetEnabled();
     }
 
     public function testGetSlugReturnsCorrectValue(): void
@@ -61,9 +64,9 @@ class CachePluginCheckTest extends TestCase
 
     public function testRunReturnsWarningWhenBothDisabled(): void
     {
-        // PluginHelper::isEnabled returns false by default in the stub
-        // App caching is 0 by default
+        // Both plugin and system cache disabled
         $this->app->set('caching', 0);
+        PluginHelper::setEnabled('system', 'cache', false);
 
         $result = $this->check->run();
 
@@ -73,11 +76,76 @@ class CachePluginCheckTest extends TestCase
 
     public function testRunReturnsGoodWhenSystemCacheEnabledButPluginDisabled(): void
     {
+        // System cache enabled but plugin disabled - basic caching works
         $this->app->set('caching', 1);
+        PluginHelper::setEnabled('system', 'cache', false);
 
         $result = $this->check->run();
 
         $this->assertSame(HealthStatus::Good, $result->healthStatus);
         $this->assertStringContainsString('System caching is enabled', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenPluginEnabledButSystemCacheDisabled(): void
+    {
+        // Plugin enabled but system caching is off - plugin will not function
+        $this->app->set('caching', 0);
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('plugin is enabled but system caching is disabled', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenBothEnabled(): void
+    {
+        // Both enabled - optimal configuration
+        $this->app->set('caching', 1);
+        $this->app->set('cache_handler', 'file');
+        $this->app->set('cachetime', 30);
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Page cache plugin is enabled', $result->description);
+        $this->assertStringContainsString('file', $result->description);
+        $this->assertStringContainsString('30', $result->description);
+    }
+
+    public function testRunReturnsGoodWithMemcachedHandler(): void
+    {
+        $this->app->set('caching', 1);
+        $this->app->set('cache_handler', 'memcached');
+        $this->app->set('cachetime', 60);
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('memcached', $result->description);
+        $this->assertStringContainsString('60 minutes', $result->description);
+    }
+
+    public function testRunReturnsGoodWithRedisHandler(): void
+    {
+        $this->app->set('caching', 1);
+        $this->app->set('cache_handler', 'redis');
+        $this->app->set('cachetime', 15);
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('redis', $result->description);
+    }
+
+    public function testCheckNeverReturnsCritical(): void
+    {
+        // This check never returns critical status
+        $result = $this->check->run();
+
+        $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
     }
 }

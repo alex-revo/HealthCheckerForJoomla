@@ -25,6 +25,60 @@ class TemplateCheckTest extends TestCase
     protected function setUp(): void
     {
         $this->check = new TemplateCheck();
+        $this->cleanupTemplateDirectories();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->cleanupTemplateDirectories();
+    }
+
+    private function cleanupTemplateDirectories(): void
+    {
+        $dirs = [
+            JPATH_SITE . '/templates/cassiopeia',
+            JPATH_SITE . '/templates/test_template',
+            JPATH_SITE . '/templates/invalid_xml_template',
+            JPATH_SITE . '/templates/missing_index_template',
+            JPATH_SITE . '/templates',
+            JPATH_ADMINISTRATOR . '/templates/atum',
+            JPATH_ADMINISTRATOR . '/templates/admin_test',
+            JPATH_ADMINISTRATOR . '/templates',
+        ];
+
+        foreach ($dirs as $dir) {
+            if (is_dir($dir)) {
+                $files = glob($dir . '/*');
+                foreach ($files as $file) {
+                    if (is_file($file)) {
+                        unlink($file);
+                    }
+                }
+                @rmdir($dir);
+            }
+        }
+    }
+
+    private function createTemplateDirectory(
+        string $path,
+        bool $createXml = true,
+        bool $createIndex = true,
+        bool $validXml = true,
+    ): void {
+        if (! is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        if ($createXml) {
+            $xmlContent = $validXml
+                ? "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<extension type=\"template\"><name>Test</name></extension>"
+                : 'This is not valid XML';
+            file_put_contents($path . '/templateDetails.xml', $xmlContent);
+        }
+
+        if ($createIndex) {
+            file_put_contents($path . '/index.php', '<?php defined("_JEXEC") or die;');
+        }
     }
 
     public function testGetSlugReturnsCorrectValue(): void
@@ -58,8 +112,35 @@ class TemplateCheckTest extends TestCase
         $this->assertStringContainsString('database', strtolower($result->description));
     }
 
-    public function testRunWithNoSiteTemplateConfiguredReturnsWarningOrCritical(): void
+    public function testRunWithValidTemplatesReturnsGood(): void
     {
+        // Create valid template directories
+        $this->createTemplateDirectory(JPATH_SITE . '/templates/cassiopeia');
+        $this->createTemplateDirectory(JPATH_ADMINISTRATOR . '/templates/atum');
+
+        $database = $this->createDatabaseWithTemplates(
+            (object) [
+                'template' => 'cassiopeia',
+                'title' => 'Cassiopeia',
+            ],
+            (object) [
+                'template' => 'atum',
+                'title' => 'Atum',
+            ],
+        );
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('cassiopeia', $result->description);
+        $this->assertStringContainsString('atum', $result->description);
+    }
+
+    public function testRunWithNoSiteTemplateConfiguredReturnsCritical(): void
+    {
+        $this->createTemplateDirectory(JPATH_ADMINISTRATOR . '/templates/atum');
+
         $database = $this->createDatabaseWithTemplates(null, (object) [
             'template' => 'atum',
             'title' => 'Atum',
@@ -68,12 +149,14 @@ class TemplateCheckTest extends TestCase
 
         $result = $this->check->run();
 
-        // Should return critical or warning depending on implementation details
-        $this->assertContains($result->healthStatus, [HealthStatus::Critical, HealthStatus::Warning]);
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('No default site template', $result->description);
     }
 
-    public function testRunWithNoAdminTemplateConfiguredReturnsWarningOrCritical(): void
+    public function testRunWithNoAdminTemplateConfiguredReturnsCritical(): void
     {
+        $this->createTemplateDirectory(JPATH_SITE . '/templates/cassiopeia');
+
         $database = $this->createDatabaseWithTemplates(
             (object) [
                 'template' => 'cassiopeia',
@@ -85,51 +168,127 @@ class TemplateCheckTest extends TestCase
 
         $result = $this->check->run();
 
-        // Should return critical or warning depending on implementation details
-        $this->assertContains($result->healthStatus, [HealthStatus::Critical, HealthStatus::Warning]);
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('No default admin template', $result->description);
     }
 
-    public function testRunWithMissingTemplateDirectoryReturnsWarningOrCritical(): void
+    public function testRunWithMissingSiteTemplateDirectoryReturnsCritical(): void
     {
-        // Template exists in DB but directory doesn't exist on disk
+        $this->createTemplateDirectory(JPATH_ADMINISTRATOR . '/templates/atum');
+        // Site template directory does NOT exist
+
         $database = $this->createDatabaseWithTemplates(
             (object) [
-                'template' => 'nonexistent_site_template',
-                'title' => 'Nonexistent',
+                'template' => 'nonexistent',
+                'title' => 'Missing',
             ],
             (object) [
-                'template' => 'nonexistent_admin_template',
-                'title' => 'Nonexistent Admin',
+                'template' => 'atum',
+                'title' => 'Atum',
             ],
         );
         $this->check->setDatabase($database);
 
         $result = $this->check->run();
 
-        // Should return critical or warning
-        $this->assertContains($result->healthStatus, [HealthStatus::Critical, HealthStatus::Warning]);
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('directory not found', $result->description);
     }
 
-    public function testRunReturnsValidStatus(): void
+    public function testRunWithMissingTemplateDetailsXmlReturnsCritical(): void
     {
-        // This test verifies that the check returns a valid status
-        $result = $this->check->run();
+        // Create template without XML
+        $this->createTemplateDirectory(JPATH_SITE . '/templates/test_template', false, true);
+        $this->createTemplateDirectory(JPATH_ADMINISTRATOR . '/templates/atum');
 
-        $this->assertContains(
-            $result->healthStatus,
-            [HealthStatus::Good, HealthStatus::Warning, HealthStatus::Critical],
+        $database = $this->createDatabaseWithTemplates(
+            (object) [
+                'template' => 'test_template',
+                'title' => 'Test',
+            ],
+            (object) [
+                'template' => 'atum',
+                'title' => 'Atum',
+            ],
         );
-    }
+        $this->check->setDatabase($database);
 
-    public function testDescriptionContainsTemplateText(): void
-    {
         $result = $this->check->run();
 
-        $description = strtolower($result->description);
-        $hasRelevantText = str_contains($description, 'template')
-            || str_contains($description, 'database');
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('missing templateDetails.xml', $result->description);
+    }
 
-        $this->assertTrue($hasRelevantText, 'Description should mention template or database');
+    public function testRunWithInvalidXmlReturnsCritical(): void
+    {
+        // Create template with invalid XML
+        $this->createTemplateDirectory(JPATH_SITE . '/templates/invalid_xml_template', true, true, false);
+        $this->createTemplateDirectory(JPATH_ADMINISTRATOR . '/templates/atum');
+
+        $database = $this->createDatabaseWithTemplates(
+            (object) [
+                'template' => 'invalid_xml_template',
+                'title' => 'Invalid',
+            ],
+            (object) [
+                'template' => 'atum',
+                'title' => 'Atum',
+            ],
+        );
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('invalid templateDetails.xml', $result->description);
+    }
+
+    public function testRunWithMissingIndexPhpReturnsCritical(): void
+    {
+        // Create template without index.php
+        $this->createTemplateDirectory(JPATH_SITE . '/templates/missing_index_template', true, false);
+        $this->createTemplateDirectory(JPATH_ADMINISTRATOR . '/templates/atum');
+
+        $database = $this->createDatabaseWithTemplates(
+            (object) [
+                'template' => 'missing_index_template',
+                'title' => 'No Index',
+            ],
+            (object) [
+                'template' => 'atum',
+                'title' => 'Atum',
+            ],
+        );
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('missing index.php', $result->description);
+    }
+
+    public function testCheckNeverReturnsWarningStatus(): void
+    {
+        // This check only returns Good or Critical (per docblock)
+        $this->createTemplateDirectory(JPATH_SITE . '/templates/cassiopeia');
+        $this->createTemplateDirectory(JPATH_ADMINISTRATOR . '/templates/atum');
+
+        $database = $this->createDatabaseWithTemplates(
+            (object) [
+                'template' => 'cassiopeia',
+                'title' => 'Cassiopeia',
+            ],
+            (object) [
+                'template' => 'atum',
+                'title' => 'Atum',
+            ],
+        );
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        // When templates are valid, should return Good
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
     }
 
     /**
@@ -206,7 +365,7 @@ class TemplateCheckTest extends TestCase
 
             public function quote(array|string $text, bool $escape = true): array|string
             {
-                return is_string($text) ? "'{$text}'" : '';
+                return is_string($text) ? "\"{$text}\"" : '';
             }
 
             public function getPrefix(): string

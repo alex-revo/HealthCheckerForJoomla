@@ -66,4 +66,89 @@ class TwoFactorAuthCheckTest extends TestCase
         $this->assertSame(HealthStatus::Warning, $result->healthStatus);
         $this->assertStringContainsString('No Multi-Factor', $result->description);
     }
+
+    public function testRunReturnsWarningWhenMfaEnabledButNoSuperAdminsHaveMfa(): void
+    {
+        // Query 1: Count enabled MFA plugins (returns 2)
+        // Query 2: Count total Super Admins (returns 3)
+        // Query 3: Count Super Admins with MFA (returns 0)
+        $database = MockDatabaseFactory::createWithSequentialResults([2, 3, 0]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('no Super Admins have MFA configured', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenSomeSuperAdminsHaveMfa(): void
+    {
+        // Query 1: Count enabled MFA plugins (returns 1)
+        // Query 2: Count total Super Admins (returns 5)
+        // Query 3: Count Super Admins with MFA (returns 2)
+        $database = MockDatabaseFactory::createWithSequentialResults([1, 5, 2]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('2 of 5 Super Admins have MFA configured', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenAllSuperAdminsHaveMfa(): void
+    {
+        // Query 1: Count enabled MFA plugins (returns 3)
+        // Query 2: Count total Super Admins (returns 2)
+        // Query 3: Count Super Admins with MFA (returns 2)
+        $database = MockDatabaseFactory::createWithSequentialResults([3, 2, 2]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('all 2 Super Admin(s) have MFA configured', $result->description);
+    }
+
+    public function testRunReturnsGoodWithSingleSuperAdmin(): void
+    {
+        // Query 1: Count enabled MFA plugins (returns 1)
+        // Query 2: Count total Super Admins (returns 1)
+        // Query 3: Count Super Admins with MFA (returns 1)
+        $database = MockDatabaseFactory::createWithSequentialResults([1, 1, 1]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('all 1 Super Admin(s) have MFA configured', $result->description);
+    }
+
+    public function testRunHandlesZeroSuperAdmins(): void
+    {
+        // Query 1: Count enabled MFA plugins (returns 2)
+        // Query 2: Count total Super Admins (returns 0)
+        // Query 3: Count Super Admins with MFA (returns 0)
+        $database = MockDatabaseFactory::createWithSequentialResults([2, 0, 0]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        // When totalSuperAdmins is 0 and superAdminsWithMFA is 0, condition (0 < 0) is false
+        // So it falls through to the good case
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunReturnsWarningWithMultipleMfaPluginsButNoUsage(): void
+    {
+        // Query 1: Count enabled MFA plugins (returns 5)
+        // Query 2: Count total Super Admins (returns 10)
+        // Query 3: Count Super Admins with MFA (returns 0)
+        $database = MockDatabaseFactory::createWithSequentialResults([5, 10, 0]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('5 MFA plugin(s) enabled', $result->description);
+    }
 }
