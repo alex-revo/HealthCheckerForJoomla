@@ -4,18 +4,23 @@ This directory contains comprehensive unit tests for the Health Checker for Joom
 
 ## Overview
 
+**Current Stats**: 1634 tests, 3023 assertions across 163 test files
+
 The test suite provides thorough coverage of:
 - Core interfaces and abstract classes
 - Health check results and status enums
-- Event system (CollectProvidersEvent, CollectCategoriesEvent, etc.)
+- Event system (CollectProvidersEvent, CollectCategoriesEvent, CollectChecksEvent, etc.)
 - Provider and category metadata
 - Registry services
-- Sample health check implementations
+- All 130+ health check implementations
+- Controllers, models, and views
+- Module dispatcher and helpers
+- Plugin extensions (Core, Akeeba Backup, Akeeba Admin Tools, mySites.guru, Example)
 
 ## Requirements
 
 - PHP 8.1 or later
-- PHPUnit 10.x
+- PHPUnit 10.x or later
 - Composer dependencies installed
 
 ## Installation
@@ -34,17 +39,20 @@ composer install
 vendor/bin/phpunit
 ```
 
-### Run Specific Test Suite
+### Run Specific Directory
 
 ```bash
 # Component tests only
-vendor/bin/phpunit --testsuite Component
+vendor/bin/phpunit tests/Unit/Component
 
 # Plugin tests only
-vendor/bin/phpunit --testsuite Plugins
+vendor/bin/phpunit tests/Unit/Plugin
 
 # Module tests only
-vendor/bin/phpunit --testsuite Module
+vendor/bin/phpunit tests/Unit/Module
+
+# Specific category of checks
+vendor/bin/phpunit tests/Unit/Plugin/Core/Checks/Security
 ```
 
 ### Run Single Test File
@@ -73,29 +81,61 @@ vendor/bin/phpunit --filter testGetSlugReturnsCorrectValue
 ```
 tests/
 ├── bootstrap.php                          # PHPUnit bootstrap file
+├── stubs/                                 # Joomla framework stubs for testing
 ├── Utilities/                             # Test utilities and mocks
 │   ├── JoomlaTextMock.php                # Mock for Joomla\CMS\Language\Text
 │   └── MockFactory.php                   # Factory for creating test fixtures
-└── Unit/                                  # Unit tests
+└── Unit/                                  # Unit tests (163 test files)
+    ├── ManifestXmlValidationTest.php     # XML manifest validation
     ├── Component/                         # Component tests
+    │   ├── Category/                      # Category classes
+    │   │   └── HealthCategoryTest.php
     │   ├── Check/                         # Health check core classes
     │   │   ├── AbstractHealthCheckTest.php
     │   │   ├── HealthCheckResultTest.php
     │   │   └── HealthStatusTest.php
-    │   ├── Category/                      # Category classes
-    │   │   └── HealthCategoryTest.php
+    │   ├── Controller/                    # Controller tests
+    │   │   ├── AjaxControllerTest.php
+    │   │   └── DisplayControllerTest.php
     │   ├── Event/                         # Event classes
-    │   │   └── CollectProvidersEventTest.php
+    │   │   ├── BeforeReportDisplayEventTest.php
+    │   │   ├── CollectCategoriesEventTest.php
+    │   │   ├── CollectChecksEventTest.php
+    │   │   ├── CollectProvidersEventTest.php
+    │   │   └── HealthCheckerEventsTest.php
+    │   ├── Model/                         # Model tests
     │   ├── Provider/                      # Provider classes
     │   │   ├── ProviderMetadataTest.php
     │   │   └── ProviderRegistryTest.php
-    │   └── Service/                       # Service classes
-    │       └── CategoryRegistryTest.php
-    └── Plugins/                           # Plugin tests
-        └── Core/
-            └── Checks/
-                └── System/
-                    └── PhpVersionCheckTest.php
+    │   ├── Service/                       # Service classes
+    │   │   ├── CategoryRegistryTest.php
+    │   │   └── HealthCheckRunnerTest.php
+    │   └── View/Report/                   # View tests
+    ├── Module/                            # Module tests
+    │   ├── Dispatcher/                    # Dispatcher tests
+    │   └── Helper/                        # Helper tests
+    └── Plugin/                            # Plugin tests
+        ├── AkeebaAdminTools/              # Admin Tools plugin tests
+        │   ├── Categories/
+        │   └── Extension/
+        ├── AkeebaBackup/                  # Backup plugin tests
+        │   └── Extension/
+        ├── Core/                          # Core plugin tests (100+ check tests)
+        │   └── Checks/                    # Organized by category
+        │       ├── Content/               # Content quality checks
+        │       ├── Database/              # Database checks
+        │       ├── Extensions/            # Extension checks
+        │       ├── Performance/           # Performance checks
+        │       ├── Security/              # Security checks
+        │       ├── Seo/                   # SEO checks
+        │       ├── System/                # System checks
+        │       └── Users/                 # User checks
+        ├── Example/                       # Example plugin tests
+        │   ├── Checks/
+        │   └── Extension/
+        └── MySitesGuru/                   # mySites.guru plugin tests
+            ├── Checks/
+            └── Extension/
 ```
 
 ## Writing New Tests
@@ -174,6 +214,8 @@ $provider = MockFactory::createProvider(
   - AbstractHealthCheck
   - ProviderRegistry
   - CategoryRegistry
+  - HealthCheckRunner
+  - All health check implementations
 
 ## Testing Best Practices
 
@@ -206,13 +248,15 @@ public function testSetDatabaseInjectsDatabase(): void
 
 ## Continuous Integration
 
-These tests are designed to run in CI/CD pipelines:
+Tests run automatically on GitHub Actions for PHP 8.1-8.5:
 
 ```yaml
 # GitHub Actions example
 - name: Run PHPUnit Tests
   run: vendor/bin/phpunit --coverage-clover coverage.xml
 ```
+
+See `.github/workflows/` for CI configuration details.
 
 ## Troubleshooting
 

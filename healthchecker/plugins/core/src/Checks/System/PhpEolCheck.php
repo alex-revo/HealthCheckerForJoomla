@@ -40,7 +40,6 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
-use Joomla\CMS\Http\HttpFactory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 
@@ -222,14 +221,14 @@ final class PhpEolCheck extends AbstractHealthCheck
      */
     private function fetchEolData(): array
     {
-        $http = HttpFactory::getHttp();
+        $http = $this->getHttpClient();
         $response = $http->get(self::API_URL, [], 10);
 
         if ($response->code !== 200) {
             throw new \RuntimeException('API returned status ' . $response->code);
         }
 
-        $data = json_decode((string) $response->body, true);
+        $data = json_decode($response->body, true);
 
         if (! \is_array($data)) {
             throw new \RuntimeException('Invalid JSON response');

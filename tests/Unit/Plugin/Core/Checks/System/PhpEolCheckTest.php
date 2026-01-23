@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\System;
 
+use HealthChecker\Tests\Utilities\MockHttpFactory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\System\PhpEolCheck;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -48,76 +49,186 @@ class PhpEolCheckTest extends TestCase
         $this->assertNotEmpty($title);
     }
 
-    public function testRunReturnsHealthCheckResult(): void
+    public function testRunReturnsGoodWhenVersionUnderActiveSupport(): void
     {
+        // Create EOL data where current PHP version has plenty of time left
+        $cycle = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+        $supportDate = (new \DateTime('+1 year'))->format('Y-m-d');
+        $eolDate = (new \DateTime('+2 years'))->format('Y-m-d');
+
+        $eolData = [
+            [
+                'cycle' => $cycle,
+                'support' => $supportDate,
+                'eol' => $eolDate,
+            ],
+        ];
+
+        $httpClient = MockHttpFactory::createWithJsonResponse(200, $eolData);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('active support', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenApproachingSupportEnd(): void
+    {
+        // Create EOL data where support ends within 90 days
+        $cycle = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+        $supportDate = (new \DateTime('+30 days'))->format('Y-m-d');
+        $eolDate = (new \DateTime('+1 year'))->format('Y-m-d');
+
+        $eolData = [
+            [
+                'cycle' => $cycle,
+                'support' => $supportDate,
+                'eol' => $eolDate,
+            ],
+        ];
+
+        $httpClient = MockHttpFactory::createWithJsonResponse(200, $eolData);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('ends in', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenInSecurityOnlyMode(): void
+    {
+        // Create EOL data where active support has ended but EOL is in the future
+        $cycle = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+        $supportDate = (new \DateTime('-30 days'))->format('Y-m-d');
+        $eolDate = (new \DateTime('+6 months'))->format('Y-m-d');
+
+        $eolData = [
+            [
+                'cycle' => $cycle,
+                'support' => $supportDate,
+                'eol' => $eolDate,
+            ],
+        ];
+
+        $httpClient = MockHttpFactory::createWithJsonResponse(200, $eolData);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('security-only', $result->description);
+    }
+
+    public function testRunReturnsCriticalWhenPastEol(): void
+    {
+        // Create EOL data where PHP version is past EOL
+        $cycle = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+        $supportDate = (new \DateTime('-1 year'))->format('Y-m-d');
+        $eolDate = (new \DateTime('-30 days'))->format('Y-m-d');
+
+        $eolData = [
+            [
+                'cycle' => $cycle,
+                'support' => $supportDate,
+                'eol' => $eolDate,
+            ],
+        ];
+
+        $httpClient = MockHttpFactory::createWithJsonResponse(200, $eolData);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('end-of-life', $result->description);
+        $this->assertStringContainsString('immediately', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenApiError(): void
+    {
+        $httpClient = MockHttpFactory::createWithGetResponse(500, '');
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Unable to fetch', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenConnectionFails(): void
+    {
+        $httpClient = MockHttpFactory::createThatThrows('Connection refused');
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Unable to fetch', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenVersionNotFoundInApi(): void
+    {
+        // Return EOL data that doesn't include the current PHP version
+        $eolData = [
+            [
+                'cycle' => '7.4',
+                'support' => '2020-11-28',
+                'eol' => '2022-11-28',
+            ],
+        ];
+
+        $httpClient = MockHttpFactory::createWithJsonResponse(200, $eolData);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('not found', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenInvalidJsonResponse(): void
+    {
+        $httpClient = MockHttpFactory::createWithGetResponse(200, 'not valid json');
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testResultDescriptionContainsPhpVersion(): void
+    {
+        $cycle = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+        $supportDate = (new \DateTime('+1 year'))->format('Y-m-d');
+        $eolDate = (new \DateTime('+2 years'))->format('Y-m-d');
+
+        $eolData = [
+            [
+                'cycle' => $cycle,
+                'support' => $supportDate,
+                'eol' => $eolDate,
+            ],
+        ];
+
+        $httpClient = MockHttpFactory::createWithJsonResponse(200, $eolData);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertStringContainsString(PHP_VERSION, $result->description);
+    }
+
+    public function testResultMetadata(): void
+    {
+        $httpClient = MockHttpFactory::createThatThrows('Network error');
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
         $this->assertSame('system.php_eol', $result->slug);
         $this->assertSame('system', $result->category);
         $this->assertSame('core', $result->provider);
-    }
-
-    public function testRunReturnsValidStatus(): void
-    {
-        $result = $this->check->run();
-
-        // Can return Good, Warning (API unreachable, security-only, or ending soon),
-        // or Critical (past EOL)
-        $this->assertContains(
-            $result->healthStatus,
-            [HealthStatus::Good, HealthStatus::Warning, HealthStatus::Critical],
-        );
-    }
-
-    public function testRunDescriptionContainsPhpInfo(): void
-    {
-        $result = $this->check->run();
-
-        // Description should mention PHP or contain an error message (if API unavailable)
-        $this->assertTrue(str_contains($result->description, 'PHP') || str_contains($result->description, 'null'));
-    }
-
-    public function testCurrentPhpVersionIsDetectable(): void
-    {
-        $version = PHP_VERSION;
-
-        // PHP version should be a valid version string
-        $this->assertNotEmpty($version);
-        $this->assertMatchesRegularExpression('/^\d+\.\d+\.\d+/', $version);
-    }
-
-    public function testCheckHandlesApiUnavailability(): void
-    {
-        // The check should gracefully handle API failures
-        // In test environment, it might return Warning if API is unreachable
-        // or Good/Warning/Critical if API returns data
-        $result = $this->check->run();
-
-        $this->assertContains(
-            $result->healthStatus,
-            [HealthStatus::Good, HealthStatus::Warning, HealthStatus::Critical],
-        );
-    }
-
-    public function testPhpVersionExtraction(): void
-    {
-        // Test that current PHP version can be parsed
-        $parts = explode('.', PHP_VERSION);
-
-        $this->assertCount(3, $parts, 'PHP version should have three parts');
-        $this->assertIsNumeric($parts[0], 'Major version should be numeric');
-        $this->assertIsNumeric($parts[1], 'Minor version should be numeric');
-    }
-
-    public function testDescriptionMentionsVersionNumberOrError(): void
-    {
-        $result = $this->check->run();
-
-        // Description should include the PHP version number or error (if API unavailable)
-        $majorMinor = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
-        $this->assertTrue(
-            str_contains($result->description, $majorMinor) ||
-            str_contains($result->description, 'null'),
-        );
     }
 }

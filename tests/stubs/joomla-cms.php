@@ -889,11 +889,95 @@ class Version
 
 namespace Joomla\CMS\Http;
 
+use Joomla\Http\HttpInterface;
+use Joomla\Http\Response;
+
 class HttpFactory
 {
-    public static function getHttp(): mixed
+    private static ?HttpInterface $mockHttp = null;
+
+    public static function setMockHttp(?HttpInterface $http): void
     {
-        return null;
+        self::$mockHttp = $http;
+    }
+
+    public static function getHttp(): HttpInterface
+    {
+        if (self::$mockHttp !== null) {
+            return self::$mockHttp;
+        }
+
+        // Return a default no-op HTTP client for tests
+        return new class implements HttpInterface {
+            public function get(string $url, array $headers = [], int|float $timeout = 10): Response
+            {
+                return new Response(0, '', []);
+            }
+
+            public function head(string $url, array $headers = [], int|float $timeout = 10): Response
+            {
+                return new Response(0, '', []);
+            }
+
+            public function post(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
+            {
+                return new Response(0, '', []);
+            }
+
+            public function put(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
+            {
+                return new Response(0, '', []);
+            }
+
+            public function delete(string $url, array $headers = [], int|float $timeout = 10): Response
+            {
+                return new Response(0, '', []);
+            }
+
+            public function patch(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response
+            {
+                return new Response(0, '', []);
+            }
+        };
+    }
+}
+
+namespace Joomla\Http;
+
+interface HttpInterface
+{
+    public function get(string $url, array $headers = [], int|float $timeout = 10): Response;
+
+    public function head(string $url, array $headers = [], int|float $timeout = 10): Response;
+
+    public function post(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response;
+
+    public function put(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response;
+
+    public function delete(string $url, array $headers = [], int|float $timeout = 10): Response;
+
+    public function patch(string $url, $data = '', array $headers = [], int|float $timeout = 10): Response;
+}
+
+class Response
+{
+    public int $code;
+
+    public string $body;
+
+    /**
+     * @var array<string, string|array<string>>
+     */
+    public array $headers;
+
+    /**
+     * @param array<string, string|array<string>> $headers
+     */
+    public function __construct(int $code = 200, string $body = '', array $headers = [])
+    {
+        $this->code = $code;
+        $this->body = $body;
+        $this->headers = $headers;
     }
 }
 

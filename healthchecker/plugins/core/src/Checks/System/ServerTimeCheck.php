@@ -42,7 +42,6 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
-use Joomla\CMS\Http\HttpFactory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 
@@ -210,7 +209,7 @@ final class ServerTimeCheck extends AbstractHealthCheck
             // Record server time immediately before the request
             $serverTimeBefore = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
 
-            $http = HttpFactory::getHttp();
+            $http = $this->getHttpClient();
 
             // Use HEAD request - we only need headers, not body
             $response = $http->head($url, [], self::HTTP_TIMEOUT_SECONDS);

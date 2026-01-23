@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\System;
 
+use HealthChecker\Tests\Utilities\MockHttpFactory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\System\ServerTimeCheck;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -48,83 +49,128 @@ class ServerTimeCheckTest extends TestCase
         $this->assertNotEmpty($title);
     }
 
-    public function testRunReturnsHealthCheckResult(): void
+    public function testRunReturnsGoodWhenServerTimeIsAccurate(): void
     {
+        // Create a mock HTTP client that returns the current time in the Date header
+        $currentTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $dateHeader = $currentTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('accurate', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenServerTimeIsDriftedSlightly(): void
+    {
+        // Create a mock that returns a time 60 seconds in the past (warning threshold is 30s)
+        $driftedTime = new \DateTimeImmutable('-60 seconds', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('off by', $result->description);
+    }
+
+    public function testRunReturnsCriticalWhenServerTimeIsDriftedSignificantly(): void
+    {
+        // Create a mock that returns a time 10 minutes in the past (critical threshold is 5 min)
+        $driftedTime = new \DateTimeImmutable('-10 minutes', new \DateTimeZone('UTC'));
+        $dateHeader = $driftedTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Critical, $result->healthStatus);
+        $this->assertStringContainsString('off by', $result->description);
+        $this->assertStringContainsString('immediately', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenHttpRequestFails(): void
+    {
+        // When HTTP fails, it should gracefully return Good with informational message
+        $httpClient = MockHttpFactory::createThatThrows('Connection refused');
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Unable to verify', $result->description);
+    }
+
+    public function testRunReturnsGoodWhenNoDateHeader(): void
+    {
+        // When no Date header is present, should fall back gracefully
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, []);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('Unable to verify', $result->description);
+    }
+
+    public function testRunHandlesArrayDateHeader(): void
+    {
+        // Some HTTP clients return headers as arrays
+        $currentTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $dateHeader = $currentTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => [$dateHeader],
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testResultContainsTimezone(): void
+    {
+        $currentTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $dateHeader = $currentTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+        $timezone = date_default_timezone_get();
+
+        $this->assertStringContainsString($timezone, $result->description);
+    }
+
+    public function testResultMetadata(): void
+    {
+        $currentTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $dateHeader = $currentTime->format('D, d M Y H:i:s') . ' GMT';
+
+        $httpClient = MockHttpFactory::createWithHeadResponse(200, [
+            'Date' => $dateHeader,
+        ]);
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
         $this->assertSame('system.server_time', $result->slug);
         $this->assertSame('system', $result->category);
         $this->assertSame('core', $result->provider);
-    }
-
-    public function testRunReturnsValidStatus(): void
-    {
-        $result = $this->check->run();
-
-        // Can return Good, Warning, or Critical depending on time drift
-        $this->assertContains(
-            $result->healthStatus,
-            [HealthStatus::Good, HealthStatus::Warning, HealthStatus::Critical],
-        );
-    }
-
-    public function testRunDescriptionContainsTimeInfo(): void
-    {
-        $result = $this->check->run();
-
-        // Description should mention time, server, or error (if HTTP unavailable)
-        $this->assertTrue(
-            str_contains(strtolower($result->description), 'time') ||
-            str_contains(strtolower($result->description), 'server') ||
-            str_contains(strtolower($result->description), 'null'),
-        );
-    }
-
-    public function testCurrentTimezoneIsDetectable(): void
-    {
-        $timezone = date_default_timezone_get();
-
-        // Timezone should return a valid string
-        $this->assertNotEmpty($timezone);
-        $this->assertIsString($timezone);
-    }
-
-    public function testServerTimeCanBeCreated(): void
-    {
-        $serverTime = new \DateTimeImmutable('now');
-
-        $this->assertInstanceOf(\DateTimeImmutable::class, $serverTime);
-    }
-
-    public function testCheckHandlesExternalTimeSourceUnavailability(): void
-    {
-        // The check should gracefully handle when external time sources are unreachable
-        $result = $this->check->run();
-
-        // Should return a valid status even if external sources are unavailable
-        $this->assertContains(
-            $result->healthStatus,
-            [HealthStatus::Good, HealthStatus::Warning, HealthStatus::Critical],
-        );
-    }
-
-    public function testDescriptionIncludesTimezoneOrError(): void
-    {
-        $result = $this->check->run();
-        $timezone = date_default_timezone_get();
-
-        // Description should include timezone info or error (if HTTP unavailable)
-        $this->assertTrue(
-            str_contains($result->description, $timezone) ||
-            str_contains($result->description, 'null'),
-        );
-    }
-
-    public function testCheckUsesUtcInternally(): void
-    {
-        // Verify UTC timezone can be used
-        $utcTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
-
-        $this->assertSame('UTC', $utcTime->getTimezone()->getName());
     }
 }

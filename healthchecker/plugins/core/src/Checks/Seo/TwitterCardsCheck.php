@@ -44,7 +44,6 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Uri\Uri;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -109,7 +108,7 @@ final class TwitterCardsCheck extends AbstractHealthCheck
     {
         try {
             $siteUrl = Uri::root();
-            $http = HttpFactory::getHttp();
+            $http = $this->getHttpClient();
             $response = $http->get($siteUrl, [], self::HTTP_TIMEOUT_SECONDS);
 
             if ($response->code !== 200) {

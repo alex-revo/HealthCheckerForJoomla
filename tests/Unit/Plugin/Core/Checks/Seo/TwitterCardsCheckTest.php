@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\Seo;
 
+use HealthChecker\Tests\Utilities\MockHttpFactory;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo\TwitterCardsCheck;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -47,20 +49,199 @@ class TwitterCardsCheckTest extends TestCase
         $this->assertNotEmpty($title);
     }
 
-    /**
-     * Note: This check requires HTTP requests to fetch the homepage,
-     * which cannot be easily unit tested without mocking the HTTP layer.
-     * The run() method will return a warning due to HTTP errors in test environment.
-     */
-    public function testRunReturnsHealthCheckResult(): void
+    public function testRunReturnsGoodWhenAllTwitterCardsPresent(): void
     {
+        $html = <<<'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="My Site Title">
+    <meta name="twitter:description" content="My site description">
+    <meta name="twitter:image" content="https://example.com/image.jpg">
+</head>
+<body></body>
+</html>
+HTML;
+
+        $httpClient = MockHttpFactory::createWithGetResponse(200, $html);
+        $this->check->setHttpClient($httpClient);
+
         $result = $this->check->run();
 
-        // In test environment, HTTP request will likely fail
-        // Just verify it returns a valid result object
-        $this->assertInstanceOf(
-            \MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult::class,
-            $result,
-        );
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('essential', $result->description);
+    }
+
+    public function testRunReturnsGoodWithOpenGraphFallbacks(): void
+    {
+        // Twitter card type is required, but other fields fall back to OG tags
+        $html = <<<'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="twitter:card" content="summary">
+    <meta property="og:title" content="My Site Title">
+    <meta property="og:description" content="My site description">
+    <meta property="og:image" content="https://example.com/image.jpg">
+</head>
+<body></body>
+</html>
+HTML;
+
+        $httpClient = MockHttpFactory::createWithGetResponse(200, $html);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('fallback', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenMissingTwitterCardType(): void
+    {
+        $html = <<<'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="twitter:title" content="My Site Title">
+    <meta name="twitter:description" content="My site description">
+</head>
+<body></body>
+</html>
+HTML;
+
+        $httpClient = MockHttpFactory::createWithGetResponse(200, $html);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('twitter:card', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenAllTagsMissing(): void
+    {
+        $html = <<<'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Site</title>
+</head>
+<body></body>
+</html>
+HTML;
+
+        $httpClient = MockHttpFactory::createWithGetResponse(200, $html);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Missing', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenHttpError(): void
+    {
+        $httpClient = MockHttpFactory::createWithGetResponse(500, '');
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('HTTP 500', $result->description);
+    }
+
+    public function testRunReturnsWarningWhenConnectionFails(): void
+    {
+        $httpClient = MockHttpFactory::createThatThrows('Connection refused');
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('Unable to check', $result->description);
+    }
+
+    public function testDetectsContentBeforeNameOrder(): void
+    {
+        // Test tags with content attribute before name attribute
+        $html = <<<'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="summary_large_image" name="twitter:card">
+    <meta content="My Site Title" name="twitter:title">
+    <meta content="My site description" name="twitter:description">
+</head>
+<body></body>
+</html>
+HTML;
+
+        $httpClient = MockHttpFactory::createWithGetResponse(200, $html);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testDetectsOpenGraphContentBeforePropertyOrder(): void
+    {
+        // Test OG fallback with reversed attribute order
+        $html = <<<'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="twitter:card" content="summary">
+    <meta content="My Site Title" property="og:title">
+    <meta content="My site description" property="og:description">
+</head>
+<body></body>
+</html>
+HTML;
+
+        $httpClient = MockHttpFactory::createWithGetResponse(200, $html);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testSuggestsImageWhenMissing(): void
+    {
+        $html = <<<'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="My Site Title">
+    <meta name="twitter:description" content="My site description">
+</head>
+<body></body>
+</html>
+HTML;
+
+        $httpClient = MockHttpFactory::createWithGetResponse(200, $html);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('image', $result->description);
+    }
+
+    public function testResultMetadata(): void
+    {
+        $html = '<html><head></head><body></body></html>';
+        $httpClient = MockHttpFactory::createWithGetResponse(200, $html);
+        $this->check->setHttpClient($httpClient);
+
+        $result = $this->check->run();
+
+        $this->assertSame('seo.twitter_cards', $result->slug);
+        $this->assertSame('seo', $result->category);
+        $this->assertSame('core', $result->provider);
     }
 }
