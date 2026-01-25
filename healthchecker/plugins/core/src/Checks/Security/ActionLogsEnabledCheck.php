@@ -62,6 +62,11 @@ final class ActionLogsEnabledCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ActionLogsEnabledCheck.php';
+    }
+
     /**
      * Perform the Action Logs Enabled health check.
      *

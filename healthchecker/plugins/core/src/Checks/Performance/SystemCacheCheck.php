@@ -63,6 +63,11 @@ final class SystemCacheCheck extends AbstractHealthCheck
         return 'performance';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/SystemCacheCheck.php';
+    }
+
     /**
      * Perform the system cache configuration check.
      *

@@ -63,6 +63,11 @@ final class ApacheModulesCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/ApacheModulesCheck.php';
+    }
+
     /**
      * Verify that required and recommended Apache modules are loaded.
      *

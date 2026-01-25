@@ -62,6 +62,11 @@ final class PdoMysqlExtensionCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/PdoMysqlExtensionCheck.php';
+    }
+
     /**
      * Verify that the PDO MySQL extension is loaded.
      *

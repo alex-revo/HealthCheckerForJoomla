@@ -66,6 +66,11 @@ final class PageCacheCheck extends AbstractHealthCheck
         return 'performance';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/PageCacheCheck.php';
+    }
+
     /**
      * Perform the page cache plugin status check.
      *

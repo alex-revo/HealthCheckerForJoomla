@@ -67,6 +67,11 @@ final class MaxInputTimeCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/MaxInputTimeCheck.php';
+    }
+
     /**
      * Perform the max input time check.
      *

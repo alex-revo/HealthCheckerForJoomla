@@ -64,6 +64,11 @@ final class CachePluginCheck extends AbstractHealthCheck
         return 'extensions';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/CachePluginCheck.php';
+    }
+
     /**
      * Performs the cache plugin health check.
      *

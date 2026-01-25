@@ -84,6 +84,11 @@ final class ServerTimeCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/ServerTimeCheck.php';
+    }
+
     /**
      * Perform the server time health check.
      *

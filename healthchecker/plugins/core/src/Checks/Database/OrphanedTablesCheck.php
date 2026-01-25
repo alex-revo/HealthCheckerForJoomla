@@ -63,6 +63,11 @@ final class OrphanedTablesCheck extends AbstractHealthCheck
         return 'database';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/OrphanedTablesCheck.php';
+    }
+
     /**
      * Perform the orphaned database tables health check.
      *

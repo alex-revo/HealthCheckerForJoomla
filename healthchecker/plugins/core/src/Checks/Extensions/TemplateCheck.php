@@ -61,6 +61,11 @@ final class TemplateCheck extends AbstractHealthCheck
         return 'extensions';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/TemplateCheck.php';
+    }
+
     /**
      * Perform the template integrity check.
      *

@@ -62,6 +62,11 @@ final class ReCaptchaCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ReCaptchaCheck.php';
+    }
+
     /**
      * Perform the CAPTCHA configuration check.
      *

@@ -62,6 +62,11 @@ final class OpcacheCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/OpcacheCheck.php';
+    }
+
     /**
      * Performs the OPcache configuration and health check.
      *

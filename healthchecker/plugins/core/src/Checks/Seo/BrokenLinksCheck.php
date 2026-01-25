@@ -63,6 +63,11 @@ final class BrokenLinksCheck extends AbstractHealthCheck
         return 'seo';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/BrokenLinksCheck.php';
+    }
+
     /**
      * Perform the broken links (404 errors) health check.
      *

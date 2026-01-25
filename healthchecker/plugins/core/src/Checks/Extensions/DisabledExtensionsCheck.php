@@ -59,6 +59,11 @@ final class DisabledExtensionsCheck extends AbstractHealthCheck
         return 'extensions';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/DisabledExtensionsCheck.php';
+    }
+
     /**
      * Performs the disabled extensions health check.
      *

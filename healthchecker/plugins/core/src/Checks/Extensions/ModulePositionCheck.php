@@ -61,6 +61,11 @@ final class ModulePositionCheck extends AbstractHealthCheck
         return 'extensions';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/ModulePositionCheck.php';
+    }
+
     /**
      * Perform the module position check.
      *

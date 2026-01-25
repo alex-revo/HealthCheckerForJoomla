@@ -63,6 +63,11 @@ final class StructuredDataCheck extends AbstractHealthCheck
         return 'seo';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/StructuredDataCheck.php';
+    }
+
     /**
      * Perform the Schema.org structured data plugin detection check.
      *

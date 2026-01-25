@@ -63,6 +63,11 @@ final class UncategorizedContentCheck extends AbstractHealthCheck
         return 'content';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/UncategorizedContentCheck.php';
+    }
+
     /**
      * Perform the Uncategorized Content health check.
      *

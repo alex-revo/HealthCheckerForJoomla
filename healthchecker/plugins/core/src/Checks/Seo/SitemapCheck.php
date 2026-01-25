@@ -62,6 +62,11 @@ final class SitemapCheck extends AbstractHealthCheck
         return 'seo';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/SitemapCheck.php';
+    }
+
     /**
      * Perform the XML sitemap health check.
      *

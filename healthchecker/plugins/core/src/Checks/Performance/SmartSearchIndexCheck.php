@@ -61,6 +61,11 @@ final class SmartSearchIndexCheck extends AbstractHealthCheck
         return 'performance';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/SmartSearchIndexCheck.php';
+    }
+
     /**
      * Perform the Smart Search (Finder) index status check.
      *

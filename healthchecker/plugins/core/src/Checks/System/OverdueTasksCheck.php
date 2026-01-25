@@ -64,6 +64,11 @@ final class OverdueTasksCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/OverdueTasksCheck.php';
+    }
+
     /**
      * Perform the overdue tasks health check.
      *

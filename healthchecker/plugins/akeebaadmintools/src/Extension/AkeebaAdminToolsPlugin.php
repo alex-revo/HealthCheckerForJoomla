@@ -240,6 +240,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_INSTALLED_TITLE');
             }
 
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
+            }
+
             /**
              * Perform the installation check.
              *
@@ -326,6 +336,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
             public function getTitle(): string
             {
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_WAF_ENABLED_TITLE');
+            }
+
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
             }
 
             /**
@@ -428,6 +448,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_SECURITY_EVENTS_TITLE');
             }
 
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
+            }
+
             /**
              * Perform the security events check.
              *
@@ -522,6 +552,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
             public function getTitle(): string
             {
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_BLOCKED_ATTACKS_TITLE');
+            }
+
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
             }
 
             /**
@@ -620,6 +660,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_ACTIVE_BANS_TITLE');
             }
 
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
+            }
+
             /**
              * Perform the active bans check.
              *
@@ -715,6 +765,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
             public function getTitle(): string
             {
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_SCAN_AGE_TITLE');
+            }
+
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
             }
 
             /**
@@ -832,6 +892,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_FILE_ALERTS_TITLE');
             }
 
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
+            }
+
             /**
              * Perform the file alerts check.
              *
@@ -947,6 +1017,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_TEMP_SUPERUSERS_TITLE');
             }
 
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
+            }
+
             /**
              * Perform the temporary super users check.
              *
@@ -1048,6 +1128,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_IP_WHITELIST_TITLE');
             }
 
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
+            }
+
             /**
              * Perform the IP whitelist check.
              *
@@ -1141,6 +1231,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
             public function getTitle(): string
             {
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_WAF_RULES_TITLE');
+            }
+
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
             }
 
             /**
@@ -1249,6 +1349,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_LOGIN_FAILURES_TITLE');
             }
 
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
+            }
+
             /**
              * Perform the login failures check.
              *
@@ -1351,6 +1461,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_GEOBLOCKING_TITLE');
             }
 
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
+            }
+
             /**
              * Perform the geoblocking events check.
              *
@@ -1447,6 +1567,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
             public function getTitle(): string
             {
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_SQLI_BLOCKS_TITLE');
+            }
+
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
             }
 
             /**
@@ -1547,6 +1677,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_XSS_BLOCKS_TITLE');
             }
 
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
+            }
+
             /**
              * Perform the XSS blocks check.
              *
@@ -1643,6 +1783,16 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
             public function getTitle(): string
             {
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_ADMIN_ACCESS_TITLE');
+            }
+
+            public function getDocsUrl(): string
+            {
+                return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
+            }
+
+            public function getActionUrl(): string
+            {
+                return '/administrator/index.php?option=com_admintools';
             }
 
             /**

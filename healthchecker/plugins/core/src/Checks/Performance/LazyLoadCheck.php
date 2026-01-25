@@ -63,6 +63,11 @@ final class LazyLoadCheck extends AbstractHealthCheck
         return 'performance';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/LazyLoadCheck.php';
+    }
+
     /**
      * Perform the lazy load health check.
      *

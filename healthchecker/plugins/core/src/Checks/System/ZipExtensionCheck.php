@@ -63,6 +63,11 @@ final class ZipExtensionCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/ZipExtensionCheck.php';
+    }
+
     /**
      * Performs the Zip extension availability check.
      *

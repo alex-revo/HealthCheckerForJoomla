@@ -62,6 +62,11 @@ final class MediaManagerThumbnailsCheck extends AbstractHealthCheck
         return 'performance';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/MediaManagerThumbnailsCheck.php';
+    }
+
     /**
      * Perform the Media Manager thumbnails health check.
      *

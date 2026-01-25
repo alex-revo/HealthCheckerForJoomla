@@ -264,6 +264,12 @@
                     providerBadge = `<span class="badge bg-secondary hasTooltip" title="${escapeHtml(provider.name + (provider.version ? ' v' + provider.version : ''))}">${escapeHtml(provider.name)}</span>`;
                 }
 
+                // Build docs link if docsUrl exists
+                let docsHtml = '';
+                if (result.docsUrl) {
+                    docsHtml = `<a href="${escapeHtml(result.docsUrl)}" target="_blank" rel="noopener" class="btn btn-sm btn-link healthchecker-docs-link" title="${translations.viewDocs || 'View Documentation'}"><span class="fa fa-question-circle"></span></a>`;
+                }
+
                 row.innerHTML = `
                     <td>
                         <span class="badge ${statusInfo.badgeClass}">
@@ -274,7 +280,19 @@
                     <td>${escapeHtml(result.title)}</td>
                     <td>${providerBadge}</td>
                     <td>${escapeHtml(result.description)}</td>
+                    <td>${docsHtml}</td>
                 `;
+
+                // Add click handler for actionUrl
+                if (result.actionUrl) {
+                    row.classList.add('healthchecker-action-row');
+                    row.style.cursor = 'pointer';
+                    row.onclick = () => window.location.href = result.actionUrl;
+                } else {
+                    row.classList.remove('healthchecker-action-row');
+                    row.style.cursor = '';
+                    row.onclick = null;
+                }
 
                 // Update card border based on results
                 updateCategoryCardBorder(result.category);
@@ -454,8 +472,19 @@
                                 providerBadge = `<span class="badge bg-secondary hasTooltip" title="${escapeHtml(provider.name + (provider.version ? ' v' + provider.version : ''))}">${escapeHtml(provider.name)}</span>`;
                             }
 
+                            // Build docs link if docsUrl exists
+                            let docsHtml = '';
+                            if (result.docsUrl) {
+                                docsHtml = `<a href="${escapeHtml(result.docsUrl)}" target="_blank" rel="noopener" class="btn btn-sm btn-link healthchecker-docs-link" title="${translations.viewDocs || 'View Documentation'}"><span class="fa fa-question-circle"></span></a>`;
+                            }
+
+                            // Build row classes and attributes for actionUrl
+                            let rowClass = result.actionUrl ? 'healthchecker-action-row' : '';
+                            let rowStyle = result.actionUrl ? 'cursor: pointer;' : '';
+                            let rowOnclick = result.actionUrl ? `onclick="window.location.href='${escapeHtml(result.actionUrl)}'"` : '';
+
                             rowsHtml += `
-                                <tr id="${rowId}">
+                                <tr id="${rowId}" class="${rowClass}" style="${rowStyle}" ${rowOnclick}>
                                     <td>
                                         <span class="badge ${statusInfo.badgeClass}">
                                             <span class="fa ${statusInfo.icon}" aria-hidden="true"></span>
@@ -465,6 +494,7 @@
                                     <td>${escapeHtml(result.title)}</td>
                                     <td>${providerBadge}</td>
                                     <td>${escapeHtml(result.description)}</td>
+                                    <td>${docsHtml}</td>
                                 </tr>
                             `;
                         } else {
@@ -479,6 +509,7 @@
                                     <td>${escapeHtml(check.title)}</td>
                                     <td></td>
                                     <td class="text-muted">${translations.runningChecks || 'Running checks...'}</td>
+                                    <td></td>
                                 </tr>
                             `;
                         }
@@ -522,6 +553,7 @@
                                             <col style="width: 300px;">
                                             <col style="width: 150px;">
                                             <col>
+                                            <col style="width: 40px;">
                                         </colgroup>
                                         <tbody>${rowsHtml}</tbody>
                                     </table>
@@ -708,7 +740,8 @@
                 runningChecks: form.dataset.textRunningChecks || 'Running checks...',
                 critical: form.dataset.textCritical || 'Critical',
                 warning: form.dataset.textWarning || 'Warning',
-                good: form.dataset.textGood || 'Good'
+                good: form.dataset.textGood || 'Good',
+                viewDocs: form.dataset.textViewDocs || 'View Documentation'
             }
         });
     });

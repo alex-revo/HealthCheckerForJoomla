@@ -61,6 +61,11 @@ final class TempDirectoryCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/TempDirectoryCheck.php';
+    }
+
     /**
      * Perform the temp directory health check.
      *

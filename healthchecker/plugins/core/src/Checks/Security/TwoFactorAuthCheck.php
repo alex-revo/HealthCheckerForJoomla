@@ -61,6 +61,11 @@ final class TwoFactorAuthCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/TwoFactorAuthCheck.php';
+    }
+
     /**
      * Perform the Multi-Factor Authentication health check
      *

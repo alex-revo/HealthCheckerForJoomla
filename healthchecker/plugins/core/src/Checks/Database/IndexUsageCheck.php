@@ -82,6 +82,11 @@ final class IndexUsageCheck extends AbstractHealthCheck
         return 'database';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/IndexUsageCheck.php';
+    }
+
     /**
      * Perform the database index usage health check.
      *

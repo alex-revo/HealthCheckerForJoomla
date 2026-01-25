@@ -63,6 +63,11 @@ final class OpenGraphCheck extends AbstractHealthCheck
         return 'seo';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/OpenGraphCheck.php';
+    }
+
     /**
      * Perform the Open Graph meta tags detection check.
      *

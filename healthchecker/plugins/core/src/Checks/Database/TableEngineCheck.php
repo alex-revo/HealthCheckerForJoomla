@@ -64,6 +64,11 @@ final class TableEngineCheck extends AbstractHealthCheck
         return 'database';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/TableEngineCheck.php';
+    }
+
     /**
      * Perform the table storage engine health check.
      *

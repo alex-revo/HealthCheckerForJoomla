@@ -73,6 +73,11 @@ final class DefaultSecretCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/DefaultSecretCheck.php';
+    }
+
     /**
      * Perform the secret key security check.
      *

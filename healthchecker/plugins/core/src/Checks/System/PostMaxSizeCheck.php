@@ -75,6 +75,11 @@ final class PostMaxSizeCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/PostMaxSizeCheck.php';
+    }
+
     /**
      * Perform the post_max_size check.
      *

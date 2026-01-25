@@ -62,6 +62,11 @@ final class GzipCompressionCheck extends AbstractHealthCheck
         return 'performance';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/GzipCompressionCheck.php';
+    }
+
     /**
      * Perform the Gzip compression health check.
      *

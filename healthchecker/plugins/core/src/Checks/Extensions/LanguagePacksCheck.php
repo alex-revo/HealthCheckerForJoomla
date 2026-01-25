@@ -58,6 +58,11 @@ final class LanguagePacksCheck extends AbstractHealthCheck
         return 'extensions';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/LanguagePacksCheck.php';
+    }
+
     /**
      * Performs the language packs health check.
      *

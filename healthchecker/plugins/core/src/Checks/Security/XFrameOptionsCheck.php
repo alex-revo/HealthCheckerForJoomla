@@ -69,6 +69,11 @@ final class XFrameOptionsCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/XFrameOptionsCheck.php';
+    }
+
     /**
      * Perform the X-Frame-Options header health check
      *

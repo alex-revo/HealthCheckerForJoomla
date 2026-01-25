@@ -59,6 +59,11 @@ final class JoomlaCoreVersionCheck extends AbstractHealthCheck
         return 'extensions';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/JoomlaCoreVersionCheck.php';
+    }
+
     /**
      * Perform the Joomla core version check.
      *

@@ -65,6 +65,11 @@ final class OutputBufferingCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/OutputBufferingCheck.php';
+    }
+
     /**
      * Perform the output buffering check.
      *

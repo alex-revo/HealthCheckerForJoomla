@@ -67,6 +67,11 @@ final class OverrideCheck extends AbstractHealthCheck
         return 'extensions';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/OverrideCheck.php';
+    }
+
     /**
      * Perform the template override check.
      *

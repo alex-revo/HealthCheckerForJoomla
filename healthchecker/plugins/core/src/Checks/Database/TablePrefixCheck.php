@@ -66,6 +66,11 @@ final class TablePrefixCheck extends AbstractHealthCheck
         return 'database';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/TablePrefixCheck.php';
+    }
+
     /**
      * Perform the table prefix health check.
      *

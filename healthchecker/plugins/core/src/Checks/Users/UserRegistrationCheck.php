@@ -69,6 +69,11 @@ final class UserRegistrationCheck extends AbstractHealthCheck
         return 'users';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/UserRegistrationCheck.php';
+    }
+
     /**
      * Perform the user registration health check.
      *

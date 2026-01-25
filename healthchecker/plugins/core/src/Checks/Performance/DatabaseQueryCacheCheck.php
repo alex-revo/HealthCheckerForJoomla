@@ -62,6 +62,11 @@ final class DatabaseQueryCacheCheck extends AbstractHealthCheck
         return 'performance';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Performance/DatabaseQueryCacheCheck.php';
+    }
+
     /**
      * Perform the database query cache health check.
      *

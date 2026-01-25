@@ -62,6 +62,11 @@ final class SessionHandlerCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/SessionHandlerCheck.php';
+    }
+
     /**
      * Perform the session handler configuration check.
      *

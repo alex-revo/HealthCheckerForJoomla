@@ -77,6 +77,11 @@ final class ServerVersionCheck extends AbstractHealthCheck
         return 'database';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/ServerVersionCheck.php';
+    }
+
     /**
      * Perform the database server version health check.
      *

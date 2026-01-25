@@ -63,6 +63,11 @@ final class ExpiredContentCheck extends AbstractHealthCheck
         return 'content';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/ExpiredContentCheck.php';
+    }
+
     /**
      * Perform the Expired Content health check.
      *

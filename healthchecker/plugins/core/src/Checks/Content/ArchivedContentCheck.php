@@ -62,6 +62,11 @@ final class ArchivedContentCheck extends AbstractHealthCheck
         return 'content';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/ArchivedContentCheck.php';
+    }
+
     /**
      * Perform the health check to count archived articles.
      *

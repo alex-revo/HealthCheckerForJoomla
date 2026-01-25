@@ -64,6 +64,11 @@ final class CanonicalUrlCheck extends AbstractHealthCheck
         return 'seo';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/CanonicalUrlCheck.php';
+    }
+
     /**
      * Perform the canonical URL configuration health check.
      *

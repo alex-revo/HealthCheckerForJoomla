@@ -293,4 +293,162 @@ class HealthCheckResultTest extends TestCase
         $this->assertSame($original->category, $reconstructed->category);
         $this->assertSame($original->provider, $reconstructed->provider);
     }
+
+    public function testConstructorWithDocsUrl(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Test Check',
+            description: 'Test description',
+            slug: 'test.check',
+            category: 'system',
+            provider: 'core',
+            docsUrl: 'https://example.com/docs',
+        );
+
+        $this->assertSame('https://example.com/docs', $healthCheckResult->docsUrl);
+        $this->assertNull($healthCheckResult->actionUrl);
+    }
+
+    public function testConstructorWithActionUrl(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Test Check',
+            description: 'Test description',
+            slug: 'test.check',
+            category: 'system',
+            provider: 'core',
+            docsUrl: null,
+            actionUrl: '/administrator/index.php?option=com_test',
+        );
+
+        $this->assertNull($healthCheckResult->docsUrl);
+        $this->assertSame('/administrator/index.php?option=com_test', $healthCheckResult->actionUrl);
+    }
+
+    public function testConstructorWithBothUrls(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Test Check',
+            description: 'Test description',
+            slug: 'test.check',
+            category: 'system',
+            provider: 'core',
+            docsUrl: 'https://example.com/docs',
+            actionUrl: '/administrator/index.php?option=com_test',
+        );
+
+        $this->assertSame('https://example.com/docs', $healthCheckResult->docsUrl);
+        $this->assertSame('/administrator/index.php?option=com_test', $healthCheckResult->actionUrl);
+    }
+
+    public function testUrlsDefaultToNull(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Test',
+            description: 'Test',
+            slug: 'test.check',
+            category: 'system',
+        );
+
+        $this->assertNull($healthCheckResult->docsUrl);
+        $this->assertNull($healthCheckResult->actionUrl);
+    }
+
+    public function testToArrayIncludesUrls(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Test',
+            description: 'Test',
+            slug: 'test.check',
+            category: 'system',
+            provider: 'core',
+            docsUrl: 'https://example.com/docs',
+            actionUrl: '/admin',
+        );
+
+        $array = $healthCheckResult->toArray();
+
+        $this->assertArrayHasKey('docsUrl', $array);
+        $this->assertArrayHasKey('actionUrl', $array);
+        $this->assertSame('https://example.com/docs', $array['docsUrl']);
+        $this->assertSame('/admin', $array['actionUrl']);
+    }
+
+    public function testToArrayWithNullUrls(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Test',
+            description: 'Test',
+            slug: 'test.check',
+            category: 'system',
+        );
+
+        $array = $healthCheckResult->toArray();
+
+        $this->assertArrayHasKey('docsUrl', $array);
+        $this->assertArrayHasKey('actionUrl', $array);
+        $this->assertNull($array['docsUrl']);
+        $this->assertNull($array['actionUrl']);
+    }
+
+    public function testFromArrayWithUrls(): void
+    {
+        $data = [
+            'status' => 'good',
+            'title' => 'Test',
+            'description' => 'Test',
+            'slug' => 'test.urls',
+            'category' => 'system',
+            'provider' => 'core',
+            'docsUrl' => 'https://example.com/docs',
+            'actionUrl' => '/admin/page',
+        ];
+
+        $result = HealthCheckResult::fromArray($data);
+
+        $this->assertSame('https://example.com/docs', $result->docsUrl);
+        $this->assertSame('/admin/page', $result->actionUrl);
+    }
+
+    public function testFromArrayDefaultsUrlsToNull(): void
+    {
+        $data = [
+            'status' => 'good',
+            'title' => 'Test',
+            'description' => 'Test',
+            'slug' => 'test.no_urls',
+            'category' => 'system',
+        ];
+
+        $result = HealthCheckResult::fromArray($data);
+
+        $this->assertNull($result->docsUrl);
+        $this->assertNull($result->actionUrl);
+    }
+
+    public function testFromArrayRoundtripWithUrls(): void
+    {
+        $original = new HealthCheckResult(
+            healthStatus: HealthStatus::Warning,
+            title: 'Roundtrip URL Test',
+            description: 'Testing URL roundtrip',
+            slug: 'test.url_roundtrip',
+            category: 'performance',
+            provider: 'custom',
+            docsUrl: 'https://docs.example.com/check',
+            actionUrl: '/administrator/index.php?option=com_custom',
+        );
+
+        $array = $original->toArray();
+        $reconstructed = HealthCheckResult::fromArray($array);
+
+        $this->assertSame($original->docsUrl, $reconstructed->docsUrl);
+        $this->assertSame($original->actionUrl, $reconstructed->actionUrl);
+    }
 }

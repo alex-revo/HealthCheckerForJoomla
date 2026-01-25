@@ -63,6 +63,11 @@ final class MetaKeywordsCheck extends AbstractHealthCheck
         return 'seo';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/MetaKeywordsCheck.php';
+    }
+
     /**
      * Perform the meta keywords health check.
      *

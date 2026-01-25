@@ -61,6 +61,11 @@ final class ContentSecurityPolicyCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ContentSecurityPolicyCheck.php';
+    }
+
     /**
      * Perform the Content Security Policy health check
      *

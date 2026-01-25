@@ -29,7 +29,7 @@ final class HealthCheckResult
     /**
      * Create a new health check result.
      *
-     * All parameters are required except provider which defaults to "core".
+     * All parameters are required except provider, docsUrl, and actionUrl which have defaults.
      * The constructed object is fully immutable - all properties are readonly.
      *
      * @param HealthStatus $healthStatus The status of the check (Critical/Warning/Good)
@@ -38,6 +38,8 @@ final class HealthCheckResult
      * @param string       $slug         Unique identifier for the check (e.g., "core.php_version")
      * @param string       $category     Category slug the check belongs to (e.g., "system")
      * @param string       $provider     Provider slug that owns this check (defaults to "core")
+     * @param string|null  $docsUrl      URL to documentation for this check (shown as ? icon)
+     * @param string|null  $actionUrl    URL to navigate to when row is clicked
      *
      * @since 1.0.0
      */
@@ -101,6 +103,28 @@ final class HealthCheckResult
          * @since 1.0.0
          */
         public readonly string $provider = 'core',
+
+        /**
+         * URL to documentation for this health check.
+         *
+         * When set, displays a (?) icon next to the check that opens
+         * the documentation URL in a new tab when clicked.
+         *
+         * @var string|null The documentation URL or null if none
+         * @since 3.0.36
+         */
+        public readonly ?string $docsUrl = null,
+
+        /**
+         * URL to navigate to when the result row is clicked.
+         *
+         * When set, makes the entire row clickable and navigates to
+         * this URL (in the same window) when clicked.
+         *
+         * @var string|null The action URL or null if not clickable
+         * @since 3.0.36
+         */
+        public readonly ?string $actionUrl = null,
     ) {}
 
     /**
@@ -110,7 +134,7 @@ final class HealthCheckResult
      * JavaScript in the frontend. The health status enum is converted to its
      * string value.
      *
-     * @return array{status: string, title: string, description: string, slug: string, category: string, provider: string}
+     * @return array{status: string, title: string, description: string, slug: string, category: string, provider: string, docsUrl: string|null, actionUrl: string|null}
      *               Array representation of the result
      *
      * @since 1.0.0
@@ -124,6 +148,8 @@ final class HealthCheckResult
             'slug' => $this->slug,
             'category' => $this->category,
             'provider' => $this->provider,
+            'docsUrl' => $this->docsUrl,
+            'actionUrl' => $this->actionUrl,
         ];
     }
 
@@ -133,7 +159,7 @@ final class HealthCheckResult
      * This is used to reconstruct HealthCheckResult objects from cached JSON data.
      * It's the inverse of toArray() and provides a safe alternative to unserialize().
      *
-     * @param array{status: string, title: string, description: string, slug: string, category: string, provider?: string} $data
+     * @param array{status: string, title: string, description: string, slug: string, category: string, provider?: string, docsUrl?: string|null, actionUrl?: string|null} $data
      *               Array representation of the result (as produced by toArray())
      *
      * @return self The reconstructed HealthCheckResult object
@@ -149,6 +175,8 @@ final class HealthCheckResult
             slug: $data['slug'],
             category: $data['category'],
             provider: $data['provider'] ?? 'core',
+            docsUrl: $data['docsUrl'] ?? null,
+            actionUrl: $data['actionUrl'] ?? null,
         );
     }
 }

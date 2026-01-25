@@ -65,6 +65,11 @@ final class ForceSslCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ForceSslCheck.php';
+    }
+
     /**
      * Perform the Force SSL configuration check.
      *

@@ -75,6 +75,11 @@ final class InactiveUsersCheck extends AbstractHealthCheck
         return 'users';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/InactiveUsersCheck.php';
+    }
+
     /**
      * Performs the inactive users health check.
      *

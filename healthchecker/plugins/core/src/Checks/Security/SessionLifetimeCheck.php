@@ -78,6 +78,11 @@ final class SessionLifetimeCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/SessionLifetimeCheck.php';
+    }
+
     /**
      * Perform the session lifetime configuration check.
      *

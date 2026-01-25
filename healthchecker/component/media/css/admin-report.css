@@ -94,3 +94,29 @@
 .healthchecker-no-external-icon::before {
     display: none !important;
 }
+
+/* Clickable action rows */
+.healthchecker-action-row:hover {
+    background-color: rgba(0, 123, 255, 0.05) !important;
+    cursor: pointer;
+}
+
+.healthchecker-action-row td {
+    transition: background-color 0.15s ease;
+}
+
+/* Docs link styling */
+.healthchecker-docs-link {
+    color: #6c757d;
+    padding: 0.25rem;
+}
+
+.healthchecker-docs-link:hover {
+    color: #0d6efd;
+}
+
+/* Hide external link icon on docs link */
+.healthchecker-docs-link::before,
+.healthchecker-docs-link::after {
+    display: none !important;
+}

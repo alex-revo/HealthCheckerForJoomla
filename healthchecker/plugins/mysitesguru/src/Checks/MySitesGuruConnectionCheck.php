@@ -116,6 +116,16 @@ final class MySitesGuruConnectionCheck extends AbstractHealthCheck
         return 'mysitesguru';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/mysitesguru/src/Checks/MySitesGuruConnectionCheck.php';
+    }
+
+    public function getActionUrl(): string
+    {
+        return 'https://mysites.guru';
+    }
+
     /**
      * Performs the actual health check logic.
      *

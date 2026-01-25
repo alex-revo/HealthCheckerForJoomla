@@ -71,6 +71,11 @@ final class UnpublishedCategoryArticlesCheck extends AbstractHealthCheck
         return 'content';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/UnpublishedCategoryArticlesCheck.php';
+    }
+
     /**
      * Perform the health check to find published articles in unpublished categories.
      *

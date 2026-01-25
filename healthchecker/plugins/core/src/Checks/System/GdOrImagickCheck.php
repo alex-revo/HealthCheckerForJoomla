@@ -67,6 +67,11 @@ final class GdOrImagickCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/GdOrImagickCheck.php';
+    }
+
     /**
      * Verify that at least one image processing extension is available.
      *

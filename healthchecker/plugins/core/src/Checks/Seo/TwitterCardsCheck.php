@@ -95,6 +95,11 @@ final class TwitterCardsCheck extends AbstractHealthCheck
         return 'seo';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/TwitterCardsCheck.php';
+    }
+
     /**
      * Perform the X/Twitter Cards meta tags check.
      *

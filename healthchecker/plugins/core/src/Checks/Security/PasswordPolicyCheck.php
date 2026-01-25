@@ -64,6 +64,11 @@ final class PasswordPolicyCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/PasswordPolicyCheck.php';
+    }
+
     /**
      * Perform the password policy configuration check.
      *

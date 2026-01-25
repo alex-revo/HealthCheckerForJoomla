@@ -62,6 +62,11 @@ final class SimpleXmlExtensionCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/SimpleXmlExtensionCheck.php';
+    }
+
     /**
      * Verify that the SimpleXML extension is loaded.
      *

@@ -62,6 +62,11 @@ final class MenuOrphansCheck extends AbstractHealthCheck
         return 'content';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/MenuOrphansCheck.php';
+    }
+
     /**
      * Perform the health check to identify menu items linking to non-existent articles.
      *

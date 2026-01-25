@@ -66,6 +66,11 @@ final class BlockedUsersCheck extends AbstractHealthCheck
         return 'users';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/BlockedUsersCheck.php';
+    }
+
     /**
      * Performs the blocked users health check.
      *

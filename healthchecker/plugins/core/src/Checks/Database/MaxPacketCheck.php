@@ -82,6 +82,11 @@ final class MaxPacketCheck extends AbstractHealthCheck
         return 'database';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/MaxPacketCheck.php';
+    }
+
     /**
      * Perform the max_allowed_packet health check.
      *

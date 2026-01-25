@@ -62,6 +62,11 @@ final class ApiAuthCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/ApiAuthCheck.php';
+    }
+
     /**
      * Perform the API authentication health check
      *

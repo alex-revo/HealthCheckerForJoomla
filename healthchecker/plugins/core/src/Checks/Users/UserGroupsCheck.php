@@ -68,6 +68,11 @@ final class UserGroupsCheck extends AbstractHealthCheck
         return 'users';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/UserGroupsCheck.php';
+    }
+
     /**
      * Perform the user groups health check.
      *

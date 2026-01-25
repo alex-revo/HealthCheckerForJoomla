@@ -89,6 +89,11 @@ final class AdminEmailCheck extends AbstractHealthCheck
         return 'users';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/AdminEmailCheck.php';
+    }
+
     /**
      * Performs the admin email validation health check.
      *

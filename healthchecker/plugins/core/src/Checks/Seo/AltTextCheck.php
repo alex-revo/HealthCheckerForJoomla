@@ -63,6 +63,11 @@ final class AltTextCheck extends AbstractHealthCheck
         return 'seo';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Seo/AltTextCheck.php';
+    }
+
     /**
      * Perform the alt text health check.
      *

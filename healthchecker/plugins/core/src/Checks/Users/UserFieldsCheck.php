@@ -71,6 +71,11 @@ final class UserFieldsCheck extends AbstractHealthCheck
         return 'users';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/UserFieldsCheck.php';
+    }
+
     /**
      * Perform the user custom fields health check.
      *

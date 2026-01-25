@@ -69,6 +69,11 @@ final class AutoIncrementCheck extends AbstractHealthCheck
         return 'database';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/AutoIncrementCheck.php';
+    }
+
     /**
      * Perform the Auto Increment health check.
      *

@@ -62,6 +62,11 @@ final class PrivacyDashboardCheck extends AbstractHealthCheck
         return 'security';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/PrivacyDashboardCheck.php';
+    }
+
     /**
      * Perform the privacy component and requests check.
      *

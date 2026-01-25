@@ -61,6 +61,11 @@ final class JsonExtensionCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/JsonExtensionCheck.php';
+    }
+
     /**
      * Performs the JSON extension availability check.
      *

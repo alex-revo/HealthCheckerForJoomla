@@ -66,6 +66,11 @@ final class IntlExtensionCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/IntlExtensionCheck.php';
+    }
+
     /**
      * Performs the Intl extension availability check.
      *

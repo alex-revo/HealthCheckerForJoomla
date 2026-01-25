@@ -83,6 +83,11 @@ final class PhpEolCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/PhpEolCheck.php';
+    }
+
     /**
      * Check if the current PHP version is approaching or past its end-of-life date.
      *

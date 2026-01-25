@@ -62,6 +62,11 @@ final class SessionSavePathCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/SessionSavePathCheck.php';
+    }
+
     /**
      * Perform the session save path health check.
      *

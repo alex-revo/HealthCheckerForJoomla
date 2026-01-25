@@ -64,6 +64,11 @@ final class ConnectionCheck extends AbstractHealthCheck
         return 'database';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Database/ConnectionCheck.php';
+    }
+
     /**
      * Perform the Connection health check.
      *

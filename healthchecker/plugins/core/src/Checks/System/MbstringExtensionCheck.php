@@ -65,6 +65,11 @@ final class MbstringExtensionCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/MbstringExtensionCheck.php';
+    }
+
     /**
      * Performs the Mbstring extension availability check.
      *

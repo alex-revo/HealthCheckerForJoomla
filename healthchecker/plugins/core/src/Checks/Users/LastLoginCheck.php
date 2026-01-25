@@ -69,6 +69,11 @@ final class LastLoginCheck extends AbstractHealthCheck
         return 'users';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/LastLoginCheck.php';
+    }
+
     /**
      * Perform the last login health check.
      *

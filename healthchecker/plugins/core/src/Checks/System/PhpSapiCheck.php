@@ -71,6 +71,11 @@ final class PhpSapiCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/PhpSapiCheck.php';
+    }
+
     /**
      * Identify and report the PHP Server API (SAPI) in use.
      *

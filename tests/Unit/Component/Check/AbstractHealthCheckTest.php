@@ -233,6 +233,135 @@ class AbstractHealthCheckTest extends TestCase
         $this->assertInstanceOf(\Joomla\CMS\Http\Http::class, $result);
     }
 
+    public function testGetDocsUrlReturnsNullByDefault(): void
+    {
+        $check = $this->createTestCheck();
+        $this->assertNull($check->getDocsUrl());
+    }
+
+    public function testGetActionUrlReturnsNullByDefault(): void
+    {
+        $check = $this->createTestCheck();
+        $this->assertNull($check->getActionUrl());
+    }
+
+    public function testCustomDocsUrlCanBeOverridden(): void
+    {
+        $check = new class extends AbstractHealthCheck {
+            public function getSlug(): string
+            {
+                return 'custom.docs_url';
+            }
+
+            public function getCategory(): string
+            {
+                return 'system';
+            }
+
+            public function getDocsUrl(): ?string
+            {
+                return 'https://example.com/docs/custom';
+            }
+
+            protected function performCheck(): HealthCheckResult
+            {
+                return $this->good('OK');
+            }
+        };
+
+        $this->assertSame('https://example.com/docs/custom', $check->getDocsUrl());
+
+        $result = $check->run();
+        $this->assertSame('https://example.com/docs/custom', $result->docsUrl);
+    }
+
+    public function testCustomActionUrlCanBeOverridden(): void
+    {
+        $check = new class extends AbstractHealthCheck {
+            public function getSlug(): string
+            {
+                return 'custom.action_url';
+            }
+
+            public function getCategory(): string
+            {
+                return 'system';
+            }
+
+            public function getActionUrl(): ?string
+            {
+                return '/administrator/index.php?option=com_custom';
+            }
+
+            protected function performCheck(): HealthCheckResult
+            {
+                return $this->good('OK');
+            }
+        };
+
+        $this->assertSame('/administrator/index.php?option=com_custom', $check->getActionUrl());
+
+        $result = $check->run();
+        $this->assertSame('/administrator/index.php?option=com_custom', $result->actionUrl);
+    }
+
+    public function testHelperMethodsIncludeUrls(): void
+    {
+        $check = new class extends AbstractHealthCheck {
+            public function getSlug(): string
+            {
+                return 'test.with_urls';
+            }
+
+            public function getCategory(): string
+            {
+                return 'system';
+            }
+
+            public function getDocsUrl(): ?string
+            {
+                return 'https://docs.test.com';
+            }
+
+            public function getActionUrl(): ?string
+            {
+                return '/admin/test';
+            }
+
+            public function exposeCritical(string $description): HealthCheckResult
+            {
+                return $this->critical($description);
+            }
+
+            public function exposeWarning(string $description): HealthCheckResult
+            {
+                return $this->warning($description);
+            }
+
+            public function exposeGood(string $description): HealthCheckResult
+            {
+                return $this->good($description);
+            }
+
+            protected function performCheck(): HealthCheckResult
+            {
+                return $this->good('OK');
+            }
+        };
+
+        $criticalResult = $check->exposeCritical('Critical issue');
+        $this->assertSame('https://docs.test.com', $criticalResult->docsUrl);
+        $this->assertSame('/admin/test', $criticalResult->actionUrl);
+
+        $warningResult = $check->exposeWarning('Warning issue');
+        $this->assertSame('https://docs.test.com', $warningResult->docsUrl);
+        $this->assertSame('/admin/test', $warningResult->actionUrl);
+
+        $goodResult = $check->exposeGood('All good');
+        $this->assertSame('https://docs.test.com', $goodResult->docsUrl);
+        $this->assertSame('/admin/test', $goodResult->actionUrl);
+    }
+
     /**
      * Create a test check instance with exposed protected methods
      */

@@ -65,6 +65,11 @@ final class SuperAdminCountCheck extends AbstractHealthCheck
         return 'users';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Users/SuperAdminCountCheck.php';
+    }
+
     /**
      * Performs the super administrator count health check.
      *

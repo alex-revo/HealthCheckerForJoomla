@@ -182,6 +182,43 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
     }
 
     /**
+     * Get the documentation URL for this check.
+     *
+     * When implemented, this URL is displayed as a (?) icon next to the check
+     * that opens the documentation in a new tab when clicked.
+     *
+     * Default implementation returns null (no documentation link).
+     * Override this method to provide a link to documentation for your check.
+     *
+     * @return string|null The documentation URL or null if none
+     *
+     * @since 3.0.36
+     */
+    public function getDocsUrl(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Get the action URL for this check.
+     *
+     * When implemented, the entire result row becomes clickable and navigates
+     * to this URL (in the same window) when clicked. Useful for linking to
+     * the relevant configuration page for the check.
+     *
+     * Default implementation returns null (row not clickable).
+     * Override this method to make the result row link to an action page.
+     *
+     * @return string|null The action URL or null if not clickable
+     *
+     * @since 3.0.36
+     */
+    public function getActionUrl(): ?string
+    {
+        return null;
+    }
+
+    /**
      * Get the human-readable translated title for this check.
      *
      * Automatically derives a language key from the slug and attempts to translate it.
@@ -263,6 +300,8 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
             slug: $this->getSlug(),
             category: $this->getCategory(),
             provider: $this->getProvider(),
+            docsUrl: $this->getDocsUrl(),
+            actionUrl: $this->getActionUrl(),
         );
     }
 
@@ -288,6 +327,8 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
             slug: $this->getSlug(),
             category: $this->getCategory(),
             provider: $this->getProvider(),
+            docsUrl: $this->getDocsUrl(),
+            actionUrl: $this->getActionUrl(),
         );
     }
 
@@ -312,6 +353,8 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
             slug: $this->getSlug(),
             category: $this->getCategory(),
             provider: $this->getProvider(),
+            docsUrl: $this->getDocsUrl(),
+            actionUrl: $this->getActionUrl(),
         );
     }
 }

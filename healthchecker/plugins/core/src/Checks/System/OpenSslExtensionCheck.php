@@ -68,6 +68,11 @@ final class OpenSslExtensionCheck extends AbstractHealthCheck
         return 'system';
     }
 
+    public function getDocsUrl(): string
+    {
+        return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/System/OpenSslExtensionCheck.php';
+    }
+
     /**
      * Performs the OpenSSL extension availability check.
      *
