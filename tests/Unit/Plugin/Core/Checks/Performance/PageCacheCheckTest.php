@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugin\Core\Checks\Performance;
 
+use HealthChecker\Tests\Utilities\MockDatabaseFactory;
 use Joomla\CMS\Plugin\PluginHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance\PageCacheCheck;
@@ -67,7 +68,14 @@ class PageCacheCheckTest extends TestCase
     public function testRunReturnsGoodWhenPluginEnabled(): void
     {
         // Set the page cache plugin as enabled
-        PluginHelper::setEnabled('system', 'pagecache', true);
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        // Inject database with browser cache enabled
+        $params = json_encode([
+            'browsercache' => 1,
+        ]);
+        $database = MockDatabaseFactory::createWithResult($params);
+        $this->check->setDatabase($database);
 
         $result = $this->check->run();
 
@@ -81,8 +89,14 @@ class PageCacheCheckTest extends TestCase
         $result = $this->check->run();
         $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
 
-        // Test with plugin enabled
-        PluginHelper::setEnabled('system', 'pagecache', true);
+        // Test with plugin enabled and browser cache enabled
+        PluginHelper::setEnabled('system', 'cache', true);
+        $params = json_encode([
+            'browsercache' => 1,
+        ]);
+        $database = MockDatabaseFactory::createWithResult($params);
+        $this->check->setDatabase($database);
+
         $result = $this->check->run();
         $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
     }

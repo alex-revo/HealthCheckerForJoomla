@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace HealthChecker\Tests\Unit\Plugins\Core\Checks\Performance;
 
+use HealthChecker\Tests\Utilities\MockDatabaseFactory;
+use Joomla\CMS\Plugin\PluginHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance\PageCacheCheck;
@@ -19,28 +21,194 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(PageCacheCheck::class)]
 class PageCacheCheckTest extends TestCase
 {
+    private PageCacheCheck $check;
+
+    protected function setUp(): void
+    {
+        $this->check = new PageCacheCheck();
+        // Reset plugin helper state for test isolation
+        PluginHelper::resetEnabled();
+    }
+
+    protected function tearDown(): void
+    {
+        // Reset plugin helper state after each test
+        PluginHelper::resetEnabled();
+    }
+
     public function testGetSlugReturnsCorrectValue(): void
     {
-        $check = new PageCacheCheck();
-        $this->assertSame('performance.page_cache', $check->getSlug());
+        $this->assertSame('performance.page_cache', $this->check->getSlug());
     }
 
     public function testGetCategoryReturnsPerformance(): void
     {
-        $check = new PageCacheCheck();
-        $this->assertSame('performance', $check->getCategory());
+        $this->assertSame('performance', $this->check->getCategory());
     }
 
     public function testGetProviderReturnsCore(): void
     {
-        $check = new PageCacheCheck();
-        $this->assertSame('core', $check->getProvider());
+        $this->assertSame('core', $this->check->getProvider());
+    }
+
+    public function testGetTitleReturnsString(): void
+    {
+        $title = $this->check->getTitle();
+
+        $this->assertIsString($title);
+        $this->assertNotEmpty($title);
+    }
+
+    public function testRunWithPluginDisabledReturnsWarning(): void
+    {
+        // PluginHelper::isEnabled returns false by default in stub
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('disabled', $result->description);
+    }
+
+    public function testRunWithPluginEnabledAndBrowserCacheEnabledReturnsGood(): void
+    {
+        // Enable the plugin (element name is 'cache', not 'pagecache')
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $params = json_encode([
+            'browsercache' => 1,
+        ]);
+        $database = MockDatabaseFactory::createWithResult($params);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('browser caching', $result->description);
+    }
+
+    public function testRunWithPluginEnabledAndBrowserCacheDisabledReturnsWarning(): void
+    {
+        // Enable the plugin
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $params = json_encode([
+            'browsercache' => 0,
+        ]);
+        $database = MockDatabaseFactory::createWithResult($params);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('browser caching is disabled', $result->description);
+    }
+
+    public function testRunWithEmptyParamsReturnsGood(): void
+    {
+        // Enable the plugin
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $database = MockDatabaseFactory::createWithResult('');
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        // Plugin is enabled, params empty - still good (can't determine browser cache state)
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('enabled', $result->description);
+    }
+
+    public function testRunWithInvalidJsonParamsReturnsGood(): void
+    {
+        // Enable the plugin
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $database = MockDatabaseFactory::createWithResult('invalid-json{');
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        // Plugin is enabled, can't parse params - still good
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+    }
+
+    public function testRunWithMissingBrowserCacheParamReturnsWarning(): void
+    {
+        // Enable the plugin
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $params = json_encode([
+            'other_setting' => 1,
+        ]);
+        $database = MockDatabaseFactory::createWithResult($params);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        // Missing browsercache param defaults to 0, so warning
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+    }
+
+    public function testCheckNeverReturnsCritical(): void
+    {
+        $result = $this->check->run();
+
+        $this->assertNotSame(HealthStatus::Critical, $result->healthStatus);
+    }
+
+    public function testRunWithNullParamsReturnsGood(): void
+    {
+        // Enable the plugin so we get to the params check
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        $database = MockDatabaseFactory::createWithResult(null);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        // Plugin enabled but can't read params - still good
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('enabled', $result->description);
+    }
+
+    public function testRunWithBrowserCacheStringValueEnabledReturnsGood(): void
+    {
+        // Enable the plugin
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        // Test with string '1' instead of integer
+        $params = json_encode([
+            'browsercache' => '1',
+        ]);
+        $database = MockDatabaseFactory::createWithResult($params);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('browser caching', $result->description);
+    }
+
+    public function testRunWithBrowserCacheStringValueDisabledReturnsWarning(): void
+    {
+        // Enable the plugin
+        PluginHelper::setEnabled('system', 'cache', true);
+
+        // Test with string '0' instead of integer
+        $params = json_encode([
+            'browsercache' => '0',
+        ]);
+        $database = MockDatabaseFactory::createWithResult($params);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Warning, $result->healthStatus);
+        $this->assertStringContainsString('browser caching is disabled', $result->description);
     }
 
     public function testRunReturnsHealthCheckResult(): void
     {
-        $check = new PageCacheCheck();
-        $result = $check->run();
+        $result = $this->check->run();
 
         $this->assertInstanceOf(HealthCheckResult::class, $result);
         $this->assertSame('performance.page_cache', $result->slug);
@@ -50,8 +218,7 @@ class PageCacheCheckTest extends TestCase
 
     public function testRunReturnsGoodOrWarningStatus(): void
     {
-        $check = new PageCacheCheck();
-        $result = $check->run();
+        $result = $this->check->run();
 
         // Page cache check only returns Good or Warning, never Critical
         $this->assertContains(
@@ -63,48 +230,21 @@ class PageCacheCheckTest extends TestCase
 
     public function testResultDescriptionIsNotEmpty(): void
     {
-        $check = new PageCacheCheck();
-        $result = $check->run();
+        $result = $this->check->run();
 
         $this->assertNotEmpty($result->description);
     }
 
     public function testResultDescriptionMentionsCache(): void
     {
-        $check = new PageCacheCheck();
-        $result = $check->run();
+        $result = $this->check->run();
 
         $this->assertStringContainsStringIgnoringCase('cache', $result->description);
     }
 
-    public function testCheckDoesNotRequireDatabase(): void
-    {
-        $check = new PageCacheCheck();
-
-        // Database should be null (not injected)
-        $this->assertNull($check->getDatabase());
-
-        // Check should still work without database
-        $result = $check->run();
-        $this->assertInstanceOf(HealthCheckResult::class, $result);
-    }
-
-    public function testCheckIsConsistentOnMultipleRuns(): void
-    {
-        $check = new PageCacheCheck();
-
-        $result1 = $check->run();
-        $result2 = $check->run();
-
-        // Results should be the same since plugin state doesn't change during test
-        $this->assertSame($result1->healthStatus, $result2->healthStatus);
-        $this->assertSame($result1->description, $result2->description);
-    }
-
     public function testResultCanBeConvertedToArray(): void
     {
-        $check = new PageCacheCheck();
-        $result = $check->run();
+        $result = $this->check->run();
 
         $array = $result->toArray();
 

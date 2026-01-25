@@ -11,24 +11,27 @@ declare(strict_types=1);
 /**
  * Page Cache Health Check
  *
- * This check verifies whether the System - Page Cache plugin is enabled,
- * which provides full-page caching for guest visitors.
+ * This check verifies whether the System - Page Cache plugin is enabled
+ * and whether browser caching is configured within the plugin settings.
  *
  * WHY THIS CHECK IS IMPORTANT:
  * The Page Cache plugin stores complete rendered pages for guest visitors,
  * bypassing most of Joomla's processing on subsequent requests. This can
  * dramatically improve performance for sites with high guest traffic by
  * reducing database queries and PHP execution to near zero for cached pages.
+ * Additionally, browser caching allows returning visitors to load pages
+ * directly from their browser cache, further reducing server load.
  *
  * RESULT MEANINGS:
  *
- * GOOD: The System - Page Cache plugin is enabled. Guest visitors will receive
- * cached full-page responses for significantly faster page loads.
+ * GOOD: The System - Page Cache plugin is enabled with browser caching.
+ * Guest visitors will receive cached full-page responses and returning
+ * visitors can load pages from their browser cache.
  *
- * WARNING: The System - Page Cache plugin is disabled. For production sites
- * with significant guest traffic, enabling this plugin can provide substantial
- * performance improvements. Note that it only caches pages for guests, not
- * logged-in users.
+ * WARNING: Either the plugin is disabled, or it's enabled but browser
+ * caching is not configured. For production sites with significant guest
+ * traffic, enabling this plugin with browser caching provides optimal
+ * performance improvements.
  *
  * CRITICAL: This check does not return CRITICAL status.
  */
@@ -66,8 +69,8 @@ final class PageCacheCheck extends AbstractHealthCheck
     /**
      * Perform the page cache plugin status check.
      *
-     * Verifies whether the System - Page Cache plugin is enabled, which provides
-     * full-page caching for guest visitors. This is one of the most impactful
+     * Verifies whether the System - Page Cache plugin is enabled and checks
+     * the browser caching configuration. This is one of the most impactful
      * performance optimizations available in Joomla.
      *
      * Performance impact:
@@ -75,17 +78,20 @@ final class PageCacheCheck extends AbstractHealthCheck
      * - Can reduce page generation time from 500ms+ to under 10ms
      * - Dramatically reduces server load under high guest traffic
      * - Only caches pages for non-logged-in users (guests)
+     * - Browser caching allows returning visitors to skip server requests
      *
-     * Note: This check only verifies if the plugin is enabled, not the actual
-     * cache configuration or storage handler settings.
+     * The check performs these steps:
+     * 1. Verifies System - Page Cache plugin is enabled
+     * 2. Queries database for plugin parameters
+     * 3. Checks if browsercache parameter is enabled
      *
-     * @return HealthCheckResult Returns WARNING if disabled, GOOD if enabled
+     * @return HealthCheckResult Returns WARNING if disabled or browser caching off, GOOD if fully enabled
      */
     protected function performCheck(): HealthCheckResult
     {
         // Check if the System - Page Cache plugin is enabled
-        // This provides full-page caching for guest visitors only
-        $isEnabled = PluginHelper::isEnabled('system', 'pagecache');
+        // Note: The plugin element name is 'cache', not 'pagecache'
+        $isEnabled = PluginHelper::isEnabled('system', 'cache');
 
         // Plugin disabled - significant performance opportunity missed
         if (! $isEnabled) {
@@ -94,7 +100,40 @@ final class PageCacheCheck extends AbstractHealthCheck
             );
         }
 
-        // Plugin enabled - guest visitors will receive cached pages
-        return $this->good('System - Page Cache plugin is enabled.');
+        // Plugin is enabled - check browser caching configuration
+        $database = $this->requireDatabase();
+
+        $query = $database->getQuery(true)
+            ->select($database->quoteName('params'))
+            ->from($database->quoteName('#__extensions'))
+            ->where($database->quoteName('element') . ' = ' . $database->quote('cache'))
+            ->where($database->quoteName('folder') . ' = ' . $database->quote('system'))
+            ->where($database->quoteName('type') . ' = ' . $database->quote('plugin'));
+
+        $params = $database->setQuery($query)
+            ->loadResult();
+
+        if ($params === null || $params === '') {
+            // Plugin enabled but can't read params - still good
+            return $this->good('System - Page Cache plugin is enabled.');
+        }
+
+        $paramsObj = json_decode((string) $params, true);
+
+        if (! is_array($paramsObj)) {
+            return $this->good('System - Page Cache plugin is enabled.');
+        }
+
+        // Check browser caching setting (1 = enabled, 0 = disabled)
+        $browserCache = (int) ($paramsObj['browsercache'] ?? 0);
+
+        if ($browserCache === 1) {
+            return $this->good('System - Page Cache plugin is enabled with browser caching.');
+        }
+
+        // Plugin enabled but browser caching disabled
+        return $this->warning(
+            'System - Page Cache plugin is enabled but browser caching is disabled. Enable browser caching in the plugin settings for additional performance.',
+        );
     }
 }
