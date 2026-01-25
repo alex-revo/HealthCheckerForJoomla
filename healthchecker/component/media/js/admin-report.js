@@ -519,7 +519,7 @@
 
                     let categoryIconHtml = '';
                     if (category.logoUrl) {
-                        categoryIconHtml = `<img src="${escapeHtml(category.logoUrl)}" alt="" class="me-2" style="width: 24px; height: 24px; object-fit: contain; border-radius: 4px;">`;
+                        categoryIconHtml = `<img src="${escapeHtml(category.logoUrl)}" alt="${escapeHtml(categoryLabel)} icon" class="me-2" style="width: 24px; height: 24px; object-fit: contain; border-radius: 4px;">`;
                     } else if (category.icon) {
                         categoryIconHtml = `<span class="fa ${category.icon} me-2" aria-hidden="true"></span>`;
                     }
@@ -604,7 +604,7 @@
                 thirdParty.forEach(provider => {
                     let iconHtml = '';
                     if (provider.logoUrl) {
-                        iconHtml = `<img src="${escapeHtml(provider.logoUrl)}" alt="" class="me-2" style="width: 32px; height: 32px; object-fit: contain; border-radius: 4px;">`;
+                        iconHtml = `<img src="${escapeHtml(provider.logoUrl)}" alt="${escapeHtml(provider.name)} logo" class="me-2" style="width: 32px; height: 32px; object-fit: contain; border-radius: 4px;">`;
                     } else if (provider.icon) {
                         iconHtml = `<span class="fa ${provider.icon} me-2 fs-4" aria-hidden="true"></span>`;
                     }
