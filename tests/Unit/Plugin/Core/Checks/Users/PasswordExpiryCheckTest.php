@@ -161,4 +161,29 @@ class PasswordExpiryCheckTest extends TestCase
         // Above 75% mentions implementing policy
         $this->assertStringContainsString('implementing', $result->description);
     }
+
+    /**
+     * Test that fresh installs with new users don't trigger false positives.
+     *
+     * On fresh Joomla installs, users have:
+     * - registerDate = current timestamp (when user was created)
+     * - lastResetTime = NULL (never explicitly reset)
+     *
+     * These users should NOT be flagged as having expired passwords because
+     * their accounts are new. The SQL query now checks registerDate as a
+     * fallback when lastResetTime is NULL/zero.
+     */
+    public function testRunWithNewUsersNullLastResetTimeReturnsGood(): void
+    {
+        // First query: expired count = 0 (new users with NULL lastResetTime
+        // but recent registerDate are excluded by the updated query)
+        // Second query: total users = 5
+        $database = MockDatabaseFactory::createWithSequentialResults([0, 5]);
+        $this->check->setDatabase($database);
+
+        $result = $this->check->run();
+
+        $this->assertSame(HealthStatus::Good, $result->healthStatus);
+        $this->assertStringContainsString('recently updated', $result->description);
+    }
 }

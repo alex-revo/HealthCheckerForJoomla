@@ -28,7 +28,9 @@ declare(strict_types=1);
  *
  * GOOD: Fewer than 75% of users have passwords older than 365 days, or all users
  *       have recently updated their passwords. The specific count is reported for
- *       awareness. Some older passwords are normal and acceptable.
+ *       awareness. Some older passwords are normal and acceptable. Users who have
+ *       never explicitly reset their password but registered within the last 365
+ *       days are NOT counted as expired (prevents false positives on fresh installs).
  *
  * WARNING: More than 75% of active users have not changed their password in over
  *          a year. This high percentage suggests a need to implement or encourage
@@ -92,16 +94,24 @@ final class PasswordExpiryCheck extends AbstractHealthCheck
 
         // Check users where lastResetTime is older than the cutoff date
         // lastResetTime tracks when password was last reset
-        // Include NULL and zero dates as expired (never changed password)
+        // For users with NULL/zero lastResetTime, use registerDate as fallback
+        // This prevents false positives on fresh installs where users have never reset
+        // their password but their account is less than 365 days old
         $query = $database->getQuery(true)
             ->select('COUNT(*)')
             ->from($database->quoteName('#__users'))
             ->where($database->quoteName('block') . ' = 0')
-            ->where('(' . $database->quoteName('lastResetTime') . ' < ' . $database->quote($cutoffDate) .
-                    ' OR ' . $database->quoteName('lastResetTime') . ' IS NULL' .
-                    ' OR ' . $database->quoteName('lastResetTime') . ' = ' . $database->quote(
-                        '0000-00-00 00:00:00',
-                    ) . ')');
+            ->where('(' .
+                // Password was explicitly reset more than 365 days ago
+                '(' . $database->quoteName('lastResetTime') . ' < ' . $database->quote($cutoffDate) .
+                ' AND ' . $database->quoteName('lastResetTime') . ' != ' . $database->quote('0000-00-00 00:00:00') .
+                ' AND ' . $database->quoteName('lastResetTime') . ' IS NOT NULL)' .
+                ' OR ' .
+                // Password was never reset AND account is older than 365 days
+                '((' . $database->quoteName('lastResetTime') . ' IS NULL' .
+                ' OR ' . $database->quoteName('lastResetTime') . ' = ' . $database->quote('0000-00-00 00:00:00') . ')' .
+                ' AND ' . $database->quoteName('registerDate') . ' < ' . $database->quote($cutoffDate) . ')' .
+            ')');
 
         $expiredCount = (int) $database->setQuery($query)
             ->loadResult();
