@@ -1,3 +1,7 @@
+---
+description: "How to create custom health checks for Joomla. Extend AbstractHealthCheck, implement performCheck(), and return results."
+---
+
 # Creating Health Checks
 
 Learn how to create custom health checks for your Joomla extension.

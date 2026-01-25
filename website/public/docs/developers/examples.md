@@ -1,6 +1,10 @@
 ---
 url: /docs/developers/examples.md
+description: >-
+  Working code examples for Health Checker plugins. Complete plugin templates
+  and common health check patterns.
 ---
+
 # Examples
 
 Complete working examples of Health Checker plugins.

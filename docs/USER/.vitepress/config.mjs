@@ -9,7 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   title: 'Health Checker for Joomla',
-  description: 'Free GPL-licensed extension for Joomla 5+. Over one hundred automated Joomla Health Checks on security, performance, SEO, database health, and more. Instant reports from your admin panel.',
+  description: 'Free Joomla 5+ extension with 130+ automated health checks for security, performance, SEO, and database. Instant reports from your admin panel.',
   base: '/docs/',
   outDir: '../../website/public/docs',
   cleanUrls: true,
@@ -245,6 +245,27 @@ export default defineConfig({
       }
     })]
   ],
+
+  // Generate per-page OG/Twitter meta tags from frontmatter
+  transformPageData(pageData) {
+    const title = pageData.title || 'Health Checker for Joomla'
+    const description = pageData.frontmatter?.description || pageData.description || 'Free Joomla 5+ extension with 130+ automated health checks for security, performance, SEO, and database.'
+
+    // Build canonical URL
+    let relativePath = pageData.relativePath || ''
+    relativePath = relativePath.replace(/\.md$/, '').replace(/index$/, '')
+    const url = `https://www.joomlahealthchecker.com/docs/${relativePath}`
+
+    pageData.frontmatter.head ??= []
+    pageData.frontmatter.head.push(
+      ['meta', { property: 'og:title', content: `${title} | Health Checker for Joomla` }],
+      ['meta', { property: 'og:description', content: description }],
+      ['meta', { property: 'og:url', content: url }],
+      ['meta', { name: 'twitter:title', content: `${title} | Health Checker for Joomla` }],
+      ['meta', { name: 'twitter:description', content: description }],
+      ['meta', { name: 'twitter:url', content: url }]
+    )
+  },
 
   // Vite plugin for LLM file generation
   vite: {

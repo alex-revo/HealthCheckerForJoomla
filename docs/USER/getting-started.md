@@ -1,3 +1,7 @@
+---
+description: "Quick start guide for Health Checker for Joomla. Install the extension and run your first health check in under 5 minutes."
+---
+
 # Getting Started
 
 Welcome to Health Checker for Joomla! This guide will help you run your first health check and understand the results.

@@ -1,6 +1,10 @@
 ---
 url: /docs/dashboard-widget.md
+description: >-
+  Health Checker dashboard widget for Joomla. See site health status at a glance
+  from your admin dashboard.
 ---
+
 # Dashboard Widget
 
 The Health Checker dashboard widget (module) provides at-a-glance monitoring directly on your Joomla admin dashboard.

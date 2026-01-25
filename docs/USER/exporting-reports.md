@@ -1,3 +1,7 @@
+---
+description: "Export Health Checker reports as JSON or HTML. Share results with clients, hosting providers, or archive for compliance."
+---
+
 # Exporting Reports
 
 Health Checker allows you to export your check results in multiple formats for sharing with your team, hosting provider, or for record-keeping.

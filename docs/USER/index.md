@@ -1,4 +1,5 @@
 ---
+description: "Free Joomla 5+ extension with 130+ automated health checks for security, performance, SEO, and database. Instant reports from your admin panel."
 layout: home
 
 hero:

@@ -1,3 +1,7 @@
+---
+description: "33 system and hosting health checks for Joomla: PHP version, memory limits, disk space, server configuration, and more."
+---
+
 # System & Hosting Checks
 
 System and hosting checks examine your PHP environment, server configuration, and hosting infrastructure. These form the foundation of a healthy Joomla site.

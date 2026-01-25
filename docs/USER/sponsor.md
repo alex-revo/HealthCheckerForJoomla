@@ -1,3 +1,7 @@
+---
+description: "Health Checker for Joomla is sponsored by mySites.guru, providing Joomla monitoring and management services since 2012."
+---
+
 # The Sponsor
 
 Health Checker for Joomla is provided **free of charge** under the GPL v2+ license, the same license as Joomla itself. This extension is made possible by [Phil Taylor](https://www.phil-taylor.com) and [mySites.guru](https://mysites.guru).

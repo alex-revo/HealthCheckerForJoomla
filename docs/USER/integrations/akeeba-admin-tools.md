@@ -1,3 +1,7 @@
+---
+description: "Akeeba Admin Tools integration for Health Checker. Monitor WAF status, security configuration, and .htaccess protection."
+---
+
 # Akeeba Admin Tools Integration
 
 Health Checker includes an optional integration plugin for Akeeba Admin Tools that monitors your security configuration and WAF status.

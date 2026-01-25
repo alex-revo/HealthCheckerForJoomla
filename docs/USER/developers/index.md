@@ -1,3 +1,7 @@
+---
+description: "Developer guide for extending Health Checker for Joomla with custom plugins. Create your own health checks and categories."
+---
+
 # Developer Guide
 
 This guide explains how third-party developers can extend Health Checker for Joomla with custom health checks.

@@ -1,6 +1,10 @@
 ---
 url: /docs/integrations/akeeba-admin-tools.md
+description: >-
+  Akeeba Admin Tools integration for Health Checker. Monitor WAF status,
+  security configuration, and .htaccess protection.
 ---
+
 # Akeeba Admin Tools Integration
 
 Health Checker includes an optional integration plugin for Akeeba Admin Tools that monitors your security configuration and WAF status.
@@ -98,7 +102,11 @@ Checks from this integration appear with the "Akeeba Admin Tools" provider badge
 
 ---
 url: /docs/integrations/akeeba-backup.md
+description: >-
+  Akeeba Backup integration for Health Checker. Monitor backup status,
+  schedules, success rates, and storage configuration.
 ---
+
 # Akeeba Backup Integration
 
 Health Checker includes an optional integration plugin for Akeeba Backup that monitors your backup status and configuration.
@@ -198,7 +206,11 @@ Checks from this integration appear with the "Akeeba Backup" provider badge, mak
 
 ---
 url: /docs/developers/api-reference.md
+description: >-
+  Complete API reference for Health Checker for Joomla: interfaces, events,
+  services, result types, and helper methods.
 ---
+
 # API Reference
 
 Complete API reference for Health Checker extension development.
@@ -732,7 +744,11 @@ JPATH_CONFIGURATION     // Configuration directory
 
 ---
 url: /docs/developers/best-practices.md
+description: >-
+  Best practices for Health Checker plugin development: error handling,
+  performance, testing, naming conventions, and code quality.
 ---
+
 # Best Practices
 
 Code conventions, guidelines, and best practices for Health Checker plugin development.
@@ -1198,7 +1214,11 @@ Before releasing your health check plugin:
 
 ---
 url: /docs/code-quality.md
+description: >-
+  Code quality commitment: PHPStan level 8, 100% test coverage, PSR-12
+  standards, Rector, and security best practices.
 ---
+
 # Code Quality Commitment
 
 Health Checker for Joomla maintains the highest standards of code quality through automated testing and continuous integration. This page outlines our commitment to delivering reliable, maintainable, and professional software.
@@ -1387,7 +1407,11 @@ We take code quality seriously because **your site's health matters**.
 
 ---
 url: /docs/checks/content.md
+description: >-
+  11 content quality health checks for Joomla: orphaned articles, broken links,
+  empty categories, and content issues.
 ---
+
 # Content Quality Checks
 
 Content quality checks evaluate the health of your articles, menus, and media files. Quality content is essential for user engagement, SEO, and site maintenance.
@@ -1846,7 +1870,11 @@ Detects content references to non-existent media.
 
 ---
 url: /docs/developers/creating-checks.md
+description: >-
+  How to create custom health checks for Joomla. Extend AbstractHealthCheck,
+  implement performCheck(), and return results.
 ---
+
 # Creating Health Checks
 
 Learn how to create custom health checks for your Joomla extension.
@@ -2612,7 +2640,11 @@ The next health check run will respect these settings - disabled checks won't ex
 
 ---
 url: /docs/developers/custom-categories.md
+description: >-
+  Add custom categories to Health Checker for Joomla. Organize your checks with
+  CollectCategoriesEvent and HealthCategory.
 ---
+
 # Custom Categories
 
 Learn how to create custom categories for organizing your health checks.
@@ -2803,7 +2835,11 @@ final class YourCheck extends AbstractHealthCheck
 
 ---
 url: /docs/dashboard-widget.md
+description: >-
+  Health Checker dashboard widget for Joomla. See site health status at a glance
+  from your admin dashboard.
 ---
+
 # Dashboard Widget
 
 The Health Checker dashboard widget (module) provides at-a-glance monitoring directly on your Joomla admin dashboard.
@@ -3039,7 +3075,11 @@ See [Developer Documentation](./developers/) for details.
 
 ---
 url: /docs/checks/database.md
+description: >-
+  18 database health checks for Joomla: table optimization, index integrity,
+  connection settings, and query performance.
 ---
+
 # Database Checks
 
 Database checks monitor your database health, table structure, character encoding, and query performance. Database issues can cause site errors or data corruption.
@@ -3356,7 +3396,11 @@ Verifies database table prefix is configured.
 
 ---
 url: /docs/developers.md
+description: >-
+  Developer guide for extending Health Checker for Joomla with custom plugins.
+  Create your own health checks and categories.
 ---
+
 # Developer Guide
 
 This guide explains how third-party developers can extend Health Checker for Joomla with custom health checks.
@@ -3509,14 +3553,18 @@ Ready to build your first health check plugin? Continue to [Quick Start](/develo
 For complete working examples, see:
 
 * **Example Plugin** - `plugins/healthchecker/example/` (included with Health Checker)
-* **Core Plugin** - `plugins/healthchecker/core/` (130 production examples)
+* **Core Plugin** - `plugins/healthchecker/core/` (129 production examples)
 * **Akeeba Integrations** - `plugins/healthchecker/akeebabackup/` and `akeebaadmintools/`
 
 ---
 
 ---
 url: /docs/developers/examples.md
+description: >-
+  Working code examples for Health Checker plugins. Complete plugin templates
+  and common health check patterns.
 ---
+
 # Examples
 
 Complete working examples of Health Checker plugins.
@@ -3707,7 +3755,7 @@ This demonstrates:
 
 ### Core Plugin
 
-The core plugin at `plugins/healthchecker/core/` contains 130 production-ready checks showing:
+The core plugin at `plugins/healthchecker/core/` contains 129 production-ready checks showing:
 
 * All check patterns
 * Best practices
@@ -3746,7 +3794,11 @@ For more code examples and patterns, see:
 
 ---
 url: /docs/exporting-reports.md
+description: >-
+  Export Health Checker reports as JSON or HTML. Share results with clients,
+  hosting providers, or archive for compliance.
 ---
+
 # Exporting Reports
 
 Health Checker allows you to export your check results in multiple formats for sharing with your team, hosting provider, or for record-keeping.
@@ -4016,7 +4068,11 @@ While Health Checker doesn't include scheduling in the free version, you can cre
 
 ---
 url: /docs/checks/extensions.md
+description: >-
+  13 extension health checks for Joomla: outdated extensions, disabled plugins,
+  update sites, and compatibility issues.
 ---
+
 # Extensions Checks
 
 Extension checks review installed components, modules, plugins, and templates. Outdated or incompatible extensions are a common source of security vulnerabilities and compatibility issues.
@@ -4420,7 +4476,11 @@ Checks override modification dates vs core files.
 
 ---
 url: /docs/getting-started.md
+description: >-
+  Quick start guide for Health Checker for Joomla. Install the extension and run
+  your first health check in under 5 minutes.
 ---
+
 # Getting Started
 
 Welcome to Health Checker for Joomla! This guide will help you run your first health check and understand the results.
@@ -5207,7 +5267,11 @@ public function onHealthCheckerCollectChecks(CollectChecksEvent $event): void
 
 ---
 url: /docs/checks.md
+description: >-
+  Complete index of 130+ health checks organized by category: System, Database,
+  Security, Users, Extensions, Performance, SEO, Content.
 ---
+
 # Health Checks Reference
 
 This page provides a complete reference of all health checks included in Health Checker for Joomla. Each check is designed to identify potential issues with your Joomla installation across eight categories.
@@ -5229,7 +5293,7 @@ This page provides a complete reference of all health checks included in Health 
 * [System & Hosting](#system-hosting) (33 checks)
 * [Users](#users) (12 checks)
 
-**Note:** The core plugin provides **130 checks** across these 8+ categories. Additional plugins may add more checks.
+**Note:** The core plugin provides **129 checks** across these 8+ categories. Additional plugins may add more checks.
 
 ***
 
@@ -5462,7 +5526,11 @@ To run all health checks:
 
 ---
 url: /docs/installation.md
+description: >-
+  Step-by-step installation guide for Health Checker for Joomla. Download,
+  install via Joomla admin, and verify setup.
 ---
+
 # Installation
 
 Installing Health Checker for Joomla is straightforward using Joomla's standard extension installation process.
@@ -5538,7 +5606,7 @@ The main component provides:
 
 ### Core Plugin (plg\_healthchecker\_core)
 
-Contains 130 health checks organized in 8+ categories.
+Contains 129 health checks organized in 8+ categories.
 
 **Location**: `plugins/healthchecker/core/`
 
@@ -5687,7 +5755,11 @@ Now that Health Checker is installed, continue to [Getting Started](/getting-sta
 
 ---
 url: /docs/introduction.md
+description: >-
+  Learn what Health Checker for Joomla does: 130+ automated checks for security,
+  performance, SEO, database, and more.
 ---
+
 # Introduction
 
 Health Checker for Joomla is a comprehensive monitoring extension that helps you maintain a healthy Joomla website by running automated checks across multiple categories.
@@ -5816,7 +5888,11 @@ Ready to get started? Continue to [Installation](/installation) to install Healt
 
 ---
 url: /docs/license.md
+description: >-
+  Health Checker for Joomla is GPL v2+ licensed, same as Joomla itself. Free to
+  use, modify, and distribute.
 ---
+
 # License
 
 Health Checker for Joomla is free and open-source software released under the GNU General Public License version 2 or later (GPL v2+).
@@ -5986,7 +6062,11 @@ For licensing questions, contact: phil@phil-taylor.com
 
 ---
 url: /docs/guide/managing-checks.md
+description: >-
+  Enable or disable individual health checks via plugin configuration. Customize
+  which checks run on your Joomla site.
 ---
+
 # Managing Health Checks
 
 Health Checker for Joomla allows you to enable or disable individual health checks through the plugin configuration interface. This gives you complete control over which checks run on your site.
@@ -6049,7 +6129,7 @@ To disable all checks in a category:
 
 If you haven't configured any checks:
 
-* All 130 core checks will run
+* All 129 core checks will run
 * This is the recommended starting point for most sites
 * You can disable checks as needed after reviewing initial results
 
@@ -6099,7 +6179,7 @@ Disabled checks are **completely skipped** during execution:
 
 This improves performance, especially if you disable many checks.
 
-**Example:** If you disable 20 checks out of 130, the health check will execute faster because those 20 checks are never instantiated or executed.
+**Example:** If you disable 20 checks out of 129, the health check will execute faster because those 20 checks are never instantiated or executed.
 
 ## Dashboard Module
 
@@ -6188,7 +6268,11 @@ If a category parameter is empty or not set, **all checks in that category are e
 
 ---
 url: /docs/checks/performance.md
+description: >-
+  10 performance health checks for Joomla: caching configuration, GZIP
+  compression, database optimization, and page speed.
 ---
+
 # Performance Checks
 
 Performance checks analyze caching configuration, optimization settings, and resource usage. These checks help improve page load times and server efficiency.
@@ -6622,7 +6706,11 @@ Checks PHP memory consumption.
 
 ---
 url: /docs/developers/provider-metadata.md
+description: >-
+  Provider metadata API for Health Checker plugins. Register your plugin's name,
+  description, logo, and URL for attribution.
 ---
+
 # Provider Metadata
 
 Learn how to register provider metadata for branding and attribution of your health checks.
@@ -6919,7 +7007,11 @@ url: 'mailto:support@...'                 // Email addresses
 
 ---
 url: /docs/developers/quick-start.md
+description: >-
+  Quick start guide for developers: create your first Health Checker plugin in
+  10 minutes with complete code examples.
 ---
+
 # Quick Start
 
 This guide will walk you through creating your first Health Checker plugin with a custom health check.
@@ -7262,7 +7354,11 @@ This demonstrates:
 
 ---
 url: /docs/reading-results.md
+description: >-
+  How to interpret health check findings. Understand status levels, take action
+  on issues, and prioritize fixes.
 ---
+
 # Reading Results
 
 Learn how to interpret health check findings and understand what actions to take.
@@ -7494,7 +7590,11 @@ After making changes:
 
 ---
 url: /docs/running-checks.md
+description: >-
+  How to execute health checks in Joomla admin. Learn the interface, filtering
+  results, and interpreting the dashboard.
 ---
+
 # Running Health Checks
 
 This guide explains how to execute health checks and navigate the Health Checker interface.
@@ -7606,7 +7706,11 @@ If checks timeout or fail:
 
 ---
 url: /docs/checks/security.md
+description: >-
+  21 security health checks for Joomla: SSL, file permissions, password
+  policies, two-factor auth, admin protection, and more.
 ---
+
 # Security Checks
 
 Security checks evaluate your site's protection against common vulnerabilities and attacks. These checks are critical for protecting your site and user data.
@@ -8063,7 +8167,11 @@ Or use Joomla's post-installation cleanup tool.
 
 ---
 url: /docs/checks/seo.md
+description: >-
+  12 SEO health checks for Joomla: meta tags, robots.txt, XML sitemap, URL
+  structure, and search engine optimization.
 ---
+
 # SEO Checks
 
 SEO checks evaluate search engine optimization settings, URL configuration, and metadata. Proper SEO helps search engines index and rank your content effectively.
@@ -8540,7 +8648,11 @@ Identifies articles without unique descriptions.
 
 ---
 url: /docs/checks/system.md
+description: >-
+  33 system and hosting health checks for Joomla: PHP version, memory limits,
+  disk space, server configuration, and more.
 ---
+
 # System & Hosting Checks
 
 System and hosting checks examine your PHP environment, server configuration, and hosting infrastructure. These form the foundation of a healthy Joomla site.
@@ -8905,7 +9017,11 @@ Detects tasks that have failed.
 
 ---
 url: /docs/sponsor.md
+description: >-
+  Health Checker for Joomla is sponsored by mySites.guru, providing Joomla
+  monitoring and management services since 2012.
 ---
+
 # The Sponsor
 
 Health Checker for Joomla is provided **free of charge** under the GPL v2+ license, the same license as Joomla itself. This extension is made possible by [Phil Taylor](https://www.phil-taylor.com) and [mySites.guru](https://mysites.guru).
@@ -8972,7 +9088,11 @@ All health checks are available to everyone, forever, under the same license as 
 
 ---
 url: /docs/understanding-checks.md
+description: >-
+  Learn how Health Checker categorizes and reports issues. Understand Critical,
+  Warning, and Good status levels.
 ---
+
 # Understanding Health Checks
 
 Health Checker for Joomla provides comprehensive monitoring across 8+ categories, with 133 built-in checks designed to identify potential issues before they become problems.
@@ -9085,7 +9205,7 @@ Health checks can come from different providers:
 
 ### Core Provider
 
-The built-in provider that ships with Health Checker. Includes 130 checks across the 8+ categories.
+The built-in provider that ships with Health Checker. Includes 129 checks across the 8+ categories.
 
 ### Third-Party Providers
 
@@ -9114,7 +9234,11 @@ Extension developers can create plugins to add custom checks. Each provider is c
 
 ---
 url: /docs/checks/users.md
+description: >-
+  12 user-related health checks for Joomla: super admin count, inactive users,
+  duplicate accounts, and user activity monitoring.
 ---
+
 # Users Checks
 
 User checks examine user accounts, authentication settings, and access control. These help identify security risks related to user management.

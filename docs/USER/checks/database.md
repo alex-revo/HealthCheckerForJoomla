@@ -1,3 +1,7 @@
+---
+description: "18 database health checks for Joomla: table optimization, index integrity, connection settings, and query performance."
+---
+
 # Database Checks
 
 Database checks monitor your database health, table structure, character encoding, and query performance. Database issues can cause site errors or data corruption.

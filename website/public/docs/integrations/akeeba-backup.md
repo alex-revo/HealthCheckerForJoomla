@@ -1,6 +1,10 @@
 ---
 url: /docs/integrations/akeeba-backup.md
+description: >-
+  Akeeba Backup integration for Health Checker. Monitor backup status,
+  schedules, success rates, and storage configuration.
 ---
+
 # Akeeba Backup Integration
 
 Health Checker includes an optional integration plugin for Akeeba Backup that monitors your backup status and configuration.

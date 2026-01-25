@@ -1,3 +1,7 @@
+---
+description: "Complete index of 130+ health checks organized by category: System, Database, Security, Users, Extensions, Performance, SEO, Content."
+---
+
 # Health Checks Reference
 
 This page provides a complete reference of all health checks included in Health Checker for Joomla. Each check is designed to identify potential issues with your Joomla installation across eight categories.

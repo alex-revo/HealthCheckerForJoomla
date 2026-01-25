@@ -1,3 +1,7 @@
+---
+description: "Quick start guide for developers: create your first Health Checker plugin in 10 minutes with complete code examples."
+---
+
 # Quick Start
 
 This guide will walk you through creating your first Health Checker plugin with a custom health check.

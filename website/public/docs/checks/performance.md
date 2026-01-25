@@ -1,6 +1,10 @@
 ---
 url: /docs/checks/performance.md
+description: >-
+  10 performance health checks for Joomla: caching configuration, GZIP
+  compression, database optimization, and page speed.
 ---
+
 # Performance Checks
 
 Performance checks analyze caching configuration, optimization settings, and resource usage. These checks help improve page load times and server efficiency.

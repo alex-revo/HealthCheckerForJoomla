@@ -1,6 +1,10 @@
 ---
 url: /docs/code-quality.md
+description: >-
+  Code quality commitment: PHPStan level 8, 100% test coverage, PSR-12
+  standards, Rector, and security best practices.
 ---
+
 # Code Quality Commitment
 
 Health Checker for Joomla maintains the highest standards of code quality through automated testing and continuous integration. This page outlines our commitment to delivering reliable, maintainable, and professional software.

@@ -1,3 +1,7 @@
+---
+description: "11 content quality health checks for Joomla: orphaned articles, broken links, empty categories, and content issues."
+---
+
 # Content Quality Checks
 
 Content quality checks evaluate the health of your articles, menus, and media files. Quality content is essential for user engagement, SEO, and site maintenance.

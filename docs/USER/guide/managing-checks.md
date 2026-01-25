@@ -1,3 +1,7 @@
+---
+description: "Enable or disable individual health checks via plugin configuration. Customize which checks run on your Joomla site."
+---
+
 # Managing Health Checks
 
 Health Checker for Joomla allows you to enable or disable individual health checks through the plugin configuration interface. This gives you complete control over which checks run on your site.

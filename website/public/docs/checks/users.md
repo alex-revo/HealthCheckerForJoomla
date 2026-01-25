@@ -1,6 +1,10 @@
 ---
 url: /docs/checks/users.md
+description: >-
+  12 user-related health checks for Joomla: super admin count, inactive users,
+  duplicate accounts, and user activity monitoring.
 ---
+
 # Users Checks
 
 User checks examine user accounts, authentication settings, and access control. These help identify security risks related to user management.

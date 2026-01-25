@@ -1,3 +1,7 @@
+---
+description: "How to execute health checks in Joomla admin. Learn the interface, filtering results, and interpreting the dashboard."
+---
+
 # Running Health Checks
 
 This guide explains how to execute health checks and navigate the Health Checker interface.

@@ -1,6 +1,10 @@
 ---
 url: /docs/checks/security.md
+description: >-
+  21 security health checks for Joomla: SSL, file permissions, password
+  policies, two-factor auth, admin protection, and more.
 ---
+
 # Security Checks
 
 Security checks evaluate your site's protection against common vulnerabilities and attacks. These checks are critical for protecting your site and user data.

@@ -1,6 +1,10 @@
 ---
 url: /docs/understanding-checks.md
+description: >-
+  Learn how Health Checker categorizes and reports issues. Understand Critical,
+  Warning, and Good status levels.
 ---
+
 # Understanding Health Checks
 
 Health Checker for Joomla provides comprehensive monitoring across 8+ categories, with 133 built-in checks designed to identify potential issues before they become problems.

@@ -1,6 +1,10 @@
 ---
 url: /docs/checks/seo.md
+description: >-
+  12 SEO health checks for Joomla: meta tags, robots.txt, XML sitemap, URL
+  structure, and search engine optimization.
 ---
+
 # SEO Checks
 
 SEO checks evaluate search engine optimization settings, URL configuration, and metadata. Proper SEO helps search engines index and rank your content effectively.

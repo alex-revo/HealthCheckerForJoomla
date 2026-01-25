@@ -1,3 +1,7 @@
+---
+description: "Step-by-step installation guide for Health Checker for Joomla. Download, install via Joomla admin, and verify setup."
+---
+
 # Installation
 
 Installing Health Checker for Joomla is straightforward using Joomla's standard extension installation process.

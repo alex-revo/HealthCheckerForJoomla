@@ -1,6 +1,10 @@
 ---
 url: /docs/introduction.md
+description: >-
+  Learn what Health Checker for Joomla does: 130+ automated checks for security,
+  performance, SEO, database, and more.
 ---
+
 # Introduction
 
 Health Checker for Joomla is a comprehensive monitoring extension that helps you maintain a healthy Joomla website by running automated checks across multiple categories.

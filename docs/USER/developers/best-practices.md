@@ -1,3 +1,7 @@
+---
+description: "Best practices for Health Checker plugin development: error handling, performance, testing, naming conventions, and code quality."
+---
+
 # Best Practices
 
 Code conventions, guidelines, and best practices for Health Checker plugin development.

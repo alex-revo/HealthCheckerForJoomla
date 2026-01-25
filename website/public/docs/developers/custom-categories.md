@@ -1,6 +1,10 @@
 ---
 url: /docs/developers/custom-categories.md
+description: >-
+  Add custom categories to Health Checker for Joomla. Organize your checks with
+  CollectCategoriesEvent and HealthCategory.
 ---
+
 # Custom Categories
 
 Learn how to create custom categories for organizing your health checks.

@@ -1,6 +1,10 @@
 ---
 url: /docs/license.md
+description: >-
+  Health Checker for Joomla is GPL v2+ licensed, same as Joomla itself. Free to
+  use, modify, and distribute.
 ---
+
 # License
 
 Health Checker for Joomla is free and open-source software released under the GNU General Public License version 2 or later (GPL v2+).

@@ -1,3 +1,7 @@
+---
+description: "Provider metadata API for Health Checker plugins. Register your plugin's name, description, logo, and URL for attribution."
+---
+
 # Provider Metadata
 
 Learn how to register provider metadata for branding and attribution of your health checks.

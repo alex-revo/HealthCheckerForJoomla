@@ -1,3 +1,7 @@
+---
+description: "How to interpret health check findings. Understand status levels, take action on issues, and prioritize fixes."
+---
+
 # Reading Results
 
 Learn how to interpret health check findings and understand what actions to take.

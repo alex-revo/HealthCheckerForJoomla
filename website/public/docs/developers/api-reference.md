@@ -1,6 +1,10 @@
 ---
 url: /docs/developers/api-reference.md
+description: >-
+  Complete API reference for Health Checker for Joomla: interfaces, events,
+  services, result types, and helper methods.
 ---
+
 # API Reference
 
 Complete API reference for Health Checker extension development.

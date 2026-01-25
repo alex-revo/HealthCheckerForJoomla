@@ -1,6 +1,10 @@
 ---
 url: /docs/checks/extensions.md
+description: >-
+  13 extension health checks for Joomla: outdated extensions, disabled plugins,
+  update sites, and compatibility issues.
 ---
+
 # Extensions Checks
 
 Extension checks review installed components, modules, plugins, and templates. Outdated or incompatible extensions are a common source of security vulnerabilities and compatibility issues.
