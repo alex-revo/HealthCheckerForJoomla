@@ -121,7 +121,7 @@ class HtmlView extends BaseHtmlView
 
         $toolbar->linkButton('github')
             ->text('COM_HEALTHCHECKER_GITHUB')
-            ->url('https://github.com/mySites-guru/HealthCheckerForJoomla')
+            ->url('https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/CONTRIBUTING.md')
             ->icon('icon-code-branch')
             ->attributes([
                 'target' => '_blank',
