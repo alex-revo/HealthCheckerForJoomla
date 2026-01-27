@@ -232,20 +232,22 @@ else
     echo -e "${GREEN}Release notes generated!${NC}"
 fi
 
-# Update version in all manifest files
+# Update version and creation date in all manifest files
 echo ""
-echo -e "${YELLOW}Updating version numbers...${NC}"
+echo -e "${YELLOW}Updating version numbers and creation dates...${NC}"
 
-sed -i.bak "s/<version>.*<\/version>/<version>${NEW_VERSION}<\/version>/" "$SOURCE_DIR/component/healthchecker.xml"
+CREATION_DATE=$(date +%Y-%m-%d)
+
+sed -i.bak "s/<version>.*<\/version>/<version>${NEW_VERSION}<\/version>/;s/<creationDate>.*<\/creationDate>/<creationDate>${CREATION_DATE}<\/creationDate>/" "$SOURCE_DIR/component/healthchecker.xml"
 rm -f "$SOURCE_DIR/component/healthchecker.xml.bak"
 echo "  ✓ Component manifest"
 
-sed -i.bak "s/<version>.*<\/version>/<version>${NEW_VERSION}<\/version>/" "$SOURCE_DIR/module/mod_healthchecker.xml"
+sed -i.bak "s/<version>.*<\/version>/<version>${NEW_VERSION}<\/version>/;s/<creationDate>.*<\/creationDate>/<creationDate>${CREATION_DATE}<\/creationDate>/" "$SOURCE_DIR/module/mod_healthchecker.xml"
 rm -f "$SOURCE_DIR/module/mod_healthchecker.xml.bak"
 echo "  ✓ Module manifest"
 
 for plugin in core example akeebabackup akeebaadmintools mysitesguru; do
-    sed -i.bak "s/<version>.*<\/version>/<version>${NEW_VERSION}<\/version>/" "$SOURCE_DIR/plugins/$plugin/${plugin}.xml"
+    sed -i.bak "s/<version>.*<\/version>/<version>${NEW_VERSION}<\/version>/;s/<creationDate>.*<\/creationDate>/<creationDate>${CREATION_DATE}<\/creationDate>/" "$SOURCE_DIR/plugins/$plugin/${plugin}.xml"
     rm -f "$SOURCE_DIR/plugins/$plugin/${plugin}.xml.bak"
     echo "  ✓ $plugin plugin manifest"
 done
