@@ -485,11 +485,11 @@ class ManifestXmlValidationTest extends TestCase
         $creationDate = (string) $xml->creationDate;
         $this->assertNotEmpty($creationDate, 'Creation date should be present in ' . $xmlPath);
 
-        // Should be in format YYYY-MM or YYYY
+        // Should be in format YYYY, YYYY-MM, or YYYY-MM-DD
         $this->assertMatchesRegularExpression(
-            '/^\d{4}(-\d{2})?$/',
+            '/^\d{4}(-\d{2}(-\d{2})?)?$/',
             $creationDate,
-            'Creation date should be in YYYY or YYYY-MM format in ' . $xmlPath,
+            'Creation date should be in YYYY, YYYY-MM, or YYYY-MM-DD format in ' . $xmlPath,
         );
     }
 
