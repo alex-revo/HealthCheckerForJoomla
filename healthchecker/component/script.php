@@ -10,38 +10,68 @@ declare(strict_types=1);
 
 defined('_JEXEC') || die;
 
-use Joomla\CMS\Installer\InstallerAdapter;
+use Joomla\CMS\Installer\InstallerScriptInterface;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
 
-class Com_HealthcheckerInstallerScript
-{
-    /**
-     * Files to remove during upgrade. Add entries here when checks are
-     * deleted so existing installations are cleaned up automatically.
-     *
-     * @var list<string>
-     */
-    private const OBSOLETE_FILES = [
-        // Removed in 3.0.38: BackupAgeCheck replaced by akeeba_backup.last_backup plugin check
-        'plugins/healthchecker/core/src/Checks/Database/BackupAgeCheck.php',
-        // Removed in 3.0.36: Phantom check for non-existent plg_user_userlog
-        'plugins/healthchecker/core/src/Checks/Security/UserActionsLogCheck.php',
-    ];
-
-    public function postflight(string $type, InstallerAdapter $installerAdapter): void
+return new class implements ServiceProviderInterface {
+    public function register(Container $container): void
     {
-        if ($type === 'update') {
-            $this->removeObsoleteFiles();
-        }
-    }
+        $container->set(
+            InstallerScriptInterface::class,
+            new class implements InstallerScriptInterface {
+                public function install(\Joomla\CMS\Installer\InstallerAdapter $installerAdapter): bool
+                {
+                    return true;
+                }
 
-    private function removeObsoleteFiles(): void
-    {
-        foreach (self::OBSOLETE_FILES as $file) {
-            $path = JPATH_ROOT . '/administrator/' . $file;
+                public function update(\Joomla\CMS\Installer\InstallerAdapter $installerAdapter): bool
+                {
+                    return true;
+                }
 
-            if (file_exists($path)) {
-                @unlink($path);
-            }
-        }
+                public function uninstall(\Joomla\CMS\Installer\InstallerAdapter $installerAdapter): bool
+                {
+                    return true;
+                }
+
+                public function preflight(string $type, \Joomla\CMS\Installer\InstallerAdapter $installerAdapter): bool
+                {
+                    return true;
+                }
+
+                public function postflight(string $type, \Joomla\CMS\Installer\InstallerAdapter $installerAdapter): bool
+                {
+                    if ($type === 'update') {
+                        $this->removeObsoleteFiles();
+                    }
+
+                    return true;
+                }
+
+                /**
+                 * Remove files from previous versions that no longer exist in
+                 * the current release. Joomla's upgrade installer copies new
+                 * files but does not delete removed ones.
+                 */
+                private function removeObsoleteFiles(): void
+                {
+                    $pluginDir = JPATH_PLUGINS . '/healthchecker/core/';
+
+                    $files = [
+                        // Removed in 3.0.38: replaced by akeeba_backup.last_backup
+                        $pluginDir . 'src/Checks/Database/BackupAgeCheck.php',
+                        // Removed in 3.0.36: phantom check for non-existent plg_user_userlog
+                        $pluginDir . 'src/Checks/Security/UserActionsLogCheck.php',
+                    ];
+
+                    foreach ($files as $file) {
+                        if (file_exists($file)) {
+                            @unlink($file);
+                        }
+                    }
+                }
+            },
+        );
     }
-}
+};
