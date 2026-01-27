@@ -288,6 +288,21 @@ npx terser "$SOURCE_DIR/module/media/js/module-stats.js" -c -m -o "$SOURCE_DIR/m
 npx csso-cli "$SOURCE_DIR/module/media/css/module-card.css" -o "$SOURCE_DIR/module/media/css/module-card.min.css" --source-map "$SOURCE_DIR/module/media/css/module-card.min.css.map"
 echo -e "${GREEN}✓ Assets minified${NC}"
 
+# Commit minified assets
+echo ""
+echo -e "${YELLOW}Committing minified assets...${NC}"
+git add healthchecker/component/media/js/admin-report.min.js healthchecker/component/media/js/admin-report.min.js.map
+git add healthchecker/component/media/css/admin-report.min.css healthchecker/component/media/css/admin-report.min.css.map
+git add healthchecker/module/media/js/module-stats.min.js healthchecker/module/media/js/module-stats.min.js.map
+git add healthchecker/module/media/css/module-card.min.css healthchecker/module/media/css/module-card.min.css.map
+
+if ! git diff --cached --quiet; then
+    git commit -m "Rebuild minified assets for v${NEW_VERSION}"
+    echo -e "${GREEN}✓ Minified assets committed${NC}"
+else
+    echo -e "${BLUE}No minified asset changes to commit${NC}"
+fi
+
 # Component
 echo "Building component..."
 COMP_DIR="$BUILD_DIR/tmp/com_healthchecker"
