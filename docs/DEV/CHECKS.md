@@ -145,7 +145,6 @@ This is the **canonical source** for all health checks. Any changes to checks sh
 ### Extension Health
 - Extensions with Updates Available
 - Disabled Extensions Present
-- Legacy Extensions (2+ years old, non-core only)
 - Language Packs
 
 ### Plugin Status
