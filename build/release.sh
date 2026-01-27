@@ -437,6 +437,8 @@ class Pkg_HealthcheckerInstallerScript
             JPATH_PLUGINS . '/healthchecker/core/src/Checks/Database/BackupAgeCheck.php',
             // Removed in 3.0.36: Phantom check for non-existent plg_user_userlog
             JPATH_PLUGINS . '/healthchecker/core/src/Checks/Security/UserActionsLogCheck.php',
+            // Removed in 3.0.41: Redundant and not performing well (GitHub #11)
+            JPATH_PLUGINS . '/healthchecker/core/src/Checks/Extensions/LegacyExtensionsCheck.php',
         ];
 
         foreach ($files as $file) {

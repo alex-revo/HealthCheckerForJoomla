@@ -1057,17 +1057,6 @@
                 </field>
 
                 <field
-                    name="check_extensions_legacy_extensions"
-                    type="radio"
-                    label="PLG_HEALTHCHECKER_CORE_CHECK_EXTENSIONS_LEGACY_EXTENSIONS_TITLE"
-                    class="btn-group btn-group-yesno"
-                    default="1"
-                >
-                    <option value="1">JENABLED</option>
-                    <option value="0">JDISABLED</option>
-                </field>
-
-                <field
                     name="check_extensions_missing_updates"
                     type="radio"
                     label="PLG_HEALTHCHECKER_CORE_CHECK_EXTENSIONS_MISSING_UPDATES_TITLE"
