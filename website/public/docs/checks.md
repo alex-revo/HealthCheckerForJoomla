@@ -87,7 +87,6 @@ Checks for extension updates, compatibility, and configuration issues.
 | **Disabled Extensions** | No unexpectedly disabled extensions | Extensions disabled that should be enabled | - |
 | **Joomla Core Version** | Running latest stable version | Update available | Running unsupported/EOL version |
 | **Language Packs** | All language packs up to date | Language pack updates available | - |
-| **Legacy Extensions** | No deprecated extensions installed | Using deprecated extensions | Extensions incompatible with Joomla version |
 | **Missing Updates** | All extensions up to date | Extension updates available | Critical security updates available |
 | **Module Positions** | All published modules in valid positions | Modules in undefined/missing template positions | - |
 | **Overrides** | No outdated template overrides | Template overrides outdated compared to core | - |
