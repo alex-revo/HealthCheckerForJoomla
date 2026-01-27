@@ -171,7 +171,7 @@ fi
 # Minify JavaScript files (except search-widget.js which is updated by VitePress buildEnd hook)
 echo "Minifying JavaScript files..."
 if command -v npx &> /dev/null; then
-    for jsfile in public/waitlist-popover.js public/livechat.js; do
+    for jsfile in public/livechat.js; do
         if [ -f "$jsfile" ]; then
             # Save original for comparison
             ORIGINAL_SIZE=$(wc -c < "$jsfile")
