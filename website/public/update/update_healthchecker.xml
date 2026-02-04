@@ -7,12 +7,12 @@
         <element>com_healthchecker</element>
         <type>component</type>
         <client>administrator</client>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
         <infourl title="Health Checker">https://github.com/mySites-guru/HealthCheckerForJoomla</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/com_healthchecker-3.1.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/com_healthchecker-3.1.2.zip</downloadurl>
         </downloads>
-        <sha512>8645926290e9f5b236dac7c0273b2daff37fd550e9e7a953947dba0bb85d68044360ef1a187bea5c928fb68658ce70c647fc8fd3dc2b5397d32956d6fd0ff743</sha512>
+        <sha512>cd74084a9f8f78eeb35a7e025a1514176ed62b095451750fbad194ed770539a235b1baec8b1ca254b5838256819db33bbb6355c58391fe4f0bd6330be3eb9d05</sha512>
         <tags>
             <tag>stable</tag>
         </tags>
@@ -29,12 +29,12 @@
         <element>mod_healthchecker</element>
         <type>module</type>
         <client>administrator</client>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
         <infourl title="Health Checker">https://github.com/mySites-guru/HealthCheckerForJoomla</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/mod_healthchecker-3.1.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/mod_healthchecker-3.1.2.zip</downloadurl>
         </downloads>
-        <sha512>70a5e1e3883e15f7aceb1827136a088eccc3a97767be9e1151a697ebb0b7f3d23bf5e4081a67744834af5c245670417d7d2605b0b92ae680a85fb4c8507d3976</sha512>
+        <sha512>c9f2eeec3cec8a512f91d8a6bf874bc287439aa5db7a2e77304feb523449a1e3e8cbbc18bc7eba899b78fb946524cda0bbde8197b5552d78dfc9c7e628408425</sha512>
         <tags>
             <tag>stable</tag>
         </tags>
@@ -52,12 +52,12 @@
         <type>plugin</type>
         <client>site</client>
         <folder>healthchecker</folder>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
         <infourl title="Health Checker">https://github.com/mySites-guru/HealthCheckerForJoomla</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_core-3.1.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_core-3.1.2.zip</downloadurl>
         </downloads>
-        <sha512>dfcf1d54e9d39b7ddec6b63809577e14e69bd1865e4852a0eb8d08082db9dd9ab24ac079697881221dcd60f3737dca39b5ab3044c843956415afef7d40b8fb23</sha512>
+        <sha512>8a3e971c16f587123edbee9acb9b1855c4a9859e479b488d0fe80405182bf42e141b6f3f1a37d80469e9417233e6abf0dd1036e778617141f4658a6d1dad22aa</sha512>
         <tags>
             <tag>stable</tag>
         </tags>
@@ -75,12 +75,12 @@
         <type>plugin</type>
         <client>site</client>
         <folder>healthchecker</folder>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
         <infourl title="Health Checker">https://github.com/mySites-guru/HealthCheckerForJoomla</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_akeebabackup-3.1.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_akeebabackup-3.1.2.zip</downloadurl>
         </downloads>
-        <sha512>f4f7a9493b9ede61a04dac94e9f1cfc44a4e59d0181f0b86f1490e9320a6fa0bef332eda0105d9987d2c243d91b34c040c83d7409b9af87eaf4728ff41685489</sha512>
+        <sha512>96b252ee5928a307c46009221b2a623ad8c3d3fb44ddaae37ba00ecfd9b60ec107543f3255029546d0dbe312fa3f683c86f20bd6708667623c15e132fcae91dc</sha512>
         <tags>
             <tag>stable</tag>
         </tags>
@@ -98,12 +98,12 @@
         <type>plugin</type>
         <client>site</client>
         <folder>healthchecker</folder>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
         <infourl title="Health Checker">https://github.com/mySites-guru/HealthCheckerForJoomla</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_akeebaadmintools-3.1.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_akeebaadmintools-3.1.2.zip</downloadurl>
         </downloads>
-        <sha512>82ebb088443b160e867aeb20b9c6fdb4547ea97180e7daa83d5d0ea555a3e133d5ca4574fab9e704a1d5fde4eaa5a85a451c72a9fdf1b5593544a2669318d2ac</sha512>
+        <sha512>d8f1f59acdab0d6b4e5fe175839baadec093ae4c6a76d78a669ca19afeb107fd5e0f30f075056d0440a7301b81cee6b88d73024f117d55ee9b601eb14def695f</sha512>
         <tags>
             <tag>stable</tag>
         </tags>
@@ -121,12 +121,12 @@
         <type>plugin</type>
         <client>site</client>
         <folder>healthchecker</folder>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
         <infourl title="Health Checker">https://github.com/mySites-guru/HealthCheckerForJoomla</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_mysitesguru-3.1.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_mysitesguru-3.1.2.zip</downloadurl>
         </downloads>
-        <sha512>9ede88c58e590cc200fefaab703718cb8f52ff8f707c5966d9cf1d1b9c028922e9751500751e42c2705ace497f1eee5e6ee51647f6ed00010c7cae612a971206</sha512>
+        <sha512>1179148f08202c3daa691ce07d30aa6dc376cb2d10a3b4778ec5c102d22f0e2b09d8407da8b91a74eb046787e8a9aacc804d946a29a0d64cbd46789c75e201ae</sha512>
         <tags>
             <tag>stable</tag>
         </tags>
@@ -144,12 +144,12 @@
         <type>plugin</type>
         <client>site</client>
         <folder>healthchecker</folder>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
         <infourl title="Health Checker">https://github.com/mySites-guru/HealthCheckerForJoomla</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_example-3.1.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/plg_healthchecker_example-3.1.2.zip</downloadurl>
         </downloads>
-        <sha512>790282a065658e589d7fa1e12634af40461460c09fc04cdd9d510c2b88f5522d3359e1c472007cbb648a1ef888973ca0b5cd543e6e02b59a49f94870fd441ea0</sha512>
+        <sha512>d5ecf072a1d690de278f11918441a57bfcb3c51589d12cdabd5a0ecd2a2850a02e7e099951145ae87b0e1dc3877ba2119756ba660b934073df0caa46dcbe1d2c</sha512>
         <tags>
             <tag>stable</tag>
         </tags>
@@ -166,12 +166,12 @@
         <element>pkg_healthchecker</element>
         <client>site</client>
         <type>package</type>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
         <infourl title="Health Checker">https://github.com/mySites-guru/HealthCheckerForJoomla</infourl>
         <downloads>
-            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/pkg_healthchecker-3.1.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://www.joomlahealthchecker.com/downloads/pkg_healthchecker-3.1.2.zip</downloadurl>
         </downloads>
-        <sha512>dc54ddb5dfd5f1329b4e116f156d718574de6989e6a403471802c47d94b56f6bee55c7e492109c953c25037d1fe4d94692fb3e978a922996c989cc6f4ca0898f</sha512>
+        <sha512>325b8554b2dd76d1ee96f2bc1d911310e013d32bdd4dd9235e0d5f77bf03e1a60ae999d639ca5edeb7de6810b36e210b1f10507bc52a66d14e44b591d0daabfb</sha512>
         <tags>
             <tag>stable</tag>
         </tags>
