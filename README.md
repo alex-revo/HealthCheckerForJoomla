@@ -92,7 +92,7 @@ composer phpstan      # Static analysis (Level 8)
 | MySites.guru Integration | ✅ Complete |
 | Akeeba Integrations | ✅ Complete |
 | Build System | ✅ Complete |
-| Test Coverage | ✅ Passing |
+| Test Coverage | [![CI](https://github.com/mySites-guru/HealthCheckerForJoomla/actions/workflows/ci.yml/badge.svg)](https://github.com/mySites-guru/HealthCheckerForJoomla/actions/workflows/ci.yml) |
 | Documentation | ✅ Complete |
 
 ## Architecture
