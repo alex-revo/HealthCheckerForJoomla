@@ -512,7 +512,7 @@
 
         <main id="main-content">
             <!-- Hero -->
-            <section aria-labelledby="hero-heading" class="py-16 md:py-20">
+            <section aria-labelledby="hero-heading" class="py-16 md:py-20" id="hero">
                 <div class="max-w-6xl mx-auto px-6">
                     <div class="grid lg:grid-cols-2 gap-12 items-center">
                         <!-- Left: Text Content -->
@@ -1919,8 +1919,113 @@
                 </div>
             </section>
 
+            <!-- Community Plugins Section -->
+            <section class="py-20 bg-white dark:bg-gray-800" id="community-plugins">
+                <div class="max-w-6xl mx-auto px-6">
+                    <div class="text-center max-w-2xl mx-auto mb-12">
+                        <div
+                            class="inline-flex items-center gap-2 bg-joomla-bg-light px-4 py-1.5 rounded-full text-sm text-gray-600 mb-6"
+                        >
+                            <span class="text-joomla-success font-semibold"
+                                >Extensible</span
+                            >
+                            - Third-party plugins built by the community
+                        </div>
+                        <h2
+                            class="text-2xl md:text-3xl font-bold text-joomla-primary mb-3"
+                        >
+                            Community Plugins
+                        </h2>
+                        <p class="text-gray-500 dark:text-gray-500">
+                            Developers are already building on the Health Checker
+                            plugin architecture. Install community plugins to
+                            extend your health checks with support for even more
+                            extensions.
+                        </p>
+                    </div>
+                    <div class="max-w-2xl mx-auto">
+                        <!-- YOOtheme Pro Plugin Card -->
+                        <div
+                            class="bg-joomla-bg-light border border-gray-200 rounded-xl p-8 dark:bg-gray-700 dark:border-gray-600"
+                        >
+                            <div class="flex items-center gap-3 mb-4">
+                                <div
+                                    class="w-12 h-12 rounded-xl border border-black bg-white flex items-center justify-center p-2"
+                                >
+                                    <img
+                                        src="/yootheme-logo.png"
+                                        alt="YOOtheme"
+                                        class="w-6 h-6 object-contain"
+                                    />
+                                </div>
+                                <div>
+                                    <h3
+                                        class="text-lg font-bold text-joomla-primary dark:text-blue-400"
+                                    >
+                                        YOOtheme Pro Health Checker
+                                    </h3>
+                                    <p
+                                        class="text-sm text-gray-500 dark:text-gray-400"
+                                    >
+                                        by Alex Revo
+                                    </p>
+                                </div>
+                            </div>
+                            <p
+                                class="text-sm text-gray-600 dark:text-gray-400 mb-6"
+                            >
+                                A diagnostic tool for sites built with YOOtheme
+                                Pro Builder. Verifies server requirements, checks
+                                Joomla configuration settings, and reviews
+                                YOOtheme Pro setup — identifying potential issues
+                                and providing actionable recommendations.
+                            </p>
+                            <div class="flex flex-wrap gap-3">
+                                <a
+                                    href="https://alexrevo.pw/product/revo-debug-plugin.html"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center gap-2 bg-joomla-primary text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors"
+                                >
+                                    <span>View Plugin</span>
+                                    <svg
+                                        class="w-4 h-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                        ></path>
+                                    </svg>
+                                </a>
+                                <a
+                                    href="/docs/integrations/community-plugins.html"
+                                    class="inline-flex items-center gap-2 border border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-300 text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                                >
+                                    View All Community Plugins
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-10">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Built a Health Checker plugin?
+                            <a
+                                href="/docs/integrations/community-plugins.html"
+                                class="text-joomla-link hover:underline"
+                                >Submit it to get listed →</a
+                            >
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             <!-- Akeeba Integration Showcase -->
-            <section class="py-20 bg-white dark:bg-gray-800">
+            <section class="py-20 bg-joomla-bg-light dark:bg-gray-800" id="akeeba">
                 <div class="max-w-6xl mx-auto px-6">
                     <div class="text-center max-w-2xl mx-auto mb-12">
                         <div
@@ -2372,6 +2477,7 @@
             <!-- mySites.guru Upsell Section -->
             <section
                 class="py-20 bg-gradient-to-br from-joomla-bg-light to-white"
+                id="experience"
             >
                 <div class="max-w-6xl mx-auto px-6">
                     <div class="grid lg:grid-cols-2 gap-12 items-center">
@@ -2553,6 +2659,7 @@
             <!-- Fix.mySites.guru Upsell Section -->
             <section
                 class="py-20 bg-gradient-to-br from-white to-joomla-bg-light dark:from-gray-900 dark:to-gray-800"
+                id="support"
             >
                 <div class="max-w-6xl mx-auto px-6">
                     <div class="grid lg:grid-cols-2 gap-12 items-center">
