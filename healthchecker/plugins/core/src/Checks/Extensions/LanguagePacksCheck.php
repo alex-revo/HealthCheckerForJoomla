@@ -81,11 +81,6 @@ final class LanguagePacksCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult Always returns GOOD with count of site and admin languages
      */
-    /**
-     * Perform the Language Packs health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

@@ -105,11 +105,6 @@ final class AdminEmailCheck extends AbstractHealthCheck
      * @return HealthCheckResult CRITICAL if invalid emails found, GOOD if all valid,
      *                          WARNING if no super admins exist
      */
-    /**
-     * Perform the Admin Email health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

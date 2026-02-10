@@ -85,11 +85,6 @@ final class BrowserCacheCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result indicating browser caching configuration status
      */
-    /**
-     * Perform the Browser Cache health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $htaccessPath = JPATH_ROOT . '/.htaccess';

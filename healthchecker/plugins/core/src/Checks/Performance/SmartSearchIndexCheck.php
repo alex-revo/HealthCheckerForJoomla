@@ -86,11 +86,6 @@ final class SmartSearchIndexCheck extends AbstractHealthCheck
      * @return HealthCheckResult Returns GOOD if disabled or indexed,
      *                           WARNING if enabled but empty index
      */
-    /**
-     * Perform the Smart Search Index health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

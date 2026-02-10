@@ -77,11 +77,6 @@ final class SitemapCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The check result with status and description
      */
-    /**
-     * Perform the Sitemap health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // sitemap.xml must be in site root as per sitemap protocol specification.

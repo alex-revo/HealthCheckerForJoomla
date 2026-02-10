@@ -85,11 +85,6 @@ final class TableCharsetCheck extends AbstractHealthCheck
      * @return HealthCheckResult Critical if database unavailable, warning if any tables
      *                           use non-utf8mb4 collation, good if all tables use utf8mb4
      */
-    /**
-     * Perform the Table Charset health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

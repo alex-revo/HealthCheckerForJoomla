@@ -78,11 +78,6 @@ final class ErrorReportingCheck extends AbstractHealthCheck
      * @return HealthCheckResult WARNING if error reporting is set to maximum/development,
      *                          GOOD if set to none/simple or other production-safe values
      */
-    /**
-     * Perform the Error Reporting health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // Get error reporting level from Global Configuration

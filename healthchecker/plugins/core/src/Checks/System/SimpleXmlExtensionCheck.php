@@ -78,11 +78,6 @@ final class SimpleXmlExtensionCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult CRITICAL if simplexml is not loaded, GOOD if available
      */
-    /**
-     * Perform the Simple Xml Extension health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         if (! extension_loaded('simplexml')) {

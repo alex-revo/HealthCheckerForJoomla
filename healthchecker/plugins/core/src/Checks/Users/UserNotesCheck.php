@@ -86,11 +86,6 @@ final class UserNotesCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result with GOOD status and note/user counts
      */
-    /**
-     * Perform the User Notes health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

@@ -80,11 +80,6 @@ final class ZipExtensionCheck extends AbstractHealthCheck
      * @return HealthCheckResult Good status if Zip extension is loaded,
      *                            Critical status if Zip extension is not available
      */
-    /**
-     * Perform the Zip Extension health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // Zip is essential for extension management and updates

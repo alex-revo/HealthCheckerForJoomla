@@ -90,11 +90,6 @@ final class DatabaseQueryCacheCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result indicating query cache configuration status
      */
-    /**
-     * Perform the Database Query Cache health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

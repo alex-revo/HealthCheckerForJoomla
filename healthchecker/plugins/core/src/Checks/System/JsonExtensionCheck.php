@@ -77,11 +77,6 @@ final class JsonExtensionCheck extends AbstractHealthCheck
      * @return HealthCheckResult Good status if JSON extension is loaded,
      *                            Critical status if JSON extension is not available
      */
-    /**
-     * Perform the Json Extension health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // JSON is a hard requirement for Joomla
