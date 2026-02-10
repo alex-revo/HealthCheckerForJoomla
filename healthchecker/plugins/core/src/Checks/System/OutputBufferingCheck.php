@@ -84,11 +84,6 @@ final class OutputBufferingCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult Always returns Good as this is informational only
      */
-    /**
-     * Perform the Output Buffering health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $outputBuffering = ini_get('output_buffering');

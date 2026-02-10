@@ -79,11 +79,6 @@ final class DisabledExtensionsCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult WARNING if more than 20 extensions are disabled, GOOD otherwise
      */
-    /**
-     * Perform the Disabled Extensions health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

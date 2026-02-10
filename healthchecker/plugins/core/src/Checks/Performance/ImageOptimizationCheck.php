@@ -89,11 +89,6 @@ final class ImageOptimizationCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result indicating image optimization status
      */
-    /**
-     * Perform the Image Optimization health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $imagesPath = JPATH_ROOT . '/images';

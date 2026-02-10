@@ -86,11 +86,6 @@ final class SefUrlsCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult Warning if either setting is disabled, Good if both enabled
      */
-    /**
-     * Perform the Sef Urls health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // Get SEF configuration from Joomla global configuration

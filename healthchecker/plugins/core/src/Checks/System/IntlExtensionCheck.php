@@ -84,11 +84,6 @@ final class IntlExtensionCheck extends AbstractHealthCheck
      * @return HealthCheckResult Good status if Intl extension is loaded,
      *                            Warning status if Intl extension is not available
      */
-    /**
-     * Perform the Intl Extension health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // Intl provides enhanced internationalization but is not strictly required

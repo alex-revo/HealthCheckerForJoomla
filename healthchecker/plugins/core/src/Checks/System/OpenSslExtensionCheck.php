@@ -86,11 +86,6 @@ final class OpenSslExtensionCheck extends AbstractHealthCheck
      * @return HealthCheckResult Good status if OpenSSL extension is loaded (with version),
      *                            Critical status if OpenSSL extension is not available
      */
-    /**
-     * Perform the Open Ssl Extension health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // OpenSSL is essential for secure operation of any modern Joomla site

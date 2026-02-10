@@ -92,11 +92,6 @@ final class DefaultUserGroupCheck extends AbstractHealthCheck
      * @return HealthCheckResult CRITICAL if default group is Administrator/Super Users,
      *                          GOOD if set to appropriate non-privileged group
      */
-    /**
-     * Perform the Default User Group health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // Read com_users configuration to get default user group for new registrations

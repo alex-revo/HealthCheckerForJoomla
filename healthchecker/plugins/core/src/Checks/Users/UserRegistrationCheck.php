@@ -90,11 +90,6 @@ final class UserRegistrationCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result with status (GOOD/WARNING) and configuration state
      */
-    /**
-     * Perform the User Registration health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // Read the component parameters for com_users to check registration setting

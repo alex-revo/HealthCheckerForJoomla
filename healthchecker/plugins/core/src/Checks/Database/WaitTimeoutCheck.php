@@ -108,11 +108,6 @@ final class WaitTimeoutCheck extends AbstractHealthCheck
      *                           is below 30 seconds or above 8 hours, good if timeout
      *                           is in the recommended range
      */
-    /**
-     * Perform the Wait Timeout health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

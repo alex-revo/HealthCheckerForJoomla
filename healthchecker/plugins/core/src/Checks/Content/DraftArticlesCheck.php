@@ -79,11 +79,6 @@ final class DraftArticlesCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult Warning if >20 drafts exist, good otherwise with count
      */
-    /**
-     * Perform the Draft Articles health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

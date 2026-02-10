@@ -79,11 +79,6 @@ final class DomExtensionCheck extends AbstractHealthCheck
      * @return HealthCheckResult Good status if DOM extension is loaded,
      *                            Critical status if DOM extension is not available
      */
-    /**
-     * Perform the Dom Extension health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // DOM is a hard requirement for Joomla

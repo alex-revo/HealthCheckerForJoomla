@@ -104,11 +104,6 @@ final class MaxPacketCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result with appropriate status and message
      */
-    /**
-     * Perform the Max Packet health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

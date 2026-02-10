@@ -76,11 +76,6 @@ final class PdoMysqlExtensionCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult CRITICAL if pdo_mysql is not loaded, GOOD if available
      */
-    /**
-     * Perform the Pdo Mysql Extension health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         if (! extension_loaded('pdo_mysql')) {

@@ -98,11 +98,6 @@ final class ServerTimeCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult Good if time is accurate, Warning/Critical if drifted
      */
-    /**
-     * Perform the Server Time health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $timezone = date_default_timezone_get();
