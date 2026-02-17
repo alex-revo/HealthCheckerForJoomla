@@ -81,11 +81,6 @@ final class MailFunctionCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult Critical/Warning/Good based on mail configuration validity
      */
-    /**
-     * Perform the Mail Function health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // Get configured mailer from Joomla config (mail, smtp, or sendmail)

@@ -82,11 +82,6 @@ final class MailerSecurityCheck extends AbstractHealthCheck
      *                           - GOOD: Using PHP mail()/sendmail, or SMTP with TLS/SSL encryption
      *                           - WARNING: SMTP configured without encryption (none/empty)
      */
-    /**
-     * Perform the Mailer Security health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // Get mailer configuration from global Joomla settings

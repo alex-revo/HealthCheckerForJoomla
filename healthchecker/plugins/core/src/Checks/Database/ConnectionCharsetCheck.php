@@ -82,11 +82,6 @@ final class ConnectionCharsetCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result with appropriate status and message
      */
-    /**
-     * Perform the Connection Charset health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

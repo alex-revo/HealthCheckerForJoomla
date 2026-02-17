@@ -85,11 +85,6 @@ final class UserGroupsCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result with status (GOOD/WARNING) and group count
      */
-    /**
-     * Perform the User Groups health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

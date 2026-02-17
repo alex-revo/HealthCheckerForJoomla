@@ -90,11 +90,6 @@ final class ConfigurationPhpPermissionsCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult Result indicating file permission security level
      */
-    /**
-     * Perform the Configuration Php Permissions health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $configPath = JPATH_ROOT . '/configuration.php';

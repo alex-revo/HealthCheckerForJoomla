@@ -87,11 +87,6 @@ final class SlowQueryCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result with appropriate status and message
      */
-    /**
-     * Perform the Slow Query health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

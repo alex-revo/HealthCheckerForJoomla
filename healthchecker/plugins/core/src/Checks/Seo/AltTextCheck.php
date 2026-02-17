@@ -78,11 +78,6 @@ final class AltTextCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The check result with status and description
      */
-    /**
-     * Perform the Alt Text health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

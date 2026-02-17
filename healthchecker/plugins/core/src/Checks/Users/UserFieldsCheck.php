@@ -88,11 +88,6 @@ final class UserFieldsCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result with GOOD status and field count information
      */
-    /**
-     * Perform the User Fields health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

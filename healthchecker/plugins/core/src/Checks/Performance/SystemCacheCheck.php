@@ -91,11 +91,6 @@ final class SystemCacheCheck extends AbstractHealthCheck
      * @return HealthCheckResult Returns WARNING if caching fully disabled,
      *                           GOOD if enabled with handler information
      */
-    /**
-     * Perform the System Cache health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // Check Global Configuration caching setting (0=Off, 1=Conservative, 2=Progressive)

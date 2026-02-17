@@ -37,7 +37,7 @@ use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 
-\defined('_JEXEC') || die();
+\defined('_JEXEC') || die;
 
 /**
  * mySites.guru Connection Health Check

@@ -53,7 +53,7 @@ namespace MySitesGuru\HealthChecker\Plugin\Example\Checks;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 
-\defined('_JEXEC') || die();
+\defined('_JEXEC') || die;
 
 /**
  * Example health check demonstrating external service monitoring.

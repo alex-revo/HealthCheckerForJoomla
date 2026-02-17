@@ -39,7 +39,7 @@ namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 
-\defined('_JEXEC') || die();
+\defined('_JEXEC') || die;
 
 final class UnusedModulesCheck extends AbstractHealthCheck
 {

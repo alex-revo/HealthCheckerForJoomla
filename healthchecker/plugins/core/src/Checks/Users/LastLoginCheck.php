@@ -86,11 +86,6 @@ final class LastLoginCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The result with status (GOOD/WARNING) and message
      */
-    /**
-     * Perform the Last Login health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

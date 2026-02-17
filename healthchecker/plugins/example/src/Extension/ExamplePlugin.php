@@ -22,7 +22,7 @@ use MySitesGuru\HealthChecker\Component\Administrator\Provider\ProviderMetadata;
 use MySitesGuru\HealthChecker\Plugin\Example\Checks\CustomConfigCheck;
 use MySitesGuru\HealthChecker\Plugin\Example\Checks\ThirdPartyServiceCheck;
 
-\defined('_JEXEC') || die();
+\defined('_JEXEC') || die;
 
 /**
  * Example Health Checker Plugin

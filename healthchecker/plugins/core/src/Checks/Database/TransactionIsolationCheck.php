@@ -102,11 +102,6 @@ final class TransactionIsolationCheck extends AbstractHealthCheck
      *                           is READ-UNCOMMITTED or SERIALIZABLE, good for READ-COMMITTED
      *                           or REPEATABLE-READ (recommended)
      */
-    /**
-     * Perform the Transaction Isolation health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         $database = $this->requireDatabase();

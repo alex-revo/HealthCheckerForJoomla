@@ -77,11 +77,6 @@ final class RobotsFileCheck extends AbstractHealthCheck
      *
      * @return HealthCheckResult The check result with status and description
      */
-    /**
-     * Perform the Robots File health check.
-     *
-     * @return HealthCheckResult The result of this health check
-     */
     protected function performCheck(): HealthCheckResult
     {
         // robots.txt must be in site root to be found by search engine crawlers.
