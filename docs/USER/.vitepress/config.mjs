@@ -66,10 +66,10 @@ export default defineConfig({
         priceCurrency: 'USD'
       },
       description: 'Free GPL-licensed Joomla 5+ extension that runs over 130 automated health checks covering security, performance, SEO, database health, and more. Get instant comprehensive reports directly from your Joomla admin panel.',
-      softwareVersion: '2.0.2',
-      releaseNotes: 'https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v2.0.2',
-      downloadUrl: 'https://github.com/mySites-guru/HealthCheckerForJoomla/releases/download/v2.0.2/pkg_healthchecker-v2.0.2.zip',
-      installUrl: 'https://github.com/mySites-guru/HealthCheckerForJoomla/releases/download/v2.0.2/pkg_healthchecker-v2.0.2.zip',
+      softwareVersion: '3.3.0',
+      releaseNotes: 'https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.0',
+      downloadUrl: 'https://github.com/mySites-guru/HealthCheckerForJoomla/releases/download/v3.3.0/pkg_healthchecker-v3.3.0.zip',
+      installUrl: 'https://github.com/mySites-guru/HealthCheckerForJoomla/releases/download/v3.3.0/pkg_healthchecker-v3.3.0.zip',
       screenshot: 'https://www.joomlahealthchecker.com/social-preview.jpg',
       url: 'https://www.joomlahealthchecker.com',
       applicationSubCategory: 'Site Health Monitoring',
@@ -94,7 +94,7 @@ export default defineConfig({
         url: 'https://github.com/PhilETaylor'
       },
       datePublished: '2026-01-16',
-      dateModified: '2026-01-16',
+      dateModified: '2026-02-17',
       license: 'https://www.gnu.org/licenses/gpl-2.0.html',
       inLanguage: 'en',
       keywords: 'Joomla, health check, security audit, performance monitoring, SEO analysis, database optimization, site maintenance, Joomla 5',

@@ -16,7 +16,7 @@ hero:
 
 features:
   - icon: 🏥
-    title: 133+ Health Checks
+    title: 129+ Health Checks
     details: Comprehensive monitoring across 8+ categories - System, Database, Security, Users, Extensions, Performance, SEO, and Content Quality
   - icon: 🔌
     title: Extensible Architecture
@@ -43,7 +43,7 @@ Health Checker for Joomla is a comprehensive monitoring extension that checks yo
 
 ## Quick Overview
 
-- **133 built-in checks** across 8+ categories
+- **129 built-in checks** across 8+ categories
 - **Dashboard Widget** showing Critical/Warning/Good counts at a glance
 - **Detailed Reports** with filtering by status and category
 - **Export Functionality** in JSON and HTML formats

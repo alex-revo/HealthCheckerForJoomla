@@ -4,7 +4,7 @@ description: "Learn how Health Checker categorizes and reports issues. Understan
 
 # Understanding Health Checks
 
-Health Checker for Joomla provides comprehensive monitoring across 8+ categories, with 133 built-in checks designed to identify potential issues before they become problems.
+Health Checker for Joomla provides comprehensive monitoring across 8+ categories, with 129 built-in checks designed to identify potential issues before they become problems.
 
 ## What Are Health Checks?
 
@@ -97,7 +97,7 @@ Evaluates content health, broken links, duplicate content, and accessibility. Qu
 Health checks can come from different providers:
 
 ### Core Provider
-The built-in provider that ships with Health Checker. Includes 129 checks across the 8+ categories.
+The built-in provider that ships with Health Checker. Includes 129 checks across the 8 categories.
 
 ### Third-Party Providers
 Extension developers can create plugins to add custom checks. Each provider is clearly attributed in the results so you know where each check comes from.
