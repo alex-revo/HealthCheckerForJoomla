@@ -241,7 +241,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_INSTALLED_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -339,7 +339,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_WAF_ENABLED_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -449,7 +449,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_SECURITY_EVENTS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -555,7 +555,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_BLOCKED_ATTACKS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -661,7 +661,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_ACTIVE_BANS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -768,7 +768,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_SCAN_AGE_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -893,7 +893,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_FILE_ALERTS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -1018,7 +1018,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_TEMP_SUPERUSERS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -1129,7 +1129,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_IP_WHITELIST_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -1234,7 +1234,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_WAF_RULES_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -1350,7 +1350,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_LOGIN_FAILURES_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -1462,7 +1462,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_GEOBLOCKING_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -1570,7 +1570,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_SQLI_BLOCKS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -1678,7 +1678,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_XSS_BLOCKS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }
@@ -1786,7 +1786,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 return Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_ADMIN_ACCESS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebaadmintools/src/Extension/AkeebaAdminToolsPlugin.php';
             }

@@ -46,6 +46,7 @@ namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 
 \defined('_JEXEC') || die;
 
@@ -71,7 +72,7 @@ final class UnpublishedCategoryArticlesCheck extends AbstractHealthCheck
         return 'content';
     }
 
-    public function getDocsUrl(): string
+    public function getDocsUrl(?HealthStatus $healthStatus = null): string
     {
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Content/UnpublishedCategoryArticlesCheck.php';
     }

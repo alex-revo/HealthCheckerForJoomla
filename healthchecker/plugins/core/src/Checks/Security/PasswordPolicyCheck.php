@@ -39,6 +39,7 @@ namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 use Joomla\CMS\Component\ComponentHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 
 \defined('_JEXEC') || die;
 
@@ -64,7 +65,7 @@ final class PasswordPolicyCheck extends AbstractHealthCheck
         return 'security';
     }
 
-    public function getDocsUrl(): string
+    public function getDocsUrl(?HealthStatus $healthStatus = null): string
     {
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Security/PasswordPolicyCheck.php';
     }
