@@ -236,7 +236,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_INSTALLED_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }
@@ -351,7 +351,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_LAST_BACKUP_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }
@@ -510,7 +510,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_SUCCESS_RATE_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }
@@ -674,7 +674,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_STUCK_BACKUPS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }
@@ -820,7 +820,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_FILES_EXIST_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }
@@ -951,7 +951,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_BACKUP_SIZE_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }
@@ -1098,7 +1098,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_PROFILE_EXISTS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }
@@ -1228,7 +1228,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_PROFILE_CONFIGURED_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }
@@ -1361,7 +1361,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_FAILED_BACKUPS_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }
@@ -1501,7 +1501,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 return Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_FREQUENCY_TITLE');
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/akeebabackup/src/Extension/AkeebaBackupPlugin.php';
             }

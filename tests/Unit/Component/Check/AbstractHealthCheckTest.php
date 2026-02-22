@@ -258,7 +258,7 @@ class AbstractHealthCheckTest extends TestCase
                 return 'system';
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://example.com/docs/custom';
             }
@@ -362,6 +362,62 @@ class AbstractHealthCheckTest extends TestCase
         $this->assertNull($goodResult->actionUrl);
     }
 
+    public function testConditionalDocsUrlBasedOnStatus(): void
+    {
+        $check = new class extends AbstractHealthCheck {
+            public function getSlug(): string
+            {
+                return 'custom.conditional_docs';
+            }
+
+            public function getCategory(): string
+            {
+                return 'system';
+            }
+
+            public function getDocsUrl(?HealthStatus $healthStatus = null): ?string
+            {
+                if ($healthStatus === HealthStatus::Good) {
+                    return null;
+                }
+
+                return 'https://example.com/docs/fix';
+            }
+
+            public function exposeCritical(string $description): HealthCheckResult
+            {
+                return $this->critical($description);
+            }
+
+            public function exposeWarning(string $description): HealthCheckResult
+            {
+                return $this->warning($description);
+            }
+
+            public function exposeGood(string $description): HealthCheckResult
+            {
+                return $this->good($description);
+            }
+
+            protected function performCheck(): HealthCheckResult
+            {
+                return $this->good('OK');
+            }
+        };
+
+        // Docs URL should be present for Critical status
+        $healthCheckResult = $check->exposeCritical('Critical issue');
+        $this->assertSame('https://example.com/docs/fix', $healthCheckResult->docsUrl);
+
+        // Docs URL should be present for Warning status
+        $warningResult = $check->exposeWarning('Warning issue');
+        $this->assertSame('https://example.com/docs/fix', $warningResult->docsUrl);
+
+        // Docs URL should be null for Good status
+        $goodResult = $check->exposeGood('All good');
+        $this->assertNull($goodResult->docsUrl);
+    }
+
     public function testHelperMethodsIncludeUrls(): void
     {
         $check = new class extends AbstractHealthCheck {
@@ -375,7 +431,7 @@ class AbstractHealthCheckTest extends TestCase
                 return 'system';
             }
 
-            public function getDocsUrl(): string
+            public function getDocsUrl(?HealthStatus $healthStatus = null): string
             {
                 return 'https://docs.test.com';
             }
