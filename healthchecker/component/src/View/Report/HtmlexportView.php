@@ -281,6 +281,14 @@ class HtmlexportView extends BaseHtmlView
             border: 1px solid #dee2e6;
             border-radius: 8px;
             background: white;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .check-body {
+            flex: 1;
+            min-width: 0;
         }
 
         .check-header {
@@ -336,7 +344,44 @@ class HtmlexportView extends BaseHtmlView
         .check-description {
             color: #495057;
             line-height: 1.6;
-            margin-left: 94px;
+        }
+
+        .check-description code {
+            background: #f1f3f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        .check-description pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 12px 16px;
+            overflow-x: auto;
+            font-size: 0.9em;
+            margin: 8px 0;
+        }
+
+        .check-description pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .check-footer {
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .check-footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .check-footer a:hover {
+            text-decoration: underline;
         }
 
         .footer {
@@ -439,25 +484,31 @@ class HtmlexportView extends BaseHtmlView
                     <?php
                 foreach ($categoryResults as $categoryResult): ?>
                         <div class="check">
-                        <div class="check-header">
                             <span class="status-badge <?php echo $categoryResult->healthStatus->value; ?>">
                                 <?php echo $categoryResult->healthStatus === HealthStatus::Critical ? '🔴 ' : ($categoryResult->healthStatus === HealthStatus::Warning ? '🟡 ' : '🟢 '); ?>
-                                    <?php echo strtoupper((string) $categoryResult->healthStatus->value); ?>
-                                </span>
-                            <span class="check-title"><?php echo htmlspecialchars((string) $categoryResult->title); ?></span>
-                            <?php if ($categoryResult->provider !== 'core'): ?>
-                                    <?php
-                                        $provider = $providers[$categoryResult->provider] ?? null;
-                                $providerName = $provider ? $provider->name : $categoryResult->provider;
-                                ?>
-                                    <span class="check-provider"><?php echo htmlspecialchars((string) $providerName); ?></span>
-                            <?php endif;
-                    ?>
+                                <?php echo strtoupper((string) $categoryResult->healthStatus->value); ?>
+                            </span>
+                            <div class="check-body">
+                                <div class="check-header">
+                                    <span class="check-title"><?php echo htmlspecialchars((string) $categoryResult->title); ?></span>
+                                    <?php if ($categoryResult->provider !== 'core'): ?>
+                                        <?php
+                                            $provider = $providers[$categoryResult->provider] ?? null;
+                                        $providerName = $provider ? $provider->name : $categoryResult->provider;
+                                        ?>
+                                        <span class="check-provider"><?php echo htmlspecialchars((string) $providerName); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="check-description">
+                                    <?php echo (string) $categoryResult->description; ?>
+                                </div>
+                                <?php if ($categoryResult->docsUrl !== null): ?>
+                                    <div class="check-footer">
+                                        <a href="<?php echo htmlspecialchars($categoryResult->docsUrl); ?>" target="_blank" rel="noopener">Documentation</a>
+                                    </div>
+                                <?php endif; ?>
                             </div>
-                        <div class="check-description">
-                            <?php echo nl2br(htmlspecialchars((string) $categoryResult->description)); ?>
-                            </div>
-                    </div>
+                        </div>
 <?php endforeach;
 
                 ?>

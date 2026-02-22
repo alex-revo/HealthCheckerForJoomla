@@ -12,6 +12,8 @@ namespace HealthChecker\Tests\Unit\Component\View\Report;
 
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Component\Administrator\View\Report\HtmlexportView;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -193,5 +195,147 @@ class HtmlexportViewTest extends TestCase
         $source = file_get_contents($reflectionClass->getFileName());
 
         $this->assertStringContainsString('HealthStatus', $source);
+    }
+
+    public function testRenderHtmlReportOutputsHtmlDescriptionWithoutEscaping(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Warning,
+            title: 'Test Check',
+            description: '<p>This is <strong>bold</strong> and <code>code</code></p>',
+            slug: 'core.test',
+            category: 'system',
+        );
+
+        $html = $this->renderReport([
+            'system' => [$healthCheckResult],
+        ]);
+
+        $this->assertStringContainsString('<p>This is <strong>bold</strong> and <code>code</code></p>', $html);
+    }
+
+    public function testRenderHtmlReportDoesNotDoubleEscapeHtmlEntities(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Entity Check',
+            description: '<p>Use <code>&lt;strong&gt;</code> for bold</p>',
+            slug: 'core.entity_test',
+            category: 'system',
+        );
+
+        $html = $this->renderReport([
+            'system' => [$healthCheckResult],
+        ]);
+
+        // Should contain the HTML as-is, not double-escaped
+        $this->assertStringContainsString('<p>Use <code>&lt;strong&gt;</code> for bold</p>', $html);
+        // Must not contain double-escaped entities
+        $this->assertStringNotContainsString('&amp;lt;', $html);
+    }
+
+    public function testRenderHtmlReportEscapesTitleWithHtmlspecialchars(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Check <script>alert("xss")</script>',
+            description: 'Safe description',
+            slug: 'core.xss_test',
+            category: 'system',
+        );
+
+        $html = $this->renderReport([
+            'system' => [$healthCheckResult],
+        ]);
+
+        // Title should be escaped
+        $this->assertStringContainsString('Check &lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;', $html);
+        // Title should NOT contain raw script tag
+        $this->assertStringNotContainsString('<script>alert("xss")</script>', $html);
+    }
+
+    public function testRenderHtmlReportShowsDocsLinkWhenDocsUrlProvided(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Docs Check',
+            description: 'Has docs',
+            slug: 'core.docs_test',
+            category: 'system',
+            docsUrl: 'https://example.com/docs/test',
+        );
+
+        $html = $this->renderReport([
+            'system' => [$healthCheckResult],
+        ]);
+
+        $this->assertStringContainsString('href="https://example.com/docs/test"', $html);
+        $this->assertStringContainsString('Documentation', $html);
+    }
+
+    public function testRenderHtmlReportHidesDocsLinkWhenDocsUrlIsNull(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'No Docs Check',
+            description: 'No docs',
+            slug: 'core.no_docs_test',
+            category: 'system',
+        );
+
+        $html = $this->renderReport([
+            'system' => [$healthCheckResult],
+        ]);
+
+        $this->assertStringNotContainsString('<div class="check-footer">', $html);
+        $this->assertStringNotContainsString('>Documentation</a>', $html);
+    }
+
+    public function testRenderHtmlReportEscapesDocsUrl(): void
+    {
+        $healthCheckResult = new HealthCheckResult(
+            healthStatus: HealthStatus::Good,
+            title: 'Escaped Docs',
+            description: 'Test',
+            slug: 'core.escaped_docs',
+            category: 'system',
+            docsUrl: 'https://example.com/docs?foo=1&bar=2',
+        );
+
+        $html = $this->renderReport([
+            'system' => [$healthCheckResult],
+        ]);
+
+        $this->assertStringContainsString('href="https://example.com/docs?foo=1&amp;bar=2"', $html);
+    }
+
+    /**
+     * Helper to invoke the private renderHtmlReport method and capture output.
+     *
+     * @param array $results Results grouped by category
+     */
+    private function renderReport(array $results): string
+    {
+        $htmlexportView = new HtmlexportView();
+        $reflectionMethod = new \ReflectionMethod(HtmlexportView::class, 'renderHtmlReport');
+
+        ob_start();
+        $reflectionMethod->invoke(
+            $htmlexportView,
+            $results,
+            [],
+            [],
+            'Test Site',
+            'January 1, 2026 at 12:00 PM',
+            '5.2.0',
+            0,
+            0,
+            1,
+            1,
+            false,
+            '',
+        );
+
+        return ob_get_clean();
     }
 }
