@@ -71,8 +71,26 @@ Health checks can provide two optional URLs that display as buttons on the right
 When implemented, displays a **"Docs"** button on the right side of the result row. Clicking the button opens the documentation URL in a new browser tab.
 
 ```php
-public function getDocsUrl(): ?string
+use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
+
+public function getDocsUrl(?HealthStatus $healthStatus = null): ?string
 {
+    return 'https://docs.yoursite.com/checks/example-check';
+}
+```
+
+The method receives an optional `HealthStatus` parameter, allowing you to conditionally show the docs button based on the check result.
+
+**Conditional Docs URLs**:
+
+```php
+public function getDocsUrl(?HealthStatus $healthStatus = null): ?string
+{
+    // Only show docs button when there's something to investigate (not for Good status)
+    if ($healthStatus === HealthStatus::Good) {
+        return null;
+    }
+
     return 'https://docs.yoursite.com/checks/example-check';
 }
 ```
@@ -82,6 +100,7 @@ public function getDocsUrl(): ?string
 * Link to detailed documentation explaining the check
 * Link to troubleshooting guides
 * Link to the source code on GitHub
+* Hide the docs button when no further guidance is needed (Good status)
 
 ### Action URL (`getActionUrl`)
 
@@ -143,7 +162,7 @@ final class ApiConfigCheck extends AbstractHealthCheck
         return 'yourplugin';
     }
 
-    public function getDocsUrl(): ?string
+    public function getDocsUrl(?HealthStatus $healthStatus = null): ?string
     {
         return 'https://docs.yoursite.com/configuration/api-settings';
     }
@@ -172,7 +191,7 @@ final class ApiConfigCheck extends AbstractHealthCheck
 * `getDocsUrl()` opens in a new tab, `getActionUrl()` opens in the same window
 * Action URLs should be relative administrator paths (starting with `/administrator/`)
 * Documentation URLs can be absolute URLs to external documentation
-* The `$status` parameter is optional for backwards compatibility - existing checks without it will continue to work
+* Both `$healthStatus` and `$status` parameters are optional for backwards compatibility - existing checks without them will continue to work
 
 ## Check Slug Format
 
@@ -625,7 +644,7 @@ final class ApiConnectionCheck extends AbstractHealthCheck
      *
      * Displays a "Docs" button that opens this URL in a new tab.
      */
-    public function getDocsUrl(): ?string
+    public function getDocsUrl(?HealthStatus $healthStatus = null): ?string
     {
         return 'https://docs.yoursite.com/health-checks/api-connection';
     }

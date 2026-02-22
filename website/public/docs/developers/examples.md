@@ -158,9 +158,14 @@ final class SimpleCheck extends AbstractHealthCheck
 
     /**
      * Optional: Link to documentation (displays "Docs" button)
+     * Only show when there's an issue to investigate
      */
-    public function getDocsUrl(): ?string
+    public function getDocsUrl(?HealthStatus $healthStatus = null): ?string
     {
+        if ($healthStatus === HealthStatus::Good) {
+            return null;
+        }
+
         return 'https://example.com/docs/simple-check';
     }
 
