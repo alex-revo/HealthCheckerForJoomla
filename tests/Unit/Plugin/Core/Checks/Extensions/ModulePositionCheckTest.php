@@ -238,6 +238,9 @@ XML;
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
         $this->assertStringContainsString('2 published module(s)', $healthCheckResult->description);
         $this->assertStringContainsString('not defined in template', $healthCheckResult->description);
+        $this->assertStringContainsString('<ul>', $healthCheckResult->description);
+        $this->assertStringContainsString('<li>Sidebar Module (sidebar-left)</li>', $healthCheckResult->description);
+        $this->assertStringContainsString('<li>Banner Module (banner)</li>', $healthCheckResult->description);
     }
 
     public function testRunWithNoPublishedModulesReturnsGood(): void

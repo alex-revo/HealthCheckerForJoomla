@@ -150,11 +150,17 @@ final class ModulePositionCheck extends AbstractHealthCheck
         $orphanedCount = \count($orphanedModules);
 
         if ($orphanedCount > 0) {
+            $list = '<ul><li>' . implode(
+                '</li><li>',
+                array_map(htmlspecialchars(...), $orphanedModules),
+            ) . '</li></ul>';
+
             return $this->warning(
                 sprintf(
-                    '%d published module(s) assigned to positions not defined in template %s.',
+                    '%d published module(s) assigned to positions not defined in template %s:%s',
                     $orphanedCount,
-                    $activeTemplate->template,
+                    htmlspecialchars($activeTemplate->template),
+                    $list,
                 ),
             );
         }
