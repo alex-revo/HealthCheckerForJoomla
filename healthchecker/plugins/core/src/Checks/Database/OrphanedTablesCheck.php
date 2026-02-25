@@ -299,13 +299,19 @@ final class OrphanedTablesCheck extends AbstractHealthCheck
         }
 
         foreach ($components as $component) {
-            // Check for SQL install files in common locations
-            $sqlPaths = [
+            // Try XML manifest first to find the actual SQL install file path
+            $sqlPathsFromXml = $this->getSqlPathsFromManifest($component);
+
+            // Fall back to common hardcoded locations
+            $sqlPaths = array_merge($sqlPathsFromXml, [
                 $component . '/sql/install.mysql.sql',
                 $component . '/sql/install.mysql.utf8.sql',
                 $component . '/sql/mysql/install.sql',
                 $component . '/sql/install.sql',
-            ];
+            ]);
+
+            // Deduplicate paths before parsing
+            $sqlPaths = array_unique($sqlPaths);
 
             foreach ($sqlPaths as $sqlPath) {
                 if (is_file($sqlPath) && is_readable($sqlPath)) {
@@ -316,6 +322,66 @@ final class OrphanedTablesCheck extends AbstractHealthCheck
         }
 
         return array_unique($tables);
+    }
+
+    /**
+     * Get SQL install file paths from a component's XML manifest.
+     *
+     * Parses the component's manifest XML to find the <install><sql><file> elements,
+     * which declare the actual SQL files used during installation. This handles
+     * extensions that use non-standard SQL file locations (e.g., DJ-Catalog2 uses
+     * install/install.com_djcatalog2.sql instead of sql/install.mysql.sql).
+     *
+     * @param string $componentDir Full path to the component directory
+     *
+     * @return array<string> Array of absolute paths to SQL install files
+     */
+    private function getSqlPathsFromManifest(string $componentDir): array
+    {
+        $paths = [];
+
+        $xmlFiles = glob($componentDir . '/*.xml');
+
+        if ($xmlFiles === false || $xmlFiles === []) {
+            return $paths;
+        }
+
+        foreach ($xmlFiles as $xmlFile) {
+            $xml = @simplexml_load_file($xmlFile);
+
+            if ($xml === false) {
+                continue;
+            }
+
+            // Only process extension manifest files
+            if ($xml->getName() !== 'extension') {
+                continue;
+            }
+
+            // Extract <install><sql><file> paths
+            if (! property_exists($xml->install->sql, 'file')) {
+                continue;
+            }
+
+            if ($xml->install->sql->file === null) {
+                continue;
+            }
+
+            foreach ($xml->install->sql->file as $file) {
+                $sqlRelativePath = (string) $file;
+
+                if ($sqlRelativePath === '') {
+                    continue;
+                }
+
+                $paths[] = $componentDir . '/' . $sqlRelativePath;
+            }
+
+            // Only process the first valid manifest
+            break;
+        }
+
+        return $paths;
     }
 
     /**
