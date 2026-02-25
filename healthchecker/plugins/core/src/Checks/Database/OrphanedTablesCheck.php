@@ -358,16 +358,22 @@ final class OrphanedTablesCheck extends AbstractHealthCheck
                 continue;
             }
 
-            // Extract <install><sql><file> paths
-            if (! property_exists($xml->install->sql, 'file')) {
+            // Extract <install><sql><file> paths — bail if any level is missing
+            $sqlNode = $xml->install->sql ?? null;
+
+            if (! $sqlNode instanceof \SimpleXMLElement) {
                 continue;
             }
 
-            if ($xml->install->sql->file === null) {
+            if (! property_exists($sqlNode, 'file')) {
                 continue;
             }
 
-            foreach ($xml->install->sql->file as $file) {
+            if ($sqlNode->file === null) {
+                continue;
+            }
+
+            foreach ($sqlNode->file as $file) {
                 $sqlRelativePath = (string) $file;
 
                 if ($sqlRelativePath === '') {
