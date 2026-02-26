@@ -135,8 +135,8 @@ class HtmlexportViewTest extends TestCase
         $reflectionMethod = new \ReflectionMethod(HtmlexportView::class, 'renderHtmlReport');
         $parameters = $reflectionMethod->getParameters();
 
-        // Method has 12 parameters based on the source
-        $this->assertCount(12, $parameters);
+        // Method has 11 parameters based on the source
+        $this->assertCount(11, $parameters);
 
         // Check parameter names
         $paramNames = array_map(
@@ -153,8 +153,7 @@ class HtmlexportViewTest extends TestCase
         $this->assertContains('warningCount', $paramNames);
         $this->assertContains('goodCount', $paramNames);
         $this->assertContains('totalCount', $paramNames);
-        $this->assertContains('showMySitesGuruBanner', $paramNames);
-        $this->assertContains('logoUrl', $paramNames);
+        $this->assertContains('beforeExportHtml', $paramNames);
     }
 
     public function testViewUsesModelForData(): void
@@ -181,12 +180,12 @@ class HtmlexportViewTest extends TestCase
         $this->assertStringContainsString('getExportableResultsByCategory', $source);
     }
 
-    public function testViewUsesPluginHelper(): void
+    public function testViewUsesBeforeReportExportDisplayEvent(): void
     {
         $reflectionClass = new \ReflectionClass(HtmlexportView::class);
         $source = file_get_contents($reflectionClass->getFileName());
 
-        $this->assertStringContainsString('PluginHelper', $source);
+        $this->assertStringContainsString('BeforeReportExportDisplayEvent', $source);
     }
 
     public function testViewUsesHealthStatusEnum(): void

@@ -13,8 +13,9 @@ namespace MySitesGuru\HealthChecker\Component\Administrator\View\Report;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Plugin\PluginHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
+use MySitesGuru\HealthChecker\Component\Administrator\Event\BeforeReportExportDisplayEvent;
+use MySitesGuru\HealthChecker\Component\Administrator\Event\HealthCheckerEvents;
 
 \defined('_JEXEC') || die;
 
@@ -30,7 +31,7 @@ use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
  * - Summary statistics cards (critical, warning, good, total)
  * - All health check results organized by category
  * - Provider attribution for third-party checks
- * - Optional mySites.guru promotional banner
+ * - Plugin-injected banners via BeforeReportExportDisplayEvent
  * - Print-optimized CSS
  *
  * @since 1.0.0
@@ -78,11 +79,11 @@ class HtmlexportView extends BaseHtmlView
         $goodCount = $exportCounts['good'];
         $totalCount = $exportCounts['total'];
 
-        // Check if mySites.guru plugin is enabled (banner only shows if plugin enabled)
-        $showMySitesGuruBanner = PluginHelper::isEnabled('healthchecker', 'mysitesguru');
-
-        // Get the logo URL (use absolute URL from the site)
-        $logoUrl = \Joomla\CMS\Uri\Uri::root() . 'media/plg_healthchecker_mysitesguru/logo.png';
+        // Dispatch event so plugins can inject banners into the HTML export
+        $beforeReportExportDisplayEvent = new BeforeReportExportDisplayEvent();
+        $cmsApplication->getDispatcher()
+            ->dispatch(HealthCheckerEvents::BEFORE_REPORT_EXPORT_DISPLAY->value, $beforeReportExportDisplayEvent);
+        $beforeExportHtml = $beforeReportExportDisplayEvent->getHtmlContent();
 
         header('Content-Type: text/html; charset=utf-8');
         header('Content-Disposition: attachment; filename="health-report-' . date('Y-m-d') . '.html"');
@@ -98,8 +99,7 @@ class HtmlexportView extends BaseHtmlView
             $warningCount,
             $goodCount,
             $totalCount,
-            $showMySitesGuruBanner,
-            $logoUrl,
+            $beforeExportHtml,
         );
 
         $cmsApplication->close();
@@ -122,8 +122,7 @@ class HtmlexportView extends BaseHtmlView
      * @param   int     $warningCount             Count of warning status checks
      * @param   int     $goodCount                Count of good status checks
      * @param   int     $totalCount               Total count of all checks
-     * @param   bool    $showMySitesGuruBanner    Whether to show promotional banner
-     * @param   string  $logoUrl                  Absolute URL to the mySites.guru logo
+     * @param   string  $beforeExportHtml         HTML content injected by plugins via BeforeReportExportDisplayEvent
      *
      * @since   1.0.0
      */
@@ -138,8 +137,7 @@ class HtmlexportView extends BaseHtmlView
         $warningCount,
         $goodCount,
         $totalCount,
-        bool $showMySitesGuruBanner,
-        string $logoUrl,
+        string $beforeExportHtml,
     ): void {
         ?>
 <!DOCTYPE html>
@@ -243,37 +241,6 @@ class HtmlexportView extends BaseHtmlView
         .category-header h2 {
             font-size: 20px;
             color: #495057;
-        }
-
-        .mysites-banner {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 15px;
-            margin: 20px 30px;
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-        }
-
-        .mysites-banner-icon {
-            flex-shrink: 0;
-        }
-
-        .mysites-banner-content {
-            flex: 1;
-            color: #333;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .mysites-banner-content a {
-            color: #333;
-            text-decoration: underline;
-        }
-
-        .mysites-banner-content a:hover {
-            color: #000;
         }
 
         .check {
@@ -447,17 +414,13 @@ class HtmlexportView extends BaseHtmlView
             </div>
         </div>
 
-        <?php if ($showMySitesGuruBanner): ?>
-        <div class="mysites-banner">
-            <div class="mysites-banner-icon">
-                <img src="<?php echo htmlspecialchars($logoUrl); ?>" alt="mySites.guru" style="width: 48px; height: 48px; border-radius: 4px;">
-            </div>
-            <div class="mysites-banner-content">
-                This free Health Checker for Joomla is provided free of charge (GPL) by mySites.guru - the original Joomla Health Checker &amp; Joomla Monitoring Dashboard since 2012 - Monitor unlimited sites health from one central dashboard - <a href="https://mysites.guru" target="_blank"><strong>For more details visit mySites.guru</strong></a>
-            </div>
-        </div>
-        <?php endif;
-        ?>
+        <?php if ($beforeExportHtml !== ''): ?>
+            <?php
+            // Security note: This HTML comes from installed Joomla plugins which are trusted code
+            // (they require administrator installation privileges). No user input flows here.
+            echo $beforeExportHtml;
+            ?>
+        <?php endif; ?>
 
         <div class="content">
             <?php foreach ($results as $categorySlug => $categoryResults) {

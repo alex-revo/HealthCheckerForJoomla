@@ -115,13 +115,40 @@ This developer guide covers:
 
 ## Available Events
 
-Health Checker dispatches three events:
+Health Checker dispatches these events:
 
 | Event | Purpose | When to Use |
 |-------|---------|-------------|
 | `onHealthCheckerCollectChecks` | Register health check instances | Always - this is how you add checks |
 | `onHealthCheckerCollectCategories` | Register custom categories | Only if creating new categories |
 | `onHealthCheckerCollectProviders` | Register provider metadata | Always - provides attribution |
+| `onHealthCheckerBeforeReportDisplay` | Inject HTML into the admin report view | Banners, notices in the admin UI |
+| `onHealthCheckerBeforeReportExportDisplay` | Inject HTML into the standalone HTML export | Banners in downloadable reports |
+| `onHealthCheckerAfterToolbarBuild` | Add custom toolbar buttons | Branded links, extra actions |
+
+### Injecting Banners into HTML Exports
+
+The `onHealthCheckerBeforeReportExportDisplay` event lets plugins add banners or notices to the downloadable HTML export. The export is a self-contained document, so your HTML must use **inline styles** (no external CSS or JavaScript).
+
+```php
+public static function getSubscribedEvents(): array
+{
+    return [
+        'onHealthCheckerBeforeReportExportDisplay' => 'onBeforeReportExportDisplay',
+    ];
+}
+
+public function onBeforeReportExportDisplay(BeforeReportExportDisplayEvent $event): void
+{
+    $html = '<div style="background: #f0f8ff; padding: 15px; margin: 20px 30px; border-radius: 4px;">'
+        . 'Your promotional or informational content here'
+        . '</div>';
+
+    $event->addHtmlContent($html);
+}
+```
+
+The banner renders between the summary statistics and the check results. Multiple plugins can each contribute a banner — they appear in subscription order.
 
 ## Provider Attribution
 
