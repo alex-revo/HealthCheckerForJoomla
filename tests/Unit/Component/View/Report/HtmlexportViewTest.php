@@ -178,7 +178,7 @@ class HtmlexportViewTest extends TestCase
         $reflectionMethod = new \ReflectionMethod(HtmlexportView::class, 'display');
         $source = file_get_contents($reflectionMethod->getFileName());
 
-        $this->assertStringContainsString('getResultsByCategory', $source);
+        $this->assertStringContainsString('getExportableResultsByCategory', $source);
     }
 
     public function testViewUsesPluginHelper(): void

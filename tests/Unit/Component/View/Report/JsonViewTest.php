@@ -137,6 +137,6 @@ class JsonViewTest extends TestCase
         $reflectionMethod = new \ReflectionMethod(JsonView::class, 'display');
         $source = file_get_contents($reflectionMethod->getFileName());
 
-        $this->assertStringContainsString('toJson', $source);
+        $this->assertStringContainsString('toExportJson', $source);
     }
 }

@@ -156,6 +156,49 @@ class ReportModel extends BaseDatabaseModel
     }
 
     /**
+     * Get exportable results grouped by category
+     *
+     * Returns results filtered by export visibility and grouped by category.
+     * Used by export views to exclude checks marked as non-exportable.
+     *
+     * @return array<string, HealthCheckResult[]> Exportable results grouped by category slug
+     *
+     * @since 3.4.0
+     */
+    public function getExportableResultsByCategory(): array
+    {
+        return $this->getRunner()
+            ->getExportableResultsByCategory();
+    }
+
+    /**
+     * Get count of exportable results by status
+     *
+     * Returns counts for only the results that pass export visibility filtering.
+     *
+     * @return array{critical: int, warning: int, good: int, total: int} Exportable result counts
+     *
+     * @since 3.4.0
+     */
+    public function getExportableCounts(): array
+    {
+        $results = $this->getRunner()
+            ->getExportableResults();
+        $counts = [
+            'critical' => 0,
+            'warning' => 0,
+            'good' => 0,
+            'total' => count($results),
+        ];
+
+        foreach ($results as $result) {
+            $counts[$result->healthStatus->value]++;
+        }
+
+        return $counts;
+    }
+
+    /**
      * Get count of checks with critical status
      *
      * @return  int  Number of checks that returned a critical status
@@ -237,6 +280,51 @@ class ReportModel extends BaseDatabaseModel
                 ->toArray(),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
         );
+
+        if ($json === false) {
+            throw new \RuntimeException('Failed to encode health check results to JSON: ' . json_last_error_msg());
+        }
+
+        return $json;
+    }
+
+    /**
+     * Export only exportable results as formatted JSON string
+     *
+     * Same as toJson() but filters results by export visibility before encoding.
+     * Checks with ExportVisibility::Never are excluded, and checks with
+     * ExportVisibility::IssuesOnly are excluded when their status is Good.
+     *
+     * @return  string  Pretty-printed JSON representation of exportable results
+     *
+     * @since   3.4.0
+     */
+    public function toExportJson(): string
+    {
+        $healthCheckRunner = $this->getRunner();
+        $exportableResults = $healthCheckRunner->getExportableResults();
+        $counts = $this->getExportableCounts();
+
+        $data = [
+            'lastRun' => $healthCheckRunner->getLastRun()?->format('c'),
+            'summary' => $counts,
+            'categories' => array_map(
+                fn(\MySitesGuru\HealthChecker\Component\Administrator\Category\HealthCategory $healthCategory): array => $healthCategory->toArray(),
+                $healthCheckRunner->getCategoryRegistry()
+                    ->all(),
+            ),
+            'providers' => array_map(
+                fn(\MySitesGuru\HealthChecker\Component\Administrator\Provider\ProviderMetadata $providerMetadata): array => $providerMetadata->toArray(),
+                $healthCheckRunner->getProviderRegistry()
+                    ->all(),
+            ),
+            'results' => array_map(
+                fn(\MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult $healthCheckResult): array => $healthCheckResult->toArray(),
+                $exportableResults,
+            ),
+        ];
+
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         if ($json === false) {
             throw new \RuntimeException('Failed to encode health check results to JSON: ' . json_last_error_msg());

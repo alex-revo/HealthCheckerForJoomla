@@ -173,6 +173,37 @@ cp health-check-report-2026-01-12.html \
    compliance/2026/01/monthly-health-check.html
 ```
 
+## Per-Check Export Visibility
+
+Export visibility lets you exclude specific checks from exports without disabling them. The check still runs and appears in the admin UI — it just won't appear in exported JSON or HTML reports.
+
+This is useful when sharing reports with clients or external parties and you want to omit checks that aren't relevant to them (such as server-level configuration checks) or checks that always pass and add noise.
+
+### Configuring Export Visibility
+
+1. Go to **Extensions → Plugins**
+2. Open the plugin that provides the check (e.g., "Health Checker - Core Checks")
+3. Find the check in the configuration list
+4. Set the **Export Visibility** dropdown next to the check
+
+### Visibility Modes
+
+| Option | Behaviour |
+|---|---|
+| **Always Export** | Included in every export regardless of result (default) |
+| **Issues Only** | Included only when the result is Warning or Critical |
+| **Never Export** | Never included in exports |
+
+### Common Use Cases
+
+- **Client reports**: Set server-environment checks (PHP version, MySQL config) to "Never Export" so clients only see application-level issues that need their attention
+- **Noise reduction**: Set checks that consistently pass (e.g., a check you've already resolved) to "Issues Only" to keep reports focused
+- **Example/demo checks**: Set any placeholder checks to "Never Export" so they don't appear in production reports
+
+### How It Affects Exports
+
+The export summary counts only the checks included in the export. A check set to "Never Export" does not affect the critical/warning/good totals shown in the report header.
+
 ## Export Tips
 
 ### When to Export

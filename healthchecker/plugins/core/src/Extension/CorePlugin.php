@@ -13,6 +13,7 @@ namespace MySitesGuru\HealthChecker\Plugin\Core\Extension;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Event\SubscriberInterface;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\ExportVisibility;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectCategoriesEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectChecksEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\HealthCheckerEvents;
@@ -131,6 +132,7 @@ final class CorePlugin extends CMSPlugin implements SubscriberInterface
         // Filter out disabled checks based on plugin configuration
         foreach ($checks as $check) {
             if ($this->isCheckEnabled($check->getSlug())) {
+                $check->setExportVisibility($this->getExportVisibility($check->getSlug()));
                 $collectChecksEvent->addResult($check);
             }
         }
@@ -226,6 +228,25 @@ final class CorePlugin extends CMSPlugin implements SubscriberInterface
         $relativePath = str_replace('/', '\\', $relativePath);
 
         return 'MySitesGuru\\HealthChecker\\Plugin\\Core\\' . $relativePath;
+    }
+
+    /**
+     * Get the export visibility setting for a specific health check.
+     *
+     * Reads the plugin parameters to determine how the check's results should
+     * be included in exports. Defaults to Always if not explicitly configured.
+     *
+     * @param string $slug The check slug (e.g., 'system.php_version')
+     *
+     * @return ExportVisibility The export visibility setting for this check
+     * @since 1.0.0
+     */
+    private function getExportVisibility(string $slug): ExportVisibility
+    {
+        $paramName = 'export_' . str_replace('.', '_', $slug);
+        $value = $this->params->get($paramName, 'always');
+
+        return ExportVisibility::tryFrom($value) ?? ExportVisibility::Always;
     }
 
     /**

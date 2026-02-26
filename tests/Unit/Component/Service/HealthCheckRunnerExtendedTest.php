@@ -13,6 +13,7 @@ namespace HealthChecker\Tests\Unit\Component\Service;
 use Joomla\Database\DatabaseInterface;
 use MySitesGuru\HealthChecker\Component\Administrator\Category\HealthCategory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\ExportVisibility;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckInterface;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -332,6 +333,11 @@ class HealthCheckRunnerExtendedTest extends TestCase
             public function run(): HealthCheckResult
             {
                 throw new \RuntimeException('Check exploded!');
+            }
+
+            public function getExportVisibility(): ExportVisibility
+            {
+                return ExportVisibility::Always;
             }
         };
 
@@ -927,6 +933,11 @@ class HealthCheckRunnerExtendedTest extends TestCase
                     category: $this->category,
                     provider: $this->getProvider(),
                 );
+            }
+
+            public function getExportVisibility(): ExportVisibility
+            {
+                return ExportVisibility::Always;
             }
         };
     }
