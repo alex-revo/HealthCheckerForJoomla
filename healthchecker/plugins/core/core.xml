@@ -21,6 +21,8 @@
     <languages folder="language">
         <language tag="en-GB">en-GB/plg_healthchecker_core.ini</language>
         <language tag="en-GB">en-GB/plg_healthchecker_core.sys.ini</language>
+        <language tag="es-ES">es-ES/plg_healthchecker_core.ini</language>
+        <language tag="es-ES">es-ES/plg_healthchecker_core.sys.ini</language>
     </languages>
 
     <!-- Plugin Configuration -->

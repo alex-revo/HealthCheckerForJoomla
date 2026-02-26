@@ -16,6 +16,11 @@
         <folder>language</folder>
     </files>
 
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_healthchecker_example.ini</language>
+        <language tag="es-ES">es-ES/plg_healthchecker_example.ini</language>
+    </languages>
+
     <updateservers>
         <server
             type="extension"

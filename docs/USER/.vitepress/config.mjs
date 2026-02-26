@@ -409,6 +409,12 @@ export default defineConfig({
         ]
       },
       {
+        text: 'Community',
+        items: [
+          { text: 'Translations', link: '/translations' }
+        ]
+      },
+      {
         text: 'About',
         items: [
           { text: 'Code Quality Commitment', link: '/code-quality' },

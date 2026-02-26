@@ -20,6 +20,13 @@
         <filename>logo.png</filename>
     </media>
 
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_healthchecker_akeebaadmintools.ini</language>
+        <language tag="en-GB">en-GB/plg_healthchecker_akeebaadmintools.sys.ini</language>
+        <language tag="es-ES">es-ES/plg_healthchecker_akeebaadmintools.ini</language>
+        <language tag="es-ES">es-ES/plg_healthchecker_akeebaadmintools.sys.ini</language>
+    </languages>
+
     <config>
         <fields name="params">
             <fieldset
