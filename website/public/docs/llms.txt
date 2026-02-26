@@ -50,6 +50,10 @@ Comprehensive health monitoring for your Joomla 5+ site
 - [Akeeba Admin Tools Integration](/docs/integrations/akeeba-admin-tools.md): Akeeba Admin Tools integration for Health Checker. Monitor WAF status, security configuration, and .htaccess protection.
 - [Community Plugins](/docs/integrations/community-plugins.md): Community-built plugins for Health Checker for Joomla. Discover third-party integrations or submit your own.
 
+### Community
+
+- [Translations](/docs/translations.md): Available translations for Health Checker for Joomla, and how to contribute your own.
+
 ### About
 
 - [Code Quality Commitment](/docs/code-quality.md): Code quality commitment: PHPStan level 8, 100% test coverage, PSR-12 standards, Rector, and security best practices.
