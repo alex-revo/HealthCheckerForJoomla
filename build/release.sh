@@ -38,6 +38,12 @@ echo -e "${BLUE}Current version: ${CURRENT_VERSION}${NC}"
 # Parse current version
 IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
+# Regenerate changelog markdown (before docs build so VitePress includes it)
+echo ""
+echo -e "${YELLOW}Regenerating changelog...${NC}"
+bash "$SCRIPT_DIR/changelog.sh"
+echo -e "${GREEN}✓ Changelog markdown updated${NC}"
+
 # Rebuild documentation BEFORE analyzing commits
 echo ""
 echo -e "${YELLOW}Rebuilding documentation...${NC}"
@@ -54,12 +60,28 @@ if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Documentation built successfully${NC}"
 
     cd "$PROJECT_ROOT"
-    if git diff --quiet website/public/docs/ && git diff --cached --quiet website/public/docs/; then
+
+    # Copy llms and sitemap files from docs to public root
+    if [ -f "website/public/docs/sitemap.xml" ]; then
+        cp website/public/docs/sitemap.xml website/public/sitemap.xml
+    fi
+    if [ -f "website/public/docs/llms.txt" ]; then
+        cp website/public/docs/llms.txt website/public/llms.txt
+    fi
+    if [ -f "website/public/docs/llms-full.txt" ]; then
+        cp website/public/docs/llms-full.txt website/public/llms-full.txt
+    fi
+
+    if git diff --quiet website/public/docs/ website/public/sitemap.xml website/public/llms.txt website/public/llms-full.txt && \
+       git diff --cached --quiet website/public/docs/ website/public/sitemap.xml website/public/llms.txt website/public/llms-full.txt; then
         echo -e "${BLUE}No documentation changes to commit${NC}"
     else
         echo -e "${YELLOW}Committing documentation changes...${NC}"
         git add website/public/docs/
         git add website/public/search-widget.js
+        git add website/public/sitemap.xml
+        git add website/public/llms.txt
+        git add website/public/llms-full.txt
         git commit -m "Rebuild documentation before v${MAJOR}.${MINOR}.$((PATCH + 1)) release"
         git push origin main
         echo -e "${GREEN}✓ Documentation changes committed and pushed${NC}"
@@ -714,20 +736,6 @@ if [ -n "$CLOSED_ISSUES" ]; then
         fi
     done
     echo -e "${GREEN}✓ Issue/PR comments posted${NC}"
-fi
-
-# Regenerate changelog page
-echo ""
-echo -e "${YELLOW}Regenerating changelog page...${NC}"
-bash "$SCRIPT_DIR/changelog.sh"
-echo -e "${GREEN}✓ Changelog page updated${NC}"
-
-# Commit changelog
-git add website/public/changelog/
-if ! git diff --cached --quiet; then
-    git commit -m "Update changelog for v${NEW_VERSION}"
-    git push origin main
-    echo -e "${GREEN}✓ Changelog committed and pushed${NC}"
 fi
 
 # Build and deploy website

@@ -349,6 +349,7 @@ export default defineConfig({
     nav: [
       { text: 'Guide', link: '/getting-started' },
       { text: 'For Developers', link: '/developers/' },
+      { text: 'Changelog', link: '/changelog' },
       { text: 'License', link: '/license' },
       { text: 'GitHub', link: 'https://github.com/mySites-guru/HealthCheckerForJoomla' }
     ],
@@ -417,6 +418,7 @@ export default defineConfig({
       {
         text: 'About',
         items: [
+          { text: 'Changelog', link: '/changelog' },
           { text: 'Code Quality Commitment', link: '/code-quality' },
           { text: 'The Sponsor', link: '/sponsor' },
           { text: 'License', link: '/license' }

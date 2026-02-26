@@ -328,7 +328,7 @@ if ! git diff --quiet website/public/docs/ 2>/dev/null; then
     CHANGES=1
 fi
 
-if ! git diff --quiet website/public/index.html website/public/404.html website/public/output.css website/public/*.js 2>/dev/null; then
+if ! git diff --quiet website/public/index.html website/public/404.html website/public/output.css website/public/*.js website/public/sitemap.xml website/public/llms.txt website/public/llms-full.txt 2>/dev/null; then
     CHANGES=1
 fi
 
@@ -342,6 +342,9 @@ if [ $CHANGES -eq 1 ]; then
     git add website/public/404.html
     git add website/public/output.css
     git add website/public/*.js 2>/dev/null || true
+    git add website/public/sitemap.xml 2>/dev/null || true
+    git add website/public/llms.txt 2>/dev/null || true
+    git add website/public/llms-full.txt 2>/dev/null || true
 
     if ! git diff --cached --quiet; then
         git commit -m "Update website

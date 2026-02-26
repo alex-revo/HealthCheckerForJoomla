@@ -41,6 +41,11 @@ export default {
       if (url.hostname === 'joomlahealthchecker.com') {
         return Response.redirect('https://www.joomlahealthchecker.com' + url.pathname + url.search, 301);
       }
+
+      // Redirect old changelog URL to docs
+      if (url.pathname === '/changelog/' || url.pathname === '/changelog') {
+        return Response.redirect('https://www.joomlahealthchecker.com/docs/changelog', 301);
+      }
     }
 
     const response = await env.ASSETS.fetch(request);
