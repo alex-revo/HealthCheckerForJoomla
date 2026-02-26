@@ -88,9 +88,9 @@ else
     LAST_TAG_DATE=$(git log -1 --format=%aI "$LAST_TAG" 2>/dev/null || echo "")
     if [ -n "$LAST_TAG_DATE" ]; then
         echo -e "${BLUE}Fetching closed issues/PRs since ${LAST_TAG_DATE}...${NC}"
-        CLOSED_ISSUES=$(gh issue list --state closed --search "closed:>=${LAST_TAG_DATE}" --json number,title,labels --template '{{range .}}#{{.number}} {{.title}}{{range .labels}} [{{.name}}]{{end}}
+        CLOSED_ISSUES=$(gh issue list --state closed --search "closed:>=${LAST_TAG_DATE}" --json number,title,labels,author --template '{{range .}}#{{.number}} {{.title}}{{range .labels}} [{{.name}}]{{end}} (by @{{.author.login}})
 {{end}}' 2>/dev/null || echo "")
-        MERGED_PRS=$(gh pr list --state merged --search "merged:>=${LAST_TAG_DATE}" --json number,title,labels --template '{{range .}}PR #{{.number}} {{.title}}{{range .labels}} [{{.name}}]{{end}}
+        MERGED_PRS=$(gh pr list --state merged --search "merged:>=${LAST_TAG_DATE}" --json number,title,labels,author --template '{{range .}}PR #{{.number}} {{.title}}{{range .labels}} [{{.name}}]{{end}} (by @{{.author.login}})
 {{end}}' 2>/dev/null || echo "")
         if [ -n "$MERGED_PRS" ]; then
             CLOSED_ISSUES="${CLOSED_ISSUES}
@@ -208,8 +208,11 @@ CRITICAL FORMATTING RULES:
    Format: ([#N](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/N))
    Match commits to issues/PRs by comparing their descriptions.
 
+7. If an issue or PR was reported/opened by an EXTERNAL contributor (not @PhilETaylor), append (Thanks @username) after the issue link.
+   Do NOT credit @PhilETaylor as he is the project maintainer.
+
 Example:
-- [Fix] Fixed missing translation key for brute force protection check ([#2](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/2))
+- [Fix] Fixed missing translation key for brute force protection check ([#2](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/2)) (Thanks @janedoe)
 - [Feature] Added backup status monitoring
 - [Internal] Updated build tooling"
 fi
@@ -711,6 +714,20 @@ if [ -n "$CLOSED_ISSUES" ]; then
         fi
     done
     echo -e "${GREEN}✓ Issue/PR comments posted${NC}"
+fi
+
+# Regenerate changelog page
+echo ""
+echo -e "${YELLOW}Regenerating changelog page...${NC}"
+bash "$SCRIPT_DIR/changelog.sh"
+echo -e "${GREEN}✓ Changelog page updated${NC}"
+
+# Commit changelog
+git add website/public/changelog/
+if ! git diff --cached --quiet; then
+    git commit -m "Update changelog for v${NEW_VERSION}"
+    git push origin main
+    echo -e "${GREEN}✓ Changelog committed and pushed${NC}"
 fi
 
 # Build and deploy website
