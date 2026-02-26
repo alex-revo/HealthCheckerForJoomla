@@ -169,6 +169,8 @@ class MarkdownView extends BaseHtmlView
 
             $lines[] = '## ' . $categoryTitle;
             $lines[] = '';
+            $lines[] = '| Status | Check | Description |';
+            $lines[] = '|--------|-------|-------------|';
 
             foreach ($categoryResults as $categoryResult) {
                 $statusLabel = strtoupper($categoryResult->healthStatus->value);
@@ -183,21 +185,16 @@ class MarkdownView extends BaseHtmlView
                     $providerSuffix = ' _(' . $providerName . ')_';
                 }
 
-                $lines[] = '### ' . $emoji . ' ' . $statusLabel . ' — ' . $title . $providerSuffix;
-                $lines[] = '';
-
-                $description = $this->htmlToMarkdown($categoryResult->description);
-
-                if ($description !== '') {
-                    $lines[] = $description;
-                    $lines[] = '';
-                }
+                $description = $this->htmlToMarkdownInline($categoryResult->description);
 
                 if ($categoryResult->docsUrl !== null) {
-                    $lines[] = '[Documentation](' . $categoryResult->docsUrl . ')';
-                    $lines[] = '';
+                    $description .= ($description !== '' ? ' ' : '') . '[Docs](' . $categoryResult->docsUrl . ')';
                 }
+
+                $lines[] = '| ' . $emoji . ' ' . $statusLabel . ' | ' . $title . $providerSuffix . ' | ' . $description . ' |';
             }
+
+            $lines[] = '';
         }
 
         // Footer
@@ -255,6 +252,31 @@ class MarkdownView extends BaseHtmlView
     private function stripHtml(string $text): string
     {
         return trim(strip_tags($text));
+    }
+
+    /**
+     * Convert HTML to single-line Markdown suitable for table cells
+     *
+     * Produces inline Markdown with no line breaks and escaped pipe characters,
+     * so the output can safely be placed inside a Markdown table cell.
+     *
+     * @param   string  $html  The HTML content
+     *
+     * @return  string  Single-line Markdown text
+     *
+     * @since   3.5.0
+     */
+    private function htmlToMarkdownInline(string $html): string
+    {
+        $text = $this->htmlToMarkdown($html);
+
+        // Collapse all whitespace/newlines into single spaces for table cells
+        $text = (string) preg_replace('/\s+/', ' ', $text);
+
+        // Escape pipe characters so they don't break table formatting
+        $text = str_replace('|', '\|', $text);
+
+        return trim($text);
     }
 
     /**

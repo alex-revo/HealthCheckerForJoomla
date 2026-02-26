@@ -235,7 +235,7 @@ class MarkdownViewTest extends TestCase
             'system' => [$healthCheckResult],
         ]);
 
-        $this->assertStringContainsString('[Documentation](https://example.com/docs/test)', $markdown);
+        $this->assertStringContainsString('[Docs](https://example.com/docs/test)', $markdown);
     }
 
     public function testReportHidesDocsLinkWhenNull(): void
