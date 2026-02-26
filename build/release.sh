@@ -38,12 +38,6 @@ echo -e "${BLUE}Current version: ${CURRENT_VERSION}${NC}"
 # Parse current version
 IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
-# Regenerate changelog markdown (before docs build so VitePress includes it)
-echo ""
-echo -e "${YELLOW}Regenerating changelog...${NC}"
-bash "$SCRIPT_DIR/changelog.sh"
-echo -e "${GREEN}✓ Changelog markdown updated${NC}"
-
 # Rebuild documentation BEFORE analyzing commits
 echo ""
 echo -e "${YELLOW}Rebuilding documentation...${NC}"
@@ -77,6 +71,7 @@ if [ $? -eq 0 ]; then
         echo -e "${BLUE}No documentation changes to commit${NC}"
     else
         echo -e "${YELLOW}Committing documentation changes...${NC}"
+        git add docs/USER/changelog.md
         git add website/public/docs/
         git add website/public/search-widget.js
         git add website/public/sitemap.xml
@@ -738,7 +733,18 @@ if [ -n "$CLOSED_ISSUES" ]; then
     echo -e "${GREEN}✓ Issue/PR comments posted${NC}"
 fi
 
-# Build and deploy website
+# Regenerate changelog (now that the GitHub release exists, it will be included)
+echo ""
+echo -e "${YELLOW}Regenerating changelog with new release...${NC}"
+bash "$SCRIPT_DIR/changelog.sh"
+git add docs/USER/changelog.md
+if ! git diff --cached --quiet; then
+    git commit -m "Update changelog for v${NEW_VERSION}"
+    git push origin main
+    echo -e "${GREEN}✓ Changelog updated${NC}"
+fi
+
+# Build and deploy website (rebuilds docs including changelog, deploys to Cloudflare)
 echo ""
 bash "$SCRIPT_DIR/website-deploy.sh"
 
