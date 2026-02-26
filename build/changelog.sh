@@ -187,6 +187,9 @@ for r in releases:
                 line=$(echo "$line" | sed 's/^- /- **BREAKING** /')
             fi
 
+            # Convert @username mentions to GitHub profile links (skip emails)
+            line=$(echo "$line" | sed -E 's/(^|[^a-zA-Z0-9.@])@([a-zA-Z0-9_-]+)/\1[@\2](https:\/\/github.com\/\2)/g')
+
             CHANGELOG_MD+="$line
 "
         done <<< "$items"
