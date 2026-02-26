@@ -11,7 +11,7 @@ A complete history of features, fixes, and improvements across every release.
 
 ### [3.4.3](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.3) <Badge type="info" text="26 Feb 2026" />
 
-- [Fix] Fixed 414 Request-URI Too Long error when exporting health check results by switching form submission from GET to POST ([#58](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/58)) (Thanks @alex-revo)
+- [Fix] Fixed 414 Request-URI Too Long error when exporting health check results by switching form submission from GET to POST ([#58](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/58)) (Thanks [@alex-revo](https://github.com/alex-revo))
 
 ### [3.4.2](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.2) <Badge type="info" text="26 Feb 2026" />
 
@@ -20,7 +20,7 @@ A complete history of features, fixes, and improvements across every release.
 
 ### [3.4.1](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.1) <Badge type="info" text="26 Feb 2026" />
 
-- [Feature] Export improvements ([#44](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/44)) (Thanks @alex-revo)
+- [Feature] Export improvements ([#44](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/44)) (Thanks [@alex-revo](https://github.com/alex-revo))
 - [Internal] Moved changelog into VitePress documentation site
 - [Internal] Fixed release script ordering
 
@@ -37,8 +37,8 @@ A complete history of features, fixes, and improvements across every release.
 
 ### [3.3.6](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.6) <Badge type="info" text="26 Feb 2026" />
 
-- [Feature] Added Spanish (es-ES) translation and translations documentation ([#49](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/49)) (Thanks @alamarte)
-- [Fix] Fixed false positive detection with DJ-Catalog2 ([#41](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/41)) (Thanks @blondie63)
+- [Feature] Added Spanish (es-ES) translation and translations documentation ([#49](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/49)) (Thanks [@alamarte](https://github.com/alamarte))
+- [Fix] Fixed false positive detection with DJ-Catalog2 ([#41](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/41)) (Thanks [@blondie63](https://github.com/blondie63))
 - [Internal] Added changelog generator script and changelog page
 - [Internal] Added platform constraint for FrankenPHP container
 
