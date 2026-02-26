@@ -100,6 +100,7 @@ class HtmlView extends BaseHtmlView
         $token = Session::getFormToken();
         $jsonUrl = Route::_('index.php?option=com_healthchecker&view=report&format=json&' . $token . '=1', false);
         $htmlUrl = Route::_('index.php?option=com_healthchecker&view=report&format=htmlexport&' . $token . '=1', false);
+        $markdownUrl = Route::_('index.php?option=com_healthchecker&view=report&format=markdown&' . $token . '=1', false);
 
         $toolbarDropdownButton = $toolbar->dropdownButton('export')
             ->text('COM_HEALTHCHECKER_EXPORT')
@@ -118,6 +119,11 @@ class HtmlView extends BaseHtmlView
             ->text('COM_HEALTHCHECKER_EXPORT_HTML')
             ->url($htmlUrl)
             ->icon('icon-file');
+
+        $childBar->linkButton('export-markdown')
+            ->text('COM_HEALTHCHECKER_EXPORT_MARKDOWN')
+            ->url($markdownUrl)
+            ->icon('icon-file-alt');
 
         $toolbar->linkButton('github')
             ->text('COM_HEALTHCHECKER_GITHUB')
