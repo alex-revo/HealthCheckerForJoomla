@@ -9,6 +9,10 @@ A complete history of features, fixes, and improvements across every release.
 
 ## Version 3.4
 
+### [3.4.3](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.3) <Badge type="info" text="26 Feb 2026" />
+
+- [Fix] Fixed 414 Request-URI Too Long error when exporting health check results by switching form submission from GET to POST ([#58](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/58)) (Thanks @alex-revo)
+
 ### [3.4.2](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.2) <Badge type="info" text="26 Feb 2026" />
 
 - [Security] Fixed XSS vulnerabilities and cleaned up code inconsistencies ([#57](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/57))
