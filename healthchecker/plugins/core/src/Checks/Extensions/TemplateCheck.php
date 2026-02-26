@@ -68,6 +68,15 @@ final class TemplateCheck extends AbstractHealthCheck
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/TemplateCheck.php';
     }
 
+    public function getActionUrl(?HealthStatus $healthStatus = null): ?string
+    {
+        if ($healthStatus === HealthStatus::Critical) {
+            return '/administrator/index.php?option=com_templates&view=templates';
+        }
+
+        return null;
+    }
+
     /**
      * Perform the template integrity check.
      *

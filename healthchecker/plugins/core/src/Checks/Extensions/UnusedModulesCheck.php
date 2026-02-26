@@ -71,6 +71,15 @@ final class UnusedModulesCheck extends AbstractHealthCheck
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/UnusedModulesCheck.php';
     }
 
+    public function getActionUrl(?HealthStatus $healthStatus = null): ?string
+    {
+        if ($healthStatus === HealthStatus::Warning) {
+            return '/administrator/index.php?option=com_modules&view=modules&client_id=0';
+        }
+
+        return null;
+    }
+
     /**
      * Perform the unused modules check.
      *

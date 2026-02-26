@@ -71,6 +71,15 @@ final class CachePluginCheck extends AbstractHealthCheck
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/CachePluginCheck.php';
     }
 
+    public function getActionUrl(?HealthStatus $healthStatus = null): ?string
+    {
+        if ($healthStatus === HealthStatus::Warning) {
+            return '/administrator/index.php?option=com_plugins&view=plugins&filter[folder]=system&filter[element]=cache';
+        }
+
+        return null;
+    }
+
     /**
      * Performs the cache plugin health check.
      *

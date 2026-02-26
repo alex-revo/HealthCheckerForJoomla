@@ -68,6 +68,15 @@ final class SearchPluginsCheck extends AbstractHealthCheck
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/SearchPluginsCheck.php';
     }
 
+    public function getActionUrl(?HealthStatus $healthStatus = null): ?string
+    {
+        if ($healthStatus === HealthStatus::Warning) {
+            return '/administrator/index.php?option=com_plugins&view=plugins&filter[folder]=finder';
+        }
+
+        return null;
+    }
+
     /**
      * Perform the search plugins check.
      *
