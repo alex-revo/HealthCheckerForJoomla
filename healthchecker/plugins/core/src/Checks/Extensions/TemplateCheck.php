@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -119,7 +120,7 @@ final class TemplateCheck extends AbstractHealthCheck
                 $issues = array_merge($issues, $siteIssues);
             }
         } else {
-            $issues[] = 'No default site template configured';
+            $issues[] = Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_TEMPLATE_CRITICAL_NO_SITE');
         }
 
         // Validate admin template files and structure
@@ -131,17 +132,19 @@ final class TemplateCheck extends AbstractHealthCheck
                 $issues = array_merge($issues, $adminIssues);
             }
         } else {
-            $issues[] = 'No default admin template configured';
+            $issues[] = Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_TEMPLATE_CRITICAL_NO_ADMIN');
         }
 
         // Any template issues are critical - site may not display
         if ($issues !== []) {
-            return $this->critical(sprintf('Template issues: %s', implode('; ', $issues)));
+            return $this->critical(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_TEMPLATE_CRITICAL', implode('; ', $issues)),
+            );
         }
 
         return $this->good(
-            sprintf(
-                'Site template "%s" and admin template "%s" are valid.',
+            Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_EXTENSIONS_TEMPLATE_GOOD',
                 $siteTemplate->template ?? 'unknown',
                 $adminTemplate->template ?? 'unknown',
             ),
@@ -168,7 +171,11 @@ final class TemplateCheck extends AbstractHealthCheck
 
         // Template directory must exist
         if (! is_dir($path)) {
-            $issues[] = sprintf('%s template "%s" directory not found', $type, $name);
+            $issues[] = Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_EXTENSIONS_TEMPLATE_CRITICAL_DIR_NOT_FOUND',
+                $type,
+                $name,
+            );
 
             // If directory doesn't exist, can't check files - return early
             return $issues;
@@ -178,13 +185,17 @@ final class TemplateCheck extends AbstractHealthCheck
         $xmlPath = $path . '/templateDetails.xml';
 
         if (! file_exists($xmlPath)) {
-            $issues[] = sprintf('%s template "%s" missing templateDetails.xml', $type, $name);
+            $issues[] = Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_TEMPLATE_CRITICAL_MISSING_XML', $type, $name);
         } else {
             // Verify XML is valid and can be parsed
             $xml = @simplexml_load_file($xmlPath);
 
             if (! $xml) {
-                $issues[] = sprintf('%s template "%s" has invalid templateDetails.xml', $type, $name);
+                $issues[] = Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_EXTENSIONS_TEMPLATE_CRITICAL_INVALID_XML',
+                    $type,
+                    $name,
+                );
             }
         }
 
@@ -192,7 +203,11 @@ final class TemplateCheck extends AbstractHealthCheck
         $indexPath = $path . '/index.php';
 
         if (! file_exists($indexPath)) {
-            $issues[] = sprintf('%s template "%s" missing index.php', $type, $name);
+            $issues[] = Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_EXTENSIONS_TEMPLATE_CRITICAL_MISSING_INDEX',
+                $type,
+                $name,
+            );
         }
 
         return $issues;

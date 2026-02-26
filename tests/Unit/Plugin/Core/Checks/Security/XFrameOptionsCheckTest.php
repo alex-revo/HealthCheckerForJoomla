@@ -65,7 +65,7 @@ class XFrameOptionsCheckTest extends TestCase
         $healthCheckResult = $this->xFrameOptionsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('HTTP Headers plugin not found', $healthCheckResult->description);
+        $this->assertStringContainsString('X_FRAME_OPTIONS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenHttpHeadersPluginDisabled(): void
@@ -80,7 +80,7 @@ class XFrameOptionsCheckTest extends TestCase
         $healthCheckResult = $this->xFrameOptionsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('HTTP Headers plugin is disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('X_FRAME_OPTIONS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenParamsEmpty(): void
@@ -95,7 +95,7 @@ class XFrameOptionsCheckTest extends TestCase
         $healthCheckResult = $this->xFrameOptionsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not configured', $healthCheckResult->description);
+        $this->assertStringContainsString('X_FRAME_OPTIONS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenParamsIsEmptyArray(): void
@@ -110,7 +110,7 @@ class XFrameOptionsCheckTest extends TestCase
         $healthCheckResult = $this->xFrameOptionsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not configured', $healthCheckResult->description);
+        $this->assertStringContainsString('X_FRAME_OPTIONS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenXFrameOptionsExplicitlyDisabled(): void
@@ -125,7 +125,7 @@ class XFrameOptionsCheckTest extends TestCase
         $healthCheckResult = $this->xFrameOptionsCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('X-Frame-Options is disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('X_FRAME_OPTIONS_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenXFrameOptionsEnabled(): void
@@ -140,7 +140,7 @@ class XFrameOptionsCheckTest extends TestCase
         $healthCheckResult = $this->xFrameOptionsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('X-Frame-Options header is enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('X_FRAME_OPTIONS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenXFrameOptionsNotSetInParams(): void
@@ -170,7 +170,7 @@ class XFrameOptionsCheckTest extends TestCase
         $healthCheckResult = $this->xFrameOptionsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not configured', $healthCheckResult->description);
+        $this->assertStringContainsString('X_FRAME_OPTIONS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenXFrameOptionsExplicitlyDisabledAsString(): void

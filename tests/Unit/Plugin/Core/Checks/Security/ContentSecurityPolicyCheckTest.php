@@ -64,7 +64,7 @@ class ContentSecurityPolicyCheckTest extends TestCase
         $healthCheckResult = $this->contentSecurityPolicyCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not found', $healthCheckResult->description);
+        $this->assertStringContainsString('CONTENT_SECURITY_POLICY_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenPluginDisabled(): void
@@ -79,7 +79,7 @@ class ContentSecurityPolicyCheckTest extends TestCase
         $healthCheckResult = $this->contentSecurityPolicyCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('CONTENT_SECURITY_POLICY_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenCspNotEnabled(): void
@@ -94,7 +94,7 @@ class ContentSecurityPolicyCheckTest extends TestCase
         $healthCheckResult = $this->contentSecurityPolicyCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('CONTENT_SECURITY_POLICY_WARNING_4', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenCspEnabled(): void
@@ -109,7 +109,7 @@ class ContentSecurityPolicyCheckTest extends TestCase
         $healthCheckResult = $this->contentSecurityPolicyCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('CONTENT_SECURITY_POLICY_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenParamsEmpty(): void
@@ -124,7 +124,7 @@ class ContentSecurityPolicyCheckTest extends TestCase
         $healthCheckResult = $this->contentSecurityPolicyCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not configured', $healthCheckResult->description);
+        $this->assertStringContainsString('CONTENT_SECURITY_POLICY_WARNING_3', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenParamsIsEmptyArray(): void
@@ -156,7 +156,7 @@ class ContentSecurityPolicyCheckTest extends TestCase
 
         // json_decode('null', true) returns null, which !is_array
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not configured', $healthCheckResult->description);
+        $this->assertStringContainsString('CONTENT_SECURITY_POLICY_WARNING_3', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenParamsIsInvalidJson(): void
@@ -172,7 +172,7 @@ class ContentSecurityPolicyCheckTest extends TestCase
 
         // json_decode('invalid json', true) returns null
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not configured', $healthCheckResult->description);
+        $this->assertStringContainsString('CONTENT_SECURITY_POLICY_WARNING_3', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenCspMissingFromParams(): void
@@ -188,7 +188,7 @@ class ContentSecurityPolicyCheckTest extends TestCase
 
         // contentsecuritypolicy not in params, defaults to 0
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('CONTENT_SECURITY_POLICY_WARNING_4', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenCspEnabledAsString(): void

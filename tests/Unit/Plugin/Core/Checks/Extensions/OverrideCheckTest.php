@@ -55,7 +55,7 @@ class OverrideCheckTest extends TestCase
         $healthCheckResult = $this->overrideCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('check_error', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithNoOverridesTableReturnsGood(): void
@@ -66,7 +66,7 @@ class OverrideCheckTest extends TestCase
         $healthCheckResult = $this->overrideCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not available', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('overrides_good', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithNoOutdatedOverridesReturnsGood(): void
@@ -77,7 +77,7 @@ class OverrideCheckTest extends TestCase
         $healthCheckResult = $this->overrideCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('up to date', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('overrides_good_2', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithOutdatedOverridesReturnsWarning(): void
@@ -124,7 +124,7 @@ class OverrideCheckTest extends TestCase
         $healthCheckResult = $this->overrideCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERRIDES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithAdminTemplateOverridesShowsCorrectLabel(): void
@@ -170,7 +170,7 @@ class OverrideCheckTest extends TestCase
 
         $healthCheckResult = $this->overrideCheck->run();
 
-        $this->assertStringContainsString('templates', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('overrides_warning', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithSiteTemplateOverridesShowsSiteLabel(): void
@@ -214,9 +214,9 @@ class OverrideCheckTest extends TestCase
         $healthCheckResult = $this->overrideCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('15', $healthCheckResult->description);
-        // Should show "and X more" for truncated output
-        $this->assertStringContainsString('and 5 more', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERRIDES_WARNING', $healthCheckResult->description);
+        // Should show truncation key for truncated output
+        $this->assertStringContainsString('OVERRIDES_WARNING_MORE', $healthCheckResult->description);
     }
 
     public function testRunWithInvalidBase64HashIdSkipsEntry(): void
@@ -243,8 +243,7 @@ class OverrideCheckTest extends TestCase
         $healthCheckResult = $this->overrideCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        // Should still mention 2 overrides but only show 1 valid one in details
-        $this->assertStringContainsString('2 template override', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERRIDES_WARNING', $healthCheckResult->description);
         $this->assertStringContainsString('valid/path.php', $healthCheckResult->description);
     }
 
@@ -279,7 +278,7 @@ class OverrideCheckTest extends TestCase
         $healthCheckResult = $this->overrideCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERRIDES_WARNING', $healthCheckResult->description);
         // Check templates are mentioned
         $this->assertStringContainsString('cassiopeia', strtolower($healthCheckResult->description));
         $this->assertStringContainsString('atum', strtolower($healthCheckResult->description));
@@ -316,7 +315,7 @@ class OverrideCheckTest extends TestCase
         $healthCheckResult = $this->overrideCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('0 template override(s) tracked', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERRIDES_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithMoreThan10TemplatesBreaksOuterLoop(): void
@@ -341,9 +340,9 @@ class OverrideCheckTest extends TestCase
         $healthCheckResult = $this->overrideCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('15', $healthCheckResult->description);
-        // Should show "and 5 more" for truncated output
-        $this->assertStringContainsString('and 5 more', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERRIDES_WARNING', $healthCheckResult->description);
+        // Should show truncation key for truncated output
+        $this->assertStringContainsString('OVERRIDES_WARNING_MORE', $healthCheckResult->description);
     }
 
     /**

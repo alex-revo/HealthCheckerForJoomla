@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -118,8 +119,8 @@ final class MaxPacketCheck extends AbstractHealthCheck
         // Check against minimum threshold (1MB)
         if ($maxPacket < self::MINIMUM_BYTES) {
             return $this->critical(
-                sprintf(
-                    'max_allowed_packet (%s) is too small. Minimum 1M required.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_MAX_PACKET_CRITICAL',
                     $this->formatBytes($maxPacket),
                 ),
             );
@@ -128,11 +129,13 @@ final class MaxPacketCheck extends AbstractHealthCheck
         // Check against recommended threshold (16MB)
         if ($maxPacket < self::RECOMMENDED_BYTES) {
             return $this->warning(
-                sprintf('max_allowed_packet (%s) is below recommended 16M.', $this->formatBytes($maxPacket)),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_MAX_PACKET_WARNING', $this->formatBytes($maxPacket)),
             );
         }
 
-        return $this->good(sprintf('max_allowed_packet is %s.', $this->formatBytes($maxPacket)));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_MAX_PACKET_GOOD', $this->formatBytes($maxPacket)),
+        );
     }
 
     /**

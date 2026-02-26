@@ -67,7 +67,10 @@ class CanonicalUrlCheckTest extends TestCase
         $healthCheckResult = $this->canonicalUrlCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('SEF URLs are disabled', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_CANONICAL_URL_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenSefPluginDisabled(): void
@@ -79,7 +82,10 @@ class CanonicalUrlCheckTest extends TestCase
         $healthCheckResult = $this->canonicalUrlCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('SEF plugin', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_CANONICAL_URL_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsGoodWhenSefEnabledAndPluginActive(): void
@@ -91,6 +97,9 @@ class CanonicalUrlCheckTest extends TestCase
         $healthCheckResult = $this->canonicalUrlCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('SEF URLs are enabled', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_CANONICAL_URL_GOOD',
+            $healthCheckResult->description,
+        );
     }
 }

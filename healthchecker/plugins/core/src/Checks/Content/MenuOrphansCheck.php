@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -136,14 +137,10 @@ final class MenuOrphansCheck extends AbstractHealthCheck
             ) . '</li></ul>';
 
             return $this->critical(
-                sprintf(
-                    '%d menu item(s) point to non-existent articles. These will cause 404 errors for visitors:%s',
-                    \count($orphanTitles),
-                    $list,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_MENU_ORPHANS_CRITICAL', \count($orphanTitles), $list),
             );
         }
 
-        return $this->good('All menu items point to existing content.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_MENU_ORPHANS_GOOD'));
     }
 }

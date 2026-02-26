@@ -65,8 +65,7 @@ class JoomlaCoreVersionCheckTest extends TestCase
         $healthCheckResult = $this->joomlaCoreVersionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5.0.0', $healthCheckResult->description);
-        $this->assertStringContainsString('latest', $healthCheckResult->description);
+        $this->assertStringContainsString('JOOMLA_CORE_VERSION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenUpdateAvailable(): void
@@ -78,7 +77,6 @@ class JoomlaCoreVersionCheckTest extends TestCase
         $healthCheckResult = $this->joomlaCoreVersionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5.0.0', $healthCheckResult->description);
-        $this->assertStringContainsString('5.1.0', $healthCheckResult->description);
+        $this->assertStringContainsString('JOOMLA_CORE_VERSION_WARNING', $healthCheckResult->description);
     }
 }

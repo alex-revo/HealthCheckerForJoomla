@@ -66,7 +66,7 @@ class PasswordExpiryCheckTest extends TestCase
         $healthCheckResult = $this->passwordExpiryCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('recently updated', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithFewExpiredPasswordsReturnsGood(): void
@@ -79,8 +79,7 @@ class PasswordExpiryCheckTest extends TestCase
         $healthCheckResult = $this->passwordExpiryCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('20 of 100', $healthCheckResult->description);
-        $this->assertStringContainsString('acceptable', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithMediumExpiredPasswordsReturnsWarning(): void
@@ -93,7 +92,7 @@ class PasswordExpiryCheckTest extends TestCase
         $healthCheckResult = $this->passwordExpiryCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('30 of 100', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunWithHighExpiredPasswordsReturnsWarning(): void
@@ -106,8 +105,7 @@ class PasswordExpiryCheckTest extends TestCase
         $healthCheckResult = $this->passwordExpiryCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('80%', $healthCheckResult->description);
-        $this->assertStringContainsString('password policy', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithExactly25PercentReturnsGood(): void
@@ -144,8 +142,8 @@ class PasswordExpiryCheckTest extends TestCase
         $healthCheckResult = $this->passwordExpiryCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        // 75% is at threshold, message mentions reviewing policies
-        $this->assertStringContainsString('password policies', $healthCheckResult->description);
+        // 75% is at threshold, uses WARNING_2
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunWithAbove75PercentMentionsImplementingPolicy(): void
@@ -158,8 +156,8 @@ class PasswordExpiryCheckTest extends TestCase
         $healthCheckResult = $this->passwordExpiryCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        // Above 75% mentions implementing policy
-        $this->assertStringContainsString('implementing', $healthCheckResult->description);
+        // Above 75% uses WARNING
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_WARNING', $healthCheckResult->description);
     }
 
     /**
@@ -184,6 +182,6 @@ class PasswordExpiryCheckTest extends TestCase
         $healthCheckResult = $this->passwordExpiryCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('recently updated', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_GOOD_2', $healthCheckResult->description);
     }
 }

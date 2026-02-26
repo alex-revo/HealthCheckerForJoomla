@@ -74,7 +74,7 @@ class ForceSslCheckTest extends TestCase
         $forceSslCheck = new ForceSslCheck();
         $healthCheckResult = $forceSslCheck->run();
 
-        $this->assertStringContainsStringIgnoringCase('ssl', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL', $healthCheckResult->description);
     }
 
     public function testCheckDoesNotRequireDatabase(): void

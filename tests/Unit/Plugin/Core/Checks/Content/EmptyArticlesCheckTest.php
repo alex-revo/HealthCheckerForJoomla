@@ -64,7 +64,7 @@ class EmptyArticlesCheckTest extends TestCase
         $healthCheckResult = $this->emptyArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('substantial content', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_EMPTY_ARTICLES_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithFewEmptyArticlesReturnsGood(): void
@@ -75,7 +75,7 @@ class EmptyArticlesCheckTest extends TestCase
         $healthCheckResult = $this->emptyArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3 published article(s)', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_EMPTY_ARTICLES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithManyEmptyArticlesReturnsWarning(): void
@@ -86,6 +86,6 @@ class EmptyArticlesCheckTest extends TestCase
         $healthCheckResult = $this->emptyArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10 published articles', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_EMPTY_ARTICLES_WARNING', $healthCheckResult->description);
     }
 }

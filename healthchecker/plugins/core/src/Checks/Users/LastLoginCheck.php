@@ -42,6 +42,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -117,8 +118,8 @@ final class LastLoginCheck extends AbstractHealthCheck
         // registration workflow, spam registrations, or abandoned accounts
         if ($neverLoggedInCount > 50) {
             return $this->warning(
-                sprintf(
-                    '%d of %d active users have never logged in. Consider reviewing these accounts.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_USERS_LAST_LOGIN_WARNING',
                     $neverLoggedInCount,
                     $totalUsers,
                 ),
@@ -128,10 +129,10 @@ final class LastLoginCheck extends AbstractHealthCheck
         // Small number of never-logged-in users is normal (recent registrations, pending activations)
         if ($neverLoggedInCount > 0) {
             return $this->good(
-                sprintf('%d of %d active user(s) have never logged in.', $neverLoggedInCount, $totalUsers),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_LAST_LOGIN_GOOD', $neverLoggedInCount, $totalUsers),
             );
         }
 
-        return $this->good('All active users have logged in at least once.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_USERS_LAST_LOGIN_GOOD_2'));
     }
 }

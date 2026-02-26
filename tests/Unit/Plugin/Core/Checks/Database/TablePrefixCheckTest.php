@@ -66,7 +66,7 @@ class TablePrefixCheckTest extends TestCase
         $healthCheckResult = $this->tablePrefixCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('mysite_', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_PREFIX_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithEmptyPrefixReturnsWarning(): void
@@ -76,7 +76,7 @@ class TablePrefixCheckTest extends TestCase
         $healthCheckResult = $this->tablePrefixCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('conflicts', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_PREFIX_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithDefaultPrefixReturnsWarning(): void
@@ -86,7 +86,7 @@ class TablePrefixCheckTest extends TestCase
         $healthCheckResult = $this->tablePrefixCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('default', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_PREFIX_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithShortPrefixReturnsWarning(): void
@@ -96,7 +96,7 @@ class TablePrefixCheckTest extends TestCase
         $healthCheckResult = $this->tablePrefixCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('short', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_PREFIX_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithThreeCharPrefixReturnsGood(): void

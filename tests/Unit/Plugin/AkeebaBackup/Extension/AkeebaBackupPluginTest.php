@@ -169,7 +169,7 @@ class AkeebaBackupPluginTest extends TestCase
 
         $healthCheckResult = $installedCheck->run();
         $this->assertSame('warning', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('not installed', $healthCheckResult->description);
+        $this->assertStringContainsString('INSTALLED_WARNING', $healthCheckResult->description);
     }
 
     public function testProviderMetadataHasLogoUrl(): void
@@ -214,9 +214,9 @@ class AkeebaBackupPluginTest extends TestCase
                 sprintf('Check %s should return warning when Akeeba Backup not installed', $check->getSlug()),
             );
             $this->assertStringContainsString(
-                'not installed',
+                'AKEEBA_BACKUP',
                 $result->description,
-                sprintf("Check %s should mention 'not installed'", $check->getSlug()),
+                sprintf('Check %s description should contain Akeeba Backup language key', $check->getSlug()),
             );
         }
     }

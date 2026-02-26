@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -104,7 +105,7 @@ final class PrivacyDashboardCheck extends AbstractHealthCheck
 
         // Component must be enabled for GDPR compliance features
         if (! $isEnabled) {
-            return $this->warning('Privacy component is disabled. Enable it for GDPR compliance features.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_PRIVACY_DASHBOARD_WARNING'));
         }
 
         // Check for pending privacy requests (status 0 = pending)
@@ -118,10 +119,12 @@ final class PrivacyDashboardCheck extends AbstractHealthCheck
 
         // Pending requests require timely action to maintain compliance
         if ($pendingRequests > 0) {
-            return $this->warning(sprintf('%d pending privacy request(s) require attention.', $pendingRequests));
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_PRIVACY_DASHBOARD_WARNING_2', $pendingRequests),
+            );
         }
 
         // Component enabled and no pending requests - ready for GDPR compliance
-        return $this->good('Privacy component is enabled with no pending requests.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_PRIVACY_DASHBOARD_GOOD'));
     }
 }

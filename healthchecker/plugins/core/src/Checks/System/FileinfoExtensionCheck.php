@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -85,9 +86,9 @@ final class FileinfoExtensionCheck extends AbstractHealthCheck
     protected function performCheck(): HealthCheckResult
     {
         if (! extension_loaded('fileinfo')) {
-            return $this->warning('Fileinfo extension is not loaded. MIME type detection may not work correctly.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_FILEINFO_EXTENSION_WARNING'));
         }
 
-        return $this->good('Fileinfo extension is loaded.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_FILEINFO_EXTENSION_GOOD'));
     }
 }

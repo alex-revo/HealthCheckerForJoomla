@@ -37,6 +37,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -90,7 +91,7 @@ final class CanonicalUrlCheck extends AbstractHealthCheck
         Factory::getApplication()->get('sef_suffix', 0);
 
         if ($sef === 0) {
-            return $this->warning('SEF URLs are disabled. Canonical URLs work best with SEF URLs enabled.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_CANONICAL_URL_WARNING'));
         }
 
         // In Joomla 4+/5+, canonical URLs are automatically added to pages when
@@ -112,15 +113,11 @@ final class CanonicalUrlCheck extends AbstractHealthCheck
         // even if SEF URLs are enabled. This leaves the site vulnerable to
         // duplicate content penalties from search engines.
         if ($sefPluginEnabled === 0) {
-            return $this->warning(
-                'System SEF plugin is disabled. Enable it to ensure proper canonical URL handling.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_CANONICAL_URL_WARNING_2'));
         }
 
         // Both SEF URLs and SEF plugin are enabled - canonical URLs will be
         // automatically generated for all pages, preventing duplicate content issues.
-        return $this->good(
-            'SEF URLs are enabled and the SEF plugin is active. Canonical URLs should be generated automatically.',
-        );
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_CANONICAL_URL_GOOD'));
     }
 }

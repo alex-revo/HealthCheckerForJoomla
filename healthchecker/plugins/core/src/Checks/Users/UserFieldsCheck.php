@@ -44,6 +44,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -113,7 +114,7 @@ final class UserFieldsCheck extends AbstractHealthCheck
             ->loadResult();
 
         if ($totalFields === 0) {
-            return $this->good('No custom user fields configured.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_USERS_USER_FIELDS_GOOD'));
         }
 
         $unpublishedFields = $totalFields - $publishedFields;
@@ -122,8 +123,8 @@ final class UserFieldsCheck extends AbstractHealthCheck
         // Note: Unpublished fields still exist in database and may contain data from when active
         if ($unpublishedFields > 0) {
             return $this->good(
-                sprintf(
-                    '%d custom user field(s) configured (%d published, %d unpublished).',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_USERS_USER_FIELDS_GOOD_2',
                     $totalFields,
                     $publishedFields,
                     $unpublishedFields,
@@ -131,6 +132,6 @@ final class UserFieldsCheck extends AbstractHealthCheck
             );
         }
 
-        return $this->good(sprintf('%d custom user field(s) configured and published.', $totalFields));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_USER_FIELDS_GOOD_3', $totalFields));
     }
 }

@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -92,17 +93,14 @@ final class EmptyArticlesCheck extends AbstractHealthCheck
 
         if ($emptyCount > 5) {
             return $this->warning(
-                sprintf(
-                    '%d published articles have empty or very short content (less than 50 characters). Review and add content or unpublish.',
-                    $emptyCount,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_EMPTY_ARTICLES_WARNING', $emptyCount),
             );
         }
 
         if ($emptyCount > 0) {
-            return $this->good(sprintf('%d published article(s) with minimal content.', $emptyCount));
+            return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_EMPTY_ARTICLES_GOOD', $emptyCount));
         }
 
-        return $this->good('All published articles have substantial content.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_EMPTY_ARTICLES_GOOD_2'));
     }
 }

@@ -32,6 +32,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -95,13 +96,10 @@ final class IndexFileCheck extends AbstractHealthCheck
 
         if ($foundFiles !== []) {
             return $this->warning(
-                'Placeholder index file(s) found: ' . implode(
-                    ', ',
-                    $foundFiles,
-                ) . '. These files should be removed to prevent them being served or indexed by search engines.',
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_INDEX_FILE_WARNING', implode(', ', $foundFiles)),
             );
         }
 
-        return $this->good('No placeholder index files found in the site root.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_INDEX_FILE_GOOD'));
     }
 }

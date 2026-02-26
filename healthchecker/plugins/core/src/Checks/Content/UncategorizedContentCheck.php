@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -88,7 +89,7 @@ final class UncategorizedContentCheck extends AbstractHealthCheck
             ->loadResult();
 
         if ($uncategorizedId === 0) {
-            return $this->good('Uncategorized category not found or has been removed.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_UNCATEGORIZED_CONTENT_GOOD'));
         }
 
         $query = $database->getQuery(true)
@@ -102,14 +103,16 @@ final class UncategorizedContentCheck extends AbstractHealthCheck
 
         if ($uncategorizedCount > 10) {
             return $this->warning(
-                sprintf('%d published articles are in "Uncategorized". Consider organizing them.', $uncategorizedCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_UNCATEGORIZED_CONTENT_WARNING', $uncategorizedCount),
             );
         }
 
         if ($uncategorizedCount > 0) {
-            return $this->good(sprintf('%d article(s) in "Uncategorized".', $uncategorizedCount));
+            return $this->good(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_UNCATEGORIZED_CONTENT_GOOD_2', $uncategorizedCount),
+            );
         }
 
-        return $this->good('No articles in "Uncategorized".');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_UNCATEGORIZED_CONTENT_GOOD_3'));
     }
 }

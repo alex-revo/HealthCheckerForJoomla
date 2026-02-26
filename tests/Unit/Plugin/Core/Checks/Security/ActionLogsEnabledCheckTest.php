@@ -65,7 +65,7 @@ class ActionLogsEnabledCheckTest extends TestCase
         $healthCheckResult = $this->actionLogsEnabledCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('System - Action Logs plugin is disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('ACTION_LOGS_ENABLED_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSystemPluginNotFound(): void
@@ -77,7 +77,7 @@ class ActionLogsEnabledCheckTest extends TestCase
         $healthCheckResult = $this->actionLogsEnabledCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('ACTION_LOGS_ENABLED_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenSystemPluginEnabled(): void
@@ -89,6 +89,6 @@ class ActionLogsEnabledCheckTest extends TestCase
         $healthCheckResult = $this->actionLogsEnabledCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Action Logs system plugin is enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('ACTION_LOGS_ENABLED_GOOD', $healthCheckResult->description);
     }
 }

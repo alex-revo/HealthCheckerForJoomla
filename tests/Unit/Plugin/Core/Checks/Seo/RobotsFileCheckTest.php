@@ -75,7 +75,10 @@ class RobotsFileCheckTest extends TestCase
         $healthCheckResult = $this->robotsFileCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not found', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_ROBOTS_FILE_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsGoodWhenValidRobotsFileExists(): void
@@ -92,7 +95,10 @@ ROBOTS;
         $healthCheckResult = $this->robotsFileCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('present', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_ROBOTS_FILE_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenDisallowRootFound(): void
@@ -107,7 +113,10 @@ ROBOTS;
         $healthCheckResult = $this->robotsFileCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('blocking', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_ROBOTS_FILE_WARNING_3',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsGoodWhenDisallowSubdirectoryOnly(): void
@@ -134,7 +143,10 @@ ROBOTS;
         $healthCheckResult = $this->robotsFileCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('blocking', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_ROBOTS_FILE_WARNING_3',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunHandlesCaseInsensitiveDisallow(): void

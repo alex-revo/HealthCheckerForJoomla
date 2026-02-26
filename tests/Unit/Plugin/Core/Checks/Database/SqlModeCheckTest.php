@@ -64,7 +64,7 @@ class SqlModeCheckTest extends TestCase
         $healthCheckResult = $this->sqlModeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('empty', $healthCheckResult->description);
+        $this->assertStringContainsString('SQL_MODE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenOnlyFullGroupByEnabled(): void
@@ -75,7 +75,7 @@ class SqlModeCheckTest extends TestCase
         $healthCheckResult = $this->sqlModeCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('ONLY_FULL_GROUP_BY', $healthCheckResult->description);
+        $this->assertStringContainsString('SQL_MODE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenSafeModesEnabled(): void
@@ -86,6 +86,6 @@ class SqlModeCheckTest extends TestCase
         $healthCheckResult = $this->sqlModeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('TRADITIONAL', $healthCheckResult->description);
+        $this->assertStringContainsString('SQL_MODE_GOOD', $healthCheckResult->description);
     }
 }

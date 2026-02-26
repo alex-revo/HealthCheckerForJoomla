@@ -66,7 +66,7 @@ class DebugModeCheckTest extends TestCase
         $healthCheckResult = $this->debugModeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('DEBUG_MODE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithDebugEnabledReturnsWarning(): void
@@ -76,7 +76,7 @@ class DebugModeCheckTest extends TestCase
         $healthCheckResult = $this->debugModeCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('DEBUG_MODE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithDebugOneReturnsWarning(): void

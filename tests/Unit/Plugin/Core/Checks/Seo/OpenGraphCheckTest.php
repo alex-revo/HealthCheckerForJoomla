@@ -64,8 +64,10 @@ class OpenGraphCheckTest extends TestCase
         $healthCheckResult = $this->openGraphCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No Open Graph plugin', $healthCheckResult->description);
-        $this->assertStringContainsString('Consider installing', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_OPEN_GRAPH_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithOpenGraphPluginReturnsGood(): void
@@ -76,8 +78,10 @@ class OpenGraphCheckTest extends TestCase
         $healthCheckResult = $this->openGraphCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 enabled plugin', $healthCheckResult->description);
-        $this->assertStringContainsString('Open Graph', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_OPEN_GRAPH_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithMultipleOpenGraphPluginsReturnsGood(): void
@@ -88,6 +92,9 @@ class OpenGraphCheckTest extends TestCase
         $healthCheckResult = $this->openGraphCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3 enabled plugin', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_OPEN_GRAPH_GOOD',
+            $healthCheckResult->description,
+        );
     }
 }

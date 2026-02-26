@@ -39,6 +39,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -161,8 +162,8 @@ final class IndexUsageCheck extends AbstractHealthCheck
         // Report tables missing primary keys (most serious issue)
         if ($tablesWithoutPrimaryKey !== []) {
             return $this->warning(
-                sprintf(
-                    '%d table(s) missing primary key: %s. This may impact performance and data integrity.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_INDEX_USAGE_WARNING',
                     count($tablesWithoutPrimaryKey),
                     implode(', ', array_slice($tablesWithoutPrimaryKey, 0, 5)) . (count(
                         $tablesWithoutPrimaryKey,
@@ -174,8 +175,8 @@ final class IndexUsageCheck extends AbstractHealthCheck
         // Report tables with absolutely no indexes
         if ($tablesWithoutIndexes !== []) {
             return $this->warning(
-                sprintf(
-                    '%d table(s) have no indexes at all: %s',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_INDEX_USAGE_WARNING_2',
                     count($tablesWithoutIndexes),
                     implode(', ', array_slice($tablesWithoutIndexes, 0, 5)) . (count(
                         $tablesWithoutIndexes,
@@ -185,7 +186,7 @@ final class IndexUsageCheck extends AbstractHealthCheck
         }
 
         // All tables have proper indexing
-        return $this->good(sprintf('All %d tables have primary keys and indexes.', count($tables)));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_INDEX_USAGE_GOOD', count($tables)));
     }
 
     /**

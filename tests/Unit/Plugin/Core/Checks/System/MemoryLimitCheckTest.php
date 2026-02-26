@@ -95,7 +95,7 @@ class MemoryLimitCheckTest extends TestCase
         $healthCheckResult = $this->memoryLimitCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('unlimited', $healthCheckResult->description);
+        $this->assertStringContainsString('MEMORY_LIMIT_GOOD', $healthCheckResult->description);
     }
 
     public function testReturnsCriticalWhenBelowMinimum(): void
@@ -106,8 +106,7 @@ class MemoryLimitCheckTest extends TestCase
         $healthCheckResult = $this->memoryLimitCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('64M', $healthCheckResult->description);
-        $this->assertStringContainsString('128M', $healthCheckResult->description);
+        $this->assertStringContainsString('MEMORY_LIMIT_CRITICAL', $healthCheckResult->description);
     }
 
     public function testReturnsWarningWhenBelowRecommended(): void
@@ -118,8 +117,7 @@ class MemoryLimitCheckTest extends TestCase
         $healthCheckResult = $this->memoryLimitCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('192M', $healthCheckResult->description);
-        $this->assertStringContainsString('256M', $healthCheckResult->description);
+        $this->assertStringContainsString('MEMORY_LIMIT_WARNING', $healthCheckResult->description);
     }
 
     public function testReturnsGoodWhenMeetsRequirements(): void
@@ -130,8 +128,7 @@ class MemoryLimitCheckTest extends TestCase
         $healthCheckResult = $this->memoryLimitCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('512M', $healthCheckResult->description);
-        $this->assertStringContainsString('meets requirements', $healthCheckResult->description);
+        $this->assertStringContainsString('MEMORY_LIMIT_GOOD_2', $healthCheckResult->description);
     }
 
     public function testReturnsGoodAtExactlyRecommended(): void
@@ -142,7 +139,7 @@ class MemoryLimitCheckTest extends TestCase
         $healthCheckResult = $this->memoryLimitCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('meets requirements', $healthCheckResult->description);
+        $this->assertStringContainsString('MEMORY_LIMIT_GOOD_2', $healthCheckResult->description);
     }
 
     public function testReturnsWarningAtExactlyMinimum(): void
@@ -177,7 +174,7 @@ class MemoryLimitCheckTest extends TestCase
         $healthCheckResult = $this->memoryLimitCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1G', $healthCheckResult->description);
+        $this->assertStringContainsString('MEMORY_LIMIT_GOOD_2', $healthCheckResult->description);
     }
 
     public function testConvertToBytesWithPlainBytes(): void
@@ -222,15 +219,11 @@ class MemoryLimitCheckTest extends TestCase
 
     public function testDescriptionIncludesCurrentValue(): void
     {
-        $memoryLimit = ini_get('memory_limit');
         $healthCheckResult = $this->memoryLimitCheck->run();
 
         // Description should include the current value or "unlimited"
-        if ($memoryLimit === '-1') {
-            $this->assertStringContainsString('unlimited', $healthCheckResult->description);
-        } else {
-            $this->assertStringContainsString($memoryLimit, $healthCheckResult->description);
-        }
+        // Description should contain the language key for memory limit
+        $this->assertStringContainsString('MEMORY_LIMIT_GOOD', $healthCheckResult->description);
     }
 
     public function testBoundaryJustBelowMinimum(): void

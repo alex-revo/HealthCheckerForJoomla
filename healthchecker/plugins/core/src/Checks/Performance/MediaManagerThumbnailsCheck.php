@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -93,21 +94,19 @@ final class MediaManagerThumbnailsCheck extends AbstractHealthCheck
             ->loadObject();
 
         if ($plugin === null) {
-            return $this->warning(
-                'Filesystem - Local plugin not found. This core plugin is required for the Media Manager.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_MEDIA_MANAGER_THUMBNAILS_WARNING'));
         }
 
         if ((int) $plugin->enabled === 0) {
             return $this->warning(
-                'Filesystem - Local plugin is disabled. Enable it for the Media Manager to function.',
+                Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_MEDIA_MANAGER_THUMBNAILS_WARNING_2'),
             );
         }
 
         $params = json_decode((string) $plugin->params, true);
 
         if (! is_array($params)) {
-            return $this->warning('Unable to read Filesystem - Local plugin configuration.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_MEDIA_MANAGER_THUMBNAILS_WARNING_3'));
         }
 
         // Check if thumbnail generation is enabled
@@ -116,15 +115,12 @@ final class MediaManagerThumbnailsCheck extends AbstractHealthCheck
 
         if ($thumbnailSize <= 0) {
             return $this->warning(
-                'Media Manager thumbnail generation is disabled. Enable it in the Filesystem - Local plugin settings to improve browsing performance.',
+                Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_MEDIA_MANAGER_THUMBNAILS_WARNING_4'),
             );
         }
 
         return $this->good(
-            sprintf(
-                'Media Manager thumbnails are enabled (%dpx). Browsing large media libraries will be faster.',
-                $thumbnailSize,
-            ),
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_MEDIA_MANAGER_THUMBNAILS_GOOD', $thumbnailSize),
         );
     }
 }

@@ -36,6 +36,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -99,23 +100,17 @@ final class CachePluginCheck extends AbstractHealthCheck
 
         // Both disabled - no caching at all
         if (! $cachePluginEnabled && ! $systemCacheEnabled) {
-            return $this->warning(
-                'Page cache plugin is disabled and system caching is off. Enable caching for better performance.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_CACHE_PLUGIN_WARNING'));
         }
 
         // Plugin enabled but system cache disabled - plugin won't function
         if ($cachePluginEnabled && ! $systemCacheEnabled) {
-            return $this->warning(
-                'Page cache plugin is enabled but system caching is disabled. Enable system caching for the plugin to work.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_CACHE_PLUGIN_WARNING_2'));
         }
 
         // System cache enabled but plugin disabled - basic caching works
         if (! $cachePluginEnabled && $systemCacheEnabled) {
-            return $this->good(
-                'System caching is enabled. Page cache plugin is available for additional performance gains.',
-            );
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_CACHE_PLUGIN_GOOD'));
         }
 
         // Both enabled - optimal configuration. Get additional cache configuration details.
@@ -125,11 +120,7 @@ final class CachePluginCheck extends AbstractHealthCheck
         $cacheTime = Factory::getApplication()->get('cachetime', 15);
 
         return $this->good(
-            sprintf(
-                'Page cache plugin is enabled with %s handler (cache time: %d minutes).',
-                $cacheHandler,
-                $cacheTime,
-            ),
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_CACHE_PLUGIN_GOOD_2', $cacheHandler, $cacheTime),
         );
     }
 }

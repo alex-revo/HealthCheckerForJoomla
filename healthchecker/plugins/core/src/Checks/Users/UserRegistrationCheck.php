@@ -42,6 +42,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -101,12 +102,10 @@ final class UserRegistrationCheck extends AbstractHealthCheck
         // Ensure CAPTCHA (System -> Global Configuration -> Users -> CAPTCHA) and
         // email verification are configured if registration is needed
         if ($allowUserRegistration === 1) {
-            return $this->warning(
-                'User registration is enabled. Ensure this is intentional and CAPTCHA is configured.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_USERS_USER_REGISTRATION_WARNING'));
         }
 
         // Registration disabled = recommended for sites where admins create all user accounts
-        return $this->good('User registration is disabled.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_USERS_USER_REGISTRATION_GOOD'));
     }
 }

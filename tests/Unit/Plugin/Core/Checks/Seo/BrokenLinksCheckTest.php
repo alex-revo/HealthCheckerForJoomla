@@ -65,7 +65,10 @@ class BrokenLinksCheckTest extends TestCase
         $healthCheckResult = $this->brokenLinksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not installed', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithNo404ErrorsReturnsGood(): void
@@ -78,7 +81,10 @@ class BrokenLinksCheckTest extends TestCase
         $healthCheckResult = $this->brokenLinksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No unhandled 404 errors', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD_4',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithFew404ErrorsReturnsGood(): void
@@ -91,8 +97,10 @@ class BrokenLinksCheckTest extends TestCase
         $healthCheckResult = $this->brokenLinksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('20 unhandled', $healthCheckResult->description);
-        $this->assertStringContainsString('Consider creating redirects', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD_3',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithMany404ErrorsReturnsWarning(): void
@@ -105,8 +113,10 @@ class BrokenLinksCheckTest extends TestCase
         $healthCheckResult = $this->brokenLinksCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('75 unhandled', $healthCheckResult->description);
-        $this->assertStringContainsString('Review', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithExactlyThreshold404sReturnsGood(): void
@@ -152,7 +162,10 @@ class BrokenLinksCheckTest extends TestCase
         $healthCheckResult = $this->brokenLinksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Could not check', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunNeverReturnsCritical(): void
@@ -176,7 +189,10 @@ class BrokenLinksCheckTest extends TestCase
         $healthCheckResult = $this->brokenLinksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No unhandled 404 errors', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD_4',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithSingle404ErrorReturnsGoodWithCount(): void
@@ -189,6 +205,9 @@ class BrokenLinksCheckTest extends TestCase
         $healthCheckResult = $this->brokenLinksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 unhandled', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD_3',
+            $healthCheckResult->description,
+        );
     }
 }

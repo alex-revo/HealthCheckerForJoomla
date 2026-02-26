@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -108,7 +109,7 @@ final class RedirectsCheck extends AbstractHealthCheck
             ->loadResult() > 0;
 
         if (! $isEnabled) {
-            return $this->good('Redirect component is not enabled.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_REDIRECTS_GOOD'));
         }
 
         // Verify the redirect_links table exists in the database
@@ -117,7 +118,7 @@ final class RedirectsCheck extends AbstractHealthCheck
         $tableName = $prefix . 'redirect_links';
 
         if (! in_array($tableName, $tables, true)) {
-            return $this->good('Redirect links table not found.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_REDIRECTS_GOOD_2'));
         }
 
         // Detect redirect chains using self-join: where r1.new_url = r2.old_url
@@ -150,17 +151,14 @@ final class RedirectsCheck extends AbstractHealthCheck
         // Redirect loops are critical - they cause infinite redirect errors
         if ($loopCount > 0) {
             return $this->critical(
-                sprintf(
-                    'Found %d redirect loop(s) where source equals destination. This will cause infinite redirects.',
-                    $loopCount,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_REDIRECTS_CRITICAL', $loopCount),
             );
         }
 
         // Redirect chains are a warning - they slow down page loads
         if ($chainCount > 0) {
             return $this->warning(
-                sprintf('Found %d redirect chain(s). Redirect chains can slow down page loads.', $chainCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_REDIRECTS_WARNING', $chainCount),
             );
         }
 
@@ -174,7 +172,7 @@ final class RedirectsCheck extends AbstractHealthCheck
             ->loadResult();
 
         return $this->good(
-            sprintf('No redirect chains or loops detected. %d active redirect(s) configured.', $totalRedirects),
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_REDIRECTS_GOOD_3', $totalRedirects),
         );
     }
 }

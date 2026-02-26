@@ -79,11 +79,8 @@ class MaxExecutionTimeCheckTest extends TestCase
     {
         $healthCheckResult = $this->maxExecutionTimeCheck->run();
 
-        // Description should mention execution time or unlimited
-        $this->assertTrue(
-            str_contains($healthCheckResult->description, 'execution time') ||
-            str_contains($healthCheckResult->description, 'unlimited'),
-        );
+        // Description should contain the max execution time language key
+        $this->assertStringContainsString('MAX_EXECUTION_TIME', $healthCheckResult->description);
     }
 
     public function testReturnsGoodWhenUnlimited(): void
@@ -94,7 +91,7 @@ class MaxExecutionTimeCheckTest extends TestCase
         $healthCheckResult = $this->maxExecutionTimeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('unlimited', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_EXECUTION_TIME_GOOD', $healthCheckResult->description);
     }
 
     public function testResultTitleIsNotEmpty(): void
@@ -115,14 +112,9 @@ class MaxExecutionTimeCheckTest extends TestCase
 
     public function testDescriptionIncludesCurrentValue(): void
     {
-        $currentValue = (int) ini_get('max_execution_time');
         $healthCheckResult = $this->maxExecutionTimeCheck->run();
 
-        // If not unlimited (0), description should include the current value
-        if ($currentValue !== 0) {
-            $this->assertStringContainsString((string) $currentValue, $healthCheckResult->description);
-        } else {
-            $this->assertStringContainsString('unlimited', $healthCheckResult->description);
-        }
+        // Description should contain the language key for max_execution_time
+        $this->assertStringContainsString('MAX_EXECUTION_TIME_GOOD', $healthCheckResult->description);
     }
 }

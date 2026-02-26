@@ -64,7 +64,7 @@ class InactiveUsersCheckTest extends TestCase
         $healthCheckResult = $this->inactiveUsersCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('All active users', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_INACTIVE_USERS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenFewInactiveUsers(): void
@@ -75,7 +75,7 @@ class InactiveUsersCheckTest extends TestCase
         $healthCheckResult = $this->inactiveUsersCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('50 user(s) inactive', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_INACTIVE_USERS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenManyInactiveUsers(): void
@@ -86,7 +86,6 @@ class InactiveUsersCheckTest extends TestCase
         $healthCheckResult = $this->inactiveUsersCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('150 users', $healthCheckResult->description);
-        $this->assertStringContainsString('reviewing', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_INACTIVE_USERS_WARNING', $healthCheckResult->description);
     }
 }

@@ -66,7 +66,7 @@ class UserPrivilegesCheckTest extends TestCase
         $healthCheckResult = $this->userPrivilegesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('all required privileges', $healthCheckResult->description);
+        $this->assertStringContainsString('USER_PRIVILEGES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenAllIndividualPrivilegesGranted(): void
@@ -80,7 +80,7 @@ class UserPrivilegesCheckTest extends TestCase
         $healthCheckResult = $this->userPrivilegesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('all required privileges', $healthCheckResult->description);
+        $this->assertStringContainsString('USER_PRIVILEGES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenPrivilegesSpreadAcrossMultipleGrants(): void
@@ -96,7 +96,7 @@ class UserPrivilegesCheckTest extends TestCase
         $healthCheckResult = $this->userPrivilegesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('all required privileges', $healthCheckResult->description);
+        $this->assertStringContainsString('USER_PRIVILEGES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSomePrivilegesMissing(): void
@@ -110,11 +110,7 @@ class UserPrivilegesCheckTest extends TestCase
         $healthCheckResult = $this->userPrivilegesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('may be missing privileges', $healthCheckResult->description);
-        $this->assertStringContainsString('CREATE', $healthCheckResult->description);
-        $this->assertStringContainsString('DROP', $healthCheckResult->description);
-        $this->assertStringContainsString('ALTER', $healthCheckResult->description);
-        $this->assertStringContainsString('INDEX', $healthCheckResult->description);
+        $this->assertStringContainsString('USER_PRIVILEGES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenOnlySelectGranted(): void
@@ -126,7 +122,7 @@ class UserPrivilegesCheckTest extends TestCase
         $healthCheckResult = $this->userPrivilegesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('may be missing privileges', $healthCheckResult->description);
+        $this->assertStringContainsString('USER_PRIVILEGES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenExceptionThrown(): void
@@ -137,8 +133,7 @@ class UserPrivilegesCheckTest extends TestCase
         $healthCheckResult = $this->userPrivilegesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to check', $healthCheckResult->description);
-        $this->assertStringContainsString('Access denied', $healthCheckResult->description);
+        $this->assertStringContainsString('USER_PRIVILEGES_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithCaseInsensitiveAllPrivileges(): void
@@ -178,7 +173,7 @@ class UserPrivilegesCheckTest extends TestCase
         $healthCheckResult = $this->userPrivilegesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('INDEX', $healthCheckResult->description);
+        $this->assertStringContainsString('USER_PRIVILEGES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenPrivilegesFromGlobalAndDatabase(): void
@@ -204,6 +199,6 @@ class UserPrivilegesCheckTest extends TestCase
         $healthCheckResult = $this->userPrivilegesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('may be missing privileges', $healthCheckResult->description);
+        $this->assertStringContainsString('USER_PRIVILEGES_WARNING', $healthCheckResult->description);
     }
 }

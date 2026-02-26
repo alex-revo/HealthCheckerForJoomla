@@ -11,7 +11,9 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Component\Administrator\Service;
 
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
@@ -148,6 +150,35 @@ final class HealthCheckRunner
 
         foreach ($collectProvidersEvent->getProviders() as $providerMetadatum) {
             $this->providerRegistry->register($providerMetadatum);
+        }
+
+        $this->loadPluginLanguages();
+    }
+
+    /**
+     * Load language files for all enabled healthchecker plugins.
+     *
+     * Plugin language files contain translation keys for check descriptions.
+     * These must be explicitly loaded by the component because Joomla's
+     * $autoloadLanguage only loads language files in the plugin's own context,
+     * not when the component renders check results.
+     *
+     * @since 3.4.0
+     */
+    private function loadPluginLanguages(): void
+    {
+        $language = Factory::getLanguage();
+        $plugins = PluginHelper::getPlugin('healthchecker');
+
+        if (! \is_array($plugins)) {
+            return;
+        }
+
+        foreach ($plugins as $plugin) {
+            $language->load(
+                'plg_healthchecker_' . $plugin->name,
+                JPATH_PLUGINS . '/healthchecker/' . $plugin->name,
+            );
         }
     }
 

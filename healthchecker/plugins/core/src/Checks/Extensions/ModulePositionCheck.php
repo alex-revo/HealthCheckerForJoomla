@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -98,7 +99,7 @@ final class ModulePositionCheck extends AbstractHealthCheck
             ->loadObject();
 
         if ($activeTemplate === null) {
-            return $this->warning('Could not determine active template.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_MODULE_POSITIONS_WARNING'));
         }
 
         // Get template positions from templateDetails.xml manifest
@@ -106,7 +107,12 @@ final class ModulePositionCheck extends AbstractHealthCheck
         $xmlPath = $templatePath . '/templateDetails.xml';
 
         if (! file_exists($xmlPath)) {
-            return $this->warning(sprintf('Template manifest not found for %s.', $activeTemplate->template));
+            return $this->warning(
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_EXTENSIONS_MODULE_POSITIONS_WARNING_2',
+                    $activeTemplate->template,
+                ),
+            );
         }
 
         $xml = simplexml_load_file($xmlPath);
@@ -114,7 +120,7 @@ final class ModulePositionCheck extends AbstractHealthCheck
         // Some templates may not define positions in the manifest
         if (! $xml || (! property_exists($xml, 'positions') || $xml->positions === null)) {
             return $this->good(
-                sprintf('Template %s does not define positions in manifest.', $activeTemplate->template),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_MODULE_POSITIONS_GOOD', $activeTemplate->template),
             );
         }
 
@@ -156,8 +162,8 @@ final class ModulePositionCheck extends AbstractHealthCheck
             ) . '</li></ul>';
 
             return $this->warning(
-                sprintf(
-                    '%d published module(s) assigned to positions not defined in template %s:%s',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_EXTENSIONS_MODULE_POSITIONS_WARNING_3',
                     $orphanedCount,
                     htmlspecialchars($activeTemplate->template),
                     $list,
@@ -166,8 +172,8 @@ final class ModulePositionCheck extends AbstractHealthCheck
         }
 
         return $this->good(
-            sprintf(
-                'All %d published modules are assigned to valid positions in template %s.',
+            Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_EXTENSIONS_MODULE_POSITIONS_GOOD_2',
                 \count($modules),
                 $activeTemplate->template,
             ),

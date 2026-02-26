@@ -91,15 +91,10 @@ class MaxInputTimeCheckTest extends TestCase
 
     public function testDescriptionIncludesCurrentValue(): void
     {
-        $currentValue = (int) ini_get('max_input_time');
         $healthCheckResult = $this->maxInputTimeCheck->run();
 
-        // If not unlimited, description should include the current value
-        if ($currentValue !== -1 && $currentValue !== 0) {
-            $this->assertStringContainsString((string) $currentValue, $healthCheckResult->description);
-        } else {
-            $this->assertStringContainsString('unlimited', $healthCheckResult->description);
-        }
+        // Description should contain the language key for max_input_time
+        $this->assertStringContainsString('MAX_INPUT_TIME_GOOD', $healthCheckResult->description);
     }
 
     public function testResultHasCorrectStructure(): void

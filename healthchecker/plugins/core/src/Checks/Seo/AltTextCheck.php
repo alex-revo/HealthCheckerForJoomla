@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -130,8 +131,8 @@ final class AltTextCheck extends AbstractHealthCheck
         // This threshold suggests content editors aren't following accessibility guidelines.
         if ($totalImagesWithoutAlt > 10) {
             return $this->warning(
-                sprintf(
-                    'Found approximately %d images without alt text across %d articles. Add descriptive alt text for accessibility and SEO.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SEO_ALT_TEXT_WARNING',
                     $totalImagesWithoutAlt,
                     $articlesWithMissingAlt,
                 ),
@@ -142,14 +143,11 @@ final class AltTextCheck extends AbstractHealthCheck
         // Still worth addressing but not as urgent as systemic issues.
         if ($totalImagesWithoutAlt > 0) {
             return $this->warning(
-                sprintf(
-                    'Found %d images that may be missing alt text. Consider adding descriptive alt text for better accessibility.',
-                    $totalImagesWithoutAlt,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_ALT_TEXT_WARNING_2', $totalImagesWithoutAlt),
             );
         }
 
         // All images in published articles have alt text - excellent for accessibility and SEO.
-        return $this->good('No images with missing alt text detected in published articles.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_ALT_TEXT_GOOD'));
     }
 }

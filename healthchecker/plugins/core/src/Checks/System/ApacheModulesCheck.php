@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -91,7 +92,7 @@ final class ApacheModulesCheck extends AbstractHealthCheck
     {
         // Not running on Apache or function not available
         if (! \function_exists('apache_get_modules')) {
-            return $this->good('Not running on Apache or module detection not available.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_APACHE_MODULES_GOOD'));
         }
 
         $modules = apache_get_modules();
@@ -107,7 +108,9 @@ final class ApacheModulesCheck extends AbstractHealthCheck
         }
 
         if ($missing !== []) {
-            return $this->warning(sprintf('Required Apache modules may be missing: %s', implode(', ', $missing)));
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_APACHE_MODULES_WARNING', implode(', ', $missing)),
+            );
         }
 
         // Check for recommended performance/security modules
@@ -120,10 +123,13 @@ final class ApacheModulesCheck extends AbstractHealthCheck
 
         if ($missingRecommended !== []) {
             return $this->good(
-                sprintf('Core modules OK. Optional modules not detected: %s', implode(', ', $missingRecommended)),
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_APACHE_MODULES_GOOD_2',
+                    implode(', ', $missingRecommended),
+                ),
             );
         }
 
-        return $this->good('All recommended Apache modules are installed.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_APACHE_MODULES_GOOD_3'));
     }
 }

@@ -65,7 +65,7 @@ class MailerSecurityCheckTest extends TestCase
         $healthCheckResult = $this->mailerSecurityCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('PHP mail()', $healthCheckResult->description);
+        $this->assertStringContainsString('MAILER_SECURITY_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenUsingSendmail(): void
@@ -77,7 +77,7 @@ class MailerSecurityCheckTest extends TestCase
         $healthCheckResult = $this->mailerSecurityCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('sendmail', $healthCheckResult->description);
+        $this->assertStringContainsString('MAILER_SECURITY_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSmtpWithoutEncryption(): void
@@ -90,7 +90,7 @@ class MailerSecurityCheckTest extends TestCase
         $healthCheckResult = $this->mailerSecurityCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('without encryption', $healthCheckResult->description);
+        $this->assertStringContainsString('MAILER_SECURITY_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSmtpWithEmptyEncryption(): void
@@ -115,7 +115,7 @@ class MailerSecurityCheckTest extends TestCase
         $healthCheckResult = $this->mailerSecurityCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('TLS', $healthCheckResult->description);
+        $this->assertStringContainsString('MAILER_SECURITY_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenSmtpWithSsl(): void
@@ -128,7 +128,7 @@ class MailerSecurityCheckTest extends TestCase
         $healthCheckResult = $this->mailerSecurityCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('SSL', $healthCheckResult->description);
+        $this->assertStringContainsString('MAILER_SECURITY_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodForOtherMailerTypes(): void
@@ -140,7 +140,7 @@ class MailerSecurityCheckTest extends TestCase
         $healthCheckResult = $this->mailerSecurityCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('custom_mailer', $healthCheckResult->description);
+        $this->assertStringContainsString('MAILER_SECURITY_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithDefaultMailerSetting(): void

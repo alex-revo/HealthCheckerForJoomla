@@ -37,6 +37,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -106,20 +107,14 @@ final class PasswordPolicyCheck extends AbstractHealthCheck
         // Critical: Password length under 8 characters is dangerously weak
         if ($minLength < 8) {
             return $this->critical(
-                sprintf(
-                    'Minimum password length is %d characters. For security, set this to at least 12 characters.',
-                    $minLength,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_PASSWORD_POLICY_CRITICAL', $minLength),
             );
         }
 
         // Warning: Password length 8-11 is acceptable but not ideal
         if ($minLength < 12) {
             return $this->warning(
-                sprintf(
-                    'Minimum password length is %d characters. Consider increasing to 12 or more for better security.',
-                    $minLength,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_PASSWORD_POLICY_WARNING', $minLength),
             );
         }
 
@@ -129,16 +124,11 @@ final class PasswordPolicyCheck extends AbstractHealthCheck
         // Warning: Adequate length but no complexity requirements
         if (! $hasComplexity) {
             return $this->warning(
-                sprintf(
-                    'Minimum password length is %d characters, but no complexity requirements are set. Consider requiring numbers, symbols, or mixed case.',
-                    $minLength,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_PASSWORD_POLICY_WARNING_2', $minLength),
             );
         }
 
         // Good: Strong password policy with length and complexity
-        return $this->good(
-            sprintf('Password policy configured: minimum %d characters with complexity requirements.', $minLength),
-        );
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_PASSWORD_POLICY_GOOD', $minLength));
     }
 }

@@ -64,7 +64,7 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('recommended', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenReadCommitted(): void
@@ -85,7 +85,7 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('dirty reads', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSerializable(): void
@@ -96,7 +96,7 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('performance', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_WARNING_3', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenIsolationLevelNull(): void
@@ -108,7 +108,7 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to determine', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_WARNING', $healthCheckResult->description);
     }
 
     public function testRunNormalizesUnderscoresToHyphens(): void
@@ -120,7 +120,7 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('recommended', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunNormalizesLowerCaseIsolationLevel(): void
@@ -132,7 +132,7 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('recommended', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunHandlesReadUncommittedWithUnderscores(): void
@@ -144,7 +144,7 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('dirty reads', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunHandlesReadCommittedWithUnderscores(): void
@@ -167,8 +167,7 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to check', $healthCheckResult->description);
-        $this->assertStringContainsString('Connection lost', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_WARNING_4', $healthCheckResult->description);
     }
 
     public function testRunFallsBackToTxIsolationVariable(): void
@@ -191,7 +190,7 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('recommended', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunHandlesMixedCaseSerializable(): void
@@ -203,6 +202,6 @@ class TransactionIsolationCheckTest extends TestCase
         $healthCheckResult = $this->transactionIsolationCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('performance', $healthCheckResult->description);
+        $this->assertStringContainsString('TRANSACTION_ISOLATION_WARNING_3', $healthCheckResult->description);
     }
 }

@@ -65,8 +65,7 @@ class LanguagePacksCheckTest extends TestCase
         $healthCheckResult = $this->languagePacksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 site language(s)', $healthCheckResult->description);
-        $this->assertStringContainsString('1 admin language(s)', $healthCheckResult->description);
+        $this->assertStringContainsString('LANGUAGE_PACKS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithNoLanguages(): void
@@ -77,7 +76,6 @@ class LanguagePacksCheckTest extends TestCase
         $healthCheckResult = $this->languagePacksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('0 site language(s)', $healthCheckResult->description);
-        $this->assertStringContainsString('0 admin language(s)', $healthCheckResult->description);
+        $this->assertStringContainsString('LANGUAGE_PACKS_GOOD', $healthCheckResult->description);
     }
 }

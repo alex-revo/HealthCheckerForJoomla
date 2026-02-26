@@ -61,7 +61,7 @@ class MemoryLimitCheckTest extends TestCase
         $memoryLimitCheck = new MemoryLimitCheck();
         $healthCheckResult = $memoryLimitCheck->run();
 
-        $this->assertStringContainsStringIgnoringCase('memory', $healthCheckResult->description);
+        $this->assertStringContainsString('MEMORY_LIMIT', $healthCheckResult->description);
     }
 
     public function testCheckDoesNotRequireDatabase(): void
@@ -127,7 +127,7 @@ class MemoryLimitCheckTest extends TestCase
         if ($memoryLimit === '-1') {
             // Unlimited memory
             $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-            $this->assertStringContainsStringIgnoringCase('unlimited', $healthCheckResult->description);
+            $this->assertStringContainsString('MEMORY_LIMIT_GOOD', $healthCheckResult->description);
         } else {
             // Memory is limited, check that a valid status is returned
             $this->assertContains(

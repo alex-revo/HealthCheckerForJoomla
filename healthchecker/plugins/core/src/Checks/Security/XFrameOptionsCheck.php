@@ -42,6 +42,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -105,24 +106,18 @@ final class XFrameOptionsCheck extends AbstractHealthCheck
             ->loadObject();
 
         if ($result === null) {
-            return $this->warning(
-                'HTTP Headers plugin not found. Install and enable it to configure X-Frame-Options header.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_X_FRAME_OPTIONS_WARNING'));
         }
 
         if ((int) $result->enabled === 0) {
-            return $this->warning(
-                'HTTP Headers plugin is disabled. Enable it to configure X-Frame-Options for clickjacking protection.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_X_FRAME_OPTIONS_WARNING_2'));
         }
 
         // Decode plugin parameters (JSON stored in database)
         $params = json_decode((string) $result->params, true);
 
         if (! is_array($params) || $params === []) {
-            return $this->warning(
-                'HTTP Headers plugin is enabled but not configured. Configure X-Frame-Options to prevent clickjacking.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_X_FRAME_OPTIONS_WARNING_3'));
         }
 
         // Check if xframeoptions is enabled (default is 1/enabled)
@@ -130,11 +125,9 @@ final class XFrameOptionsCheck extends AbstractHealthCheck
         $xFrameOptions = $params['xframeoptions'] ?? 1;
 
         if ((int) $xFrameOptions === 0) {
-            return $this->critical(
-                'X-Frame-Options is disabled. Your site is vulnerable to clickjacking attacks. Enable this header.',
-            );
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_X_FRAME_OPTIONS_CRITICAL'));
         }
 
-        return $this->good('X-Frame-Options header is enabled via HTTP Headers plugin.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_X_FRAME_OPTIONS_GOOD'));
     }
 }

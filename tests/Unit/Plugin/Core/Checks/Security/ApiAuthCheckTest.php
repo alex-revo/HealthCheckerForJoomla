@@ -65,7 +65,7 @@ class ApiAuthCheckTest extends TestCase
         $healthCheckResult = $this->apiAuthCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No API authentication', $healthCheckResult->description);
+        $this->assertStringContainsString('API_AUTH_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenPluginsEnabled(): void
@@ -80,7 +80,7 @@ class ApiAuthCheckTest extends TestCase
         $healthCheckResult = $this->apiAuthCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('token', $healthCheckResult->description);
+        $this->assertStringContainsString('API_AUTH_GOOD', $healthCheckResult->description);
     }
 
     public function testRunIgnoresDisabledPlugins(): void

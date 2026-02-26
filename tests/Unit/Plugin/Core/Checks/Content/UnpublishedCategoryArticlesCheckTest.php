@@ -64,7 +64,10 @@ class UnpublishedCategoryArticlesCheckTest extends TestCase
         $healthCheckResult = $this->unpublishedCategoryArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('published categories', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_UNPUBLISHED_CATEGORY_ARTICLES_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenArticlesInUnpublishedCategories(): void
@@ -75,8 +78,10 @@ class UnpublishedCategoryArticlesCheckTest extends TestCase
         $healthCheckResult = $this->unpublishedCategoryArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 published', $healthCheckResult->description);
-        $this->assertStringContainsString('unpublished categories', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_UNPUBLISHED_CATEGORY_ARTICLES_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningSingularForOneArticle(): void
@@ -87,7 +92,10 @@ class UnpublishedCategoryArticlesCheckTest extends TestCase
         $healthCheckResult = $this->unpublishedCategoryArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 published article is', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_UNPUBLISHED_CATEGORY_ARTICLES_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningPluralForMultipleArticles(): void
@@ -98,8 +106,10 @@ class UnpublishedCategoryArticlesCheckTest extends TestCase
         $healthCheckResult = $this->unpublishedCategoryArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3 published articles are', $healthCheckResult->description);
-        $this->assertStringContainsString('are invisible', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_UNPUBLISHED_CATEGORY_ARTICLES_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningOnDatabaseException(): void
@@ -110,6 +120,9 @@ class UnpublishedCategoryArticlesCheckTest extends TestCase
         $healthCheckResult = $this->unpublishedCategoryArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to check', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_UNPUBLISHED_CATEGORY_ARTICLES_WARNING',
+            $healthCheckResult->description,
+        );
     }
 }

@@ -43,6 +43,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -138,8 +139,8 @@ final class PasswordExpiryCheck extends AbstractHealthCheck
             // Critical threshold: >75% of users have expired passwords
             if ($percentage > 75) {
                 return $this->warning(
-                    sprintf(
-                        '%d of %d active users (%d%%) have not changed their password in over %d days. Consider implementing a password policy.',
+                    Text::sprintf(
+                        'COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_WARNING',
                         $expiredCount,
                         $totalUsers,
                         $percentage,
@@ -151,8 +152,8 @@ final class PasswordExpiryCheck extends AbstractHealthCheck
             // Warning threshold: >25% of users have expired passwords
             if ($percentage > 25) {
                 return $this->warning(
-                    sprintf(
-                        '%d of %d active users (%d%%) have not changed their password in over %d days. Consider reviewing password policies.',
+                    Text::sprintf(
+                        'COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_WARNING_2',
                         $expiredCount,
                         $totalUsers,
                         $percentage,
@@ -163,8 +164,8 @@ final class PasswordExpiryCheck extends AbstractHealthCheck
 
             // Some expired passwords but within acceptable threshold
             return $this->good(
-                sprintf(
-                    '%d of %d active users have not changed their password in over %d days (acceptable threshold).',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_GOOD',
                     $expiredCount,
                     $totalUsers,
                     self::PASSWORD_EXPIRY_DAYS,
@@ -172,6 +173,6 @@ final class PasswordExpiryCheck extends AbstractHealthCheck
             );
         }
 
-        return $this->good('All active users have recently updated passwords.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_USERS_PASSWORD_EXPIRY_GOOD_2'));
     }
 }

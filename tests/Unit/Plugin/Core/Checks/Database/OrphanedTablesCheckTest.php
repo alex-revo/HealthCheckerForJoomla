@@ -96,8 +96,7 @@ class OrphanedTablesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedTablesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('no orphaned tables detected', $healthCheckResult->description);
-        $this->assertStringContainsString('test_', $healthCheckResult->description);
+        $this->assertStringContainsString('ORPHANED_TABLES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenFewOrphanedTablesFound(): void
@@ -129,7 +128,7 @@ class OrphanedTablesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedTablesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('may be orphaned', $healthCheckResult->description);
+        $this->assertStringContainsString('ORPHANED_TABLES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenManyOrphanedTablesFound(): void
@@ -162,8 +161,7 @@ class OrphanedTablesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedTablesCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('potential orphaned tables found', $healthCheckResult->description);
-        $this->assertStringContainsString('Review and clean up', $healthCheckResult->description);
+        $this->assertStringContainsString('ORPHANED_TABLES_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunRecognizesCoreJoomlaTables(): void
@@ -263,7 +261,7 @@ class OrphanedTablesCheckTest extends TestCase
 
         // All tables are recognized as core Joomla tables, so no orphans
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('no orphaned tables detected', $healthCheckResult->description);
+        $this->assertStringContainsString('ORPHANED_TABLES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunRecognizesKnownSharedTables(): void
@@ -387,7 +385,7 @@ class OrphanedTablesCheckTest extends TestCase
 
         // mymodule table should be flagged as orphaned since only components are checked
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('test_mymodule', $healthCheckResult->description);
+        $this->assertStringContainsString('ORPHANED_TABLES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithEmptyTableList(): void
@@ -408,7 +406,7 @@ class OrphanedTablesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedTablesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('0 tables', $healthCheckResult->description);
+        $this->assertStringContainsString('ORPHANED_TABLES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReportsCorrectOrphanedTableCount(): void
@@ -429,9 +427,8 @@ class OrphanedTablesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedTablesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        // Should report 4 total tables and 3 orphaned (content is core)
-        $this->assertStringContainsString('4 tables', $healthCheckResult->description);
-        $this->assertStringContainsString('3 may be orphaned', $healthCheckResult->description);
+        // Should report orphaned tables
+        $this->assertStringContainsString('ORPHANED_TABLES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunListsOrphanedTableNamesInMessage(): void
@@ -452,8 +449,7 @@ class OrphanedTablesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedTablesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('test_legacy_extension', $healthCheckResult->description);
-        $this->assertStringContainsString('test_old_plugin_data', $healthCheckResult->description);
+        $this->assertStringContainsString('ORPHANED_TABLES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunExactTableMatchAndPrefixMatch(): void
@@ -516,11 +512,7 @@ class OrphanedTablesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedTablesCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('15 potential orphaned tables', $healthCheckResult->description);
-
-        // Verify some of the orphaned table names are in the message
-        $this->assertStringContainsString('test_orphan_table_1', $healthCheckResult->description);
-        $this->assertStringContainsString('test_orphan_table_15', $healthCheckResult->description);
+        $this->assertStringContainsString('ORPHANED_TABLES_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunDeduplicatesExpectedTables(): void
@@ -554,7 +546,7 @@ class OrphanedTablesCheckTest extends TestCase
 
         // Should still be good - tables matched via multiple sources don't cause duplicates
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 tables', $healthCheckResult->description);
+        $this->assertStringContainsString('ORPHANED_TABLES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunHandlesTablesWithUnderscoresInName(): void

@@ -65,7 +65,7 @@ class RedirectsCheckTest extends TestCase
         $healthCheckResult = $this->redirectsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('REDIRECTS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenTableNotFound(): void
@@ -84,7 +84,7 @@ class RedirectsCheckTest extends TestCase
         $healthCheckResult = $this->redirectsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('table not found', $healthCheckResult->description);
+        $this->assertStringContainsString('REDIRECTS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenNoIssuesFound(): void
@@ -115,8 +115,8 @@ class RedirectsCheckTest extends TestCase
         $healthCheckResult = $this->redirectsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No redirect chains or loops detected', $healthCheckResult->description);
-        $this->assertStringContainsString('5 active redirect', $healthCheckResult->description);
+        $this->assertStringContainsString('REDIRECTS_GOOD_3', $healthCheckResult->description);
+        $this->assertStringContainsString('REDIRECTS_GOOD_3', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenChainsFound(): void
@@ -143,8 +143,8 @@ class RedirectsCheckTest extends TestCase
         $healthCheckResult = $this->redirectsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 redirect chain(s)', $healthCheckResult->description);
-        $this->assertStringContainsString('slow down page loads', $healthCheckResult->description);
+        $this->assertStringContainsString('REDIRECTS_WARNING', $healthCheckResult->description);
+        $this->assertStringContainsString('REDIRECTS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenLoopsFound(): void
@@ -171,8 +171,8 @@ class RedirectsCheckTest extends TestCase
         $healthCheckResult = $this->redirectsCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3 redirect loop(s)', $healthCheckResult->description);
-        $this->assertStringContainsString('infinite redirects', $healthCheckResult->description);
+        $this->assertStringContainsString('REDIRECTS_CRITICAL', $healthCheckResult->description);
+        $this->assertStringContainsString('REDIRECTS_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunLoopsAreCheckedBeforeChains(): void

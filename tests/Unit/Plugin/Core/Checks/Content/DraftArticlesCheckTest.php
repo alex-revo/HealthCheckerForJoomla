@@ -64,7 +64,7 @@ class DraftArticlesCheckTest extends TestCase
         $healthCheckResult = $this->draftArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('0 unpublished', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_DRAFT_ARTICLES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithFewDrafts(): void
@@ -75,7 +75,7 @@ class DraftArticlesCheckTest extends TestCase
         $healthCheckResult = $this->draftArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('15 unpublished', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_DRAFT_ARTICLES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWithManyDrafts(): void
@@ -86,6 +86,6 @@ class DraftArticlesCheckTest extends TestCase
         $healthCheckResult = $this->draftArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('30 unpublished', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_DRAFT_ARTICLES_WARNING', $healthCheckResult->description);
     }
 }

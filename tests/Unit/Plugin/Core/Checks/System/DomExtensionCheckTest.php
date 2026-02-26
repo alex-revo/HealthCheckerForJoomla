@@ -54,8 +54,7 @@ class DomExtensionCheckTest extends TestCase
         $healthCheckResult = $this->domExtensionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('DOM', $healthCheckResult->description);
-        $this->assertStringContainsString('loaded', $healthCheckResult->description);
+        $this->assertStringContainsString('DOM_EXTENSION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsHealthCheckResult(): void

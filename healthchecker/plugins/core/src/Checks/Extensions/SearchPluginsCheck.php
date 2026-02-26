@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -124,14 +125,12 @@ final class SearchPluginsCheck extends AbstractHealthCheck
 
         // If Smart Search is disabled, this is intentional - not a problem
         if ($finderEnabled === 0) {
-            return $this->good('Smart Search component is not enabled.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_SEARCH_PLUGINS_GOOD'));
         }
 
         // Component enabled but no plugins - misconfiguration
         if ($finderPluginsEnabled === 0) {
-            return $this->warning(
-                'Smart Search is enabled but no search plugins are active. Enable content plugins to index your content.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_SEARCH_PLUGINS_WARNING'));
         }
 
         // Check if the search index contains any content
@@ -146,8 +145,8 @@ final class SearchPluginsCheck extends AbstractHealthCheck
         // Plugins enabled but index empty - indexer needs to be run
         if ($indexedItems === 0) {
             return $this->warning(
-                sprintf(
-                    '%d of %d Smart Search plugin(s) enabled, but index is empty. Run the indexer.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_EXTENSIONS_SEARCH_PLUGINS_WARNING_2',
                     $finderPluginsEnabled,
                     $finderPluginsTotal,
                 ),
@@ -156,8 +155,8 @@ final class SearchPluginsCheck extends AbstractHealthCheck
 
         // Everything properly configured and indexed
         return $this->good(
-            sprintf(
-                '%d of %d Smart Search plugin(s) enabled, %d items indexed.',
+            Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_EXTENSIONS_SEARCH_PLUGINS_GOOD_2',
                 $finderPluginsEnabled,
                 $finderPluginsTotal,
                 $indexedItems,

@@ -64,7 +64,7 @@ class AdminEmailCheckTest extends TestCase
         $healthCheckResult = $this->adminEmailCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No active Super Admin', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithValidEmailsReturnsGood(): void
@@ -87,8 +87,7 @@ class AdminEmailCheckTest extends TestCase
         $healthCheckResult = $this->adminEmailCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 Super Admin', $healthCheckResult->description);
-        $this->assertStringContainsString('valid email', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithEmptyEmailReturnsCritical(): void
@@ -106,8 +105,7 @@ class AdminEmailCheckTest extends TestCase
         $healthCheckResult = $this->adminEmailCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('admin', $healthCheckResult->description);
-        $this->assertStringContainsString('no email', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithInvalidEmailFormatReturnsCritical(): void
@@ -125,8 +123,7 @@ class AdminEmailCheckTest extends TestCase
         $healthCheckResult = $this->adminEmailCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('admin', $healthCheckResult->description);
-        $this->assertStringContainsString('invalid format', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithExampleDomainReturnsCritical(): void
@@ -144,8 +141,7 @@ class AdminEmailCheckTest extends TestCase
         $healthCheckResult = $this->adminEmailCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('admin', $healthCheckResult->description);
-        $this->assertStringContainsString('example.com', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithMailinatorDomainReturnsCritical(): void
@@ -163,7 +159,7 @@ class AdminEmailCheckTest extends TestCase
         $healthCheckResult = $this->adminEmailCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('mailinator.com', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithMultipleInvalidEmailsReturnsCritical(): void
@@ -191,7 +187,6 @@ class AdminEmailCheckTest extends TestCase
         $healthCheckResult = $this->adminEmailCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('admin1', $healthCheckResult->description);
-        $this->assertStringContainsString('admin2', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_CRITICAL', $healthCheckResult->description);
     }
 }

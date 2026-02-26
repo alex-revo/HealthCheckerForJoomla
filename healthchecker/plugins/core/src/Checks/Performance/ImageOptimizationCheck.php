@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -96,7 +97,7 @@ final class ImageOptimizationCheck extends AbstractHealthCheck
 
         // If images directory doesn't exist, nothing to check
         if (! is_dir($imagesPath)) {
-            return $this->good('Images directory not found.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_IMAGE_OPTIMIZATION_GOOD'));
         }
 
         // Scan for large images with a limit to prevent excessive processing
@@ -106,35 +107,29 @@ final class ImageOptimizationCheck extends AbstractHealthCheck
         // No oversized images found - optimal state
         if ($count === 0) {
             $message = $limitReached
-                ? 'No oversized images detected in first 1000 files scanned.'
-                : 'No oversized images detected in the images directory.';
+                ? Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_IMAGE_OPTIMIZATION_GOOD_2')
+                : Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_IMAGE_OPTIMIZATION_GOOD_3');
             return $this->good($message);
         }
 
         // Scan was limited - inform user there may be more
         if ($limitReached) {
             return $this->warning(
-                sprintf(
-                    'Found %d images larger than 500KB (scan limited to 1000 files). Full site may have more oversized images.',
-                    $count,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_IMAGE_OPTIMIZATION_WARNING', $count),
             );
         }
 
         // Many oversized images found - provide count only
         if ($count > 10) {
             return $this->warning(
-                sprintf(
-                    'Found %d images larger than 500KB. Consider optimizing images for better page load times.',
-                    $count,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_IMAGE_OPTIMIZATION_WARNING_2', $count),
             );
         }
 
         // Few oversized images - provide specific file paths
         return $this->warning(
-            sprintf(
-                'Found %d image(s) larger than 500KB. Consider optimizing: %s',
+            Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_PERFORMANCE_IMAGE_OPTIMIZATION_WARNING_3',
                 $count,
                 implode(', ', array_slice($largeImages, 0, 5)),
             ),

@@ -65,7 +65,7 @@ class PageCacheCheckTest extends TestCase
         $healthCheckResult = $this->pageCacheCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('PAGE_CACHE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithPluginEnabledAndBrowserCacheEnabledReturnsGood(): void
@@ -82,7 +82,7 @@ class PageCacheCheckTest extends TestCase
         $healthCheckResult = $this->pageCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('browser caching', $healthCheckResult->description);
+        $this->assertStringContainsString('PAGE_CACHE_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithPluginEnabledAndBrowserCacheDisabledReturnsWarning(): void
@@ -99,7 +99,7 @@ class PageCacheCheckTest extends TestCase
         $healthCheckResult = $this->pageCacheCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('browser caching is disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('PAGE_CACHE_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunWithEmptyParamsReturnsGood(): void
@@ -114,7 +114,7 @@ class PageCacheCheckTest extends TestCase
 
         // Plugin is enabled, params empty - still good (can't determine browser cache state)
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('PAGE_CACHE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithInvalidJsonParamsReturnsGood(): void
@@ -167,7 +167,7 @@ class PageCacheCheckTest extends TestCase
 
         // Plugin enabled but can't read params - still good
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('PAGE_CACHE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithBrowserCacheStringValueEnabledReturnsGood(): void
@@ -185,7 +185,7 @@ class PageCacheCheckTest extends TestCase
         $healthCheckResult = $this->pageCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('browser caching', $healthCheckResult->description);
+        $this->assertStringContainsString('PAGE_CACHE_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithBrowserCacheStringValueDisabledReturnsWarning(): void
@@ -203,7 +203,7 @@ class PageCacheCheckTest extends TestCase
         $healthCheckResult = $this->pageCacheCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('browser caching is disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('PAGE_CACHE_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsHealthCheckResult(): void

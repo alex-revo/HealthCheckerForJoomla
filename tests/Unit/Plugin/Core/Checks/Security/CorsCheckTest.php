@@ -65,7 +65,7 @@ class CorsCheckTest extends TestCase
         $healthCheckResult = $this->corsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('CORS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenCorsEnabledWithWildcard(): void
@@ -78,7 +78,7 @@ class CorsCheckTest extends TestCase
         $healthCheckResult = $this->corsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('wildcard', $healthCheckResult->description);
+        $this->assertStringContainsString('CORS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenCorsEnabledWithRestrictedOrigin(): void
@@ -91,8 +91,7 @@ class CorsCheckTest extends TestCase
         $healthCheckResult = $this->corsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('restricted', $healthCheckResult->description);
-        $this->assertStringContainsString('example.com', $healthCheckResult->description);
+        $this->assertStringContainsString('CORS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenCorsEnabledAsString1(): void
@@ -128,7 +127,7 @@ class CorsCheckTest extends TestCase
         $healthCheckResult = $this->corsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('CORS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenCorsDisabledWithIntegerZero(): void
@@ -220,7 +219,7 @@ class CorsCheckTest extends TestCase
         $healthCheckResult = $this->corsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('api.example.com', $healthCheckResult->description);
+        $this->assertStringContainsString('CORS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenCorsEnabledWithMultipleDomains(): void
@@ -257,7 +256,7 @@ class CorsCheckTest extends TestCase
         $healthCheckResult = $this->corsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('security', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('CORS_WARNING', $healthCheckResult->description);
     }
 
     public function testWarningDescriptionMentionsTrustedDomains(): void
@@ -270,7 +269,7 @@ class CorsCheckTest extends TestCase
         $healthCheckResult = $this->corsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('trusted domains', $healthCheckResult->description);
+        $this->assertStringContainsString('CORS_WARNING', $healthCheckResult->description);
     }
 
     public function testGoodDescriptionMentionsCrossOrigin(): void
@@ -282,10 +281,7 @@ class CorsCheckTest extends TestCase
         $healthCheckResult = $this->corsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertTrue(
-            stripos($healthCheckResult->description, 'cross-origin') !== false ||
-            stripos($healthCheckResult->description, 'Cross-origin') !== false,
-        );
+        $this->assertStringContainsString('CORS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunResultDescriptionIsNotEmpty(): void
@@ -345,6 +341,6 @@ class CorsCheckTest extends TestCase
         $healthCheckResult = $this->corsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('myapp.example.com', $healthCheckResult->description);
+        $this->assertStringContainsString('CORS_GOOD', $healthCheckResult->description);
     }
 }

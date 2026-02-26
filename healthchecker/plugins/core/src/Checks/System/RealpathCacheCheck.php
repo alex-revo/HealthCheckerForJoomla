@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -95,7 +96,7 @@ final class RealpathCacheCheck extends AbstractHealthCheck
         $cacheTtl = ini_get('realpath_cache_ttl');
 
         if ($cacheSize === false) {
-            return $this->warning('Unable to retrieve realpath_cache_size setting.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_REALPATH_CACHE_WARNING'));
         }
 
         // Convert human-readable size to bytes and get current usage
@@ -108,26 +109,19 @@ final class RealpathCacheCheck extends AbstractHealthCheck
         // Warn if cache size is below recommended minimum
         if ($sizeBytes < self::RECOMMENDED_SIZE) {
             return $this->warning(
-                sprintf(
-                    'Realpath cache size (%s) is below recommended 4M. Current usage: %s%%.',
-                    $cacheSize,
-                    $usedPercent,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_REALPATH_CACHE_WARNING_2', $cacheSize, $usedPercent),
             );
         }
 
         // Warn if cache is nearly full (paths may be evicted)
         if ($usedPercent > 90) {
             return $this->warning(
-                sprintf(
-                    'Realpath cache is nearly full (%s%% used). Consider increasing realpath_cache_size.',
-                    $usedPercent,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_REALPATH_CACHE_WARNING_3', $usedPercent),
             );
         }
 
         return $this->good(
-            sprintf('Realpath cache: %s configured, %s%% used, TTL %ds.', $cacheSize, $usedPercent, $cacheTtl),
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_REALPATH_CACHE_GOOD', $cacheSize, $usedPercent, $cacheTtl),
         );
     }
 

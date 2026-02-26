@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -95,20 +96,20 @@ final class MemoryLimitCheck extends AbstractHealthCheck
         $memoryLimit = ini_get('memory_limit');
 
         if ($memoryLimit === '-1') {
-            return $this->good('Memory limit is unlimited.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MEMORY_LIMIT_GOOD'));
         }
 
         $bytes = $this->convertToBytes($memoryLimit);
 
         if ($bytes < self::MINIMUM_BYTES) {
-            return $this->critical(sprintf('Memory limit (%s) is below the minimum required 128M.', $memoryLimit));
+            return $this->critical(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_MEMORY_LIMIT_CRITICAL', $memoryLimit));
         }
 
         if ($bytes < self::RECOMMENDED_BYTES) {
-            return $this->warning(sprintf('Memory limit (%s) is below the recommended 256M.', $memoryLimit));
+            return $this->warning(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_MEMORY_LIMIT_WARNING', $memoryLimit));
         }
 
-        return $this->good(sprintf('Memory limit (%s) meets requirements.', $memoryLimit));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_MEMORY_LIMIT_GOOD_2', $memoryLimit));
     }
 
     /**

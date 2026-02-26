@@ -138,7 +138,7 @@ class AbstractHealthCheckTest extends TestCase
 
         $this->assertInstanceOf(HealthCheckResult::class, $healthCheckResult);
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Something went wrong', $healthCheckResult->description);
+        $this->assertStringContainsString('COM_HEALTHCHECKER_CHECK_ERROR', $healthCheckResult->description);
     }
 
     public function testCustomProviderCanBeOverridden(): void

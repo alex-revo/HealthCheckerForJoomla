@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -92,7 +93,7 @@ final class ConnectionCharsetCheck extends AbstractHealthCheck
             ->loadObject();
 
         if ($result === null) {
-            return $this->critical('Unable to determine database connection charset.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_CONNECTION_CHARSET_CRITICAL'));
         }
 
         $charset = $result->Value ?? 'unknown';
@@ -102,14 +103,16 @@ final class ConnectionCharsetCheck extends AbstractHealthCheck
             // Specific message for older UTF-8 variants that lack 4-byte support
             if (in_array($charset, ['utf8mb3', 'utf8'], true)) {
                 return $this->warning(
-                    sprintf('Connection charset is %s. utf8mb4 is recommended for full Unicode support.', $charset),
+                    Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_CONNECTION_CHARSET_WARNING', $charset),
                 );
             }
 
             // Generic warning for non-UTF-8 charsets
-            return $this->warning(sprintf('Connection charset is %s. UTF-8 (utf8mb4) is recommended.', $charset));
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_CONNECTION_CHARSET_WARNING_2', $charset),
+            );
         }
 
-        return $this->good('Connection charset is utf8mb4 (full Unicode support).');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_CONNECTION_CHARSET_GOOD'));
     }
 }

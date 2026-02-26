@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -107,15 +108,10 @@ final class CategoryDepthCheck extends AbstractHealthCheck
                 ->loadResult();
 
             return $this->warning(
-                sprintf(
-                    '%d categor%s nested more than 5 levels deep (max depth: %d). Deep nesting may cause UX issues and longer URLs.',
-                    $deepCount,
-                    $deepCount === 1 ? 'y is' : 'ies are',
-                    $maxLevel,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_CATEGORY_DEPTH_WARNING', $deepCount, $maxLevel),
             );
         }
 
-        return $this->good('No categories are nested more than 5 levels deep.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_CATEGORY_DEPTH_GOOD'));
     }
 }

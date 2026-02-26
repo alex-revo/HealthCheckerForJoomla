@@ -165,7 +165,7 @@ class OpcacheCheckTest extends TestCase
         } else {
             // Should warn about missing extension
             $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-            $this->assertStringContainsString('not loaded', $healthCheckResult->description);
+            $this->assertStringContainsString('OPCACHE_WARNING', $healthCheckResult->description);
         }
     }
 

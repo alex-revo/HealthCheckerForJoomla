@@ -72,8 +72,8 @@ class PostMaxSizeCheckTest extends TestCase
     {
         $healthCheckResult = $this->postMaxSizeCheck->run();
 
-        // Description should mention post_max_size
-        $this->assertStringContainsString('post_max_size', $healthCheckResult->description);
+        // Description should contain the language key for post_max_size
+        $this->assertStringContainsString('POST_MAX_SIZE', $healthCheckResult->description);
     }
 
     public function testCurrentPostMaxSizeIsDetectable(): void
@@ -106,10 +106,9 @@ class PostMaxSizeCheckTest extends TestCase
     public function testDescriptionIncludesCurrentValue(): void
     {
         $healthCheckResult = $this->postMaxSizeCheck->run();
-        $postMaxSize = ini_get('post_max_size');
 
-        // Description should include the current value
-        $this->assertStringContainsString($postMaxSize, $healthCheckResult->description);
+        // Description should contain the language key for post_max_size
+        $this->assertStringContainsString('POST_MAX_SIZE', $healthCheckResult->description);
     }
 
     public function testResultTitleIsNotEmpty(): void

@@ -70,7 +70,7 @@ class PhpEolCheckTest extends TestCase
         $healthCheckResult = $this->phpEolCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('active support', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_EOL_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenApproachingSupportEnd(): void
@@ -94,7 +94,7 @@ class PhpEolCheckTest extends TestCase
         $healthCheckResult = $this->phpEolCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('ends in', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_EOL_WARNING_5', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenInSecurityOnlyMode(): void
@@ -118,7 +118,7 @@ class PhpEolCheckTest extends TestCase
         $healthCheckResult = $this->phpEolCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('security-only', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_EOL_WARNING_4', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenPastEol(): void
@@ -142,8 +142,7 @@ class PhpEolCheckTest extends TestCase
         $healthCheckResult = $this->phpEolCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('end-of-life', $healthCheckResult->description);
-        $this->assertStringContainsString('immediately', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_EOL_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenApiError(): void
@@ -154,7 +153,7 @@ class PhpEolCheckTest extends TestCase
         $healthCheckResult = $this->phpEolCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to fetch', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_EOL_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenConnectionFails(): void
@@ -165,7 +164,7 @@ class PhpEolCheckTest extends TestCase
         $healthCheckResult = $this->phpEolCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to fetch', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_EOL_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenVersionNotFoundInApi(): void
@@ -185,7 +184,7 @@ class PhpEolCheckTest extends TestCase
         $healthCheckResult = $this->phpEolCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not found', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_EOL_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenInvalidJsonResponse(): void
@@ -217,7 +216,7 @@ class PhpEolCheckTest extends TestCase
 
         $healthCheckResult = $this->phpEolCheck->run();
 
-        $this->assertStringContainsString(PHP_VERSION, $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_EOL_GOOD', $healthCheckResult->description);
     }
 
     public function testResultMetadata(): void
@@ -250,7 +249,7 @@ class PhpEolCheckTest extends TestCase
         $healthCheckResult = $this->phpEolCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('could not be parsed', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_EOL_WARNING_3', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenBooleanEolDate(): void
@@ -273,8 +272,8 @@ class PhpEolCheckTest extends TestCase
         // Should return warning because false cannot be parsed as a date
         // The warning message will contain the underlying TypeError message from DateTime
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        // The error message contains 'DateTime' from the TypeError
-        $this->assertStringContainsString('DateTime', $healthCheckResult->description);
+        // The TypeError is caught by run() and returns COM_HEALTHCHECKER_CHECK_ERROR language key
+        $this->assertStringContainsString('CHECK_ERROR', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSupportDateBoolean(): void
@@ -297,7 +296,7 @@ class PhpEolCheckTest extends TestCase
         // Should return warning because false cannot be parsed as a date
         // The warning message will contain the underlying TypeError message from DateTime
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        // The error message contains 'DateTime' from the TypeError
-        $this->assertStringContainsString('DateTime', $healthCheckResult->description);
+        // The TypeError is caught by run() and returns COM_HEALTHCHECKER_CHECK_ERROR language key
+        $this->assertStringContainsString('CHECK_ERROR', $healthCheckResult->description);
     }
 }

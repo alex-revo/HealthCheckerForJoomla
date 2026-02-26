@@ -85,7 +85,7 @@ class IndexFileCheckTest extends TestCase
         $healthCheckResult = $this->indexFileCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No placeholder index files', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_FILE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenIndexHtmlExists(): void
@@ -95,7 +95,7 @@ class IndexFileCheckTest extends TestCase
         $healthCheckResult = $this->indexFileCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('index.html', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_FILE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenMultipleFilesExist(): void
@@ -106,8 +106,7 @@ class IndexFileCheckTest extends TestCase
         $healthCheckResult = $this->indexFileCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('index.html', $healthCheckResult->description);
-        $this->assertStringContainsString('default.htm', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_FILE_WARNING', $healthCheckResult->description);
     }
 
     /**
@@ -133,7 +132,7 @@ class IndexFileCheckTest extends TestCase
         $healthCheckResult = $this->indexFileCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString($filename, $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_FILE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunNeverReturnsCritical(): void

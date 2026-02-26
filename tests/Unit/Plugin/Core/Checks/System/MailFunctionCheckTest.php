@@ -90,12 +90,8 @@ class MailFunctionCheckTest extends TestCase
     {
         $healthCheckResult = $this->mailFunctionCheck->run();
 
-        // Description should mention mail, SMTP, or sendmail
-        $this->assertTrue(
-            str_contains(strtolower($healthCheckResult->description), 'mail') ||
-            str_contains(strtolower($healthCheckResult->description), 'smtp') ||
-            str_contains(strtolower($healthCheckResult->description), 'sendmail'),
-        );
+        // Description should contain the mail function language key
+        $this->assertStringContainsString('MAIL_FUNCTION', $healthCheckResult->description);
     }
 
     public function testMailFunctionExistsOnTestEnvironment(): void
@@ -111,7 +107,7 @@ class MailFunctionCheckTest extends TestCase
         $healthCheckResult = $this->mailFunctionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('SMTP', $healthCheckResult->description);
+        $this->assertStringContainsString('MAIL_FUNCTION_GOOD_2', $healthCheckResult->description);
     }
 
     public function testWarningWhenMailerIsSendmailWithNonExecutablePath(): void
@@ -123,8 +119,7 @@ class MailFunctionCheckTest extends TestCase
         $healthCheckResult = $this->mailFunctionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('may not be executable', $healthCheckResult->description);
-        $this->assertStringContainsString($nonExecutablePath, $healthCheckResult->description);
+        $this->assertStringContainsString('MAIL_FUNCTION_WARNING', $healthCheckResult->description);
     }
 
     public function testGoodWhenMailerIsCustomValue(): void
@@ -134,7 +129,7 @@ class MailFunctionCheckTest extends TestCase
         $healthCheckResult = $this->mailFunctionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('custom_mailer', $healthCheckResult->description);
+        $this->assertStringContainsString('MAIL_FUNCTION_GOOD_4', $healthCheckResult->description);
     }
 
     public function testCheckHandlesDisabledFunctionsCheck(): void
@@ -226,8 +221,7 @@ class MailFunctionCheckTest extends TestCase
         $healthCheckResult = $this->mailFunctionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $descLower = strtolower($healthCheckResult->description);
-        $this->assertTrue(str_contains($descLower, 'configured') || str_contains($descLower, 'using'));
+        $this->assertStringContainsString('MAIL_FUNCTION', $healthCheckResult->description);
     }
 
     public function testCriticalResultExplainsIssue(): void
@@ -235,9 +229,8 @@ class MailFunctionCheckTest extends TestCase
         $healthCheckResult = $this->mailFunctionCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Critical) {
-            // Critical should mention mail() not available or disabled
-            $descLower = strtolower($healthCheckResult->description);
-            $this->assertTrue(str_contains($descLower, 'not available') || str_contains($descLower, 'disabled'));
+            // Critical should contain the mail function critical language key
+            $this->assertStringContainsString('MAIL_FUNCTION_CRITICAL', $healthCheckResult->description);
         } else {
             // Not critical, verify status is valid
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
@@ -250,12 +243,7 @@ class MailFunctionCheckTest extends TestCase
         $healthCheckResult = $this->mailFunctionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $descLower = strtolower($healthCheckResult->description);
-        $this->assertTrue(
-            str_contains($descLower, 'sendmail') ||
-            str_contains($descLower, 'executable') ||
-            str_contains($descLower, 'path'),
-        );
+        $this->assertStringContainsString('MAIL_FUNCTION_WARNING', $healthCheckResult->description);
     }
 
     public function testDefaultSendmailPathIsUsedWhenNotConfigured(): void
@@ -280,8 +268,7 @@ class MailFunctionCheckTest extends TestCase
         $healthCheckResult = $this->mailFunctionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('SMTP', $healthCheckResult->description);
-        $this->assertStringContainsString('email delivery', $healthCheckResult->description);
+        $this->assertStringContainsString('MAIL_FUNCTION_GOOD_2', $healthCheckResult->description);
     }
 
     public function testDefaultMailerWhenNotConfigured(): void
@@ -347,7 +334,7 @@ class MailFunctionCheckTest extends TestCase
         $healthCheckResult = $this->mailFunctionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('unknown_custom_mailer', $healthCheckResult->description);
+        $this->assertStringContainsString('MAIL_FUNCTION_GOOD_4', $healthCheckResult->description);
     }
 
     public function testEmptyMailerConfigFallsBackToDefault(): void

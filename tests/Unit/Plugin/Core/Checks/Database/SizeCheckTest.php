@@ -89,7 +89,7 @@ class SizeCheckTest extends TestCase
         $healthCheckResult = $this->sizeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('healthy', $healthCheckResult->description);
+        $this->assertStringContainsString('SIZE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenDatabaseSizeLarge(): void
@@ -108,7 +108,7 @@ class SizeCheckTest extends TestCase
         $healthCheckResult = $this->sizeCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('getting large', $healthCheckResult->description);
+        $this->assertStringContainsString('SIZE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenDatabaseSizeVeryLarge(): void
@@ -127,6 +127,6 @@ class SizeCheckTest extends TestCase
         $healthCheckResult = $this->sizeCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('very large', $healthCheckResult->description);
+        $this->assertStringContainsString('SIZE_CRITICAL', $healthCheckResult->description);
     }
 }

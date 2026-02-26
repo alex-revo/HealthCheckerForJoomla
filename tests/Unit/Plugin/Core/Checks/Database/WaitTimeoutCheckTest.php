@@ -67,7 +67,7 @@ class WaitTimeoutCheckTest extends TestCase
         $healthCheckResult = $this->waitTimeoutCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('600 seconds', $healthCheckResult->description);
+        $this->assertStringContainsString('WAIT_TIMEOUT_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenTimeoutTooLow(): void
@@ -81,7 +81,7 @@ class WaitTimeoutCheckTest extends TestCase
         $healthCheckResult = $this->waitTimeoutCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('very low', $healthCheckResult->description);
+        $this->assertStringContainsString('WAIT_TIMEOUT_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenTimeoutTooHigh(): void
@@ -95,6 +95,6 @@ class WaitTimeoutCheckTest extends TestCase
         $healthCheckResult = $this->waitTimeoutCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('very high', $healthCheckResult->description);
+        $this->assertStringContainsString('WAIT_TIMEOUT_WARNING_2', $healthCheckResult->description);
     }
 }

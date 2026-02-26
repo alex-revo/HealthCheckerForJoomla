@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -87,10 +88,10 @@ final class TrashedContentCheck extends AbstractHealthCheck
 
         if ($trashedCount > 50) {
             return $this->warning(
-                sprintf('%d articles in trash. Consider emptying the trash to clean up the database.', $trashedCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_TRASHED_CONTENT_WARNING', $trashedCount),
             );
         }
 
-        return $this->good(sprintf('%d article(s) in trash.', $trashedCount));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_TRASHED_CONTENT_GOOD', $trashedCount));
     }
 }

@@ -50,6 +50,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Example\Checks;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 
@@ -154,9 +155,6 @@ final class ThirdPartyServiceCheck extends AbstractHealthCheck
      */
     protected function performCheck(): HealthCheckResult
     {
-        $disableNote =
-            ' To hide this, disable the "Health Checker - Example Provider" plugin in Extensions → Plugins.';
-
         try {
             $startTime = microtime(true);
             $http = $this->getHttpClient();
@@ -166,29 +164,21 @@ final class ThirdPartyServiceCheck extends AbstractHealthCheck
             // Check for HTTP errors
             if ($response->code === 0 || $response->code >= 400) {
                 return $this->critical(
-                    '[EXAMPLE CHECK] Cannot reach Joomla API service. Check your internet connection or firewall settings.' .
-                        $disableNote,
+                    Text::_('PLG_HEALTHCHECKER_EXAMPLE_CHECK_EXAMPLE_THIRDPARTY_SERVICE_CRITICAL'),
                 );
             }
 
             // Check for slow response
             if ($duration > self::SLOW_THRESHOLD_SECONDS) {
                 return $this->warning(
-                    '[EXAMPLE CHECK] Joomla API service is reachable but responding slowly.' .
-                        $disableNote,
+                    Text::_('PLG_HEALTHCHECKER_EXAMPLE_CHECK_EXAMPLE_THIRDPARTY_SERVICE_WARNING'),
                 );
             }
 
             // Everything is good
-            return $this->good(
-                '[EXAMPLE CHECK] Joomla API service is reachable and responding normally.' .
-                    $disableNote,
-            );
+            return $this->good(Text::_('PLG_HEALTHCHECKER_EXAMPLE_CHECK_EXAMPLE_THIRDPARTY_SERVICE_GOOD'));
         } catch (\Exception) {
-            return $this->critical(
-                '[EXAMPLE CHECK] Cannot reach Joomla API service. Check your internet connection or firewall settings.' .
-                    $disableNote,
-            );
+            return $this->critical(Text::_('PLG_HEALTHCHECKER_EXAMPLE_CHECK_EXAMPLE_THIRDPARTY_SERVICE_CRITICAL'));
         }
     }
 }

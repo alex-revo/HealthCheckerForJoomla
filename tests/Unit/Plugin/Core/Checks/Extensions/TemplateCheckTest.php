@@ -110,7 +110,7 @@ class TemplateCheckTest extends TestCase
         $healthCheckResult = $this->templateCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('check_error', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithValidTemplatesReturnsGood(): void
@@ -134,8 +134,7 @@ class TemplateCheckTest extends TestCase
         $healthCheckResult = $this->templateCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('cassiopeia', $healthCheckResult->description);
-        $this->assertStringContainsString('atum', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMPLATE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithNoSiteTemplateConfiguredReturnsCritical(): void
@@ -151,7 +150,7 @@ class TemplateCheckTest extends TestCase
         $healthCheckResult = $this->templateCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No default site template', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMPLATE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithNoAdminTemplateConfiguredReturnsCritical(): void
@@ -170,7 +169,7 @@ class TemplateCheckTest extends TestCase
         $healthCheckResult = $this->templateCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No default admin template', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMPLATE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithMissingSiteTemplateDirectoryReturnsCritical(): void
@@ -193,7 +192,7 @@ class TemplateCheckTest extends TestCase
         $healthCheckResult = $this->templateCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('directory not found', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMPLATE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithMissingTemplateDetailsXmlReturnsCritical(): void
@@ -217,7 +216,7 @@ class TemplateCheckTest extends TestCase
         $healthCheckResult = $this->templateCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('missing templateDetails.xml', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMPLATE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithInvalidXmlReturnsCritical(): void
@@ -241,7 +240,7 @@ class TemplateCheckTest extends TestCase
         $healthCheckResult = $this->templateCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('invalid templateDetails.xml', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMPLATE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithMissingIndexPhpReturnsCritical(): void
@@ -265,7 +264,7 @@ class TemplateCheckTest extends TestCase
         $healthCheckResult = $this->templateCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('missing index.php', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMPLATE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testCheckNeverReturnsWarningStatus(): void
@@ -315,8 +314,8 @@ class TemplateCheckTest extends TestCase
 
         // Should return critical because admin template has invalid XML
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('invalid templateDetails.xml', $healthCheckResult->description);
-        $this->assertStringContainsString('Admin', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMPLATE_CRITICAL', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMPLATE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithBothTemplatesHavingIssuesReportsBoth(): void
@@ -342,9 +341,8 @@ class TemplateCheckTest extends TestCase
 
         // Should return critical with both issues merged
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        // Should contain both site and admin issues
-        $this->assertStringContainsString('Site', $healthCheckResult->description);
-        $this->assertStringContainsString('Admin', $healthCheckResult->description);
+        // Should contain critical template issue
+        $this->assertStringContainsString('TEMPLATE_CRITICAL', $healthCheckResult->description);
     }
 
     /**

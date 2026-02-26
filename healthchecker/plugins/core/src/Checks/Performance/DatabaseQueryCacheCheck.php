@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -100,14 +101,12 @@ final class DatabaseQueryCacheCheck extends AbstractHealthCheck
         $numericVersion = preg_replace('/[^0-9.]/', '', $version);
 
         if ($numericVersion === null || $numericVersion === '') {
-            return $this->warning('Unable to determine database version.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_DATABASE_QUERY_CACHE_WARNING'));
         }
 
         // MySQL 8.0+ removed query cache entirely - this is expected behavior
         if (! $isMariaDb && version_compare($numericVersion, '8.0', '>=')) {
-            return $this->good(
-                'MySQL 8.0+ detected. Query cache was deprecated and removed. Use application-level caching instead.',
-            );
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_DATABASE_QUERY_CACHE_GOOD'));
         }
 
         // For MySQL < 8.0 or MariaDB, query the query_cache% server variables
@@ -116,7 +115,7 @@ final class DatabaseQueryCacheCheck extends AbstractHealthCheck
             ->loadAssocList('Variable_name', 'Value');
 
         if ($results === []) {
-            return $this->good('Query cache variables not available. This feature may not be supported.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_DATABASE_QUERY_CACHE_GOOD_2'));
         }
 
         // Extract query cache configuration values
@@ -127,25 +126,21 @@ final class DatabaseQueryCacheCheck extends AbstractHealthCheck
         if ($queryCacheType === 'OFF' || $queryCacheType === '0') {
             // MariaDB still supports query cache - could be enabled
             if ($isMariaDb) {
-                return $this->warning('Query cache is disabled. Consider enabling it for read-heavy workloads.');
+                return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_DATABASE_QUERY_CACHE_WARNING_2'));
             }
 
             // MySQL 5.7 - query cache deprecated, recommend application caching
-            return $this->good(
-                'Query cache is disabled. For MySQL 5.7 consider using application-level caching as query cache is deprecated.',
-            );
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_DATABASE_QUERY_CACHE_GOOD_3'));
         }
 
         // Query cache type is ON but no memory allocated - misconfiguration
         if ($queryCacheSize === 0) {
-            return $this->warning(
-                'Query cache type is enabled but cache size is 0. Increase query_cache_size to enable caching.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_DATABASE_QUERY_CACHE_WARNING_3'));
         }
 
         // Query cache is properly configured - convert bytes to MB for readability
         $sizeInMb = round($queryCacheSize / 1024 / 1024, 2);
 
-        return $this->good(sprintf('Query cache is enabled with %s MB allocated.', $sizeInMb));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_DATABASE_QUERY_CACHE_GOOD_4', $sizeInMb));
     }
 }

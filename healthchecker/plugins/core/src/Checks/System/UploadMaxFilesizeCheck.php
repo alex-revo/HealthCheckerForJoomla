@@ -40,6 +40,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -98,7 +99,7 @@ final class UploadMaxFilesizeCheck extends AbstractHealthCheck
         $postMaxSize = ini_get('post_max_size');
 
         if ($uploadMaxFilesize === false || $postMaxSize === false) {
-            return $this->warning('Unable to retrieve upload_max_filesize or post_max_size settings.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_UPLOAD_MAX_FILESIZE_WARNING'));
         }
 
         $uploadBytes = $this->convertToBytes($uploadMaxFilesize);
@@ -106,14 +107,14 @@ final class UploadMaxFilesizeCheck extends AbstractHealthCheck
 
         if ($uploadBytes < self::MINIMUM_BYTES) {
             return $this->critical(
-                sprintf('upload_max_filesize (%s) is below the minimum required 2M.', $uploadMaxFilesize),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_UPLOAD_MAX_FILESIZE_CRITICAL', $uploadMaxFilesize),
             );
         }
 
         if ($uploadBytes > $postBytes) {
             return $this->warning(
-                sprintf(
-                    'upload_max_filesize (%s) exceeds post_max_size (%s). Uploads will be limited by post_max_size.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_UPLOAD_MAX_FILESIZE_WARNING_2',
                     $uploadMaxFilesize,
                     $postMaxSize,
                 ),
@@ -122,11 +123,13 @@ final class UploadMaxFilesizeCheck extends AbstractHealthCheck
 
         if ($uploadBytes < self::RECOMMENDED_BYTES) {
             return $this->warning(
-                sprintf('upload_max_filesize (%s) is below the recommended 10M.', $uploadMaxFilesize),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_UPLOAD_MAX_FILESIZE_WARNING_3', $uploadMaxFilesize),
             );
         }
 
-        return $this->good(sprintf('upload_max_filesize (%s) meets requirements.', $uploadMaxFilesize));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_UPLOAD_MAX_FILESIZE_GOOD', $uploadMaxFilesize),
+        );
     }
 
     /**

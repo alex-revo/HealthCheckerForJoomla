@@ -64,7 +64,7 @@ class AltTextCheckTest extends TestCase
         $healthCheckResult = $this->altTextCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No images with missing alt text', $healthCheckResult->description);
+        $this->assertStringContainsString('COM_HEALTHCHECKER_CHECK_SEO_ALT_TEXT_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithArticlesWithNoImagesReturnsGood(): void
@@ -119,7 +119,10 @@ class AltTextCheckTest extends TestCase
         $healthCheckResult = $this->altTextCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('may be missing', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_ALT_TEXT_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithManyMissingAltTextsReturnsWarning(): void
@@ -141,8 +144,10 @@ class AltTextCheckTest extends TestCase
         $healthCheckResult = $this->altTextCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('approximately', $healthCheckResult->description);
-        $this->assertStringContainsString('accessibility', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_ALT_TEXT_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithEmptyAltTextReturnsWarning(): void

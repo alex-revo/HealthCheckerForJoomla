@@ -69,11 +69,8 @@ class SessionSavePathCheckTest extends TestCase
     {
         $healthCheckResult = $this->sessionSavePathCheck->run();
 
-        // Description should mention session or path
-        $this->assertTrue(
-            str_contains(strtolower($healthCheckResult->description), 'session') ||
-            str_contains(strtolower($healthCheckResult->description), 'path'),
-        );
+        // Description should mention session save path key
+        $this->assertStringContainsString('SESSION_SAVE_PATH', $healthCheckResult->description);
     }
 
     public function testCurrentSessionSavePathIsDetectable(): void
@@ -109,7 +106,7 @@ class SessionSavePathCheckTest extends TestCase
 
         if ($healthCheckResult->healthStatus === HealthStatus::Good) {
             // Good result should mention the path is writable
-            $this->assertStringContainsString('writable', $healthCheckResult->description);
+            $this->assertStringContainsString('SESSION_SAVE_PATH_GOOD', $healthCheckResult->description);
         }
     }
 
@@ -118,11 +115,8 @@ class SessionSavePathCheckTest extends TestCase
         $healthCheckResult = $this->sessionSavePathCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Critical) {
-            // Critical result should explain the issue
-            $this->assertTrue(
-                str_contains($healthCheckResult->description, 'does not exist') ||
-                str_contains($healthCheckResult->description, 'not writable'),
-            );
+            // Critical result should contain the language key for session save path critical
+            $this->assertTrue(str_contains($healthCheckResult->description, 'SESSION_SAVE_PATH_CRITICAL'));
         } else {
             // If not critical, should be Good (path is valid)
             $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
@@ -190,8 +184,8 @@ class SessionSavePathCheckTest extends TestCase
         $healthCheckResult = $this->sessionSavePathCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Good) {
-            // Good result should include a path (either session_save_path or sys_get_temp_dir)
-            $this->assertMatchesRegularExpression('/\/|\\\\/', $healthCheckResult->description);
+            // Good result should contain the language key
+            $this->assertStringContainsString('SESSION_SAVE_PATH_GOOD', $healthCheckResult->description);
         }
     }
 
@@ -260,12 +254,8 @@ class SessionSavePathCheckTest extends TestCase
         $healthCheckResult = $this->sessionSavePathCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Critical) {
-            // Critical message should explain the path issue
-            $this->assertTrue(
-                str_contains($healthCheckResult->description, 'exist') ||
-                str_contains($healthCheckResult->description, 'writable') ||
-                str_contains($healthCheckResult->description, 'path'),
-            );
+            // Critical message should contain the language key
+            $this->assertTrue(str_contains($healthCheckResult->description, 'SESSION_SAVE_PATH_CRITICAL'));
         } else {
             // Not critical means path is valid
             $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
@@ -278,7 +268,7 @@ class SessionSavePathCheckTest extends TestCase
 
         if ($healthCheckResult->healthStatus === HealthStatus::Good) {
             // Good message should confirm the path is writable
-            $this->assertStringContainsString('writable', $healthCheckResult->description);
+            $this->assertStringContainsString('SESSION_SAVE_PATH_GOOD', $healthCheckResult->description);
         }
     }
 

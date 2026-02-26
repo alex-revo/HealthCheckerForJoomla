@@ -66,8 +66,7 @@ class DefaultUserGroupCheckTest extends TestCase
         $healthCheckResult = $this->defaultUserGroupCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Administrator or Super Users', $healthCheckResult->description);
-        $this->assertStringContainsString('critical security risk', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_DEFAULT_USER_GROUP_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithDangerousSuperUsersGroupReturnsCritical(): void
@@ -80,7 +79,7 @@ class DefaultUserGroupCheckTest extends TestCase
         $healthCheckResult = $this->defaultUserGroupCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Administrator or Super Users', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_DEFAULT_USER_GROUP_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithSafeRegisteredGroupReturnsGood(): void
@@ -96,7 +95,7 @@ class DefaultUserGroupCheckTest extends TestCase
         $healthCheckResult = $this->defaultUserGroupCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Default user group: Registered', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_DEFAULT_USER_GROUP_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithSafeGroupReturnsGroupName(): void
@@ -112,7 +111,7 @@ class DefaultUserGroupCheckTest extends TestCase
         $healthCheckResult = $this->defaultUserGroupCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Author', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_DEFAULT_USER_GROUP_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithSafeGroupNoNameShowsGroupId(): void
@@ -128,7 +127,7 @@ class DefaultUserGroupCheckTest extends TestCase
         $healthCheckResult = $this->defaultUserGroupCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('ID 5', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_DEFAULT_USER_GROUP_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithDefaultGroupValueReturnsGood(): void

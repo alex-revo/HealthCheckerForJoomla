@@ -36,6 +36,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -91,16 +92,12 @@ final class MetaKeywordsCheck extends AbstractHealthCheck
         // Some site owners still populate this field out of habit or
         // misunderstanding of current SEO best practices.
         if (! in_array(trim((string) $metaKeys), ['', '0'], true)) {
-            return $this->good(
-                'Meta keywords are set in Global Configuration. Note: Major search engines no longer use meta keywords for ranking. Focus on quality content instead.',
-            );
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_META_KEYWORDS_GOOD'));
         }
 
         // Meta keywords are empty - this is the modern best practice.
         // Time is better spent on quality content, proper headings, and
         // descriptive meta descriptions that search engines actually use.
-        return $this->good(
-            'Meta keywords are not set. This is fine - major search engines have not used meta keywords for ranking since 2009.',
-        );
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_META_KEYWORDS_GOOD_2'));
     }
 }

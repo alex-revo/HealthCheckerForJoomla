@@ -35,6 +35,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -111,20 +112,16 @@ final class ReCaptchaCheck extends AbstractHealthCheck
 
         // No CAPTCHA plugins are enabled - site is vulnerable to bots
         if ($enabledCaptcha === 0) {
-            return $this->warning(
-                'No CAPTCHA plugins are enabled. Consider enabling CAPTCHA to prevent spam and bot attacks.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_RECAPTCHA_WARNING'));
         }
 
         // CAPTCHA plugin exists but not configured as default
         // Must be selected in Global Configuration for forms to use it
         if ($defaultCaptcha === '0' || empty($defaultCaptcha)) {
-            return $this->warning(
-                'CAPTCHA plugin is enabled but not set as default. Configure default CAPTCHA in Global Configuration.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_RECAPTCHA_WARNING_2'));
         }
 
         // CAPTCHA is properly configured and ready to protect forms
-        return $this->good('CAPTCHA is configured for form protection.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_RECAPTCHA_GOOD'));
     }
 }

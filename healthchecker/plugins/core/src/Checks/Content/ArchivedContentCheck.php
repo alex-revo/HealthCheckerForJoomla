@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -94,14 +95,16 @@ final class ArchivedContentCheck extends AbstractHealthCheck
 
         if ($archivedCount > 100) {
             return $this->good(
-                sprintf('%d articles are archived. Consider periodically reviewing archived content.', $archivedCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_ARCHIVED_CONTENT_GOOD', $archivedCount),
             );
         }
 
         if ($archivedCount > 0) {
-            return $this->good(sprintf('%d article(s) are archived.', $archivedCount));
+            return $this->good(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_ARCHIVED_CONTENT_GOOD_2', $archivedCount),
+            );
         }
 
-        return $this->good('No archived articles.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_ARCHIVED_CONTENT_GOOD_3'));
     }
 }

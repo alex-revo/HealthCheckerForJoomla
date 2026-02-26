@@ -35,6 +35,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -96,23 +97,21 @@ final class SessionHandlerCheck extends AbstractHealthCheck
 
         // Critical: 'none' means sessions are completely disabled
         if ($sessionHandler === 'none') {
-            return $this->critical('Session handler is set to none. Sessions will not persist.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_SESSION_HANDLER_CRITICAL'));
         }
 
         // Good: Database storage is recommended for security and manageability
         if ($sessionHandler === 'database') {
-            return $this->good('Session handler is set to database (recommended).');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_SESSION_HANDLER_GOOD'));
         }
 
         // Warning: Filesystem sessions may have security implications on shared hosting
         // Session files could potentially be accessed by other server accounts
         if ($sessionHandler === 'filesystem') {
-            return $this->warning(
-                'Session handler is set to filesystem. Database sessions are more secure for shared hosting.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_SESSION_HANDLER_WARNING'));
         }
 
         // Other valid handler types (e.g., Redis, Memcached) are acceptable
-        return $this->good(sprintf('Session handler is set to: %s', $sessionHandler));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_SESSION_HANDLER_GOOD_2', $sessionHandler));
     }
 }

@@ -37,6 +37,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -118,8 +119,8 @@ final class TableStatusCheck extends AbstractHealthCheck
 
         if ($corruptedTables !== []) {
             return $this->critical(
-                sprintf(
-                    '%d table(s) appear corrupted: %s. Run REPAIR TABLE.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_TABLE_STATUS_CRITICAL',
                     count($corruptedTables),
                     implode(', ', $corruptedTables),
                 ),
@@ -128,7 +129,9 @@ final class TableStatusCheck extends AbstractHealthCheck
 
         $totalSize = $this->formatBytes($totalDataSize + $totalIndexSize);
 
-        return $this->good(sprintf('%d tables checked, total size: %s.', count($tables), $totalSize));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_TABLE_STATUS_GOOD', count($tables), $totalSize),
+        );
     }
 
     /**

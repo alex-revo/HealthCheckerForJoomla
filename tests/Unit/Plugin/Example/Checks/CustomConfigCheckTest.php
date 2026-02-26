@@ -63,9 +63,7 @@ class CustomConfigCheckTest extends TestCase
         $healthCheckResult = $this->customConfigCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        // The extension count is now wrapped in <code> tags for HTML formatting
-        $this->assertStringContainsString('<code>50</code>', $healthCheckResult->description);
-        $this->assertStringContainsString('[EXAMPLE CHECK]', $healthCheckResult->description);
+        $this->assertStringContainsString('CUSTOM_CONFIG_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenExtensionCountIsExactly100(): void
@@ -76,8 +74,7 @@ class CustomConfigCheckTest extends TestCase
         $healthCheckResult = $this->customConfigCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        // The extension count is now wrapped in <code> tags for HTML formatting
-        $this->assertStringContainsString('<code>100</code>', $healthCheckResult->description);
+        $this->assertStringContainsString('CUSTOM_CONFIG_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenExtensionCountExceeds100(): void
@@ -88,9 +85,7 @@ class CustomConfigCheckTest extends TestCase
         $healthCheckResult = $this->customConfigCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        // The extension count is now wrapped in <code> tags for HTML formatting
-        $this->assertStringContainsString('<code>150</code>', $healthCheckResult->description);
-        $this->assertStringContainsString('[EXAMPLE CHECK]', $healthCheckResult->description);
+        $this->assertStringContainsString('CUSTOM_CONFIG_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenExtensionCountIs101(): void
@@ -110,11 +105,7 @@ class CustomConfigCheckTest extends TestCase
 
         $healthCheckResult = $this->customConfigCheck->run();
 
-        // Instructions now use HTML formatting with <strong> tags
-        $this->assertStringContainsString('Health Checker - Example Provider', $healthCheckResult->description);
-        // Note: The good result no longer includes "Extensions → Plugins" path
-        // as it was simplified. The warning result still has it.
-        $this->assertStringContainsString('disable', $healthCheckResult->description);
+        $this->assertStringContainsString('CUSTOM_CONFIG_GOOD', $healthCheckResult->description);
     }
 
     public function testResultHasCorrectSlug(): void

@@ -66,7 +66,10 @@ class SiteMetaDescriptionCheckTest extends TestCase
         $healthCheckResult = $this->siteMetaDescriptionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not set', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SITE_META_DESCRIPTION_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithOptimalDescriptionReturnsGood(): void
@@ -78,7 +81,10 @@ class SiteMetaDescriptionCheckTest extends TestCase
         $healthCheckResult = $this->siteMetaDescriptionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('characters', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SITE_META_DESCRIPTION_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithShortDescriptionReturnsWarning(): void
@@ -88,7 +94,10 @@ class SiteMetaDescriptionCheckTest extends TestCase
         $healthCheckResult = $this->siteMetaDescriptionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('too short', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SITE_META_DESCRIPTION_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithLongDescriptionReturnsWarning(): void
@@ -99,7 +108,10 @@ class SiteMetaDescriptionCheckTest extends TestCase
         $healthCheckResult = $this->siteMetaDescriptionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('too long', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SITE_META_DESCRIPTION_WARNING_3',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithZeroValueReturnsWarning(): void

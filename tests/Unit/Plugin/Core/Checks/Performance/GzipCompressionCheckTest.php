@@ -66,7 +66,7 @@ class GzipCompressionCheckTest extends TestCase
         $healthCheckResult = $this->gzipCompressionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('GZIP_COMPRESSION_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenGzipEnabled(): void
@@ -76,6 +76,6 @@ class GzipCompressionCheckTest extends TestCase
         $healthCheckResult = $this->gzipCompressionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('GZIP_COMPRESSION_GOOD', $healthCheckResult->description);
     }
 }

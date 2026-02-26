@@ -77,7 +77,7 @@ class OverdueTasksCheckTest extends TestCase
         $healthCheckResult = $this->overdueTasksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No overdue', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERDUE_TASKS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithOneOverdueTaskReturnsWarning(): void
@@ -88,7 +88,7 @@ class OverdueTasksCheckTest extends TestCase
         $healthCheckResult = $this->overdueTasksCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 scheduled task(s) are overdue', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERDUE_TASKS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithTenOverdueTasksReturnsWarning(): void
@@ -99,7 +99,7 @@ class OverdueTasksCheckTest extends TestCase
         $healthCheckResult = $this->overdueTasksCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('cron configuration', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERDUE_TASKS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithMoreThanTenOverdueTasksReturnsCritical(): void
@@ -110,8 +110,7 @@ class OverdueTasksCheckTest extends TestCase
         $healthCheckResult = $this->overdueTasksCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('15 scheduled tasks are overdue', $healthCheckResult->description);
-        $this->assertStringContainsString('may not be running', $healthCheckResult->description);
+        $this->assertStringContainsString('OVERDUE_TASKS_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithExactlyElevenOverdueTasksReturnsCritical(): void
@@ -132,6 +131,6 @@ class OverdueTasksCheckTest extends TestCase
         $healthCheckResult = $this->overdueTasksCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('cron', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('OVERDUE_TASKS_WARNING', $healthCheckResult->description);
     }
 }

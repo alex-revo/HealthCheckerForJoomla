@@ -49,7 +49,7 @@ class TrashedContentCheckTest extends TestCase
 
         $this->assertInstanceOf(HealthCheckResult::class, $healthCheckResult);
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('0', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_TRASHED_CONTENT_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithFiftyTrashedItemsReturnsGood(): void
@@ -61,7 +61,7 @@ class TrashedContentCheckTest extends TestCase
         $healthCheckResult = $trashedContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('50', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_TRASHED_CONTENT_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithFiftyOneTrashedItemsReturnsWarning(): void
@@ -73,8 +73,7 @@ class TrashedContentCheckTest extends TestCase
         $healthCheckResult = $trashedContentCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('51', $healthCheckResult->description);
-        $this->assertStringContainsString('emptying the trash', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_TRASHED_CONTENT_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithManyTrashedItemsReturnsWarning(): void
@@ -86,7 +85,7 @@ class TrashedContentCheckTest extends TestCase
         $healthCheckResult = $trashedContentCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('500', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_TRASHED_CONTENT_WARNING', $healthCheckResult->description);
     }
 
     public function testResultContainsCorrectMetadata(): void

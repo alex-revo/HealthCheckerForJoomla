@@ -66,7 +66,7 @@ class SessionLifetimeCheckTest extends TestCase
         $healthCheckResult = $this->sessionLifetimeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('30 minutes', $healthCheckResult->description);
+        $this->assertStringContainsString('SESSION_LIFETIME_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenLifetimeTooShort(): void
@@ -76,7 +76,7 @@ class SessionLifetimeCheckTest extends TestCase
         $healthCheckResult = $this->sessionLifetimeCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('very short', $healthCheckResult->description);
+        $this->assertStringContainsString('SESSION_LIFETIME_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenLifetimeTooLong(): void
@@ -86,6 +86,6 @@ class SessionLifetimeCheckTest extends TestCase
         $healthCheckResult = $this->sessionLifetimeCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('longer than recommended', $healthCheckResult->description);
+        $this->assertStringContainsString('SESSION_LIFETIME_WARNING', $healthCheckResult->description);
     }
 }

@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -85,9 +86,7 @@ final class SitemapCheck extends AbstractHealthCheck
         $sitemapPath = JPATH_ROOT . '/sitemap.xml';
 
         if (! file_exists($sitemapPath)) {
-            return $this->warning(
-                'sitemap.xml not found in site root. Consider generating a sitemap to help search engines discover your content.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING'));
         }
 
         // Attempt to read sitemap contents. Using @ to suppress warnings
@@ -95,13 +94,13 @@ final class SitemapCheck extends AbstractHealthCheck
         $content = @file_get_contents($sitemapPath);
 
         if ($content === false) {
-            return $this->warning('sitemap.xml exists but could not be read.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING_2'));
         }
 
         // Empty sitemaps are useless for search engines and may indicate
         // a failed generation or corrupted file.
         if (trim($content) === '') {
-            return $this->warning('sitemap.xml exists but appears to be empty. Regenerate your sitemap.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING_3'));
         }
 
         // Validate that the file contains well-formed XML.
@@ -111,7 +110,7 @@ final class SitemapCheck extends AbstractHealthCheck
         libxml_clear_errors();
 
         if ($xml === false) {
-            return $this->warning('sitemap.xml exists but contains invalid XML. Check for syntax errors.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING_4'));
         }
 
         // Check for required sitemap protocol elements.
@@ -122,13 +121,11 @@ final class SitemapCheck extends AbstractHealthCheck
         $hasSitemapIndex = stripos($content, '<sitemapindex') !== false;
 
         if (! $hasUrlset && ! $hasSitemapIndex) {
-            return $this->warning(
-                'sitemap.xml exists but does not contain valid sitemap structure (missing urlset or sitemapindex).',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING_5'));
         }
 
         // Sitemap exists, is valid XML, and contains required sitemap elements.
         // Further validation of URLs and structure would require full parsing.
-        return $this->good('sitemap.xml is present in site root.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_GOOD'));
     }
 }

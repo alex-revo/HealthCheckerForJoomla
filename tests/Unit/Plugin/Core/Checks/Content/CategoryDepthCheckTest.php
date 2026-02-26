@@ -64,7 +64,7 @@ class CategoryDepthCheckTest extends TestCase
         $healthCheckResult = $this->categoryDepthCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No categories', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_CATEGORY_DEPTH_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenDeepCategoriesExist(): void
@@ -76,8 +76,7 @@ class CategoryDepthCheckTest extends TestCase
         $healthCheckResult = $this->categoryDepthCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 categories are', $healthCheckResult->description);
-        $this->assertStringContainsString('max depth: 8', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_CATEGORY_DEPTH_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningSingularWhenOneCategoryDeep(): void
@@ -89,8 +88,7 @@ class CategoryDepthCheckTest extends TestCase
         $healthCheckResult = $this->categoryDepthCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 category is', $healthCheckResult->description);
-        $this->assertStringContainsString('max depth: 7', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_CATEGORY_DEPTH_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWithHighMaxDepth(): void
@@ -102,8 +100,6 @@ class CategoryDepthCheckTest extends TestCase
         $healthCheckResult = $this->categoryDepthCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10 categories are', $healthCheckResult->description);
-        $this->assertStringContainsString('max depth: 15', $healthCheckResult->description);
-        $this->assertStringContainsString('UX issues', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_CATEGORY_DEPTH_WARNING', $healthCheckResult->description);
     }
 }

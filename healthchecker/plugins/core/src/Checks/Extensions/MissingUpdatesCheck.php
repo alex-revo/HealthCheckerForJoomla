@@ -33,6 +33,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -94,18 +95,17 @@ final class MissingUpdatesCheck extends AbstractHealthCheck
         // More than 5 updates indicates updates have been deferred too long
         if ($pendingUpdates > 5) {
             return $this->critical(
-                sprintf(
-                    '%d extension update(s) available - updates deferred too long. Apply security and critical updates immediately.',
-                    $pendingUpdates,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_MISSING_UPDATES_CRITICAL', $pendingUpdates),
             );
         }
 
         // Any pending updates should be addressed
         if ($pendingUpdates > 0) {
-            return $this->warning(sprintf('%d extension update(s) available.', $pendingUpdates));
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_MISSING_UPDATES_WARNING', $pendingUpdates),
+            );
         }
 
-        return $this->good('All extensions are up to date.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_MISSING_UPDATES_GOOD'));
     }
 }

@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -93,8 +94,8 @@ final class PhpVersionCheck extends AbstractHealthCheck
 
         if (version_compare($currentVersion, self::MINIMUM_VERSION, '<')) {
             return $this->critical(
-                sprintf(
-                    'PHP %s is below the minimum required version %s for Joomla 5+.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_VERSION_CRITICAL',
                     $currentVersion,
                     self::MINIMUM_VERSION,
                 ),
@@ -103,14 +104,14 @@ final class PhpVersionCheck extends AbstractHealthCheck
 
         if (version_compare($currentVersion, self::RECOMMENDED_VERSION, '<')) {
             return $this->warning(
-                sprintf(
-                    'PHP %s is supported but %s or later is recommended for best performance and security.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_VERSION_WARNING',
                     $currentVersion,
                     self::RECOMMENDED_VERSION,
                 ),
             );
         }
 
-        return $this->good(sprintf('PHP %s meets all requirements.', $currentVersion));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_VERSION_GOOD', $currentVersion));
     }
 }

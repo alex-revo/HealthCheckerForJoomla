@@ -40,6 +40,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -115,8 +116,8 @@ final class PhpEolCheck extends AbstractHealthCheck
             $eolData = $this->fetchEolData();
         } catch (\Exception $exception) {
             return $this->warning(
-                sprintf(
-                    'Unable to fetch PHP end-of-life data: %s. PHP %s is installed.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_EOL_WARNING',
                     $exception->getMessage(),
                     $currentVersion,
                 ),
@@ -127,10 +128,7 @@ final class PhpEolCheck extends AbstractHealthCheck
 
         if ($versionInfo === null) {
             return $this->warning(
-                sprintf(
-                    'PHP %s lifecycle information not found in API. This may be a very new or very old version.',
-                    $currentVersion,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_EOL_WARNING_2', $currentVersion),
             );
         }
 
@@ -141,15 +139,15 @@ final class PhpEolCheck extends AbstractHealthCheck
             $eolDate = new \DateTime($versionInfo['eol']);
         } catch (\Exception) {
             return $this->warning(
-                sprintf('PHP %s lifecycle dates could not be parsed from API response.', $currentVersion),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_EOL_WARNING_3', $currentVersion),
             );
         }
 
         // Past EOL - critical
         if ($today > $eolDate) {
             return $this->critical(
-                sprintf(
-                    'PHP %s reached end-of-life on %s and no longer receives security patches. Upgrade immediately.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_EOL_CRITICAL',
                     $currentVersion,
                     $eolDate->format('j M Y'),
                 ),
@@ -162,8 +160,8 @@ final class PhpEolCheck extends AbstractHealthCheck
                 ->days;
 
             return $this->warning(
-                sprintf(
-                    'PHP %s is in security-only support. Active support ended %s. EOL in %d days (%s).',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_EOL_WARNING_4',
                     $currentVersion,
                     $supportDate->format('j M Y'),
                     $daysUntilEol,
@@ -178,8 +176,8 @@ final class PhpEolCheck extends AbstractHealthCheck
 
         if ($daysUntilSupportEnds <= self::WARNING_DAYS_THRESHOLD) {
             return $this->warning(
-                sprintf(
-                    'PHP %s active support ends in %d days (%s). Plan your upgrade.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_EOL_WARNING_5',
                     $currentVersion,
                     $daysUntilSupportEnds,
                     $supportDate->format('j M Y'),
@@ -189,8 +187,8 @@ final class PhpEolCheck extends AbstractHealthCheck
 
         // All good - active support with plenty of time
         return $this->good(
-            sprintf(
-                'PHP %s is under active support until %s (EOL: %s).',
+            Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_EOL_GOOD',
                 $currentVersion,
                 $supportDate->format('j M Y'),
                 $eolDate->format('j M Y'),

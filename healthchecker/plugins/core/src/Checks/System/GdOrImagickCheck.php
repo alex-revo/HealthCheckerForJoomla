@@ -40,6 +40,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -92,7 +93,7 @@ final class GdOrImagickCheck extends AbstractHealthCheck
 
         // Neither extension available - image processing will fail
         if (! $hasGd && ! $hasImagick) {
-            return $this->critical('Neither GD nor Imagick extension is loaded. Image processing will not work.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_GD_OR_IMAGICK_CRITICAL'));
         }
 
         // Build list of available extensions
@@ -105,6 +106,8 @@ final class GdOrImagickCheck extends AbstractHealthCheck
             $loaded[] = 'Imagick';
         }
 
-        return $this->good(sprintf('%s extension(s) loaded for image processing.', implode(' and ', $loaded)));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_GD_OR_IMAGICK_GOOD', implode(' and ', $loaded)),
+        );
     }
 }

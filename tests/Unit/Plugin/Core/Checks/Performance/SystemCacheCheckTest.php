@@ -66,7 +66,7 @@ class SystemCacheCheckTest extends TestCase
         $healthCheckResult = $this->systemCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('SYSTEM_CACHE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithProgressiveCachingReturnsGood(): void
@@ -85,7 +85,7 @@ class SystemCacheCheckTest extends TestCase
         $healthCheckResult = $this->systemCacheCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('SYSTEM_CACHE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReportsCacheHandler(): void
@@ -96,7 +96,7 @@ class SystemCacheCheckTest extends TestCase
         $healthCheckResult = $this->systemCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('file', $healthCheckResult->description);
+        $this->assertStringContainsString('SYSTEM_CACHE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithRedisHandler(): void
@@ -107,6 +107,6 @@ class SystemCacheCheckTest extends TestCase
         $healthCheckResult = $this->systemCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('redis', $healthCheckResult->description);
+        $this->assertStringContainsString('SYSTEM_CACHE_GOOD', $healthCheckResult->description);
     }
 }

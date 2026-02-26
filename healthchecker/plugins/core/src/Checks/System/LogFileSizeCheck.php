@@ -41,6 +41,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -106,19 +107,21 @@ final class LogFileSizeCheck extends AbstractHealthCheck
 
         // If log directory doesn't exist yet, that's actually fine (no logs = no problems)
         if (! is_dir($logPath)) {
-            return $this->good('Log directory does not exist or is not accessible.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_LOG_FILE_SIZE_GOOD'));
         }
 
         // Need read permissions to calculate size
         if (! is_readable($logPath)) {
-            return $this->warning(sprintf('Log directory is not readable: %s', $logPath));
+            return $this->warning(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_LOG_FILE_SIZE_WARNING', $logPath));
         }
 
         // Calculate total size of all files in log directory recursively
         try {
             $totalSize = $this->calculateDirectorySize($logPath);
         } catch (\Exception $exception) {
-            return $this->warning(sprintf('Unable to calculate log directory size: %s', $exception->getMessage()));
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_LOG_FILE_SIZE_WARNING_2', $exception->getMessage()),
+            );
         }
 
         // Convert bytes to human-readable format (KB, MB, GB, etc.)
@@ -127,24 +130,18 @@ final class LogFileSizeCheck extends AbstractHealthCheck
         // Check against critical threshold (500MB)
         if ($totalSize > self::CRITICAL_BYTES) {
             return $this->critical(
-                sprintf(
-                    'Log directory is very large: %s. Consider cleaning up old logs and investigating what is generating excessive log entries.',
-                    $sizeFormatted,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_LOG_FILE_SIZE_CRITICAL', $sizeFormatted),
             );
         }
 
         // Check against warning threshold (100MB)
         if ($totalSize > self::WARNING_BYTES) {
             return $this->warning(
-                sprintf(
-                    'Log directory is growing large: %s. Consider reviewing and rotating logs.',
-                    $sizeFormatted,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_LOG_FILE_SIZE_WARNING_3', $sizeFormatted),
             );
         }
 
-        return $this->good(sprintf('Log directory size is manageable: %s.', $sizeFormatted));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_LOG_FILE_SIZE_GOOD_2', $sizeFormatted));
     }
 
     /**

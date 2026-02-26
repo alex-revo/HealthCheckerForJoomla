@@ -66,7 +66,7 @@ class UserFieldsCheckTest extends TestCase
         $healthCheckResult = $this->userFieldsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No custom user fields', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_FIELDS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithAllFieldsPublishedReturnsGood(): void
@@ -79,8 +79,7 @@ class UserFieldsCheckTest extends TestCase
         $healthCheckResult = $this->userFieldsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 custom user field', $healthCheckResult->description);
-        $this->assertStringContainsString('published', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_FIELDS_GOOD_3', $healthCheckResult->description);
     }
 
     public function testRunWithSomeUnpublishedFieldsReturnsGood(): void
@@ -93,9 +92,7 @@ class UserFieldsCheckTest extends TestCase
         $healthCheckResult = $this->userFieldsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 custom user field', $healthCheckResult->description);
-        $this->assertStringContainsString('3 published', $healthCheckResult->description);
-        $this->assertStringContainsString('2 unpublished', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_FIELDS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithAllFieldsUnpublishedReturnsGood(): void
@@ -108,9 +105,7 @@ class UserFieldsCheckTest extends TestCase
         $healthCheckResult = $this->userFieldsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3 custom user field', $healthCheckResult->description);
-        $this->assertStringContainsString('0 published', $healthCheckResult->description);
-        $this->assertStringContainsString('3 unpublished', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_FIELDS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithSingleFieldReturnsGood(): void
@@ -123,6 +118,6 @@ class UserFieldsCheckTest extends TestCase
         $healthCheckResult = $this->userFieldsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 custom user field', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_FIELDS_GOOD_3', $healthCheckResult->description);
     }
 }

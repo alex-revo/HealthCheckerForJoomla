@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -95,9 +96,11 @@ final class ScheduledContentCheck extends AbstractHealthCheck
             ->loadResult();
 
         if ($scheduledCount > 0) {
-            return $this->good(sprintf('%d article(s) scheduled for future publication.', $scheduledCount));
+            return $this->good(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_SCHEDULED_CONTENT_GOOD', $scheduledCount),
+            );
         }
 
-        return $this->good('No articles scheduled for future publication.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_SCHEDULED_CONTENT_GOOD_2'));
     }
 }

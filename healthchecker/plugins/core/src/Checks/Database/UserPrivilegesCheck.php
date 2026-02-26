@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -132,7 +133,7 @@ final class UserPrivilegesCheck extends AbstractHealthCheck
             }
 
             if ($hasAllPrivileges) {
-                return $this->good('Database user has all required privileges.');
+                return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_USER_PRIVILEGES_GOOD'));
             }
 
             // Find privileges that were not found in any GRANT statement
@@ -140,13 +141,15 @@ final class UserPrivilegesCheck extends AbstractHealthCheck
 
             if ($missing !== []) {
                 return $this->warning(
-                    sprintf('Database user may be missing privileges: %s', implode(', ', $missing)),
+                    Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_USER_PRIVILEGES_WARNING', implode(', ', $missing)),
                 );
             }
 
-            return $this->good('Database user has all required privileges.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_USER_PRIVILEGES_GOOD'));
         } catch (\Exception $exception) {
-            return $this->warning('Unable to check database privileges: ' . $exception->getMessage());
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_USER_PRIVILEGES_WARNING_2', $exception->getMessage()),
+            );
         }
     }
 }

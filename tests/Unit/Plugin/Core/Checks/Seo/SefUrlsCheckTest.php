@@ -67,7 +67,7 @@ class SefUrlsCheckTest extends TestCase
         $healthCheckResult = $this->sefUrlsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('COM_HEALTHCHECKER_CHECK_SEO_SEF_URLS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithSefDisabledReturnsWarning(): void
@@ -78,7 +78,10 @@ class SefUrlsCheckTest extends TestCase
         $healthCheckResult = $this->sefUrlsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SEF_URLS_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithRewriteDisabledReturnsWarning(): void
@@ -89,7 +92,10 @@ class SefUrlsCheckTest extends TestCase
         $healthCheckResult = $this->sefUrlsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('rewriting is off', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SEF_URLS_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithBothDisabledReturnsWarning(): void

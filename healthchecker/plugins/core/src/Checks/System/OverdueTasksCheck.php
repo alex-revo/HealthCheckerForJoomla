@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -103,17 +104,17 @@ final class OverdueTasksCheck extends AbstractHealthCheck
         // More than 10 overdue tasks indicates scheduler has likely stopped completely
         if ($overdueCount > 10) {
             return $this->critical(
-                sprintf('%d scheduled tasks are overdue. The task scheduler may not be running.', $overdueCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_OVERDUE_TASKS_CRITICAL', $overdueCount),
             );
         }
 
         // 1-10 overdue tasks suggests scheduler is delayed or running infrequently
         if ($overdueCount > 0) {
             return $this->warning(
-                sprintf('%d scheduled task(s) are overdue. Check your cron configuration.', $overdueCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_OVERDUE_TASKS_WARNING', $overdueCount),
             );
         }
 
-        return $this->good('No overdue scheduled tasks.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OVERDUE_TASKS_GOOD'));
     }
 }

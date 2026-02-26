@@ -64,7 +64,7 @@ class TwoFactorAuthCheckTest extends TestCase
         $healthCheckResult = $this->twoFactorAuthCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No Multi-Factor', $healthCheckResult->description);
+        $this->assertStringContainsString('TWO_FACTOR_AUTH_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenMfaEnabledButNoSuperAdminsHaveMfa(): void
@@ -78,7 +78,7 @@ class TwoFactorAuthCheckTest extends TestCase
         $healthCheckResult = $this->twoFactorAuthCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('no Super Admins have MFA configured', $healthCheckResult->description);
+        $this->assertStringContainsString('TWO_FACTOR_AUTH_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSomeSuperAdminsHaveMfa(): void
@@ -92,7 +92,7 @@ class TwoFactorAuthCheckTest extends TestCase
         $healthCheckResult = $this->twoFactorAuthCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 of 5 Super Admins have MFA configured', $healthCheckResult->description);
+        $this->assertStringContainsString('TWO_FACTOR_AUTH_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenAllSuperAdminsHaveMfa(): void
@@ -106,7 +106,7 @@ class TwoFactorAuthCheckTest extends TestCase
         $healthCheckResult = $this->twoFactorAuthCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('all 2 Super Admin(s) have MFA configured', $healthCheckResult->description);
+        $this->assertStringContainsString('TWO_FACTOR_AUTH_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithSingleSuperAdmin(): void
@@ -120,7 +120,7 @@ class TwoFactorAuthCheckTest extends TestCase
         $healthCheckResult = $this->twoFactorAuthCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('all 1 Super Admin(s) have MFA configured', $healthCheckResult->description);
+        $this->assertStringContainsString('TWO_FACTOR_AUTH_GOOD', $healthCheckResult->description);
     }
 
     public function testRunHandlesZeroSuperAdmins(): void
@@ -149,6 +149,6 @@ class TwoFactorAuthCheckTest extends TestCase
         $healthCheckResult = $this->twoFactorAuthCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 MFA plugin(s) enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('TWO_FACTOR_AUTH_WARNING', $healthCheckResult->description);
     }
 }

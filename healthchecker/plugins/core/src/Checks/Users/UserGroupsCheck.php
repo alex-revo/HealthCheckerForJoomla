@@ -41,6 +41,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -100,11 +101,9 @@ final class UserGroupsCheck extends AbstractHealthCheck
         // More than 20 groups indicates potential permission sprawl
         // Complex group hierarchies can lead to unintended permission inheritance
         if ($groupCount > 20) {
-            return $this->warning(
-                sprintf('%d user groups defined. Consider consolidating if not all are needed.', $groupCount),
-            );
+            return $this->warning(Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_USER_GROUPS_WARNING', $groupCount));
         }
 
-        return $this->good(sprintf('%d user groups defined.', $groupCount));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_USER_GROUPS_GOOD', $groupCount));
     }
 }

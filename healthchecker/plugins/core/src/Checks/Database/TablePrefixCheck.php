@@ -39,6 +39,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -95,23 +96,21 @@ final class TablePrefixCheck extends AbstractHealthCheck
 
         // No prefix at all could cause conflicts with other applications
         if (empty($prefix)) {
-            return $this->warning('No database table prefix is set. This could cause conflicts.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_TABLE_PREFIX_WARNING'));
         }
 
         // The default "jos_" prefix is well-known and targeted by automated attacks
         if ($prefix === 'jos_') {
-            return $this->warning(
-                'Using default table prefix "jos_". Consider using a unique prefix for better security.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_TABLE_PREFIX_WARNING_2'));
         }
 
         // Very short prefixes provide minimal obscurity benefit
         if (strlen((string) $prefix) < 3) {
             return $this->warning(
-                sprintf('Table prefix "%s" is very short. Consider using a longer prefix.', $prefix),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_TABLE_PREFIX_WARNING_3', $prefix),
             );
         }
 
-        return $this->good(sprintf('Table prefix "%s" is configured.', $prefix));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_TABLE_PREFIX_GOOD', $prefix));
     }
 }

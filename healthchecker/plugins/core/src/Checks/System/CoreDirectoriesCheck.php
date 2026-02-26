@@ -33,6 +33,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -108,13 +109,13 @@ final class CoreDirectoriesCheck extends AbstractHealthCheck
         }
 
         if ($missing !== []) {
-            return $this->critical(sprintf(
-                'Missing core %s: %s',
+            return $this->critical(Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_SYSTEM_CORE_DIRECTORIES_CRITICAL',
                 \count($missing) === 1 ? 'directory' : 'directories',
                 implode(', ', $missing),
             ));
         }
 
-        return $this->good('All core directories exist.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_CORE_DIRECTORIES_GOOD'));
     }
 }

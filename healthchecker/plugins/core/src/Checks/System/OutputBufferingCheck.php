@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -91,15 +92,15 @@ final class OutputBufferingCheck extends AbstractHealthCheck
 
         // Check if output buffering is disabled
         if (in_array($outputBuffering, ['', '0', 'Off'], true)) {
-            return $this->good('Output buffering is disabled (recommended for performance).');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OUTPUT_BUFFERING_GOOD'));
         }
 
         // Check if output buffering is enabled without specific size
         if ($outputBuffering === '1' || $outputBuffering === 'On') {
-            return $this->good('Output buffering is enabled.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OUTPUT_BUFFERING_GOOD_2'));
         }
 
         // Output buffering is enabled with specific buffer size
-        return $this->good(sprintf('Output buffering is set to %s bytes.', $outputBuffering));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_OUTPUT_BUFFERING_GOOD_3', $outputBuffering));
     }
 }

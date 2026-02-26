@@ -48,6 +48,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Example\Checks;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 
@@ -159,31 +160,13 @@ final class CustomConfigCheck extends AbstractHealthCheck
         // PATTERN: Use meaningful thresholds and provide actionable messages with HTML formatting
         if ($extensionCount > 100) {
             return $this->warning(
-                '<p><strong>[EXAMPLE CHECK]</strong> You have <code>' . $extensionCount . '</code> extensions installed.</p>' .
-                '<p>This is a <em>demonstration warning</em> from the Example Provider plugin showing HTML formatting:</p>' .
-                '<ul>' .
-                '<li>Bold text with <code>&lt;strong&gt;</code></li>' .
-                '<li>Inline code with <code>&lt;code&gt;</code></li>' .
-                '<li>Lists with <code>&lt;ul&gt;</code> and <code>&lt;li&gt;</code></li>' .
-                '</ul>' .
-                '<p>Code blocks with <code>&lt;pre&gt;</code>:</p>' .
-                '<pre>php bin/console extension:list</pre>' .
-                '<p>To hide this, disable the <strong>Health Checker - Example Provider</strong> plugin in Extensions → Plugins.</p>',
+                Text::sprintf('PLG_HEALTHCHECKER_EXAMPLE_CHECK_EXAMPLE_CUSTOM_CONFIG_WARNING', $extensionCount),
             );
         }
 
         // PATTERN: Good status should confirm what was checked, with formatted output
         return $this->good(
-            '<p><strong>[EXAMPLE CHECK]</strong> <code>' . $extensionCount . '</code> extensions installed.</p>' .
-            '<p>This is a <em>demonstration</em> from the Example Provider plugin showing HTML formatting support:</p>' .
-            '<ul>' .
-            '<li><strong>Bold</strong> and <em>italic</em> text</li>' .
-            '<li>Inline <code>code</code> formatting</li>' .
-            '<li>Lists for multiple items</li>' .
-            '</ul>' .
-            '<p>Code blocks with <code>&lt;pre&gt;</code>:</p>' .
-            '<pre>php bin/console cache:clear</pre>' .
-            '<p>To hide this, disable the <strong>Health Checker - Example Provider</strong> plugin.</p>',
+            Text::sprintf('PLG_HEALTHCHECKER_EXAMPLE_CHECK_EXAMPLE_CUSTOM_CONFIG_GOOD', $extensionCount),
         );
     }
 

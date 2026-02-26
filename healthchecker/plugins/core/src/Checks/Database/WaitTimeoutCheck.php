@@ -39,6 +39,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -123,17 +124,17 @@ final class WaitTimeoutCheck extends AbstractHealthCheck
         // Extremely low timeout can cause "MySQL server has gone away" errors
         if ($waitTimeout < self::MINIMUM_SECONDS) {
             return $this->warning(
-                sprintf('wait_timeout (%ds) is very low. Long operations may fail.', $waitTimeout),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_WAIT_TIMEOUT_WARNING', $waitTimeout),
             );
         }
 
         // Extremely high timeout wastes resources on idle connections
         if ($waitTimeout > self::MAXIMUM_SECONDS) {
             return $this->warning(
-                sprintf('wait_timeout (%ds) is very high. Consider reducing to conserve resources.', $waitTimeout),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_WAIT_TIMEOUT_WARNING_2', $waitTimeout),
             );
         }
 
-        return $this->good(sprintf('wait_timeout is %d seconds.', $waitTimeout));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_WAIT_TIMEOUT_GOOD', $waitTimeout));
     }
 }

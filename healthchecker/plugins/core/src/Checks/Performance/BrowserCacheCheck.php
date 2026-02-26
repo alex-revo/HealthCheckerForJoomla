@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -92,14 +93,14 @@ final class BrowserCacheCheck extends AbstractHealthCheck
 
         // .htaccess file must exist to configure browser caching
         if (! file_exists($htaccessPath)) {
-            return $this->warning('.htaccess file not found. Browser caching configuration cannot be verified.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_BROWSER_CACHE_WARNING'));
         }
 
         $htaccessContent = file_get_contents($htaccessPath);
 
         // Ensure .htaccess has content to analyze
         if (in_array($htaccessContent, ['', '0', false], true)) {
-            return $this->warning('.htaccess file is empty. No browser caching rules configured.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_BROWSER_CACHE_WARNING_2'));
         }
 
         // Check for common browser caching directives (case-insensitive)
@@ -120,19 +121,17 @@ final class BrowserCacheCheck extends AbstractHealthCheck
                 $methods[] = 'Cache-Control headers';
             }
 
-            return $this->good(sprintf('Browser caching is configured using %s.', implode(' and ', $methods)));
+            return $this->good(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_BROWSER_CACHE_GOOD', implode(' and ', $methods)),
+            );
         }
 
         // mod_expires module referenced but no actual caching rules
         if ($hasModExpires) {
-            return $this->warning(
-                'mod_expires module reference found but no ExpiresByType rules detected. Consider adding browser caching rules.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_BROWSER_CACHE_WARNING_3'));
         }
 
         // No browser caching configuration found
-        return $this->warning(
-            'No browser caching rules detected in .htaccess. Consider adding ExpiresByType or Cache-Control headers for static assets.',
-        );
+        return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_BROWSER_CACHE_WARNING_4'));
     }
 }

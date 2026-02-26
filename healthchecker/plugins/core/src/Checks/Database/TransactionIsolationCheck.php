@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -121,7 +122,7 @@ final class TransactionIsolationCheck extends AbstractHealthCheck
             }
 
             if ($isolationLevel === null) {
-                return $this->warning('Unable to determine transaction isolation level.');
+                return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_TRANSACTION_ISOLATION_WARNING'));
             }
 
             // Normalize the value (MySQL uses hyphens, some return underscores)
@@ -130,8 +131,8 @@ final class TransactionIsolationCheck extends AbstractHealthCheck
             // Check for potentially problematic isolation levels
             if ($normalizedLevel === 'READ-UNCOMMITTED') {
                 return $this->warning(
-                    sprintf(
-                        'Transaction isolation level is %s (dirty reads allowed). Consider using %s for better data consistency.',
+                    Text::sprintf(
+                        'COM_HEALTHCHECKER_CHECK_DATABASE_TRANSACTION_ISOLATION_WARNING_2',
                         $isolationLevel,
                         self::RECOMMENDED_LEVEL,
                     ),
@@ -140,8 +141,8 @@ final class TransactionIsolationCheck extends AbstractHealthCheck
 
             if ($normalizedLevel === 'SERIALIZABLE') {
                 return $this->warning(
-                    sprintf(
-                        'Transaction isolation level is %s. This provides maximum consistency but may impact performance due to increased locking.',
+                    Text::sprintf(
+                        'COM_HEALTHCHECKER_CHECK_DATABASE_TRANSACTION_ISOLATION_WARNING_3',
                         $isolationLevel,
                     ),
                 );
@@ -150,16 +151,20 @@ final class TransactionIsolationCheck extends AbstractHealthCheck
             // READ-COMMITTED and REPEATABLE-READ are both acceptable
             if ($normalizedLevel === self::RECOMMENDED_LEVEL) {
                 return $this->good(
-                    sprintf(
-                        'Transaction isolation level is %s (recommended for most applications).',
-                        $isolationLevel,
-                    ),
+                    Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_TRANSACTION_ISOLATION_GOOD', $isolationLevel),
                 );
             }
 
-            return $this->good(sprintf('Transaction isolation level is %s.', $isolationLevel));
+            return $this->good(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_TRANSACTION_ISOLATION_GOOD_2', $isolationLevel),
+            );
         } catch (\Exception $exception) {
-            return $this->warning('Unable to check transaction isolation level: ' . $exception->getMessage());
+            return $this->warning(
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_TRANSACTION_ISOLATION_WARNING_4',
+                    $exception->getMessage(),
+                ),
+            );
         }
     }
 }

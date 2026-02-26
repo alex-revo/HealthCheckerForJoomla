@@ -64,7 +64,7 @@ class TrashedContentCheckTest extends TestCase
         $healthCheckResult = $this->trashedContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('0 article(s) in trash', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_TRASHED_CONTENT_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithSomeTrashedContentReturnsGood(): void
@@ -85,7 +85,6 @@ class TrashedContentCheckTest extends TestCase
         $healthCheckResult = $this->trashedContentCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('75 articles', $healthCheckResult->description);
-        $this->assertStringContainsString('trash', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_TRASHED_CONTENT_WARNING', $healthCheckResult->description);
     }
 }

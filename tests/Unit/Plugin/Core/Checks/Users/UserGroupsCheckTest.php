@@ -64,7 +64,7 @@ class UserGroupsCheckTest extends TestCase
         $healthCheckResult = $this->userGroupsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('8 user groups', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_GROUPS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithTwentyGroupsReturnsGood(): void
@@ -75,7 +75,7 @@ class UserGroupsCheckTest extends TestCase
         $healthCheckResult = $this->userGroupsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('20 user groups', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_GROUPS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithManyGroupsReturnsWarning(): void
@@ -86,8 +86,7 @@ class UserGroupsCheckTest extends TestCase
         $healthCheckResult = $this->userGroupsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('25 user groups', $healthCheckResult->description);
-        $this->assertStringContainsString('consolidating', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_GROUPS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithExactlyThresholdPlusOneReturnsWarning(): void
@@ -110,6 +109,6 @@ class UserGroupsCheckTest extends TestCase
         $healthCheckResult = $this->userGroupsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('9 user groups', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_GROUPS_GOOD', $healthCheckResult->description);
     }
 }

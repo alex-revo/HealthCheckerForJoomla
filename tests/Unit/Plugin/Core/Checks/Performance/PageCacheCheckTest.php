@@ -62,7 +62,7 @@ class PageCacheCheckTest extends TestCase
         $healthCheckResult = $this->pageCacheCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('PAGE_CACHE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenPluginEnabled(): void
@@ -80,7 +80,7 @@ class PageCacheCheckTest extends TestCase
         $healthCheckResult = $this->pageCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('PAGE_CACHE_GOOD', $healthCheckResult->description);
     }
 
     public function testCheckNeverReturnsCritical(): void

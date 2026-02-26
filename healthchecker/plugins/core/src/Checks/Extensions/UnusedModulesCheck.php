@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -153,8 +154,8 @@ final class UnusedModulesCheck extends AbstractHealthCheck
             );
 
             return $this->warning(
-                sprintf(
-                    '%d published module(s) have no menu assignment — if these are not loaded via {loadmodule} in articles, consider unpublishing or assigning them to pages. %s',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_EXTENSIONS_UNUSED_MODULES_WARNING',
                     $totalUnused,
                     implode(', ', $moduleNames),
                 ),
@@ -163,13 +164,10 @@ final class UnusedModulesCheck extends AbstractHealthCheck
 
         if ($totalUnused > 0) {
             return $this->warning(
-                sprintf(
-                    '%d published module(s) have no menu assignment — this is fine if they are loaded via {loadmodule} in articles.',
-                    $totalUnused,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_UNUSED_MODULES_WARNING_2', $totalUnused),
             );
         }
 
-        return $this->good('All published modules have menu assignments.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_UNUSED_MODULES_GOOD'));
     }
 }

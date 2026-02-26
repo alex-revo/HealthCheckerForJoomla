@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -118,14 +119,10 @@ final class AdminUsernameCheck extends AbstractHealthCheck
             $usernames = implode(', ', $foundUsernames);
 
             return $this->critical(
-                sprintf(
-                    '%d Super Admin account(s) have insecure username(s): %s. Change these to unique, non-guessable usernames.',
-                    $count,
-                    $usernames,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_ADMIN_USERNAME_CRITICAL', $count, $usernames),
             );
         }
 
-        return $this->good('No Super Admin accounts have common insecure usernames.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_ADMIN_USERNAME_GOOD'));
     }
 }

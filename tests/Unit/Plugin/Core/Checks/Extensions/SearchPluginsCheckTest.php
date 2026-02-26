@@ -54,7 +54,7 @@ class SearchPluginsCheckTest extends TestCase
         $healthCheckResult = $this->searchPluginsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('check_error', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithSmartSearchDisabledReturnsGood(): void
@@ -66,7 +66,7 @@ class SearchPluginsCheckTest extends TestCase
         $healthCheckResult = $this->searchPluginsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not enabled', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('search_plugins_good', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithSmartSearchEnabledButNoPluginsReturnsWarning(): void
@@ -78,7 +78,7 @@ class SearchPluginsCheckTest extends TestCase
         $healthCheckResult = $this->searchPluginsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('no search plugins', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('search_plugins_warning', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithPluginsEnabledButEmptyIndexReturnsWarning(): void
@@ -90,8 +90,7 @@ class SearchPluginsCheckTest extends TestCase
         $healthCheckResult = $this->searchPluginsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('empty', strtolower($healthCheckResult->description));
-        $this->assertStringContainsString('indexer', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('search_plugins_warning_2', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithPluginsEnabledAndPopulatedIndexReturnsGood(): void
@@ -103,9 +102,7 @@ class SearchPluginsCheckTest extends TestCase
         $healthCheckResult = $this->searchPluginsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3', $healthCheckResult->description);
-        $this->assertStringContainsString('5', $healthCheckResult->description);
-        $this->assertStringContainsString('150', $healthCheckResult->description);
+        $this->assertStringContainsString('SEARCH_PLUGINS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithAllPluginsEnabledReturnsGood(): void
@@ -117,7 +114,7 @@ class SearchPluginsCheckTest extends TestCase
         $healthCheckResult = $this->searchPluginsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 of 5', $healthCheckResult->description);
+        $this->assertStringContainsString('SEARCH_PLUGINS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testCheckNeverReturnsCritical(): void

@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -94,13 +95,13 @@ final class MaxExecutionTimeCheck extends AbstractHealthCheck
         $maxExecutionTime = (int) ini_get('max_execution_time');
 
         if ($maxExecutionTime === 0) {
-            return $this->good('Max execution time is unlimited.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_EXECUTION_TIME_GOOD'));
         }
 
         if ($maxExecutionTime < self::MINIMUM_SECONDS) {
             return $this->critical(
-                sprintf(
-                    'Max execution time (%ds) is below the minimum required %ds.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_EXECUTION_TIME_CRITICAL',
                     $maxExecutionTime,
                     self::MINIMUM_SECONDS,
                 ),
@@ -109,14 +110,16 @@ final class MaxExecutionTimeCheck extends AbstractHealthCheck
 
         if ($maxExecutionTime < self::RECOMMENDED_SECONDS) {
             return $this->warning(
-                sprintf(
-                    'Max execution time (%ds) is below the recommended %ds.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_EXECUTION_TIME_WARNING',
                     $maxExecutionTime,
                     self::RECOMMENDED_SECONDS,
                 ),
             );
         }
 
-        return $this->good(sprintf('Max execution time (%ds) meets requirements.', $maxExecutionTime));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_EXECUTION_TIME_GOOD_2', $maxExecutionTime),
+        );
     }
 }

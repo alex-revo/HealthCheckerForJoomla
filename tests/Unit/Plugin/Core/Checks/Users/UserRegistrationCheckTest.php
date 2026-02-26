@@ -62,7 +62,7 @@ class UserRegistrationCheckTest extends TestCase
 
         // With default stub (null params), registration defaults to disabled (0)
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_REGISTRATION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenRegistrationDisabled(): void
@@ -76,7 +76,7 @@ class UserRegistrationCheckTest extends TestCase
         $healthCheckResult = $this->userRegistrationCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_REGISTRATION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenRegistrationEnabled(): void
@@ -90,8 +90,7 @@ class UserRegistrationCheckTest extends TestCase
         $healthCheckResult = $this->userRegistrationCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
-        $this->assertStringContainsString('CAPTCHA', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_REGISTRATION_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenRegistrationValueIsNotOne(): void

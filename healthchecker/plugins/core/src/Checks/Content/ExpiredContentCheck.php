@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -94,13 +95,10 @@ final class ExpiredContentCheck extends AbstractHealthCheck
 
         if ($expiredCount > 0) {
             return $this->warning(
-                sprintf(
-                    '%d published article(s) have passed their expiry date but remain published. Review and update or unpublish.',
-                    $expiredCount,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_EXPIRED_CONTENT_WARNING', $expiredCount),
             );
         }
 
-        return $this->good('No published articles have passed their expiry date.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_EXPIRED_CONTENT_GOOD'));
     }
 }

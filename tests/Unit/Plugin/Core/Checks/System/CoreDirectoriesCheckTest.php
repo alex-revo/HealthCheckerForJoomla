@@ -131,7 +131,7 @@ class CoreDirectoriesCheckTest extends TestCase
         $healthCheckResult = $this->coreDirectoriesCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Good) {
-            $this->assertStringContainsString('All core directories exist', $healthCheckResult->description);
+            $this->assertStringContainsString('CORE_DIRECTORIES_GOOD', $healthCheckResult->description);
         } else {
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Warning, HealthStatus::Critical]);
         }
@@ -142,7 +142,7 @@ class CoreDirectoriesCheckTest extends TestCase
         $healthCheckResult = $this->coreDirectoriesCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Critical) {
-            $this->assertStringContainsString('Missing core director', $healthCheckResult->description);
+            $this->assertStringContainsString('CORE_DIRECTORIES_CRITICAL', $healthCheckResult->description);
         }
     }
 

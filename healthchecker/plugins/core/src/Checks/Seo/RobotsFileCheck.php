@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -85,9 +86,7 @@ final class RobotsFileCheck extends AbstractHealthCheck
         $robotsPath = JPATH_ROOT . '/robots.txt';
 
         if (! file_exists($robotsPath)) {
-            return $this->warning(
-                'robots.txt file not found. Consider creating one to guide search engine crawlers.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_ROBOTS_FILE_WARNING'));
         }
 
         // Attempt to read the file contents. Using @ to suppress warnings
@@ -95,7 +94,7 @@ final class RobotsFileCheck extends AbstractHealthCheck
         $content = @file_get_contents($robotsPath);
 
         if ($content === false) {
-            return $this->warning('robots.txt exists but could not be read.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_ROBOTS_FILE_WARNING_2'));
         }
 
         // Check for the common and dangerous "Disallow: /" pattern which blocks
@@ -107,11 +106,11 @@ final class RobotsFileCheck extends AbstractHealthCheck
             '/Disallow:\s*\/\s*$/mi',
             $content,
         )) {
-            return $this->warning('robots.txt may be blocking the entire site. Review the Disallow rules.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_ROBOTS_FILE_WARNING_3'));
         }
 
         // robots.txt exists and doesn't appear to block the entire site.
         // Further validation of directives would require parsing the entire file.
-        return $this->good('robots.txt file is present.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_ROBOTS_FILE_GOOD'));
     }
 }

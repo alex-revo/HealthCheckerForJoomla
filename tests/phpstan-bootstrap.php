@@ -25,6 +25,10 @@ if (! defined('JPATH_ADMINISTRATOR')) {
     define('JPATH_ADMINISTRATOR', '/path/to/joomla/administrator');
 }
 
+if (! defined('JPATH_PLUGINS')) {
+    define('JPATH_PLUGINS', '/path/to/joomla/plugins');
+}
+
 if (! defined('JVERSION')) {
     define('JVERSION', '5.0.0');
 }

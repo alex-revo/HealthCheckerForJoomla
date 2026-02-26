@@ -64,7 +64,7 @@ class ScheduledContentCheckTest extends TestCase
         $healthCheckResult = $this->scheduledContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 article(s) scheduled', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_SCHEDULED_CONTENT_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithNoScheduledArticles(): void
@@ -75,6 +75,6 @@ class ScheduledContentCheckTest extends TestCase
         $healthCheckResult = $this->scheduledContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No articles scheduled', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_SCHEDULED_CONTENT_GOOD_2', $healthCheckResult->description);
     }
 }

@@ -36,6 +36,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -99,9 +100,7 @@ final class SiteMetaDescriptionCheck extends AbstractHealthCheck
 
         // Check if meta description is empty or just '0' (both are invalid)
         if (in_array(trim((string) $metaDesc), ['', '0'], true)) {
-            return $this->warning(
-                'Site meta description is not set. Add a description in Global Configuration for better SEO.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SITE_META_DESCRIPTION_WARNING'));
         }
 
         // Calculate character length for validation against SEO best practices
@@ -111,7 +110,7 @@ final class SiteMetaDescriptionCheck extends AbstractHealthCheck
         // 50 characters minimum ensures there's enough content to be meaningful
         if ($length < 50) {
             return $this->warning(
-                sprintf('Site meta description is too short (%d characters). Aim for 120-160 characters.', $length),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_SITE_META_DESCRIPTION_WARNING_2', $length),
             );
         }
 
@@ -119,14 +118,11 @@ final class SiteMetaDescriptionCheck extends AbstractHealthCheck
         // Google and other search engines typically show 155-160 characters
         if ($length > 160) {
             return $this->warning(
-                sprintf(
-                    'Site meta description is too long (%d characters). Search engines may truncate it. Aim for 120-160 characters.',
-                    $length,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_SITE_META_DESCRIPTION_WARNING_3', $length),
             );
         }
 
         // Meta description is within optimal range (50-160 characters)
-        return $this->good(sprintf('Site meta description is set (%d characters).', $length));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_SITE_META_DESCRIPTION_GOOD', $length));
     }
 }

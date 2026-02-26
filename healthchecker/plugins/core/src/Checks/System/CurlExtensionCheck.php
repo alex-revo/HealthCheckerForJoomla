@@ -40,6 +40,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -87,9 +88,7 @@ final class CurlExtensionCheck extends AbstractHealthCheck
     {
         // Check if cURL extension is available
         if (! extension_loaded('curl')) {
-            return $this->warning(
-                'cURL extension is not loaded. Update checks and some remote connections may not work.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_CURL_EXTENSION_WARNING'));
         }
 
         // Retrieve cURL version information
@@ -97,10 +96,10 @@ final class CurlExtensionCheck extends AbstractHealthCheck
 
         // Return basic success message if version info is unavailable
         if (! is_array($version) || ! isset($version['version'])) {
-            return $this->good('cURL extension is loaded.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_CURL_EXTENSION_GOOD'));
         }
 
         // Return success with libcurl version number
-        return $this->good(sprintf('cURL extension is loaded (libcurl %s).', $version['version']));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_CURL_EXTENSION_GOOD_2', $version['version']));
     }
 }

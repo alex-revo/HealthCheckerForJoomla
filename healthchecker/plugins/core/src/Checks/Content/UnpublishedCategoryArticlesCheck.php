@@ -44,6 +44,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -111,20 +112,15 @@ final class UnpublishedCategoryArticlesCheck extends AbstractHealthCheck
             $database->setQuery($query);
             $count = (int) $database->loadResult();
         } catch (\Exception) {
-            return $this->warning('Unable to check for articles in unpublished categories.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_UNPUBLISHED_CATEGORY_ARTICLES_WARNING'));
         }
 
         if ($count > 0) {
             return $this->warning(
-                sprintf(
-                    '%d published %s in unpublished categories and %s invisible to visitors. Either publish the categories or unpublish the articles.',
-                    $count,
-                    $count === 1 ? 'article is' : 'articles are',
-                    $count === 1 ? 'is' : 'are',
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_UNPUBLISHED_CATEGORY_ARTICLES_WARNING_2', $count),
             );
         }
 
-        return $this->good('All published articles are in published categories.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_UNPUBLISHED_CATEGORY_ARTICLES_GOOD'));
     }
 }

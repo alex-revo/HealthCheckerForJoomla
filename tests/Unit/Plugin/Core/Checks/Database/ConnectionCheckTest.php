@@ -66,7 +66,7 @@ class ConnectionCheckTest extends TestCase
         $healthCheckResult = $this->connectionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('working correctly', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithFailedConnectionReturnsCritical(): void
@@ -204,6 +204,6 @@ class ConnectionCheckTest extends TestCase
         $healthCheckResult = $this->connectionCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('failed', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_CRITICAL', $healthCheckResult->description);
     }
 }

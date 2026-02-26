@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -96,7 +97,7 @@ final class ConfigurationPhpPermissionsCheck extends AbstractHealthCheck
         $configPath = JPATH_ROOT . '/configuration.php';
 
         if (! file_exists($configPath)) {
-            return $this->critical('configuration.php not found!');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_CONFIGURATION_PHP_PERMISSIONS_CRITICAL'));
         }
 
         // Get file permissions as integer
@@ -114,15 +115,15 @@ final class ConfigurationPhpPermissionsCheck extends AbstractHealthCheck
         // CRITICAL: World-writable allows any user on the server to modify credentials
         if ($worldWritable !== 0) {
             return $this->critical(
-                sprintf('configuration.php is world-writable (%s). This is a critical security risk.', $octalPerms),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_CONFIGURATION_PHP_PERMISSIONS_CRITICAL_2', $octalPerms),
             );
         }
 
         // WARNING: World-readable allows other users to read credentials (e.g., 644, 664)
         if ($worldReadable !== 0) {
             return $this->warning(
-                sprintf(
-                    'configuration.php is world-readable (%s). Consider restricting permissions to 640 or 600.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SECURITY_CONFIGURATION_PHP_PERMISSIONS_WARNING',
                     $octalPerms,
                 ),
             );
@@ -130,7 +131,7 @@ final class ConfigurationPhpPermissionsCheck extends AbstractHealthCheck
 
         // GOOD: Restrictive permissions like 600 (owner only) or 640 (owner + group)
         return $this->good(
-            sprintf('configuration.php permissions (%s) are appropriately restrictive.', $octalPerms),
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_CONFIGURATION_PHP_PERMISSIONS_GOOD', $octalPerms),
         );
     }
 }

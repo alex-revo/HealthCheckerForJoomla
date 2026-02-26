@@ -58,8 +58,7 @@ class ThirdPartyServiceCheckTest extends TestCase
 
         $this->assertInstanceOf(HealthCheckResult::class, $healthCheckResult);
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('reachable', $healthCheckResult->description);
-        $this->assertStringContainsString('normally', $healthCheckResult->description);
+        $this->assertStringContainsString('THIRDPARTY_SERVICE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenServiceUnreachable(): void
@@ -70,7 +69,7 @@ class ThirdPartyServiceCheckTest extends TestCase
         $healthCheckResult = $this->thirdPartyServiceCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Cannot reach', $healthCheckResult->description);
+        $this->assertStringContainsString('THIRDPARTY_SERVICE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenHttpError(): void
@@ -81,7 +80,7 @@ class ThirdPartyServiceCheckTest extends TestCase
         $healthCheckResult = $this->thirdPartyServiceCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Cannot reach', $healthCheckResult->description);
+        $this->assertStringContainsString('THIRDPARTY_SERVICE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenResponseCodeZero(): void
@@ -131,29 +130,17 @@ class ThirdPartyServiceCheckTest extends TestCase
 
         $healthCheckResult = $this->thirdPartyServiceCheck->run();
 
-        $this->assertStringContainsString('[EXAMPLE CHECK]', $healthCheckResult->description);
+        $this->assertStringContainsString('THIRDPARTY_SERVICE_GOOD', $healthCheckResult->description);
     }
 
-    public function testResultDescriptionContainsDisableInstructions(): void
+    public function testResultDescriptionContainsLanguageKey(): void
     {
         $httpClient = MockHttpFactory::createWithHeadResponse(200);
         $this->thirdPartyServiceCheck->setHttpClient($httpClient);
 
         $healthCheckResult = $this->thirdPartyServiceCheck->run();
 
-        $this->assertStringContainsString('Health Checker - Example Provider', $healthCheckResult->description);
-        $this->assertStringContainsString('Extensions', $healthCheckResult->description);
-        $this->assertStringContainsString('Plugins', $healthCheckResult->description);
-    }
-
-    public function testResultDescriptionMentionsJoomlaApi(): void
-    {
-        $httpClient = MockHttpFactory::createWithHeadResponse(200);
-        $this->thirdPartyServiceCheck->setHttpClient($httpClient);
-
-        $healthCheckResult = $this->thirdPartyServiceCheck->run();
-
-        $this->assertStringContainsString('Joomla API', $healthCheckResult->description);
+        $this->assertStringContainsString('PLG_HEALTHCHECKER_EXAMPLE', $healthCheckResult->description);
     }
 
     public function testRunReturnsCorrectStatusForClientError(): void
@@ -186,6 +173,6 @@ class ThirdPartyServiceCheckTest extends TestCase
         $healthCheckResult = $this->thirdPartyServiceCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('slowly', $healthCheckResult->description);
+        $this->assertStringContainsString('THIRDPARTY_SERVICE_WARNING', $healthCheckResult->description);
     }
 }

@@ -74,7 +74,7 @@ class OpcacheCheckTest extends TestCase
         $opcacheCheck = new OpcacheCheck();
         $healthCheckResult = $opcacheCheck->run();
 
-        $this->assertStringContainsStringIgnoringCase('opcache', $healthCheckResult->description);
+        $this->assertStringContainsString('OPCACHE', $healthCheckResult->description);
     }
 
     public function testCheckDoesNotRequireDatabase(): void

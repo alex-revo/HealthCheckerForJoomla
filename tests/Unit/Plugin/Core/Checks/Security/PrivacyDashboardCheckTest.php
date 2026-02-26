@@ -65,7 +65,7 @@ class PrivacyDashboardCheckTest extends TestCase
         $healthCheckResult = $this->privacyDashboardCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Privacy component is disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('PRIVACY_DASHBOARD_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenPendingRequestsExist(): void
@@ -78,7 +78,7 @@ class PrivacyDashboardCheckTest extends TestCase
         $healthCheckResult = $this->privacyDashboardCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3 pending privacy request', $healthCheckResult->description);
+        $this->assertStringContainsString('PRIVACY_DASHBOARD_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenEnabledAndNoPendingRequests(): void
@@ -91,7 +91,7 @@ class PrivacyDashboardCheckTest extends TestCase
         $healthCheckResult = $this->privacyDashboardCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled with no pending requests', $healthCheckResult->description);
+        $this->assertStringContainsString('PRIVACY_DASHBOARD_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWithSinglePendingRequest(): void
@@ -104,6 +104,6 @@ class PrivacyDashboardCheckTest extends TestCase
         $healthCheckResult = $this->privacyDashboardCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 pending privacy request', $healthCheckResult->description);
+        $this->assertStringContainsString('PRIVACY_DASHBOARD_WARNING', $healthCheckResult->description);
     }
 }

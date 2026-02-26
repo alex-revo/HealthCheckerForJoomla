@@ -36,6 +36,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -144,8 +145,8 @@ final class OrphanedTablesCheck extends AbstractHealthCheck
         // More than 10 orphaned tables indicates significant cleanup needed
         if (count($orphanedTables) > 10) {
             return $this->critical(
-                sprintf(
-                    '%d potential orphaned tables found. Review and clean up old extension tables: %s',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_ORPHANED_TABLES_CRITICAL',
                     count($orphanedTables),
                     implode(', ', $orphanedTables),
                 ),
@@ -155,8 +156,8 @@ final class OrphanedTablesCheck extends AbstractHealthCheck
         // 1-10 orphaned tables is acceptable but worth noting
         if ($orphanedTables !== []) {
             return $this->warning(
-                sprintf(
-                    '%d tables found, %d may be orphaned: %s',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_ORPHANED_TABLES_WARNING',
                     count($allTables),
                     count($orphanedTables),
                     implode(', ', $orphanedTables),
@@ -166,7 +167,7 @@ final class OrphanedTablesCheck extends AbstractHealthCheck
 
         // No orphaned tables found
         return $this->good(
-            sprintf('%d tables with prefix "%s" found - no orphaned tables detected.', count($allTables), $prefix),
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_ORPHANED_TABLES_GOOD', count($allTables), $prefix),
         );
     }
 

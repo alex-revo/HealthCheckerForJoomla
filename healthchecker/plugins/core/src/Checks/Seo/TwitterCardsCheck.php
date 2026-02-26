@@ -44,6 +44,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -119,7 +120,7 @@ final class TwitterCardsCheck extends AbstractHealthCheck
 
             if ($response->code !== 200) {
                 return $this->warning(
-                    sprintf('Unable to fetch homepage (HTTP %d). Cannot verify X/Twitter Card tags.', $response->code),
+                    Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_WARNING', $response->code),
                 );
             }
 
@@ -150,14 +151,17 @@ final class TwitterCardsCheck extends AbstractHealthCheck
             $hasImage = isset($twitterTags['twitter:image']) || isset($ogTags['og:image']);
 
             if ($missingTags === []) {
-                $message = 'All essential X/Twitter Card tags found.';
+                $message = Text::_('COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_GOOD');
 
                 if ($usingFallbacks !== []) {
-                    $message .= sprintf(' Using Open Graph fallbacks for: %s.', implode(', ', $usingFallbacks));
+                    $message .= ' ' . Text::sprintf(
+                        'COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_GOOD_FALLBACKS',
+                        implode(', ', $usingFallbacks),
+                    );
                 }
 
                 if (! $hasImage) {
-                    $message .= ' Consider adding twitter:image or og:image for better previews.';
+                    $message .= ' ' . Text::_('COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_GOOD_NOIMAGE');
                 }
 
                 return $this->good($message);
@@ -167,15 +171,17 @@ final class TwitterCardsCheck extends AbstractHealthCheck
             $foundCount = \count(self::REQUIRED_TAGS) - \count($missingTags);
 
             return $this->warning(
-                sprintf(
-                    'Missing X/Twitter Card tags: %s. Found %d of %d required tags. Add these tags to improve X share previews.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_WARNING_2',
                     implode(', ', $missingTags),
                     $foundCount,
                     \count(self::REQUIRED_TAGS),
                 ),
             );
         } catch (\Exception $exception) {
-            return $this->warning('Unable to check X/Twitter Card tags: ' . $exception->getMessage());
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_WARNING_3', $exception->getMessage()),
+            );
         }
     }
 

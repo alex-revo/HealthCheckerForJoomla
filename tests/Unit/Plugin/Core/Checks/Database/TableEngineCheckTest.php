@@ -78,7 +78,7 @@ class TableEngineCheckTest extends TestCase
         $healthCheckResult = $this->tableEngineCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('InnoDB', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_ENGINE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenTablesUseMyISAM(): void
@@ -93,6 +93,6 @@ class TableEngineCheckTest extends TestCase
         $healthCheckResult = $this->tableEngineCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 table(s)', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_ENGINE_WARNING', $healthCheckResult->description);
     }
 }

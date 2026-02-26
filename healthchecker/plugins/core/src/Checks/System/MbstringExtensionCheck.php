@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -87,9 +88,9 @@ final class MbstringExtensionCheck extends AbstractHealthCheck
     {
         // Mbstring is required for Joomla's core string handling
         if (! extension_loaded('mbstring')) {
-            return $this->critical('Mbstring extension is not loaded. This is required for proper UTF-8 handling.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MBSTRING_EXTENSION_CRITICAL'));
         }
 
-        return $this->good('Mbstring extension is loaded.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MBSTRING_EXTENSION_GOOD'));
     }
 }

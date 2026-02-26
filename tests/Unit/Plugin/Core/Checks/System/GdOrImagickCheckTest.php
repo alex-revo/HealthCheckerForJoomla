@@ -130,8 +130,7 @@ class GdOrImagickCheckTest extends TestCase
             $result = $this->gdOrImagickCheck->run();
             if (extension_loaded('imagick')) {
                 $this->assertSame(HealthStatus::Good, $result->healthStatus);
-                $this->assertStringContainsString('Imagick', $result->description);
-                $this->assertStringNotContainsString('GD', $result->description);
+                $this->assertStringContainsString('GD_OR_IMAGICK_GOOD', $result->description);
             }
         }
     }

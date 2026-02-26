@@ -69,11 +69,8 @@ class RealpathCacheCheckTest extends TestCase
     {
         $healthCheckResult = $this->realpathCacheCheck->run();
 
-        // Description should mention realpath, cache, or usage
-        $this->assertTrue(
-            str_contains(strtolower($healthCheckResult->description), 'realpath') ||
-            str_contains(strtolower($healthCheckResult->description), 'cache'),
-        );
+        // Description should contain the realpath cache language key
+        $this->assertStringContainsString('REALPATH_CACHE', $healthCheckResult->description);
     }
 
     public function testCurrentRealpathCacheSizeIsDetectable(): void
@@ -113,11 +110,8 @@ class RealpathCacheCheckTest extends TestCase
     {
         $healthCheckResult = $this->realpathCacheCheck->run();
 
-        // Description should include usage percentage or mention usage
-        $this->assertTrue(
-            str_contains($healthCheckResult->description, '%') ||
-            str_contains(strtolower($healthCheckResult->description), 'unable'),
-        );
+        // Description should contain the realpath cache language key (Text::sprintf returns key only in tests)
+        $this->assertStringContainsString('REALPATH_CACHE', $healthCheckResult->description);
     }
 
     public function testResultTitleIsNotEmpty(): void
@@ -181,8 +175,8 @@ class RealpathCacheCheckTest extends TestCase
         $healthCheckResult = $this->realpathCacheCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Good) {
-            // Good result should include TTL information
-            $this->assertStringContainsString('TTL', $healthCheckResult->description);
+            // Good result should contain the language key
+            $this->assertStringContainsString('REALPATH_CACHE_GOOD', $healthCheckResult->description);
         }
     }
 
@@ -191,12 +185,8 @@ class RealpathCacheCheckTest extends TestCase
         $healthCheckResult = $this->realpathCacheCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Warning) {
-            // Warning should explain why
-            $this->assertTrue(
-                str_contains($healthCheckResult->description, 'below') ||
-                str_contains($healthCheckResult->description, 'nearly full') ||
-                str_contains($healthCheckResult->description, 'Unable'),
-            );
+            // Warning should contain a warning language key
+            $this->assertStringContainsString('REALPATH_CACHE_WARNING', $healthCheckResult->description);
         } else {
             // If not Warning, should be Good
             $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
@@ -266,7 +256,7 @@ class RealpathCacheCheckTest extends TestCase
 
         if ($sizeBytes < $recommendedSize) {
             $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-            $this->assertStringContainsString('below', $healthCheckResult->description);
+            $this->assertStringContainsString('REALPATH_CACHE_WARNING', $healthCheckResult->description);
         } else {
             // Either Good or Warning for high usage
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
@@ -287,7 +277,7 @@ class RealpathCacheCheckTest extends TestCase
         // If usage is over 90% and cache is big enough, should warn
         if ($usedPercent > 90 && $sizeBytes >= 4 * 1024 * 1024) {
             $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-            $this->assertStringContainsString('nearly full', $healthCheckResult->description);
+            $this->assertStringContainsString('REALPATH_CACHE_WARNING_3', $healthCheckResult->description);
         } else {
             // Document usage percentage and ensure result is valid
             $this->assertLessThanOrEqual(100.0, $usedPercent, 'Cache usage percentage is valid');

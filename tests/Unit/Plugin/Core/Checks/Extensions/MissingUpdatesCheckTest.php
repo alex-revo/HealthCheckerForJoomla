@@ -64,7 +64,7 @@ class MissingUpdatesCheckTest extends TestCase
         $healthCheckResult = $this->missingUpdatesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('up to date', $healthCheckResult->description);
+        $this->assertStringContainsString('MISSING_UPDATES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenFewUpdates(): void
@@ -75,7 +75,7 @@ class MissingUpdatesCheckTest extends TestCase
         $healthCheckResult = $this->missingUpdatesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3 extension update', $healthCheckResult->description);
+        $this->assertStringContainsString('MISSING_UPDATES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenManyUpdates(): void
@@ -86,6 +86,6 @@ class MissingUpdatesCheckTest extends TestCase
         $healthCheckResult = $this->missingUpdatesCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10 extension update', $healthCheckResult->description);
+        $this->assertStringContainsString('MISSING_UPDATES_CRITICAL', $healthCheckResult->description);
     }
 }

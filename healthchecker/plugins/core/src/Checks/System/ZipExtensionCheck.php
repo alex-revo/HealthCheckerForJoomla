@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -85,9 +86,9 @@ final class ZipExtensionCheck extends AbstractHealthCheck
     {
         // Zip is essential for extension management and updates
         if (! extension_loaded('zip')) {
-            return $this->critical('Zip extension is not loaded. Extension installation will not work.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_ZIP_EXTENSION_CRITICAL'));
         }
 
-        return $this->good('Zip extension is loaded.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_ZIP_EXTENSION_GOOD'));
     }
 }

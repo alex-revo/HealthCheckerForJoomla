@@ -174,7 +174,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
 
         $healthCheckResult = $installedCheck->run();
         $this->assertSame('warning', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('not installed', $healthCheckResult->description);
+        $this->assertStringContainsString('NOT_INSTALLED', $healthCheckResult->description);
     }
 
     public function testProviderMetadataHasLogoUrl(): void
@@ -223,7 +223,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
 
         $healthCheckResult = $wafCheck->run();
         $this->assertSame('warning', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('No WAF rules', $healthCheckResult->description);
+        $this->assertStringContainsString('WAF_ENABLED_WARNING', $healthCheckResult->description);
     }
 
     public function testAllChecksReturnWarningWhenAdminToolsNotInstalled(): void
@@ -246,7 +246,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
                 sprintf('Check %s should return warning when Admin Tools not installed', $check->getSlug()),
             );
             $this->assertStringContainsString(
-                'not installed',
+                'NOT_INSTALLED',
                 $result->description,
                 sprintf("Check %s should mention 'not installed'", $check->getSlug()),
             );
@@ -285,7 +285,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
 
         $healthCheckResult = $scanCheck->run();
         $this->assertSame('critical', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('No file integrity scans', $healthCheckResult->description);
+        $this->assertStringContainsString('SCAN_AGE_CRITICAL_NONE', $healthCheckResult->description);
     }
 
     public function testScanAgeCheckReturnsCriticalWhenScanOlderThan30Days(): void
@@ -302,7 +302,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
 
         $healthCheckResult = $scanCheck->run();
         $this->assertSame('critical', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('days ago', $healthCheckResult->description);
+        $this->assertStringContainsString('SCAN_AGE_CRITICAL', $healthCheckResult->description);
     }
 
     public function testScanAgeCheckReturnsWarningWhenScanBetween7And30Days(): void
@@ -319,7 +319,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
 
         $healthCheckResult = $scanCheck->run();
         $this->assertSame('warning', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('days ago', $healthCheckResult->description);
+        $this->assertStringContainsString('SCAN_AGE_WARNING', $healthCheckResult->description);
     }
 
     public function testFileAlertsCheckReturnsCriticalWhenHighThreatAlerts(): void
@@ -336,7 +336,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
 
         $healthCheckResult = $alertsCheck->run();
         $this->assertSame('critical', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('high-threat', $healthCheckResult->description);
+        $this->assertStringContainsString('FILE_ALERTS_CRITICAL', $healthCheckResult->description);
     }
 
     public function testFileAlertsCheckReturnsWarningWhenLowThreatAlerts(): void
@@ -353,7 +353,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
 
         $healthCheckResult = $alertsCheck->run();
         $this->assertSame('warning', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('require review', $healthCheckResult->description);
+        $this->assertStringContainsString('FILE_ALERTS_WARNING', $healthCheckResult->description);
     }
 
     public function testLoginFailuresCheckReturnsWarningWhenHighFailures(): void
@@ -370,7 +370,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
 
         $healthCheckResult = $loginCheck->run();
         $this->assertSame('warning', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('15 login failures', $healthCheckResult->description);
+        $this->assertStringContainsString('LOGIN_FAILURES_WARNING', $healthCheckResult->description);
     }
 
     public function testTempSuperUsersCheckReturnsWarningWhenExpiredFound(): void
@@ -387,7 +387,7 @@ class AkeebaAdminToolsPluginTest extends TestCase
 
         $healthCheckResult = $tempCheck->run();
         $this->assertSame('warning', $healthCheckResult->healthStatus->value);
-        $this->assertStringContainsString('expired', $healthCheckResult->description);
+        $this->assertStringContainsString('TEMP_SUPERUSERS_WARNING', $healthCheckResult->description);
     }
 
     /**

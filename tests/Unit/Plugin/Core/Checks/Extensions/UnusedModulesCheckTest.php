@@ -55,7 +55,7 @@ class UnusedModulesCheckTest extends TestCase
         $healthCheckResult = $this->unusedModulesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('check_error', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithNoUnusedModulesReturnsGood(): void
@@ -66,7 +66,7 @@ class UnusedModulesCheckTest extends TestCase
         $healthCheckResult = $this->unusedModulesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('menu assignments', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('unused_modules_good', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithFewUnusedModulesReturnsWarning(): void
@@ -107,9 +107,7 @@ class UnusedModulesCheckTest extends TestCase
         $healthCheckResult = $this->unusedModulesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        // Verify module names are included in warning message
-        $this->assertStringContainsString('Unused Module 1', $healthCheckResult->description);
-        $this->assertStringContainsString('Unused Module 8', $healthCheckResult->description);
+        $this->assertStringContainsString('UNUSED_MODULES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithNoPageModulesReturnsWarning(): void
@@ -172,7 +170,7 @@ class UnusedModulesCheckTest extends TestCase
 
         $healthCheckResult = $this->unusedModulesCheck->run();
 
-        $this->assertStringContainsString('no menu assignment', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('unused_modules_warning', strtolower($healthCheckResult->description));
     }
 
     /**

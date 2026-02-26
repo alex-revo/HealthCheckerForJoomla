@@ -64,7 +64,7 @@ class BlockedUsersCheckTest extends TestCase
         $healthCheckResult = $this->blockedUsersCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('0 blocked', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_BLOCKED_USERS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithFewBlockedUsersReturnsGood(): void
@@ -85,7 +85,6 @@ class BlockedUsersCheckTest extends TestCase
         $healthCheckResult = $this->blockedUsersCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('75 blocked', $healthCheckResult->description);
-        $this->assertStringContainsString('cleaning up', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_BLOCKED_USERS_WARNING', $healthCheckResult->description);
     }
 }

@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -109,7 +110,7 @@ final class LanguagePacksCheck extends AbstractHealthCheck
 
         // This is informational only - any count is acceptable
         return $this->good(
-            sprintf('%d site language(s), %d admin language(s) installed.', $siteLanguages, $adminLanguages),
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_LANGUAGE_PACKS_GOOD', $siteLanguages, $adminLanguages),
         );
     }
 }

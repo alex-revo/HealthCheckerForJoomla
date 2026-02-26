@@ -41,6 +41,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -128,7 +129,7 @@ final class AdminEmailCheck extends AbstractHealthCheck
             ->loadObjectList();
 
         if ($superAdmins === []) {
-            return $this->warning('No active Super Admin users found.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_WARNING'));
         }
 
         $invalidEmails = [];
@@ -139,13 +140,19 @@ final class AdminEmailCheck extends AbstractHealthCheck
 
             // Check for empty or missing email
             if ($email === '' || $email === '0') {
-                $invalidEmails[] = sprintf('%s (no email)', $superAdmin->username);
+                $invalidEmails[] = Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_NO_EMAIL',
+                    $superAdmin->username,
+                );
                 continue;
             }
 
             // Validate email format using PHP's filter
             if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $invalidEmails[] = sprintf('%s (invalid format)', $superAdmin->username);
+                $invalidEmails[] = Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_INVALID_FORMAT',
+                    $superAdmin->username,
+                );
                 continue;
             }
 
@@ -154,22 +161,21 @@ final class AdminEmailCheck extends AbstractHealthCheck
 
             // Check if domain is in the list of invalid/placeholder domains
             if (in_array($domain, self::INVALID_DOMAINS, true)) {
-                $invalidEmails[] = sprintf('%s (%s)', $superAdmin->username, $domain);
+                $invalidEmails[] = Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_BAD_DOMAIN',
+                    $superAdmin->username,
+                    $domain,
+                );
             }
         }
 
         // If any invalid emails found, this is a critical security issue
         if ($invalidEmails !== []) {
             return $this->critical(
-                sprintf(
-                    'Super Admin accounts with invalid or placeholder email addresses: %s',
-                    implode(', ', $invalidEmails),
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_CRITICAL', implode(', ', $invalidEmails)),
             );
         }
 
-        return $this->good(
-            sprintf('All %d Super Admin account(s) have valid email addresses.', count($superAdmins)),
-        );
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_ADMIN_EMAIL_GOOD', count($superAdmins)));
     }
 }

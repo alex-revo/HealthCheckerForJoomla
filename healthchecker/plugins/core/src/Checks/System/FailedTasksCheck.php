@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -104,17 +105,17 @@ final class FailedTasksCheck extends AbstractHealthCheck
         // More than 5 failed tasks suggests a systemic problem
         if ($failedCount > 5) {
             return $this->warning(
-                sprintf('%d scheduled tasks have failed recently. Review the task logs.', $failedCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_FAILED_TASKS_WARNING', $failedCount),
             );
         }
 
         // Any failed tasks warrant investigation
         if ($failedCount > 0) {
             return $this->warning(
-                sprintf('%d scheduled task(s) have failed. Check the scheduler logs for details.', $failedCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_FAILED_TASKS_WARNING_2', $failedCount),
             );
         }
 
-        return $this->good('All scheduled tasks are running successfully.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_FAILED_TASKS_GOOD'));
     }
 }

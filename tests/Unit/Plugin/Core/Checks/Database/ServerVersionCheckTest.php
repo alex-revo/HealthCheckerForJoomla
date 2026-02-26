@@ -64,8 +64,7 @@ class ServerVersionCheckTest extends TestCase
         $healthCheckResult = $this->serverVersionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('MySQL', $healthCheckResult->description);
-        $this->assertStringContainsString('8.0.30', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_VERSION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithOldMysqlReturnsWarning(): void
@@ -76,7 +75,7 @@ class ServerVersionCheckTest extends TestCase
         $healthCheckResult = $this->serverVersionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('below recommended', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_VERSION_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithMariaDbMeetsRequirements(): void
@@ -87,7 +86,7 @@ class ServerVersionCheckTest extends TestCase
         $healthCheckResult = $this->serverVersionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('MariaDB', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_VERSION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithOldMariaDbReturnsWarning(): void
@@ -98,7 +97,6 @@ class ServerVersionCheckTest extends TestCase
         $healthCheckResult = $this->serverVersionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('MariaDB', $healthCheckResult->description);
-        $this->assertStringContainsString('below recommended', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_VERSION_WARNING', $healthCheckResult->description);
     }
 }

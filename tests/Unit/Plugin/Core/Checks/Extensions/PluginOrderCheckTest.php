@@ -54,7 +54,7 @@ class PluginOrderCheckTest extends TestCase
         $healthCheckResult = $this->pluginOrderCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('check_error', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithNoSystemPluginsReturnsGood(): void
@@ -93,7 +93,7 @@ class PluginOrderCheckTest extends TestCase
         $healthCheckResult = $this->pluginOrderCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('4', $healthCheckResult->description); // 4 plugins
+        $this->assertStringContainsString('PLUGIN_ORDER_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithSefBeforeRedirectReturnsWarning(): void
@@ -114,8 +114,7 @@ class PluginOrderCheckTest extends TestCase
         $healthCheckResult = $this->pluginOrderCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('sef', strtolower($healthCheckResult->description));
-        $this->assertStringContainsString('redirect', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('plugin_order_warning', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithSessionRunningLateReturnsWarning(): void
@@ -156,7 +155,7 @@ class PluginOrderCheckTest extends TestCase
         $healthCheckResult = $this->pluginOrderCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('session', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('plugin_order_warning', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithCacheRunningEarlyReturnsWarning(): void
@@ -197,7 +196,7 @@ class PluginOrderCheckTest extends TestCase
         $healthCheckResult = $this->pluginOrderCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('cache', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('plugin_order_warning', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithMultipleIssuesReturnsWarningWithAllIssues(): void

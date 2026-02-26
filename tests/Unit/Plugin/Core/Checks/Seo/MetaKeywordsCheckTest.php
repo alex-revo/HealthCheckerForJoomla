@@ -66,8 +66,10 @@ class MetaKeywordsCheckTest extends TestCase
         $healthCheckResult = $this->metaKeywordsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not set', $healthCheckResult->description);
-        $this->assertStringContainsString('2009', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_META_KEYWORDS_GOOD_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithMetaKeywordsSetReturnsGood(): void
@@ -77,8 +79,10 @@ class MetaKeywordsCheckTest extends TestCase
         $healthCheckResult = $this->metaKeywordsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Meta keywords are set', $healthCheckResult->description);
-        $this->assertStringContainsString('no longer use', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_META_KEYWORDS_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunAlwaysReturnsGood(): void
@@ -102,6 +106,9 @@ class MetaKeywordsCheckTest extends TestCase
         $healthCheckResult = $this->metaKeywordsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not set', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_META_KEYWORDS_GOOD_2',
+            $healthCheckResult->description,
+        );
     }
 }

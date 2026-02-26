@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -97,24 +98,18 @@ final class ContentSecurityPolicyCheck extends AbstractHealthCheck
             ->loadObject();
 
         if ($result === null) {
-            return $this->warning(
-                'HTTP Headers plugin not found. Install and enable it to configure Content Security Policy headers.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_CONTENT_SECURITY_POLICY_WARNING'));
         }
 
         if ((int) $result->enabled === 0) {
-            return $this->warning(
-                'HTTP Headers plugin is disabled. Enable it to configure Content Security Policy and other security headers.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_CONTENT_SECURITY_POLICY_WARNING_2'));
         }
 
         // Decode plugin parameters (JSON stored in database)
         $params = json_decode((string) $result->params, true);
 
         if (! is_array($params) || $params === []) {
-            return $this->warning(
-                'HTTP Headers plugin is enabled but not configured. Configure Content Security Policy for XSS protection.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_CONTENT_SECURITY_POLICY_WARNING_3'));
         }
 
         // Check if CSP is enabled in plugin configuration
@@ -122,11 +117,9 @@ final class ContentSecurityPolicyCheck extends AbstractHealthCheck
         $cspEnabled = $params['contentsecuritypolicy'] ?? 0;
 
         if ((int) $cspEnabled === 0) {
-            return $this->warning(
-                'Content Security Policy is not enabled. Enable CSP in the HTTP Headers plugin to protect against XSS attacks.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_CONTENT_SECURITY_POLICY_WARNING_4'));
         }
 
-        return $this->good('Content Security Policy is enabled via HTTP Headers plugin.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_CONTENT_SECURITY_POLICY_GOOD'));
     }
 }

@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -83,9 +84,11 @@ final class ConnectionCheck extends AbstractHealthCheck
             $database->setQuery('SELECT 1');
             $database->execute();
 
-            return $this->good('Database connection is working correctly.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_CONNECTION_GOOD'));
         } catch (\Exception $exception) {
-            return $this->critical(sprintf('Database connection failed: %s', $exception->getMessage()));
+            return $this->critical(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_CONNECTION_CRITICAL', $exception->getMessage()),
+            );
         }
     }
 }

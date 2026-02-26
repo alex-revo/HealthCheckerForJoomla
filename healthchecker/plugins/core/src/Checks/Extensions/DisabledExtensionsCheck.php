@@ -32,6 +32,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -102,10 +103,12 @@ final class DisabledExtensionsCheck extends AbstractHealthCheck
         // Threshold of 20+ disabled extensions suggests cleanup needed
         if ($disabledCount > 20) {
             return $this->warning(
-                sprintf('%d extensions are disabled. Consider uninstalling unused extensions.', $disabledCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_DISABLED_EXTENSIONS_WARNING', $disabledCount),
             );
         }
 
-        return $this->good(sprintf('%d extension(s) disabled.', $disabledCount));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_DISABLED_EXTENSIONS_GOOD', $disabledCount),
+        );
     }
 }

@@ -64,7 +64,7 @@ class AdminUsernameCheckTest extends TestCase
         $healthCheckResult = $this->adminUsernameCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No Super Admin', $healthCheckResult->description);
+        $this->assertStringContainsString('ADMIN_USERNAME_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenInsecureUsernamesFound(): void
@@ -75,6 +75,6 @@ class AdminUsernameCheckTest extends TestCase
         $healthCheckResult = $this->adminUsernameCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('insecure username', $healthCheckResult->description);
+        $this->assertStringContainsString('ADMIN_USERNAME_CRITICAL', $healthCheckResult->description);
     }
 }

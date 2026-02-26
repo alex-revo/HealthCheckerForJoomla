@@ -75,7 +75,10 @@ class SitemapCheckTest extends TestCase
         $healthCheckResult = $this->sitemapCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not found', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsGoodWhenValidUrlsetSitemapExists(): void
@@ -94,7 +97,7 @@ SITEMAP;
         $healthCheckResult = $this->sitemapCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('present', $healthCheckResult->description);
+        $this->assertStringContainsString('COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenValidSitemapIndexExists(): void
@@ -122,7 +125,10 @@ SITEMAP;
         $healthCheckResult = $this->sitemapCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('empty', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING_3',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenSitemapIsWhitespaceOnly(): void
@@ -132,7 +138,10 @@ SITEMAP;
         $healthCheckResult = $this->sitemapCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('empty', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING_3',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenSitemapHasInvalidXml(): void
@@ -149,7 +158,10 @@ SITEMAP;
         $healthCheckResult = $this->sitemapCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('invalid XML', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING_4',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenXmlLacksSitemapStructure(): void
@@ -168,7 +180,10 @@ XML;
         $healthCheckResult = $this->sitemapCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('valid sitemap structure', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_SITEMAP_WARNING_5',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunHandlesCaseInsensitiveUrlset(): void

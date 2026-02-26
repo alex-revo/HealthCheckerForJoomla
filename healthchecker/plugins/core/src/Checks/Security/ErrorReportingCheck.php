@@ -36,6 +36,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -86,17 +87,15 @@ final class ErrorReportingCheck extends AbstractHealthCheck
 
         // Maximum or development mode - exposes detailed error information
         if ($errorReporting === 'maximum' || $errorReporting === 'development') {
-            return $this->warning(
-                'Error reporting is set to maximum/development. This may expose sensitive information in production.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_ERROR_REPORTING_WARNING'));
         }
 
         // None or simple - appropriate for production environments
         if ($errorReporting === 'none' || $errorReporting === 'simple') {
-            return $this->good('Error reporting is appropriately configured for production.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_ERROR_REPORTING_GOOD'));
         }
 
         // Other values - report current setting
-        return $this->good(sprintf('Error reporting is set to: %s', $errorReporting));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_ERROR_REPORTING_GOOD_2', $errorReporting));
     }
 }

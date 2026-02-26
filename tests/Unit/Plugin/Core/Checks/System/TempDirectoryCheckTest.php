@@ -107,8 +107,8 @@ class TempDirectoryCheckTest extends TestCase
         $healthCheckResult = $this->tempDirectoryCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Good) {
-            // Good result should confirm the directory is writable
-            $this->assertStringContainsString('writable', $healthCheckResult->description);
+            // Good result should contain the language key
+            $this->assertStringContainsString('TEMP_DIRECTORY_GOOD', $healthCheckResult->description);
         } else {
             // If not Good, should be Warning or Critical
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Warning, HealthStatus::Critical]);
@@ -120,11 +120,8 @@ class TempDirectoryCheckTest extends TestCase
         $healthCheckResult = $this->tempDirectoryCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Critical) {
-            // Critical result should explain the issue
-            $this->assertTrue(
-                str_contains($healthCheckResult->description, 'does not exist') ||
-                str_contains($healthCheckResult->description, 'not writable'),
-            );
+            // Critical result should contain the language key for temp directory critical
+            $this->assertTrue(str_contains($healthCheckResult->description, 'TEMP_DIRECTORY_CRITICAL'));
         } else {
             // If not Critical, should be Good or Warning
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
@@ -251,11 +248,8 @@ class TempDirectoryCheckTest extends TestCase
         $healthCheckResult = $this->tempDirectoryCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Critical) {
-            // Critical message should mention the temp directory path
-            $this->assertTrue(
-                str_contains($healthCheckResult->description, 'tmp') ||
-                str_contains($healthCheckResult->description, 'Temp'),
-            );
+            // Critical message should contain the language key
+            $this->assertTrue(str_contains($healthCheckResult->description, 'TEMP_DIRECTORY_CRITICAL'));
         }
     }
 
@@ -264,11 +258,8 @@ class TempDirectoryCheckTest extends TestCase
         $healthCheckResult = $this->tempDirectoryCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Good) {
-            // Good message should include the actual temp path
-            $this->assertTrue(
-                str_contains($healthCheckResult->description, 'tmp') ||
-                str_contains($healthCheckResult->description, '/'),
-            );
+            // Good message should contain the language key
+            $this->assertTrue(str_contains($healthCheckResult->description, 'TEMP_DIRECTORY_GOOD'));
         } else {
             // Not good means there was an issue with the temp directory
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Warning, HealthStatus::Critical]);

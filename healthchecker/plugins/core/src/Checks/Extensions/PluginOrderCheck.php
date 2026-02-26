@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -111,7 +112,7 @@ final class PluginOrderCheck extends AbstractHealthCheck
         // Check: SEF plugin should run after Redirect plugin
         // Redirect handles HTTP redirects, SEF rewrites URLs - redirects must happen first
         if (isset($pluginOrder['sef']) && isset($pluginOrder['redirect']) && $pluginOrder['sef'] < $pluginOrder['redirect']) {
-            $issues[] = 'SEF plugin runs before Redirect plugin';
+            $issues[] = Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_PLUGIN_ORDER_ISSUE_SEF');
         }
 
         // Check: Session plugin should run early in the execution order
@@ -130,7 +131,7 @@ final class PluginOrderCheck extends AbstractHealthCheck
             }
 
             if ($runBefore > $earlyThreshold) {
-                $issues[] = 'Session plugin may run too late in the execution order';
+                $issues[] = Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_PLUGIN_ORDER_ISSUE_SESSION');
             }
         }
 
@@ -142,16 +143,18 @@ final class PluginOrderCheck extends AbstractHealthCheck
 
             // If cache is more than 5 positions away from last, it may be too early
             if ($cacheOrder < ($maxOrder - 5)) {
-                $issues[] = 'Cache plugin may run too early in the execution order';
+                $issues[] = Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_PLUGIN_ORDER_ISSUE_CACHE');
             }
         }
 
         if ($issues !== []) {
-            return $this->warning(sprintf('Plugin ordering issues detected: %s', implode('; ', $issues)));
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_PLUGIN_ORDER_WARNING', implode('; ', $issues)),
+            );
         }
 
         return $this->good(
-            sprintf('%d system plugins enabled with no ordering issues detected.', \count($systemPlugins)),
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_PLUGIN_ORDER_GOOD', \count($systemPlugins)),
         );
     }
 }

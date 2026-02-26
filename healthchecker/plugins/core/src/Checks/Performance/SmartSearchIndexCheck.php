@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -103,7 +104,7 @@ final class SmartSearchIndexCheck extends AbstractHealthCheck
 
         // Component not enabled - no need to check index
         if (! $isEnabled) {
-            return $this->good('Smart Search is not enabled.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_SMART_SEARCH_INDEX_GOOD'));
         }
 
         // Component is enabled, verify the index has content
@@ -117,10 +118,12 @@ final class SmartSearchIndexCheck extends AbstractHealthCheck
 
         // Index is empty - search will return no results for users
         if ($indexedItems === 0) {
-            return $this->warning('Smart Search is enabled but the index is empty. Run the indexer.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_SMART_SEARCH_INDEX_WARNING'));
         }
 
         // Index contains content - search functionality is working
-        return $this->good(sprintf('Smart Search index contains %d items.', $indexedItems));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_SMART_SEARCH_INDEX_GOOD_2', $indexedItems),
+        );
     }
 }

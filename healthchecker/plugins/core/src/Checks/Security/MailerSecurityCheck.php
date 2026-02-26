@@ -35,6 +35,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -93,24 +94,28 @@ final class MailerSecurityCheck extends AbstractHealthCheck
         if ($mailer === 'smtp') {
             // Verify SMTP encryption is configured
             if ($smtpSecurity === 'none' || empty($smtpSecurity)) {
-                return $this->warning('SMTP is configured without encryption. Consider using TLS or SSL.');
+                return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_MAILER_SECURITY_WARNING'));
             }
 
             // SMTP with encryption is secure
-            return $this->good(sprintf('SMTP is configured with %s encryption.', strtoupper((string) $smtpSecurity)));
+            return $this->good(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_MAILER_SECURITY_GOOD', strtoupper(
+                    (string) $smtpSecurity,
+                )),
+            );
         }
 
         // PHP mail() function is acceptable (security handled by server)
         if ($mailer === 'mail') {
-            return $this->good('Using PHP mail() function.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_MAILER_SECURITY_GOOD_2'));
         }
 
         // Sendmail is acceptable (security handled by server)
         if ($mailer === 'sendmail') {
-            return $this->good('Using sendmail for email delivery.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_MAILER_SECURITY_GOOD_3'));
         }
 
         // Other mailer types (fallback)
-        return $this->good(sprintf('Mail is configured using: %s', $mailer));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_MAILER_SECURITY_GOOD_4', $mailer));
     }
 }

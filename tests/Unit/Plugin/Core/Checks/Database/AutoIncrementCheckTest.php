@@ -86,7 +86,7 @@ class AutoIncrementCheckTest extends TestCase
         $healthCheckResult = $this->autoIncrementCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('sufficient headroom', $healthCheckResult->description);
+        $this->assertStringContainsString('AUTO_INCREMENT_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenAutoIncrementValuesHigh(): void
@@ -104,7 +104,7 @@ class AutoIncrementCheckTest extends TestCase
         $healthCheckResult = $this->autoIncrementCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('high', $healthCheckResult->description);
+        $this->assertStringContainsString('AUTO_INCREMENT_WARNING', $healthCheckResult->description);
     }
 
     public function testRunSkipsTablesWithNullAutoIncrement(): void

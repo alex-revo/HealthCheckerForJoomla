@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -101,9 +102,7 @@ final class PageCacheCheck extends AbstractHealthCheck
 
         // Plugin disabled - significant performance opportunity missed
         if (! $isEnabled) {
-            return $this->warning(
-                'System - Page Cache plugin is disabled. Enable it in production for improved performance on guest page loads.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_PAGE_CACHE_WARNING'));
         }
 
         // Plugin is enabled - check browser caching configuration
@@ -121,25 +120,23 @@ final class PageCacheCheck extends AbstractHealthCheck
 
         if ($params === null || $params === '') {
             // Plugin enabled but can't read params - still good
-            return $this->good('System - Page Cache plugin is enabled.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_PAGE_CACHE_GOOD'));
         }
 
         $paramsObj = json_decode((string) $params, true);
 
         if (! is_array($paramsObj)) {
-            return $this->good('System - Page Cache plugin is enabled.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_PAGE_CACHE_GOOD'));
         }
 
         // Check browser caching setting (1 = enabled, 0 = disabled)
         $browserCache = (int) ($paramsObj['browsercache'] ?? 0);
 
         if ($browserCache === 1) {
-            return $this->good('System - Page Cache plugin is enabled with browser caching.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_PAGE_CACHE_GOOD_2'));
         }
 
         // Plugin enabled but browser caching disabled
-        return $this->warning(
-            'System - Page Cache plugin is enabled but browser caching is disabled. Enable browser caching in the plugin settings for additional performance.',
-        );
+        return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_PAGE_CACHE_WARNING_2'));
     }
 }

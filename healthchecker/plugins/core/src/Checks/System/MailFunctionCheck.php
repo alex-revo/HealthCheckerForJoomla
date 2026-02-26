@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -91,35 +92,35 @@ final class MailFunctionCheck extends AbstractHealthCheck
         if ($config === 'mail') {
             // Verify mail() function exists in PHP
             if (! \function_exists('mail')) {
-                return $this->critical('PHP mail() function is not available but Joomla is configured to use it.');
+                return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MAIL_FUNCTION_CRITICAL'));
             }
 
             // Check if mail() is disabled in php.ini disable_functions directive
             if (ini_get('disable_functions') && str_contains(ini_get('disable_functions'), 'mail')) {
-                return $this->critical(
-                    'PHP mail() function is disabled in php.ini but Joomla is configured to use it.',
-                );
+                return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MAIL_FUNCTION_CRITICAL_2'));
             }
 
-            return $this->good('PHP mail() function is available.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MAIL_FUNCTION_GOOD'));
         }
 
         // SMTP configuration - no additional checks needed as connection is tested on send
         if ($config === 'smtp') {
-            return $this->good('Joomla is configured to use SMTP for email delivery.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MAIL_FUNCTION_GOOD_2'));
         }
 
         // Sendmail configuration - verify binary path is executable
         if ($config === 'sendmail') {
             $sendmailPath = Factory::getApplication()->get('sendmail', '/usr/sbin/sendmail');
             if (! is_executable($sendmailPath)) {
-                return $this->warning(sprintf('Sendmail path may not be executable: %s', $sendmailPath));
+                return $this->warning(
+                    Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_MAIL_FUNCTION_WARNING', $sendmailPath),
+                );
             }
 
-            return $this->good('Sendmail is configured for email delivery.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MAIL_FUNCTION_GOOD_3'));
         }
 
         // Unknown/custom mailer configuration
-        return $this->good(sprintf('Mail is configured using: %s', $config));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_MAIL_FUNCTION_GOOD_4', $config));
     }
 }

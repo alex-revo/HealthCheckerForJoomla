@@ -78,7 +78,7 @@ class TableCharsetCheckTest extends TestCase
         $healthCheckResult = $this->tableCharsetCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('utf8mb4', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_CHARSET_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenTablesUseOldCollation(): void
@@ -97,6 +97,6 @@ class TableCharsetCheckTest extends TestCase
         $healthCheckResult = $this->tableCharsetCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 table(s)', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_CHARSET_WARNING', $healthCheckResult->description);
     }
 }

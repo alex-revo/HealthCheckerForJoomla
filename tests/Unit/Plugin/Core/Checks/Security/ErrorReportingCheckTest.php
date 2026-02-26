@@ -75,7 +75,7 @@ class ErrorReportingCheckTest extends TestCase
         $healthCheckResult = $this->errorReportingCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('appropriately configured', $healthCheckResult->description);
+        $this->assertStringContainsString('ERROR_REPORTING_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithSimpleSettingReturnsGood(): void
@@ -94,7 +94,7 @@ class ErrorReportingCheckTest extends TestCase
         $healthCheckResult = $this->errorReportingCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('maximum/development', $healthCheckResult->description);
+        $this->assertStringContainsString('ERROR_REPORTING_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithDevelopmentSettingReturnsWarning(): void
@@ -104,6 +104,6 @@ class ErrorReportingCheckTest extends TestCase
         $healthCheckResult = $this->errorReportingCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('sensitive information', $healthCheckResult->description);
+        $this->assertStringContainsString('ERROR_REPORTING_WARNING', $healthCheckResult->description);
     }
 }

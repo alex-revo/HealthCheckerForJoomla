@@ -64,7 +64,7 @@ class SuperAdminCountCheckTest extends TestCase
         $healthCheckResult = $this->superAdminCountCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 Super Admin', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_SUPER_ADMIN_COUNT_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithThreeSuperAdminsReturnsGood(): void
@@ -85,8 +85,7 @@ class SuperAdminCountCheckTest extends TestCase
         $healthCheckResult = $this->superAdminCountCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('4 Super Admin', $healthCheckResult->description);
-        $this->assertStringContainsString('reducing', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_SUPER_ADMIN_COUNT_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithSixSuperAdminsReturnsCritical(): void
@@ -97,7 +96,7 @@ class SuperAdminCountCheckTest extends TestCase
         $healthCheckResult = $this->superAdminCountCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('security risk', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_SUPER_ADMIN_COUNT_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithZeroSuperAdminsReturnsCritical(): void
@@ -108,6 +107,9 @@ class SuperAdminCountCheckTest extends TestCase
         $healthCheckResult = $this->superAdminCountCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No active Super Admin', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_USERS_SUPER_ADMIN_COUNT_CRITICAL_2',
+            $healthCheckResult->description,
+        );
     }
 }

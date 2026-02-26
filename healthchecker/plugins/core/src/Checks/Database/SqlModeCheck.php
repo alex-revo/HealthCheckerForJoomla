@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -105,15 +106,13 @@ final class SqlModeCheck extends AbstractHealthCheck
 
         // ONLY_FULL_GROUP_BY is the most likely to cause immediate issues
         if (in_array('ONLY_FULL_GROUP_BY', $presentProblematic, true)) {
-            return $this->warning(
-                'ONLY_FULL_GROUP_BY is enabled. Some older extensions may have compatibility issues.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_SQL_MODE_WARNING'));
         }
 
         if ($modes === []) {
-            return $this->good('SQL mode is empty (permissive mode).');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_SQL_MODE_GOOD'));
         }
 
-        return $this->good(sprintf('SQL mode: %s', $sqlMode));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_SQL_MODE_GOOD_2', $sqlMode));
     }
 }

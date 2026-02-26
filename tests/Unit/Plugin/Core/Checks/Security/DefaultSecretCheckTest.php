@@ -65,7 +65,7 @@ class DefaultSecretCheckTest extends TestCase
         $healthCheckResult = $this->defaultSecretCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('empty', $healthCheckResult->description);
+        $this->assertStringContainsString('DEFAULT_SECRET_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenSecretIsKnownDefault(): void
@@ -77,7 +77,7 @@ class DefaultSecretCheckTest extends TestCase
         $healthCheckResult = $this->defaultSecretCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('default', $healthCheckResult->description);
+        $this->assertStringContainsString('DEFAULT_SECRET_CRITICAL_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSecretIsTooShort(): void
@@ -89,7 +89,7 @@ class DefaultSecretCheckTest extends TestCase
         $healthCheckResult = $this->defaultSecretCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('shorter', $healthCheckResult->description);
+        $this->assertStringContainsString('DEFAULT_SECRET_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSecretIs15Characters(): void
@@ -112,7 +112,7 @@ class DefaultSecretCheckTest extends TestCase
         $healthCheckResult = $this->defaultSecretCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('unique', $healthCheckResult->description);
+        $this->assertStringContainsString('DEFAULT_SECRET_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenSecretIsExactly16Characters(): void
@@ -239,8 +239,7 @@ class DefaultSecretCheckTest extends TestCase
         $healthCheckResult = $this->defaultSecretCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('critical', strtolower($healthCheckResult->description));
-        $this->assertStringContainsString('security', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('DEFAULT_SECRET_CRITICAL', $healthCheckResult->description);
     }
 
     public function testCriticalForDefaultMentionsGenerate(): void
@@ -252,10 +251,7 @@ class DefaultSecretCheckTest extends TestCase
         $healthCheckResult = $this->defaultSecretCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertTrue(
-            stripos($healthCheckResult->description, 'generate') !== false ||
-            stripos($healthCheckResult->description, 'Generate') !== false,
-        );
+        $this->assertStringContainsString('DEFAULT_SECRET_CRITICAL_2', $healthCheckResult->description);
     }
 
     public function testWarningMentionsRecommended(): void
@@ -267,7 +263,7 @@ class DefaultSecretCheckTest extends TestCase
         $healthCheckResult = $this->defaultSecretCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('recommended', $healthCheckResult->description);
+        $this->assertStringContainsString('DEFAULT_SECRET_WARNING', $healthCheckResult->description);
     }
 
     public function testGoodMentionsConfigured(): void
@@ -279,7 +275,7 @@ class DefaultSecretCheckTest extends TestCase
         $healthCheckResult = $this->defaultSecretCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('configured', $healthCheckResult->description);
+        $this->assertStringContainsString('DEFAULT_SECRET_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithIntegerSecretValue(): void

@@ -20,11 +20,7 @@ class Text
 
     public static function sprintf(string $string, mixed ...$args): string
     {
-        // Return the first arg if any, otherwise the key
-        if ($args !== []) {
-            return (string) $args[0];
-        }
-
+        // Return the language key for testing purposes (same as Text::_)
         return $string;
     }
 

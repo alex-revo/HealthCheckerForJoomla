@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -103,26 +104,23 @@ final class SuperAdminCountCheck extends AbstractHealthCheck
         // Critical threshold: More than 5 super admins is excessive
         if ($count > 5) {
             return $this->critical(
-                sprintf(
-                    'There are %d Super Admin users. This is a significant security risk - consider reducing this number.',
-                    $count,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_SUPER_ADMIN_COUNT_CRITICAL', $count),
             );
         }
 
         // Warning threshold: More than 3 super admins is higher than recommended
         if ($count > 3) {
             return $this->warning(
-                sprintf('There are %d Super Admin users. Consider reducing this for better security.', $count),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_SUPER_ADMIN_COUNT_WARNING', $count),
             );
         }
 
         // Critical: No super admins indicates a serious configuration problem
         if ($count === 0) {
-            return $this->critical('No active Super Admin users found. This may indicate a configuration issue.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_USERS_SUPER_ADMIN_COUNT_CRITICAL_2'));
         }
 
         // Optimal range: 1-3 super admin accounts
-        return $this->good(sprintf('%d Super Admin user(s) found.', $count));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_SUPER_ADMIN_COUNT_GOOD', $count));
     }
 }

@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -86,9 +87,7 @@ final class HtaccessProtectionCheck extends AbstractHealthCheck
 
         // File doesn't exist - needs to be created from htaccess.txt
         if (! file_exists($htaccessPath)) {
-            return $this->warning(
-                '.htaccess file not found. Consider renaming htaccess.txt to .htaccess for Apache protection.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTACCESS_PROTECTION_WARNING'));
         }
 
         // Read .htaccess content to check configuration
@@ -96,7 +95,7 @@ final class HtaccessProtectionCheck extends AbstractHealthCheck
 
         // Empty file or read error - no protection rules in place
         if (in_array($htaccessContent, ['', '0', false], true)) {
-            return $this->warning('.htaccess file is empty.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTACCESS_PROTECTION_WARNING_2'));
         }
 
         // Check for basic security rules - RewriteEngine is core to Joomla's .htaccess
@@ -104,10 +103,10 @@ final class HtaccessProtectionCheck extends AbstractHealthCheck
 
         // Missing RewriteEngine - SEF URLs and many protections won't work
         if (! $hasRewriteEngine) {
-            return $this->warning('.htaccess exists but may not have URL rewriting enabled.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTACCESS_PROTECTION_WARNING_3'));
         }
 
         // File exists with RewriteEngine enabled - basic protection in place
-        return $this->good('.htaccess file is present and configured.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTACCESS_PROTECTION_GOOD'));
     }
 }

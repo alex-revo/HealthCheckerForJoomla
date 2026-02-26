@@ -35,6 +35,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -115,8 +116,8 @@ final class SessionLifetimeCheck extends AbstractHealthCheck
         // remains active and could be exploited by the next user
         if ($sessionLifetime > self::MAX_RECOMMENDED_MINUTES) {
             return $this->warning(
-                sprintf(
-                    'Session lifetime (%d minutes) is longer than recommended (%d minutes). Consider reducing for security.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SECURITY_SESSION_LIFETIME_WARNING',
                     $sessionLifetime,
                     self::MAX_RECOMMENDED_MINUTES,
                 ),
@@ -127,14 +128,11 @@ final class SessionLifetimeCheck extends AbstractHealthCheck
         // Users will be logged out frequently, especially during content editing
         if ($sessionLifetime < self::MIN_RECOMMENDED_MINUTES) {
             return $this->warning(
-                sprintf(
-                    'Session lifetime (%d minutes) is very short. Users may experience frequent logouts.',
-                    $sessionLifetime,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_SESSION_LIFETIME_WARNING_2', $sessionLifetime),
             );
         }
 
         // Good: Session lifetime is within the recommended security/usability balance
-        return $this->good(sprintf('Session lifetime is %d minutes.', $sessionLifetime));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_SESSION_LIFETIME_GOOD', $sessionLifetime));
     }
 }

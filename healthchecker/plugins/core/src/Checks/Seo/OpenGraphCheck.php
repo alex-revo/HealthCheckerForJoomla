@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -115,14 +116,10 @@ final class OpenGraphCheck extends AbstractHealthCheck
 
         // If one or more Open Graph plugins are found, social sharing is likely configured
         if ($ogPluginCount > 0) {
-            return $this->good(
-                sprintf('Found %d enabled plugin(s) that may provide Open Graph meta tags.', $ogPluginCount),
-            );
+            return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_OPEN_GRAPH_GOOD', $ogPluginCount));
         }
 
         // No Open Graph plugins detected - social shares will have poor previews
-        return $this->warning(
-            'No Open Graph plugin detected. Consider installing an Open Graph/social meta plugin to improve social media sharing.',
-        );
+        return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_OPEN_GRAPH_WARNING'));
     }
 }

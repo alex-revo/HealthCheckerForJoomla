@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -94,9 +95,7 @@ final class LazyLoadCheck extends AbstractHealthCheck
         $isEnabled = PluginHelper::isEnabled('content', 'joomla');
 
         if (! $isEnabled) {
-            return $this->warning(
-                'Content - Joomla plugin is disabled. This plugin provides lazy loading for images.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_LAZY_LOAD_WARNING'));
         }
 
         $database = $this->requireDatabase();
@@ -113,25 +112,23 @@ final class LazyLoadCheck extends AbstractHealthCheck
             ->loadResult();
 
         if ($params === null || $params === '') {
-            return $this->warning('Unable to determine lazy load configuration.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_LAZY_LOAD_WARNING_2'));
         }
 
         // Decode JSON parameters
         $paramsObj = json_decode((string) $params, true);
 
         if (! is_array($paramsObj)) {
-            return $this->warning('Unable to decode plugin parameters.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_LAZY_LOAD_WARNING_3'));
         }
 
         // Check if lazy_images parameter is enabled (1 = enabled, 0 = disabled)
         $lazyImages = (int) ($paramsObj['lazy_images'] ?? 0);
 
         if ($lazyImages === 0) {
-            return $this->warning(
-                'Lazy loading for images is disabled. Enable it in the Content - Joomla plugin settings for better performance.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_LAZY_LOAD_WARNING_4'));
         }
 
-        return $this->good('Lazy loading for images is enabled.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_LAZY_LOAD_GOOD'));
     }
 }

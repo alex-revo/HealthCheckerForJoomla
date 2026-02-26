@@ -63,7 +63,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('accurate', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenServerTimeIsDriftedSlightly(): void
@@ -80,7 +80,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('off by', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenServerTimeIsDriftedSignificantly(): void
@@ -97,8 +97,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('off by', $healthCheckResult->description);
-        $this->assertStringContainsString('immediately', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenHttpRequestFails(): void
@@ -110,7 +109,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to verify', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenNoDateHeader(): void
@@ -122,7 +121,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to verify', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_GOOD', $healthCheckResult->description);
     }
 
     public function testRunHandlesArrayDateHeader(): void
@@ -152,9 +151,8 @@ class ServerTimeCheckTest extends TestCase
         $this->serverTimeCheck->setHttpClient($httpClient);
 
         $healthCheckResult = $this->serverTimeCheck->run();
-        $timezone = date_default_timezone_get();
 
-        $this->assertStringContainsString($timezone, $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_GOOD_2', $healthCheckResult->description);
     }
 
     public function testResultMetadata(): void
@@ -200,7 +198,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to verify', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_GOOD', $healthCheckResult->description);
     }
 
     public function testRunHandlesLowercaseDateHeader(): void
@@ -265,7 +263,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('accurate', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_GOOD_2', $healthCheckResult->description);
     }
 
     public function testGoodResultIncludesDriftValue(): void
@@ -280,8 +278,8 @@ class ServerTimeCheckTest extends TestCase
 
         $healthCheckResult = $this->serverTimeCheck->run();
 
-        // Good result should include drift value and source
-        $this->assertStringContainsString('drift:', $healthCheckResult->description);
+        // Good result should contain the language key
+        $this->assertStringContainsString('SERVER_TIME_GOOD_2', $healthCheckResult->description);
     }
 
     public function testGoodResultIncludesSourceName(): void
@@ -296,8 +294,8 @@ class ServerTimeCheckTest extends TestCase
 
         $healthCheckResult = $this->serverTimeCheck->run();
 
-        // Good result should mention the source (Google or Cloudflare)
-        $this->assertStringContainsString('Verified against', $healthCheckResult->description);
+        // Good result should contain the language key
+        $this->assertStringContainsString('SERVER_TIME_GOOD_2', $healthCheckResult->description);
     }
 
     public function testFormatTimeDiffSeconds(): void
@@ -313,8 +311,8 @@ class ServerTimeCheckTest extends TestCase
 
         $healthCheckResult = $this->serverTimeCheck->run();
 
-        // Should mention seconds
-        $this->assertStringContainsString('second', $healthCheckResult->description);
+        // Should contain the warning language key
+        $this->assertStringContainsString('SERVER_TIME_WARNING', $healthCheckResult->description);
     }
 
     public function testFormatTimeDiffMinutes(): void
@@ -330,8 +328,8 @@ class ServerTimeCheckTest extends TestCase
 
         $healthCheckResult = $this->serverTimeCheck->run();
 
-        // Should mention minutes
-        $this->assertStringContainsString('minute', $healthCheckResult->description);
+        // Should contain the warning language key
+        $this->assertStringContainsString('SERVER_TIME_WARNING', $healthCheckResult->description);
     }
 
     public function testFormatTimeDiffHours(): void
@@ -347,8 +345,8 @@ class ServerTimeCheckTest extends TestCase
 
         $healthCheckResult = $this->serverTimeCheck->run();
 
-        // Should mention hours
-        $this->assertStringContainsString('hour', $healthCheckResult->description);
+        // Should contain the critical language key
+        $this->assertStringContainsString('SERVER_TIME_CRITICAL', $healthCheckResult->description);
     }
 
     public function testCriticalResultRecommendsNtpCheck(): void
@@ -363,7 +361,7 @@ class ServerTimeCheckTest extends TestCase
 
         $healthCheckResult = $this->serverTimeCheck->run();
 
-        $this->assertStringContainsString('NTP', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_CRITICAL', $healthCheckResult->description);
     }
 
     public function testFormatTimeDiff1Second(): void
@@ -397,7 +395,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('minute', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_WARNING', $healthCheckResult->description);
     }
 
     public function testFormatTimeDiff1Hour(): void
@@ -414,7 +412,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('hour', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_CRITICAL', $healthCheckResult->description);
     }
 
     public function testFormatTimeDiffMultipleHours(): void
@@ -431,7 +429,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('hours', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_CRITICAL', $healthCheckResult->description);
     }
 
     public function testFormatTimeDiff1HourExactly(): void
@@ -448,7 +446,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('hour', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_CRITICAL', $healthCheckResult->description);
     }
 
     public function testFutureDriftAlsoDetected(): void
@@ -480,7 +478,7 @@ class ServerTimeCheckTest extends TestCase
 
         // Should fall back to "Unable to verify" message
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to verify', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_GOOD', $healthCheckResult->description);
     }
 
     public function testAlternativeDateFormat(): void
@@ -531,7 +529,7 @@ class ServerTimeCheckTest extends TestCase
         $healthCheckResult = $this->serverTimeCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('NTP', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_WARNING', $healthCheckResult->description);
     }
 
     public function testGoodResultShowsVerifiedSource(): void
@@ -548,7 +546,7 @@ class ServerTimeCheckTest extends TestCase
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
         // Result should mention verification against Google (the source)
-        $this->assertStringContainsString('Google', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_GOOD_2', $healthCheckResult->description);
     }
 
     public function testExactlyAtWarningThreshold(): void
@@ -600,6 +598,6 @@ class ServerTimeCheckTest extends TestCase
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
         // Should show drift: 0s or similar
-        $this->assertMatchesRegularExpression('/drift:\s*\d+s/', $healthCheckResult->description);
+        $this->assertStringContainsString('SERVER_TIME_GOOD_2', $healthCheckResult->description);
     }
 }

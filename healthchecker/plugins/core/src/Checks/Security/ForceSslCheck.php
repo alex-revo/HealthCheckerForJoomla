@@ -37,6 +37,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -93,29 +94,25 @@ final class ForceSslCheck extends AbstractHealthCheck
 
         // No SSL enforcement and not using HTTPS - critical security issue
         if (($forceSsl === -1 || $forceSsl === 0) && ! $isHttps) {
-            return $this->critical('Force SSL is disabled and site is not using HTTPS. Enable SSL for security.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_FORCE_SSL_CRITICAL'));
         }
 
         // Using HTTPS but not enforcing it - users could still access via HTTP
         if (($forceSsl === -1 || $forceSsl === 0) && $isHttps) {
-            return $this->warning(
-                'Site is using HTTPS but Force SSL is disabled. Enable Force SSL to ensure all connections use HTTPS.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_FORCE_SSL_WARNING'));
         }
 
         // Only enforcing SSL for administrator - frontend remains unprotected
         if ($forceSsl === 1) {
-            return $this->warning(
-                'Force SSL is set to Administrator only. Consider enabling for entire site (option 2).',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_FORCE_SSL_WARNING_2'));
         }
 
         // SSL enforced for entire site - optimal security
         if ($forceSsl === 2) {
-            return $this->good('Force SSL is enabled for the entire site.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_FORCE_SSL_GOOD'));
         }
 
         // Fallback for any unexpected configuration
-        return $this->good('SSL configuration appears correct.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_FORCE_SSL_GOOD_2'));
     }
 }

@@ -33,6 +33,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\MySitesGuru\Checks;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -151,16 +152,9 @@ final class MySitesGuruConnectionCheck extends AbstractHealthCheck
         $bfnetworkPath = $this->getBfnetworkPath();
 
         if (is_dir($bfnetworkPath)) {
-            return $this->good(
-                'This site is connected to mySites.guru monitoring. ' .
-                    'Your health checks run automatically 24/7 with instant alerts when issues arise.',
-            );
+            return $this->good(Text::_('PLG_HEALTHCHECKER_MYSITESGURU_CHECK_MYSITESGURU_CONNECTION_GOOD'));
         }
 
-        return $this->warning(
-            'This site is not connected to mySites.guru. ' .
-                'Monitor unlimited Joomla sites from one dashboard with automated health checks, ' .
-                'uptime monitoring, and instant alerts. Learn more at https://mysites.guru',
-        );
+        return $this->warning(Text::_('PLG_HEALTHCHECKER_MYSITESGURU_CHECK_MYSITESGURU_CONNECTION_WARNING'));
     }
 }

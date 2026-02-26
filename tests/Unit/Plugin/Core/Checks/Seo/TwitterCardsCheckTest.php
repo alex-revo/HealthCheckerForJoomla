@@ -70,7 +70,10 @@ HTML;
         $healthCheckResult = $this->twitterCardsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('essential', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsGoodWithOpenGraphFallbacks(): void
@@ -95,7 +98,10 @@ HTML;
         $healthCheckResult = $this->twitterCardsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('fallback', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_GOOD_FALLBACKS',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenMissingTwitterCardType(): void
@@ -117,7 +123,10 @@ HTML;
         $healthCheckResult = $this->twitterCardsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('twitter:card', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenAllTagsMissing(): void
@@ -138,7 +147,10 @@ HTML;
         $healthCheckResult = $this->twitterCardsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Missing', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenHttpError(): void
@@ -149,7 +161,10 @@ HTML;
         $healthCheckResult = $this->twitterCardsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('HTTP 500', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenConnectionFails(): void
@@ -160,7 +175,10 @@ HTML;
         $healthCheckResult = $this->twitterCardsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to check', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_WARNING_3',
+            $healthCheckResult->description,
+        );
     }
 
     public function testDetectsContentBeforeNameOrder(): void
@@ -229,7 +247,10 @@ HTML;
         $healthCheckResult = $this->twitterCardsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('image', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_TWITTER_CARDS_GOOD_NOIMAGE',
+            $healthCheckResult->description,
+        );
     }
 
     public function testResultMetadata(): void

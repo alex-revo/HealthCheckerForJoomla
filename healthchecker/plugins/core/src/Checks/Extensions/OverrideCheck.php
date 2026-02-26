@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -101,7 +102,7 @@ final class OverrideCheck extends AbstractHealthCheck
         $overridesTable = $prefix . 'template_overrides';
 
         if (! \in_array($overridesTable, $tables, true)) {
-            return $this->good('Template override tracking is not available.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_EXTENSIONS_OVERRIDES_GOOD'));
         }
 
         // Get details of overrides that may need updating
@@ -136,7 +137,7 @@ final class OverrideCheck extends AbstractHealthCheck
         $totalOverrides = (int) $database->setQuery($query)
             ->loadResult();
 
-        return $this->good(sprintf('%d template override(s) tracked, all up to date.', $totalOverrides));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_OVERRIDES_GOOD_2', $totalOverrides));
     }
 
     /**
@@ -179,8 +180,7 @@ final class OverrideCheck extends AbstractHealthCheck
         }
 
         // Build the message
-        $message = sprintf('%d template override(s) may need updating after core/extension changes. ', $count);
-        $message .= 'Review these in System → Templates → Templates: ';
+        $message = Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_OVERRIDES_WARNING', $count) . ' ';
 
         $templateDetails = [];
         $shownCount = 0;
@@ -209,7 +209,10 @@ final class OverrideCheck extends AbstractHealthCheck
 
         // Add note if we truncated the list
         if ($count > self::MAX_DETAILS_TO_SHOW) {
-            $message .= sprintf(' (and %d more)', $count - self::MAX_DETAILS_TO_SHOW);
+            $message .= Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_EXTENSIONS_OVERRIDES_WARNING_MORE',
+                $count - self::MAX_DETAILS_TO_SHOW,
+            );
         }
 
         return $message;

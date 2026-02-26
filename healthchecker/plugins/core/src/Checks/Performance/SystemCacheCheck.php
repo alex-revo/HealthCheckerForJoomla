@@ -35,6 +35,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -104,9 +105,7 @@ final class SystemCacheCheck extends AbstractHealthCheck
         // Both Global Configuration and plugin disabled - no caching active
         // This significantly impacts performance on production sites
         if (! $cacheEnabled && ! $cachePlugin) {
-            return $this->warning(
-                'System caching is disabled. Enable caching for better performance in production.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_SYSTEM_CACHE_WARNING'));
         }
 
         // At least one caching mechanism is enabled
@@ -114,6 +113,6 @@ final class SystemCacheCheck extends AbstractHealthCheck
         // Note: Joomla 5 default is empty string (auto-detect) - not stored in DB if using default
         $cacheHandler = Factory::getApplication()->get('cache_handler', '') ?: 'auto-detect';
 
-        return $this->good(sprintf('System caching is enabled using the %s handler.', $cacheHandler));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_PERFORMANCE_SYSTEM_CACHE_GOOD', $cacheHandler));
     }
 }

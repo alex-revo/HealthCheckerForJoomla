@@ -64,15 +64,15 @@ class PhpVersionCheckTest extends TestCase
 
         // For PHP 8.2+ we expect Good, otherwise Warning
         $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
-        $this->assertStringContainsString(PHP_VERSION, $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_VERSION', $healthCheckResult->description);
     }
 
     public function testRunDescriptionContainsVersionInfo(): void
     {
         $healthCheckResult = $this->phpVersionCheck->run();
 
-        // Should contain PHP version information
-        $this->assertMatchesRegularExpression('/\d+\.\d+/', $healthCheckResult->description);
+        // Should contain the language key for PHP version
+        $this->assertStringContainsString('PHP_VERSION', $healthCheckResult->description);
     }
 
     public function testPhpVersionConstantIsAvailable(): void
@@ -101,8 +101,8 @@ class PhpVersionCheckTest extends TestCase
     {
         $healthCheckResult = $this->phpVersionCheck->run();
 
-        // The description should include the actual PHP version
-        $this->assertStringContainsString(PHP_VERSION, $healthCheckResult->description);
+        // The description should contain the language key for PHP version
+        $this->assertStringContainsString('PHP_VERSION', $healthCheckResult->description);
     }
 
     public function testCurrentPhpVersionMeetsMinimumRequirement(): void
@@ -217,8 +217,8 @@ class PhpVersionCheckTest extends TestCase
     {
         $healthCheckResult = $this->phpVersionCheck->run();
 
-        // Description should contain a version number
-        $this->assertMatchesRegularExpression('/\d+\.\d+/', $healthCheckResult->description);
+        // Description should contain the language key for PHP version
+        $this->assertStringContainsString('PHP_VERSION', $healthCheckResult->description);
     }
 
     public function testVersionCompareWithDevelopmentVersions(): void
@@ -296,7 +296,7 @@ class PhpVersionCheckTest extends TestCase
         // Description should be properly formatted
         $this->assertIsString($healthCheckResult->description);
         $this->assertGreaterThan(10, strlen($healthCheckResult->description));
-        $this->assertStringContainsString('PHP', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_VERSION', $healthCheckResult->description);
     }
 
     public function testCheckHandlesAllThreeVersionComparisonCases(): void

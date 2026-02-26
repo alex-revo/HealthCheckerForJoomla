@@ -41,6 +41,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -91,9 +92,11 @@ final class OpenSslExtensionCheck extends AbstractHealthCheck
     {
         // OpenSSL is essential for secure operation of any modern Joomla site
         if (! extension_loaded('openssl')) {
-            return $this->critical('OpenSSL extension is not loaded. HTTPS connections and encryption will not work.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OPENSSL_EXTENSION_CRITICAL'));
         }
 
-        return $this->good(sprintf('OpenSSL extension is loaded (%s).', OPENSSL_VERSION_TEXT));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_OPENSSL_EXTENSION_GOOD', OPENSSL_VERSION_TEXT),
+        );
     }
 }

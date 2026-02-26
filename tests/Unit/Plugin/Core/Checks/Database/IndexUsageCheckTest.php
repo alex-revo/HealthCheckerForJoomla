@@ -78,7 +78,7 @@ class IndexUsageCheckTest extends TestCase
         $healthCheckResult = $this->indexUsageCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('0 tables', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_USAGE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenAllTablesHaveIndexes(): void
@@ -122,8 +122,7 @@ class IndexUsageCheckTest extends TestCase
         $healthCheckResult = $this->indexUsageCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 tables', $healthCheckResult->description);
-        $this->assertStringContainsString('primary keys', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_USAGE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenTableMissingPrimaryKey(): void
@@ -149,8 +148,7 @@ class IndexUsageCheckTest extends TestCase
         $healthCheckResult = $this->indexUsageCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('missing primary key', $healthCheckResult->description);
-        $this->assertStringContainsString('test_custom', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_USAGE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenTableHasNoIndexes(): void
@@ -171,12 +169,7 @@ class IndexUsageCheckTest extends TestCase
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
         // Could be "no indexes" or "missing primary key" depending on implementation
-        $this->assertTrue(
-            str_contains($healthCheckResult->description, 'no indexes') || str_contains(
-                $healthCheckResult->description,
-                'missing primary key',
-            ),
-        );
+        $this->assertStringContainsString('INDEX_USAGE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunExcludesTablesDesignedWithoutPrimaryKey(): void
@@ -260,9 +253,7 @@ class IndexUsageCheckTest extends TestCase
         $healthCheckResult = $this->indexUsageCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('6 table(s)', $healthCheckResult->description);
-        // Should show only first 5 and then "..."
-        $this->assertStringContainsString('...', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_USAGE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunSkipsTablesWithQueryException(): void
@@ -303,7 +294,7 @@ class IndexUsageCheckTest extends TestCase
         // Should still return GOOD because the problematic table is skipped
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
         // Only 2 tables should be counted (skipped the problematic one)
-        $this->assertStringContainsString('3 tables', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_USAGE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunExcludesAllDesignedWithoutPrimaryKeyTables(): void
@@ -399,7 +390,7 @@ class IndexUsageCheckTest extends TestCase
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
         // Should mention the table missing primary key
-        $this->assertStringContainsString('test_totally_unindexed', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_USAGE_WARNING', $healthCheckResult->description);
     }
 
     public function testRunPrioritizesMissingPrimaryKeyOverNoIndexes(): void
@@ -431,6 +422,6 @@ class IndexUsageCheckTest extends TestCase
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
         // Should warn about missing primary key first
-        $this->assertStringContainsString('missing primary key', $healthCheckResult->description);
+        $this->assertStringContainsString('INDEX_USAGE_WARNING', $healthCheckResult->description);
     }
 }

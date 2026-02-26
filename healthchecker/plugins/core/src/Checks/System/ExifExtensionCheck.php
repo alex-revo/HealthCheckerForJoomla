@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -82,9 +83,9 @@ final class ExifExtensionCheck extends AbstractHealthCheck
     protected function performCheck(): HealthCheckResult
     {
         if (! \function_exists('exif_read_data')) {
-            return $this->warning('EXIF extension is not installed. Image metadata reading will not be available.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_EXIF_EXTENSION_WARNING'));
         }
 
-        return $this->good('EXIF extension is installed for image metadata support.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_EXIF_EXTENSION_GOOD'));
     }
 }

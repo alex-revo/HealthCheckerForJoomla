@@ -36,6 +36,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -97,17 +98,15 @@ final class SefUrlsCheck extends AbstractHealthCheck
 
         // Check if basic SEF URLs are disabled - this is the most critical setting
         if ($sef === 0) {
-            return $this->warning('Search Engine Friendly URLs are disabled. Enable them for better SEO.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SEF_URLS_WARNING'));
         }
 
         // SEF is enabled but URL rewriting is off - URLs will still contain index.php
         if ($sefRewrite === 0) {
-            return $this->warning(
-                'SEF URLs are enabled but URL rewriting is off. Enable "Use URL Rewriting" for cleaner URLs.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SEF_URLS_WARNING_2'));
         }
 
         // Both settings are enabled - optimal configuration for SEO
-        return $this->good('SEF URLs and URL rewriting are enabled.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_SEF_URLS_GOOD'));
     }
 }

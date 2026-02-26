@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -107,13 +108,10 @@ final class AutoIncrementCheck extends AbstractHealthCheck
 
         if ($warnings !== []) {
             return $this->warning(
-                sprintf(
-                    'Auto-increment values are high in: %s. Consider archiving old data.',
-                    implode(', ', $warnings),
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_AUTO_INCREMENT_WARNING', implode(', ', $warnings)),
             );
         }
 
-        return $this->good('Auto-increment values have sufficient headroom.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_AUTO_INCREMENT_GOOD'));
     }
 }

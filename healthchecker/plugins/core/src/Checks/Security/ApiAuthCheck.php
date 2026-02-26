@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -98,14 +99,14 @@ final class ApiAuthCheck extends AbstractHealthCheck
         $enabledPlugins = array_filter($plugins, fn($p): bool => (int) $p->enabled === 1);
 
         if ($enabledPlugins === []) {
-            return $this->warning(
-                'No API authentication plugins are enabled. The Web Services API will be inaccessible.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_API_AUTH_WARNING'));
         }
 
         // Extract plugin element names for reporting
         $pluginNames = array_map(fn($p) => $p->element, $enabledPlugins);
 
-        return $this->good(sprintf('API authentication enabled: %s', implode(', ', $pluginNames)));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_API_AUTH_GOOD', implode(', ', $pluginNames)),
+        );
     }
 }

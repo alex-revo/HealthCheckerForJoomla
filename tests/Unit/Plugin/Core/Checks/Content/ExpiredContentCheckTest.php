@@ -64,7 +64,7 @@ class ExpiredContentCheckTest extends TestCase
         $healthCheckResult = $this->expiredContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No published articles', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_EXPIRED_CONTENT_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenExpiredContentExists(): void
@@ -75,7 +75,6 @@ class ExpiredContentCheckTest extends TestCase
         $healthCheckResult = $this->expiredContentCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 published article', $healthCheckResult->description);
-        $this->assertStringContainsString('expiry date', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_EXPIRED_CONTENT_WARNING', $healthCheckResult->description);
     }
 }

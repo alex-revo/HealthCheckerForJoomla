@@ -90,7 +90,7 @@ class HttpsRedirectCheckTest extends TestCase
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not configured', $healthCheckResult->description);
+        $this->assertStringContainsString('HTTPS_REDIRECT_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenForceSslIsAdminOnly(): void
@@ -100,8 +100,7 @@ class HttpsRedirectCheckTest extends TestCase
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('administrator', strtolower($healthCheckResult->description));
-        $this->assertStringContainsString('option 2', $healthCheckResult->description);
+        $this->assertStringContainsString('HTTPS_REDIRECT_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenForceSslEntireSiteButNoHttps(): void
@@ -113,8 +112,7 @@ class HttpsRedirectCheckTest extends TestCase
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Force SSL is enabled', $healthCheckResult->description);
-        $this->assertStringContainsString('SSL certificate', $healthCheckResult->description);
+        $this->assertStringContainsString('HTTPS_REDIRECT_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsValidStatus(): void
@@ -138,14 +136,8 @@ class HttpsRedirectCheckTest extends TestCase
     {
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
-        // The description should contain HTTPS or SSL related information
-        $this->assertTrue(
-            stripos($healthCheckResult->description, 'https') !== false ||
-            stripos($healthCheckResult->description, 'ssl') !== false ||
-            stripos($healthCheckResult->description, 'redirect') !== false ||
-            stripos($healthCheckResult->description, 'configured') !== false,
-            'Description should mention HTTPS, SSL, redirect, or configuration status',
-        );
+        // The description should contain a language key related to HTTPS redirect
+        $this->assertStringContainsString('HTTPS_REDIRECT', strtoupper($healthCheckResult->description));
     }
 
     public function testRunResultContainsSlug(): void
@@ -266,11 +258,7 @@ HTACCESS;
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertTrue(
-            stripos($healthCheckResult->description, 'Force SSL') !== false ||
-            stripos($healthCheckResult->description, 'configuration') !== false ||
-            stripos($healthCheckResult->description, 'htaccess') !== false,
-        );
+        $this->assertStringContainsString('HTTPS_REDIRECT_CRITICAL', $healthCheckResult->description);
     }
 
     public function testWarningForAdminOnlyMentionsEntireSite(): void
@@ -280,7 +268,7 @@ HTACCESS;
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('entire site', $healthCheckResult->description);
+        $this->assertStringContainsString('HTTPS_REDIRECT_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithHtaccessContainingBothPatterns(): void
@@ -352,8 +340,7 @@ HTACCESS;
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        // Should mention checking SSL certificate
-        $this->assertStringContainsString('certificate', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('https_redirect_warning', strtolower($healthCheckResult->description));
     }
 
     public function testRunReturnsGoodWhenForceSslEntireSiteAndHttps(): void
@@ -365,8 +352,7 @@ HTACCESS;
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enforced', strtolower($healthCheckResult->description));
-        $this->assertStringContainsString('entire site', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('https_redirect_good', strtolower($healthCheckResult->description));
     }
 
     public function testRunReturnsGoodWhenHtaccessRedirectAndHttps(): void
@@ -384,7 +370,7 @@ HTACCESS;
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('htaccess', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('https_redirect_good', strtolower($healthCheckResult->description));
     }
 
     public function testRunReturnsWarningWhenHttpsButNoRedirect(): void
@@ -397,7 +383,7 @@ HTACCESS;
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('redirect', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('https_redirect_warning', strtolower($healthCheckResult->description));
     }
 
     public function testRunReturnsWarningWhenHttpsAndEmptyHtaccess(): void
@@ -410,7 +396,7 @@ HTACCESS;
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not be redirected', $healthCheckResult->description);
+        $this->assertStringContainsString('HTTPS_REDIRECT_WARNING', $healthCheckResult->description);
     }
 
     public function testGoodDescriptionMentionsJoomlaConfigForForceSsl(): void
@@ -421,7 +407,7 @@ HTACCESS;
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Joomla', $healthCheckResult->description);
+        $this->assertStringContainsString('HTTPS_REDIRECT_GOOD', $healthCheckResult->description);
     }
 
     public function testGoodDescriptionMentionsHtaccessForHtaccessRedirect(): void
@@ -437,7 +423,7 @@ HTACCESS;
         $healthCheckResult = $this->httpsRedirectCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('.htaccess', $healthCheckResult->description);
+        $this->assertStringContainsString('HTTPS_REDIRECT_GOOD', $healthCheckResult->description);
     }
 
     public function testFallbackGoodCaseWhenHtaccessRedirectButNotHttps(): void

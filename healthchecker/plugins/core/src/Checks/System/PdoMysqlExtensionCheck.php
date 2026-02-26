@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -80,11 +81,9 @@ final class PdoMysqlExtensionCheck extends AbstractHealthCheck
     protected function performCheck(): HealthCheckResult
     {
         if (! extension_loaded('pdo_mysql')) {
-            return $this->critical(
-                'PDO MySQL extension is not loaded. This is required for Joomla database connectivity.',
-            );
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_PDO_MYSQL_EXTENSION_CRITICAL'));
         }
 
-        return $this->good('PDO MySQL extension is loaded.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_PDO_MYSQL_EXTENSION_GOOD'));
     }
 }

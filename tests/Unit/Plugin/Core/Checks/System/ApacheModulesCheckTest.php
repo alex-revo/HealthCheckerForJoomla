@@ -102,7 +102,7 @@ class ApacheModulesCheckTest extends TestCase
         // If function doesn't exist, must return Good with "Not running on Apache"
         if (! $functionExists) {
             $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-            $this->assertStringContainsString('Not running on Apache', $healthCheckResult->description);
+            $this->assertStringContainsString('APACHE_MODULES_GOOD', $healthCheckResult->description);
         } else {
             // If function exists, we're on Apache - check should test modules
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
@@ -124,15 +124,8 @@ class ApacheModulesCheckTest extends TestCase
     {
         $healthCheckResult = $this->apacheModulesCheck->run();
 
-        $descLower = strtolower($healthCheckResult->description);
-
-        // Description should mention Apache, modules, or running status
-        $this->assertTrue(
-            str_contains($descLower, 'apache') ||
-            str_contains($descLower, 'module') ||
-            str_contains($descLower, 'running'),
-            'Description should contain relevant context about Apache modules',
-        );
+        // Description should contain the language key for Apache modules
+        $this->assertStringContainsString('APACHE_MODULES', $healthCheckResult->description);
     }
 
     public function testMultipleRunsReturnConsistentResults(): void
@@ -164,7 +157,7 @@ class ApacheModulesCheckTest extends TestCase
         if (! \function_exists('apache_get_modules')) {
             // We're in non-Apache environment - covers line 87-88
             $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-            $this->assertStringContainsString('Not running on Apache', $healthCheckResult->description);
+            $this->assertStringContainsString('APACHE_MODULES_GOOD', $healthCheckResult->description);
         } else {
             // We're on Apache - will test module checks
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);

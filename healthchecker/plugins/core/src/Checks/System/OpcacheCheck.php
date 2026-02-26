@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -85,31 +86,31 @@ final class OpcacheCheck extends AbstractHealthCheck
     {
         // Verify OPcache extension is loaded
         if (! extension_loaded('Zend OPcache')) {
-            return $this->warning('OPcache extension is not loaded. Performance will be significantly impacted.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OPCACHE_WARNING'));
         }
 
         // Check if OPcache is enabled in php.ini
         if (in_array(ini_get('opcache.enable'), ['', '0'], true)) {
-            return $this->warning('OPcache is installed but not enabled. Enable it for better performance.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OPCACHE_WARNING_2'));
         }
 
         // Retrieve current OPcache status (false = don't include script data for performance)
         $status = opcache_get_status(false);
 
         if ($status === false) {
-            return $this->warning('Unable to get OPcache status.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OPCACHE_WARNING_3'));
         }
 
         // Check if memory_usage data is available and valid
         if (! isset($status['memory_usage']) || ! is_array($status['memory_usage'])) {
-            return $this->good('OPcache is enabled (memory statistics not available).');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OPCACHE_GOOD'));
         }
 
         $memoryUsage = $status['memory_usage'];
 
         // Validate required keys exist
         if (! isset($memoryUsage['used_memory'], $memoryUsage['free_memory'])) {
-            return $this->good('OPcache is enabled (memory statistics incomplete).');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OPCACHE_GOOD_2'));
         }
 
         $usedMemory = $memoryUsage['used_memory'];
@@ -117,7 +118,7 @@ final class OpcacheCheck extends AbstractHealthCheck
 
         // Guard against invalid memory values (negative, zero, or unreasonable)
         if ($usedMemory < 0 || $freeMemory < 0 || ($usedMemory + $freeMemory) <= 0) {
-            return $this->good('OPcache is enabled (memory statistics unavailable in this context).');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OPCACHE_GOOD_3'));
         }
 
         $totalMemory = $usedMemory + $freeMemory;
@@ -125,19 +126,14 @@ final class OpcacheCheck extends AbstractHealthCheck
 
         // Sanity check: percentage should be between 0 and 100
         if ($usedPercent < 0 || $usedPercent > 100) {
-            return $this->good('OPcache is enabled (memory statistics unreliable).');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_OPCACHE_GOOD_4'));
         }
 
         // Warn if memory usage is critically high (scripts may be evicted)
         if ($usedPercent > 90) {
-            return $this->warning(
-                sprintf(
-                    'OPcache memory usage is high (%s%%). Consider increasing opcache.memory_consumption.',
-                    $usedPercent,
-                ),
-            );
+            return $this->warning(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_OPCACHE_WARNING_4', $usedPercent));
         }
 
-        return $this->good(sprintf('OPcache is enabled and healthy (%s%% memory used).', $usedPercent));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_OPCACHE_GOOD_5', $usedPercent));
     }
 }

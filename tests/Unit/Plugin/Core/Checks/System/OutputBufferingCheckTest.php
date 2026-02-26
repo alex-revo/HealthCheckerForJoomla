@@ -69,8 +69,8 @@ class OutputBufferingCheckTest extends TestCase
     {
         $healthCheckResult = $this->outputBufferingCheck->run();
 
-        // Description should mention output buffering
-        $this->assertStringContainsString('Output buffering', $healthCheckResult->description);
+        // Description should contain the language key for output buffering
+        $this->assertStringContainsString('OUTPUT_BUFFERING_GOOD', $healthCheckResult->description);
     }
 
     public function testCurrentOutputBufferingIsDetectable(): void
@@ -86,14 +86,14 @@ class OutputBufferingCheckTest extends TestCase
         $outputBuffering = ini_get('output_buffering');
         $healthCheckResult = $this->outputBufferingCheck->run();
 
-        // Check that description reflects the actual setting
+        // Check that description contains the appropriate language key
         if (in_array($outputBuffering, ['', '0', 'Off'], true)) {
-            $this->assertStringContainsString('disabled', $healthCheckResult->description);
+            $this->assertStringContainsString('OUTPUT_BUFFERING_GOOD', $healthCheckResult->description);
         } elseif ($outputBuffering === '1' || $outputBuffering === 'On') {
-            $this->assertStringContainsString('enabled', $healthCheckResult->description);
+            $this->assertStringContainsString('OUTPUT_BUFFERING_GOOD_2', $healthCheckResult->description);
         } else {
             // Numeric buffer size
-            $this->assertStringContainsString('bytes', $healthCheckResult->description);
+            $this->assertStringContainsString('OUTPUT_BUFFERING_GOOD_3', $healthCheckResult->description);
         }
     }
 
@@ -162,17 +162,15 @@ class OutputBufferingCheckTest extends TestCase
         $outputBuffering = ini_get('output_buffering');
         $healthCheckResult = $this->outputBufferingCheck->run();
 
-        // Verify the output buffering value is reflected in description
-        $this->assertStringContainsString('Output buffering', $healthCheckResult->description);
+        // Verify the description contains the appropriate language key
+        $this->assertStringContainsString('OUTPUT_BUFFERING_GOOD', $healthCheckResult->description);
 
         if (in_array($outputBuffering, ['', '0', 'Off'], true)) {
-            $this->assertStringContainsString('disabled', $healthCheckResult->description);
+            $this->assertStringContainsString('OUTPUT_BUFFERING_GOOD', $healthCheckResult->description);
         } elseif ($outputBuffering === '1' || $outputBuffering === 'On') {
-            $this->assertStringContainsString('enabled', $healthCheckResult->description);
+            $this->assertStringContainsString('OUTPUT_BUFFERING_GOOD_2', $healthCheckResult->description);
         } elseif (is_numeric($outputBuffering) && (int) $outputBuffering > 1) {
-            // Numeric buffer size
-            $this->assertStringContainsString('bytes', $healthCheckResult->description);
-            $this->assertStringContainsString($outputBuffering, $healthCheckResult->description);
+            $this->assertStringContainsString('OUTPUT_BUFFERING_GOOD_3', $healthCheckResult->description);
         }
     }
 
@@ -182,7 +180,7 @@ class OutputBufferingCheckTest extends TestCase
         $healthCheckResult = $this->outputBufferingCheck->run();
 
         if (in_array($outputBuffering, ['', '0', 'Off'], true)) {
-            $this->assertStringContainsString('recommended', $healthCheckResult->description);
+            $this->assertStringContainsString('OUTPUT_BUFFERING_GOOD', $healthCheckResult->description);
         }
     }
 }

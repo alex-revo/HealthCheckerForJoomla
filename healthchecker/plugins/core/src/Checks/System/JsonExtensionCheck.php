@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -82,9 +83,9 @@ final class JsonExtensionCheck extends AbstractHealthCheck
     {
         // JSON is a hard requirement for Joomla
         if (! extension_loaded('json')) {
-            return $this->critical('JSON extension is not loaded. This is required for Joomla.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_JSON_EXTENSION_CRITICAL'));
         }
 
-        return $this->good('JSON extension is loaded.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_JSON_EXTENSION_GOOD'));
     }
 }

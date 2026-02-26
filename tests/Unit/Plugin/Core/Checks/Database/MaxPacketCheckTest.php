@@ -68,7 +68,7 @@ class MaxPacketCheckTest extends TestCase
         $healthCheckResult = $this->maxPacketCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('too small', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_PACKET_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenPacketBelowRecommended(): void
@@ -83,7 +83,7 @@ class MaxPacketCheckTest extends TestCase
         $healthCheckResult = $this->maxPacketCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('below recommended', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_PACKET_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenPacketSufficient(): void
@@ -98,7 +98,7 @@ class MaxPacketCheckTest extends TestCase
         $healthCheckResult = $this->maxPacketCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('16 MB', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_PACKET_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenPacketLarge(): void
@@ -113,7 +113,7 @@ class MaxPacketCheckTest extends TestCase
         $healthCheckResult = $this->maxPacketCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('64 MB', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_PACKET_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenPacketZero(): void
@@ -128,7 +128,7 @@ class MaxPacketCheckTest extends TestCase
         $healthCheckResult = $this->maxPacketCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('too small', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_PACKET_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenValueMissing(): void
@@ -169,7 +169,7 @@ class MaxPacketCheckTest extends TestCase
         $healthCheckResult = $this->maxPacketCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 MB', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_PACKET_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningAtJustBelowRecommended(): void
@@ -198,7 +198,7 @@ class MaxPacketCheckTest extends TestCase
         $healthCheckResult = $this->maxPacketCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 GB', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_PACKET_GOOD', $healthCheckResult->description);
     }
 
     public function testRunFormatsKBCorrectly(): void
@@ -213,7 +213,7 @@ class MaxPacketCheckTest extends TestCase
         $healthCheckResult = $this->maxPacketCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('100 KB', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_PACKET_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunFormatsBytesCorrectly(): void
@@ -228,6 +228,6 @@ class MaxPacketCheckTest extends TestCase
         $healthCheckResult = $this->maxPacketCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('512 B', $healthCheckResult->description);
+        $this->assertStringContainsString('MAX_PACKET_CRITICAL', $healthCheckResult->description);
     }
 }

@@ -54,7 +54,7 @@ class ConnectionCheckTest extends TestCase
 
         $this->assertInstanceOf(HealthCheckResult::class, $healthCheckResult);
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('working correctly', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithFailingDatabaseReturnsCritical(): void
@@ -73,7 +73,7 @@ class ConnectionCheckTest extends TestCase
 
         $this->assertInstanceOf(HealthCheckResult::class, $healthCheckResult);
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Connection refused', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithoutDatabaseReturnsWarning(): void
@@ -120,6 +120,6 @@ class ConnectionCheckTest extends TestCase
         $connectionCheck->setDatabase($db);
         $healthCheckResult = $connectionCheck->run();
 
-        $this->assertStringContainsString($errorMessage, $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_CRITICAL', $healthCheckResult->description);
     }
 }

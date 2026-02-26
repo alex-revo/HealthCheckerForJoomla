@@ -41,6 +41,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -99,20 +100,20 @@ final class DiskSpaceCheck extends AbstractHealthCheck
         $freeSpace = @disk_free_space(JPATH_ROOT);
 
         if ($freeSpace === false) {
-            return $this->warning('Unable to determine available disk space.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_DISK_SPACE_WARNING'));
         }
 
         $freeFormatted = $this->formatBytes($freeSpace);
 
         if ($freeSpace < self::CRITICAL_BYTES) {
-            return $this->critical(sprintf('Disk space critically low: %s free.', $freeFormatted));
+            return $this->critical(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_DISK_SPACE_CRITICAL', $freeFormatted));
         }
 
         if ($freeSpace < self::WARNING_BYTES) {
-            return $this->warning(sprintf('Disk space is running low: %s free.', $freeFormatted));
+            return $this->warning(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_DISK_SPACE_WARNING_2', $freeFormatted));
         }
 
-        return $this->good(sprintf('Disk space available: %s free.', $freeFormatted));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_DISK_SPACE_GOOD', $freeFormatted));
     }
 
     /**

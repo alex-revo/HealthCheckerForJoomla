@@ -66,7 +66,7 @@ class UserNotesCheckTest extends TestCase
         $healthCheckResult = $this->userNotesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No user notes', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_NOTES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithNotesReturnsGood(): void
@@ -79,8 +79,7 @@ class UserNotesCheckTest extends TestCase
         $healthCheckResult = $this->userNotesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10 user note', $healthCheckResult->description);
-        $this->assertStringContainsString('5 user', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_NOTES_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithSingleNoteReturnsGood(): void
@@ -93,8 +92,7 @@ class UserNotesCheckTest extends TestCase
         $healthCheckResult = $this->userNotesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 user note', $healthCheckResult->description);
-        $this->assertStringContainsString('1 user', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_NOTES_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithManyNotesForFewUsersReturnsGood(): void
@@ -108,7 +106,6 @@ class UserNotesCheckTest extends TestCase
         $healthCheckResult = $this->userNotesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('50 user note', $healthCheckResult->description);
-        $this->assertStringContainsString('3 user', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_USER_NOTES_GOOD_2', $healthCheckResult->description);
     }
 }

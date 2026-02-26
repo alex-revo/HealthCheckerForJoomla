@@ -216,14 +216,8 @@ class DiskSpaceCheckTest extends TestCase
     {
         $healthCheckResult = $this->diskSpaceCheck->run();
 
-        // Description should contain "free" or information about disk space
-        $descLower = strtolower($healthCheckResult->description);
-        $this->assertTrue(
-            str_contains($descLower, 'free') ||
-            str_contains($descLower, 'disk') ||
-            str_contains($descLower, 'space') ||
-            str_contains($descLower, 'unable'),
-        );
+        // Description should contain the disk space language key
+        $this->assertStringContainsString('DISK_SPACE', $healthCheckResult->description);
     }
 
     public function testGoodStatusMentionsFreeSpace(): void
@@ -231,7 +225,7 @@ class DiskSpaceCheckTest extends TestCase
         $healthCheckResult = $this->diskSpaceCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Good) {
-            $this->assertStringContainsString('free', $healthCheckResult->description);
+            $this->assertStringContainsString('DISK_SPACE_GOOD', $healthCheckResult->description);
         }
     }
 
@@ -240,12 +234,7 @@ class DiskSpaceCheckTest extends TestCase
         $healthCheckResult = $this->diskSpaceCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Warning) {
-            $descLower = strtolower($healthCheckResult->description);
-            $this->assertTrue(
-                str_contains($descLower, 'low') ||
-                str_contains($descLower, 'running') ||
-                str_contains($descLower, 'unable'),
-            );
+            $this->assertStringContainsString('DISK_SPACE_WARNING', $healthCheckResult->description);
         } else {
             // If not warning, verify it's a valid status
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Good, HealthStatus::Critical]);
@@ -257,8 +246,7 @@ class DiskSpaceCheckTest extends TestCase
         $healthCheckResult = $this->diskSpaceCheck->run();
 
         if ($healthCheckResult->healthStatus === HealthStatus::Critical) {
-            $descLower = strtolower($healthCheckResult->description);
-            $this->assertTrue(str_contains($descLower, 'critical') || str_contains($descLower, 'low'));
+            $this->assertStringContainsString('DISK_SPACE_CRITICAL', $healthCheckResult->description);
         } else {
             // If not critical, verify it's a valid status
             $this->assertContains($healthCheckResult->healthStatus, [HealthStatus::Good, HealthStatus::Warning]);
@@ -290,11 +278,8 @@ class DiskSpaceCheckTest extends TestCase
     {
         $healthCheckResult = $this->diskSpaceCheck->run();
 
-        // Description should include size unit (B, KB, MB, GB, TB) or mention inability to determine
-        $hasUnit = preg_match('/\d+(\.\d+)?\s*(B|KB|MB|GB|TB)/i', $healthCheckResult->description);
-        $unableToDetermine = str_contains(strtolower($healthCheckResult->description), 'unable');
-
-        $this->assertTrue($hasUnit === 1 || $unableToDetermine);
+        // Description should contain the language key for disk space
+        $this->assertStringContainsString('DISK_SPACE', $healthCheckResult->description);
     }
 
     public function testJpathRootConstantDefined(): void

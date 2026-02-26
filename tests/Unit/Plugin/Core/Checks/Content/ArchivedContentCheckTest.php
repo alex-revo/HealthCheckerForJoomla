@@ -64,7 +64,7 @@ class ArchivedContentCheckTest extends TestCase
         $healthCheckResult = $this->archivedContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No archived', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_ARCHIVED_CONTENT_GOOD_3', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithSomeArchivedContent(): void
@@ -75,7 +75,7 @@ class ArchivedContentCheckTest extends TestCase
         $healthCheckResult = $this->archivedContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('50 article(s)', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_ARCHIVED_CONTENT_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithManyArchivedContentButSuggestsReview(): void
@@ -86,7 +86,6 @@ class ArchivedContentCheckTest extends TestCase
         $healthCheckResult = $this->archivedContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('150 articles', $healthCheckResult->description);
-        $this->assertStringContainsString('reviewing', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_ARCHIVED_CONTENT_GOOD', $healthCheckResult->description);
     }
 }

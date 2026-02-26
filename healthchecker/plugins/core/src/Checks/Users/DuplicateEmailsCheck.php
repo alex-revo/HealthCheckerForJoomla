@@ -40,6 +40,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -98,10 +99,10 @@ final class DuplicateEmailsCheck extends AbstractHealthCheck
 
         if ($duplicates !== []) {
             return $this->warning(
-                sprintf('%d email address(es) are used by multiple accounts.', count($duplicates)),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_DUPLICATE_EMAILS_WARNING', count($duplicates)),
             );
         }
 
-        return $this->good('No duplicate email addresses found.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_USERS_DUPLICATE_EMAILS_GOOD'));
     }
 }

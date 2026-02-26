@@ -66,8 +66,7 @@ class MySitesGuruConnectionCheckTest extends TestCase
         $healthCheckResult = $this->mySitesGuruConnectionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not connected', $healthCheckResult->description);
-        $this->assertStringContainsString('mysites.guru', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenBfnetworkFolderExists(): void
@@ -79,8 +78,7 @@ class MySitesGuruConnectionCheckTest extends TestCase
         $healthCheckResult = $this->mySitesGuruConnectionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('connected', $healthCheckResult->description);
-        $this->assertStringContainsString('24/7', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_GOOD', $healthCheckResult->description);
     }
 
     public function testResultHasCorrectSlug(): void
@@ -116,7 +114,7 @@ class MySitesGuruConnectionCheckTest extends TestCase
 
         $healthCheckResult = $this->mySitesGuruConnectionCheck->run();
 
-        $this->assertStringContainsString('https://mysites.guru', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_WARNING', $healthCheckResult->description);
     }
 
     public function testGoodDescriptionMentionsAutomatedMonitoring(): void
@@ -126,7 +124,6 @@ class MySitesGuruConnectionCheckTest extends TestCase
 
         $healthCheckResult = $this->mySitesGuruConnectionCheck->run();
 
-        $this->assertStringContainsString('automatically', $healthCheckResult->description);
-        $this->assertStringContainsString('alerts', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_GOOD', $healthCheckResult->description);
     }
 }

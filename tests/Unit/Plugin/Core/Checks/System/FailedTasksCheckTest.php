@@ -77,7 +77,7 @@ class FailedTasksCheckTest extends TestCase
         $healthCheckResult = $this->failedTasksCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('running successfully', $healthCheckResult->description);
+        $this->assertStringContainsString('FAILED_TASKS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithOneFailedTaskReturnsWarning(): void
@@ -88,7 +88,7 @@ class FailedTasksCheckTest extends TestCase
         $healthCheckResult = $this->failedTasksCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 scheduled task(s) have failed', $healthCheckResult->description);
+        $this->assertStringContainsString('FAILED_TASKS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithFiveFailedTasksReturnsWarning(): void
@@ -99,7 +99,7 @@ class FailedTasksCheckTest extends TestCase
         $healthCheckResult = $this->failedTasksCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 scheduled task(s) have failed', $healthCheckResult->description);
+        $this->assertStringContainsString('FAILED_TASKS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithMoreThanFiveFailedTasksReturnsWarningWithDifferentMessage(): void
@@ -110,8 +110,7 @@ class FailedTasksCheckTest extends TestCase
         $healthCheckResult = $this->failedTasksCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10 scheduled tasks have failed recently', $healthCheckResult->description);
-        $this->assertStringContainsString('Review the task logs', $healthCheckResult->description);
+        $this->assertStringContainsString('FAILED_TASKS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithManyFailedTasksSuggestsReview(): void
@@ -122,6 +121,6 @@ class FailedTasksCheckTest extends TestCase
         $healthCheckResult = $this->failedTasksCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Review the task logs', $healthCheckResult->description);
+        $this->assertStringContainsString('FAILED_TASKS_WARNING', $healthCheckResult->description);
     }
 }

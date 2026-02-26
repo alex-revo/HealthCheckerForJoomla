@@ -75,7 +75,7 @@ class DebugModeCheckTest extends TestCase
         $debugModeCheck = new DebugModeCheck();
         $healthCheckResult = $debugModeCheck->run();
 
-        $this->assertStringContainsStringIgnoringCase('debug', $healthCheckResult->description);
+        $this->assertStringContainsString('DEBUG_MODE', $healthCheckResult->description);
     }
 
     public function testCheckDoesNotRequireDatabase(): void

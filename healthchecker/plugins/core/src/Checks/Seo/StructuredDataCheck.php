@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -128,14 +129,12 @@ final class StructuredDataCheck extends AbstractHealthCheck
         // If structured data plugins are detected, rich snippets are likely configured
         if ($schemaPluginCount > 0) {
             return $this->good(
-                sprintf('Found %d enabled plugin(s) that may provide Schema.org structured data.', $schemaPluginCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_STRUCTURED_DATA_GOOD', $schemaPluginCount),
             );
         }
 
         // No plugins found, but return "good" since structured data is an enhancement
         // rather than a strict requirement - it's beneficial but not critical
-        return $this->good(
-            'No structured data plugin detected. Consider adding Schema.org markup to enhance search result appearances with rich snippets.',
-        );
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_STRUCTURED_DATA_GOOD_2'));
     }
 }

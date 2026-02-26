@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -87,19 +88,19 @@ final class MaxInputTimeCheck extends AbstractHealthCheck
         $maxInputTime = (int) ini_get('max_input_time');
 
         if ($maxInputTime === -1 || $maxInputTime === 0) {
-            return $this->good('Max input time is unlimited.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_INPUT_TIME_GOOD'));
         }
 
         if ($maxInputTime < self::MINIMUM_SECONDS) {
             return $this->warning(
-                sprintf(
-                    'Max input time (%ds) may cause issues with large file uploads. Recommended: %ds or unlimited (-1).',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_INPUT_TIME_WARNING',
                     $maxInputTime,
                     self::MINIMUM_SECONDS,
                 ),
             );
         }
 
-        return $this->good(sprintf('Max input time (%ds) is adequate.', $maxInputTime));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_INPUT_TIME_GOOD_2', $maxInputTime));
     }
 }

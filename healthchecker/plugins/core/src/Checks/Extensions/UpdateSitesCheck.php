@@ -33,6 +33,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -102,10 +103,10 @@ final class UpdateSitesCheck extends AbstractHealthCheck
         // Any disabled sites mean potential missed updates
         if ($disabledSites > 0) {
             return $this->warning(
-                sprintf('%d update site(s) disabled. You may miss important security updates.', $disabledSites),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_UPDATE_SITES_WARNING', $disabledSites),
             );
         }
 
-        return $this->good(sprintf('%d update site(s) enabled.', $enabledSites));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_UPDATE_SITES_GOOD', $enabledSites));
     }
 }

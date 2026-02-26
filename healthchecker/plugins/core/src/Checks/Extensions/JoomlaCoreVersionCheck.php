@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Extensions;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -96,10 +97,16 @@ final class JoomlaCoreVersionCheck extends AbstractHealthCheck
         // Compare versions - if current is older than latest, warn
         if ($latestVersion && version_compare($currentVersion, $latestVersion, '<')) {
             return $this->warning(
-                sprintf('Joomla %s is installed. Version %s is available.', $currentVersion, $latestVersion),
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_EXTENSIONS_JOOMLA_CORE_VERSION_WARNING',
+                    $currentVersion,
+                    $latestVersion,
+                ),
             );
         }
 
-        return $this->good(sprintf('Joomla %s is the latest version.', $currentVersion));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_EXTENSIONS_JOOMLA_CORE_VERSION_GOOD', $currentVersion),
+        );
     }
 }

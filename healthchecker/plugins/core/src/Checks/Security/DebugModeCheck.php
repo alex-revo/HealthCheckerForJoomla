@@ -35,6 +35,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -85,12 +86,10 @@ final class DebugModeCheck extends AbstractHealthCheck
 
         // Debug mode enabled - exposes sensitive technical information
         if ($config) {
-            return $this->warning(
-                'Debug mode is enabled. This should be disabled in production for security and performance.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_DEBUG_MODE_WARNING'));
         }
 
         // Debug mode disabled - no sensitive debugging information exposed
-        return $this->good('Debug mode is disabled.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_DEBUG_MODE_GOOD'));
     }
 }

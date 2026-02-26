@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -102,24 +103,21 @@ final class OrphanedArticlesCheck extends AbstractHealthCheck
             $database->setQuery($query);
             $count = (int) $database->loadResult();
         } catch (\Exception $exception) {
-            return $this->warning('Unable to check for orphaned articles: ' . $exception->getMessage());
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_WARNING', $exception->getMessage()),
+            );
         }
 
         if ($count > 10) {
             return $this->warning(
-                sprintf(
-                    '%d published articles are not linked from any menu. Consider creating menu items or unpublishing unused content.',
-                    $count,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_WARNING_2', $count),
             );
         }
 
         if ($count > 0) {
-            return $this->good(
-                sprintf('%d published articles are not linked from menus. This may be intentional.', $count),
-            );
+            return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_GOOD', $count));
         }
 
-        return $this->good('All published articles are linked from menus.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_GOOD_2'));
     }
 }

@@ -65,7 +65,7 @@ class UpdateSitesCheckTest extends TestCase
         $healthCheckResult = $this->updateSitesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10 update site(s) enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('UPDATE_SITES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSomeUpdateSitesDisabled(): void
@@ -77,8 +77,7 @@ class UpdateSitesCheckTest extends TestCase
         $healthCheckResult = $this->updateSitesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('3 update site(s) disabled', $healthCheckResult->description);
-        $this->assertStringContainsString('security updates', $healthCheckResult->description);
+        $this->assertStringContainsString('UPDATE_SITES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenOneUpdateSiteDisabled(): void
@@ -90,7 +89,7 @@ class UpdateSitesCheckTest extends TestCase
         $healthCheckResult = $this->updateSitesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 update site(s) disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('UPDATE_SITES_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenNoUpdateSites(): void
@@ -102,7 +101,7 @@ class UpdateSitesCheckTest extends TestCase
         $healthCheckResult = $this->updateSitesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('0 update site(s) enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('UPDATE_SITES_GOOD', $healthCheckResult->description);
     }
 
     public function testCheckNeverReturnsCritical(): void

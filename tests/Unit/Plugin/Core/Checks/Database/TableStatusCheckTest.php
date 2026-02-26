@@ -90,7 +90,7 @@ class TableStatusCheckTest extends TestCase
         $healthCheckResult = $this->tableStatusCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 tables', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_STATUS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenTableIsCorrupted(): void
@@ -108,7 +108,7 @@ class TableStatusCheckTest extends TestCase
         $healthCheckResult = $this->tableStatusCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('corrupted', $healthCheckResult->description);
+        $this->assertStringContainsString('TABLE_STATUS_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenEngineIsNull(): void

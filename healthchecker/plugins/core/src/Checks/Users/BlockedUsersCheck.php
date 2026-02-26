@@ -39,6 +39,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -96,10 +97,10 @@ final class BlockedUsersCheck extends AbstractHealthCheck
         // Threshold: More than 50 blocked accounts suggests cleanup needed
         if ($blockedCount > 50) {
             return $this->warning(
-                sprintf('%d blocked user accounts. Consider cleaning up old blocked accounts.', $blockedCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_BLOCKED_USERS_WARNING', $blockedCount),
             );
         }
 
-        return $this->good(sprintf('%d blocked user account(s).', $blockedCount));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_BLOCKED_USERS_GOOD', $blockedCount));
     }
 }

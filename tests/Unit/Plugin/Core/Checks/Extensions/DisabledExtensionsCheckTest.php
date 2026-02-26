@@ -64,7 +64,7 @@ class DisabledExtensionsCheckTest extends TestCase
         $healthCheckResult = $this->disabledExtensionsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 extension(s) disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('DISABLED_EXTENSIONS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithTwentyDisabledExtensionsReturnsGood(): void
@@ -85,8 +85,7 @@ class DisabledExtensionsCheckTest extends TestCase
         $healthCheckResult = $this->disabledExtensionsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('25 extensions', $healthCheckResult->description);
-        $this->assertStringContainsString('uninstalling', $healthCheckResult->description);
+        $this->assertStringContainsString('DISABLED_EXTENSIONS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithZeroDisabledExtensionsReturnsGood(): void

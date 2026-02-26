@@ -41,6 +41,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -101,9 +102,7 @@ final class DefaultUserGroupCheck extends AbstractHealthCheck
 
         // Check if default group is Administrator (7) or Super Users (8)
         if (in_array($defaultGroup, self::DANGEROUS_GROUPS, true)) {
-            return $this->critical(
-                'Default user group is set to Administrator or Super Users! This is a critical security risk.',
-            );
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_USERS_DEFAULT_USER_GROUP_CRITICAL'));
         }
 
         $database = $this->requireDatabase();
@@ -117,6 +116,8 @@ final class DefaultUserGroupCheck extends AbstractHealthCheck
         $groupName = $database->setQuery($query)
             ->loadResult();
 
-        return $this->good(sprintf('Default user group: %s', $groupName ?: 'ID ' . $defaultGroup));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_DEFAULT_USER_GROUP_GOOD', $groupName ?: 'ID ' . $defaultGroup),
+        );
     }
 }

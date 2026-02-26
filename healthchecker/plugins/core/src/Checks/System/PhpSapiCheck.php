@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -94,20 +95,20 @@ final class PhpSapiCheck extends AbstractHealthCheck
 
         // CLI context - this check is meant for web environments
         if ($sapi === 'cli') {
-            return $this->warning('Running via CLI. This check is meant for web environments.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_SAPI_WARNING'));
         }
 
         // Recommended modern SAPIs for production
         if (in_array($sapi, self::RECOMMENDED_SAPIS, true)) {
-            return $this->good(sprintf('PHP SAPI: %s (recommended for performance).', $sapi));
+            return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_SAPI_GOOD', $sapi));
         }
 
         // Apache mod_php - works but FPM would be better
         if ($sapi === 'apache2handler') {
-            return $this->good(sprintf('PHP SAPI: %s (consider PHP-FPM for better performance).', $sapi));
+            return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_SAPI_GOOD_2', $sapi));
         }
 
         // Other SAPI - report informatively
-        return $this->good(sprintf('PHP SAPI: %s', $sapi));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_PHP_SAPI_GOOD_3', $sapi));
     }
 }

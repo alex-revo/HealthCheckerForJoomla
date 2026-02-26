@@ -160,7 +160,7 @@ class LazyLoadCheckTest extends TestCase
         $healthCheckResult = $this->lazyLoadCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to determine', $healthCheckResult->description);
+        $this->assertStringContainsString('LAZY_LOAD_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunWithLazyImagesStringValueEnabledReturnsGood(): void
@@ -195,7 +195,7 @@ class LazyLoadCheckTest extends TestCase
         $healthCheckResult = $this->lazyLoadCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Lazy loading for images is disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('LAZY_LOAD_WARNING_4', $healthCheckResult->description);
     }
 
     public function testRunDescriptionMentionsLazyLoadingEnabled(): void
@@ -212,7 +212,7 @@ class LazyLoadCheckTest extends TestCase
         $healthCheckResult = $this->lazyLoadCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('LAZY_LOAD_GOOD', $healthCheckResult->description);
     }
 
     /**

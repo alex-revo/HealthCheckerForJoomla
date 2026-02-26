@@ -67,7 +67,7 @@ class ConnectionCharsetCheckTest extends TestCase
         $healthCheckResult = $this->connectionCharsetCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('utf8mb4', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_CHARSET_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenCharsetIsUtf8(): void
@@ -81,7 +81,7 @@ class ConnectionCharsetCheckTest extends TestCase
         $healthCheckResult = $this->connectionCharsetCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('utf8', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_CHARSET_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenCharsetIsLatin1(): void
@@ -95,7 +95,7 @@ class ConnectionCharsetCheckTest extends TestCase
         $healthCheckResult = $this->connectionCharsetCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('latin1', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_CHARSET_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenResultIsNull(): void
@@ -106,6 +106,6 @@ class ConnectionCharsetCheckTest extends TestCase
         $healthCheckResult = $this->connectionCharsetCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to determine', $healthCheckResult->description);
+        $this->assertStringContainsString('CONNECTION_CHARSET_CRITICAL', $healthCheckResult->description);
     }
 }

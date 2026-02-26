@@ -54,8 +54,7 @@ class JsonExtensionCheckTest extends TestCase
         $healthCheckResult = $this->jsonExtensionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('JSON', $healthCheckResult->description);
-        $this->assertStringContainsString('loaded', $healthCheckResult->description);
+        $this->assertStringContainsString('JSON_EXTENSION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsHealthCheckResult(): void

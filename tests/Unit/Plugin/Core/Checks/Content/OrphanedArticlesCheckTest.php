@@ -64,7 +64,7 @@ class OrphanedArticlesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('All published articles', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithFewOrphanedArticlesReturnsGood(): void
@@ -75,8 +75,7 @@ class OrphanedArticlesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 published articles', $healthCheckResult->description);
-        $this->assertStringContainsString('intentional', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithManyOrphanedArticlesReturnsWarning(): void
@@ -87,7 +86,10 @@ class OrphanedArticlesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('15 published articles', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithExactlyTenOrphanedArticlesReturnsGood(): void
@@ -99,8 +101,7 @@ class OrphanedArticlesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10 published articles', $healthCheckResult->description);
-        $this->assertStringContainsString('intentional', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithElevenOrphanedArticlesReturnsWarning(): void
@@ -112,7 +113,10 @@ class OrphanedArticlesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('11 published articles', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningOnDatabaseException(): void
@@ -123,7 +127,6 @@ class OrphanedArticlesCheckTest extends TestCase
         $healthCheckResult = $this->orphanedArticlesCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to check', $healthCheckResult->description);
-        $this->assertStringContainsString('Database connection failed', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_CONTENT_ORPHANED_ARTICLES_WARNING', $healthCheckResult->description);
     }
 }

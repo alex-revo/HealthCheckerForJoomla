@@ -39,6 +39,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -105,7 +106,7 @@ final class SlowQueryCheck extends AbstractHealthCheck
 
             // Slow query log is disabled - optimal for production
             if (! $isEnabled) {
-                return $this->good('Slow query log is disabled. No overhead from query timing or logging.');
+                return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_SLOW_QUERY_GOOD'));
             }
 
             // Slow query log is enabled - check if debug mode is also on
@@ -123,26 +124,31 @@ final class SlowQueryCheck extends AbstractHealthCheck
                 // Unable to get slow query count, continue without it
             }
 
-            $message = sprintf('Slow query log is enabled (threshold: %s seconds).', $longQueryTime);
-
-            // Append slow query count if available
-            if ($slowQueries !== null && $slowQueries > 0) {
-                $message .= sprintf(' %d slow queries recorded since server start.', $slowQueries);
-            }
+            $slowQueryInfo = ($slowQueries !== null && $slowQueries > 0)
+                ? Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_SLOW_QUERY_COUNT', $slowQueries)
+                : '';
 
             // If debug mode is also enabled, this is acceptable for debugging
             if ($debugModeEnabled) {
                 return $this->warning(
-                    $message . ' This is acceptable during active debugging but should be disabled in production.',
+                    Text::sprintf(
+                        'COM_HEALTHCHECKER_CHECK_DATABASE_SLOW_QUERY_WARNING',
+                        $longQueryTime,
+                    ) . $slowQueryInfo . ' ' . Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_SLOW_QUERY_WARNING_DEBUG'),
                 );
             }
 
             // Slow query log enabled in production - critical
             return $this->critical(
-                $message . ' Disable slow query logging in production to reduce database overhead.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_SLOW_QUERY_CRITICAL',
+                    $longQueryTime,
+                ) . $slowQueryInfo . ' ' . Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_SLOW_QUERY_CRITICAL_ACTION'),
             );
         } catch (\Exception $exception) {
-            return $this->warning('Unable to check slow query log status: ' . $exception->getMessage());
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_SLOW_QUERY_WARNING_2', $exception->getMessage()),
+            );
         }
     }
 }

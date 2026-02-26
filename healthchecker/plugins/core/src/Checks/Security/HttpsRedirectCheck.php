@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -111,43 +112,35 @@ final class HttpsRedirectCheck extends AbstractHealthCheck
 
         // Force SSL enabled for entire site and currently using HTTPS - optimal
         if ($forceSsl === 2 && $isHttps) {
-            return $this->good('HTTPS is enforced for the entire site via Joomla configuration.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTTPS_REDIRECT_GOOD'));
         }
 
         // Force SSL enabled but not currently on HTTPS - certificate issue
         if ($forceSsl === 2 && ! $isHttps) {
-            return $this->warning(
-                'Force SSL is enabled for entire site, but current connection is not HTTPS. Check SSL certificate configuration.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTTPS_REDIRECT_WARNING'));
         }
 
         // .htaccess redirect configured and currently using HTTPS
         if ($hasHtaccessRedirect && $isHttps) {
-            return $this->good('HTTPS redirect appears to be configured via .htaccess.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTTPS_REDIRECT_GOOD_2'));
         }
 
         // Force SSL only for administrator - frontend not protected
         if ($forceSsl === 1) {
-            return $this->warning(
-                'HTTPS is only enforced for administrator. Consider enabling Force SSL for the entire site (option 2).',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTTPS_REDIRECT_WARNING_2'));
         }
 
         // Not using HTTPS and no redirect configured - critical security issue
         if (! $isHttps && $forceSsl === 0 && ! $hasHtaccessRedirect) {
-            return $this->critical(
-                'HTTPS redirect is not configured. Enable Force SSL in Global Configuration or configure .htaccess redirect.',
-            );
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTTPS_REDIRECT_CRITICAL'));
         }
 
         // Using HTTPS but no automatic redirect - users can still access via HTTP
         if ($isHttps && $forceSsl === 0 && ! $hasHtaccessRedirect) {
-            return $this->warning(
-                'Site is using HTTPS but no redirect is configured. Users accessing via HTTP will not be redirected.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTTPS_REDIRECT_WARNING_3'));
         }
 
         // Fallback for any other configuration state
-        return $this->good('HTTPS configuration appears correct.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_HTTPS_REDIRECT_GOOD_3'));
     }
 }

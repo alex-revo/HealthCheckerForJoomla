@@ -34,6 +34,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -97,9 +98,7 @@ final class TwoFactorAuthCheck extends AbstractHealthCheck
             ->loadResult();
 
         if ($enabled2faPlugins === 0) {
-            return $this->warning(
-                'No Multi-Factor Authentication plugins are enabled. Consider enabling 2FA for better security.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_TWO_FACTOR_AUTH_WARNING'));
         }
 
         // Count total active Super Admin accounts (group_id = 8, not blocked)
@@ -130,18 +129,15 @@ final class TwoFactorAuthCheck extends AbstractHealthCheck
         // Plugins enabled but NO Super Admins have MFA configured
         if ($totalSuperAdmins > 0 && $superAdminsWithMFA === 0) {
             return $this->warning(
-                sprintf(
-                    '%d MFA plugin(s) enabled but no Super Admins have MFA configured. Configure MFA for administrator accounts.',
-                    $enabled2faPlugins,
-                ),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_TWO_FACTOR_AUTH_WARNING_2', $enabled2faPlugins),
             );
         }
 
         // Some but not all Super Admins have MFA configured
         if ($superAdminsWithMFA < $totalSuperAdmins) {
             return $this->warning(
-                sprintf(
-                    '%d MFA plugin(s) enabled. %d of %d Super Admins have MFA configured. Configure MFA for all administrators.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SECURITY_TWO_FACTOR_AUTH_WARNING_3',
                     $enabled2faPlugins,
                     $superAdminsWithMFA,
                     $totalSuperAdmins,
@@ -151,8 +147,8 @@ final class TwoFactorAuthCheck extends AbstractHealthCheck
 
         // All Super Admins have MFA configured
         return $this->good(
-            sprintf(
-                '%d MFA plugin(s) enabled and all %d Super Admin(s) have MFA configured.',
+            Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_SECURITY_TWO_FACTOR_AUTH_GOOD',
                 $enabled2faPlugins,
                 $totalSuperAdmins,
             ),

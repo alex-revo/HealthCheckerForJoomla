@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -90,14 +91,18 @@ final class SessionSavePathCheck extends AbstractHealthCheck
 
         // Verify directory exists on filesystem
         if (! is_dir($savePath)) {
-            return $this->critical(sprintf('Session save path does not exist: %s', $savePath));
+            return $this->critical(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_SESSION_SAVE_PATH_CRITICAL', $savePath),
+            );
         }
 
         // Verify PHP has write permissions to store session files
         if (! is_writable($savePath)) {
-            return $this->critical(sprintf('Session save path is not writable: %s', $savePath));
+            return $this->critical(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_SESSION_SAVE_PATH_CRITICAL_2', $savePath),
+            );
         }
 
-        return $this->good(sprintf('Session save path is writable: %s', $savePath));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_SESSION_SAVE_PATH_GOOD', $savePath));
     }
 }

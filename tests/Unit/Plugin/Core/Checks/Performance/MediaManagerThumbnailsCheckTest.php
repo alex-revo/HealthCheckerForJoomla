@@ -54,7 +54,7 @@ class MediaManagerThumbnailsCheckTest extends TestCase
         $healthCheckResult = $this->mediaManagerThumbnailsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('check_error', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithPluginNotFoundReturnsWarning(): void
@@ -65,7 +65,10 @@ class MediaManagerThumbnailsCheckTest extends TestCase
         $healthCheckResult = $this->mediaManagerThumbnailsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not found', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString(
+            'media_manager_thumbnails_warning',
+            strtolower($healthCheckResult->description),
+        );
     }
 
     public function testRunWithPluginDisabledReturnsWarning(): void
@@ -82,7 +85,10 @@ class MediaManagerThumbnailsCheckTest extends TestCase
         $healthCheckResult = $this->mediaManagerThumbnailsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString(
+            'media_manager_thumbnails_warning',
+            strtolower($healthCheckResult->description),
+        );
     }
 
     public function testRunWithThumbnailsEnabledReturnsGood(): void
@@ -99,7 +105,7 @@ class MediaManagerThumbnailsCheckTest extends TestCase
         $healthCheckResult = $this->mediaManagerThumbnailsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('200', $healthCheckResult->description);
+        $this->assertStringContainsString('MEDIA_MANAGER_THUMBNAILS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithThumbnailsDisabledReturnsWarning(): void
@@ -116,7 +122,10 @@ class MediaManagerThumbnailsCheckTest extends TestCase
         $healthCheckResult = $this->mediaManagerThumbnailsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString(
+            'media_manager_thumbnails_warning',
+            strtolower($healthCheckResult->description),
+        );
     }
 
     public function testRunWithInvalidParamsReturnsWarning(): void
@@ -131,7 +140,10 @@ class MediaManagerThumbnailsCheckTest extends TestCase
         $healthCheckResult = $this->mediaManagerThumbnailsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('read', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString(
+            'media_manager_thumbnails_warning',
+            strtolower($healthCheckResult->description),
+        );
     }
 
     public function testRunWithNegativeThumbnailSizeReturnsWarning(): void

@@ -56,7 +56,7 @@ class DatabaseQueryCacheCheckTest extends TestCase
         $healthCheckResult = $this->databaseQueryCacheCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('check_error', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithMysql8ReturnsGoodQueryCacheNotAvailable(): void
@@ -67,7 +67,7 @@ class DatabaseQueryCacheCheckTest extends TestCase
         $healthCheckResult = $this->databaseQueryCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('MySQL 8.0+', $healthCheckResult->description);
+        $this->assertStringContainsString('DATABASE_QUERY_CACHE_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithMariaDbAndCacheDisabledReturnsWarning(): void
@@ -78,7 +78,10 @@ class DatabaseQueryCacheCheckTest extends TestCase
         $healthCheckResult = $this->databaseQueryCacheCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString(
+            'database_query_cache_warning_2',
+            strtolower($healthCheckResult->description),
+        );
     }
 
     public function testRunWithMariaDbAndCacheEnabledWithSizeReturnsGood(): void
@@ -90,7 +93,7 @@ class DatabaseQueryCacheCheckTest extends TestCase
         $healthCheckResult = $this->databaseQueryCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('16', $healthCheckResult->description);
+        $this->assertStringContainsString('DATABASE_QUERY_CACHE_GOOD_4', $healthCheckResult->description);
     }
 
     public function testRunWithCacheTypeOnButSizeZeroReturnsWarning(): void
@@ -101,7 +104,7 @@ class DatabaseQueryCacheCheckTest extends TestCase
         $healthCheckResult = $this->databaseQueryCacheCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('size is 0', $healthCheckResult->description);
+        $this->assertStringContainsString('DATABASE_QUERY_CACHE_WARNING_3', $healthCheckResult->description);
     }
 
     public function testRunWithMysql57AndCacheDisabledReturnsGood(): void
@@ -112,7 +115,7 @@ class DatabaseQueryCacheCheckTest extends TestCase
         $healthCheckResult = $this->databaseQueryCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('MySQL 5.7', $healthCheckResult->description);
+        $this->assertStringContainsString('DATABASE_QUERY_CACHE_GOOD_3', $healthCheckResult->description);
     }
 
     public function testRunWithEmptyVersionReturnsWarning(): void
@@ -123,7 +126,7 @@ class DatabaseQueryCacheCheckTest extends TestCase
         $healthCheckResult = $this->databaseQueryCacheCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('version', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('database_query_cache_warning', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithEmptyQueryCacheVariablesReturnsGood(): void
@@ -134,7 +137,7 @@ class DatabaseQueryCacheCheckTest extends TestCase
         $healthCheckResult = $this->databaseQueryCacheCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not available', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('database_query_cache_good_2', strtolower($healthCheckResult->description));
     }
 
     /**

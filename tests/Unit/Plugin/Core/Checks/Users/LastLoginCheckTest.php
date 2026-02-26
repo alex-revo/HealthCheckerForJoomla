@@ -66,7 +66,7 @@ class LastLoginCheckTest extends TestCase
         $healthCheckResult = $this->lastLoginCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('All active users have logged in', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_LAST_LOGIN_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithFewNeverLoggedInUsersReturnsGood(): void
@@ -79,8 +79,7 @@ class LastLoginCheckTest extends TestCase
         $healthCheckResult = $this->lastLoginCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10 of 100', $healthCheckResult->description);
-        $this->assertStringContainsString('never logged in', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_LAST_LOGIN_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithManyNeverLoggedInUsersReturnsWarning(): void
@@ -93,8 +92,7 @@ class LastLoginCheckTest extends TestCase
         $healthCheckResult = $this->lastLoginCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('75 of 150', $healthCheckResult->description);
-        $this->assertStringContainsString('review', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_LAST_LOGIN_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithExactlyThresholdNeverLoggedInUsersReturnsWarning(): void

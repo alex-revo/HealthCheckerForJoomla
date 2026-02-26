@@ -69,7 +69,7 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('entire site', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithForceSslAdministratorOnlyReturnsWarning(): void
@@ -79,7 +79,7 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Administrator only', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithForceSslDisabledAndNoHttpsReturnsCritical(): void
@@ -90,7 +90,7 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('SSL', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithForceSslNotSetAndNoHttpsReturnsCritical(): void
@@ -101,7 +101,7 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('disabled', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('FORCE_SSL_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunWithForceSslMinusOneAndNoHttpsReturnsCritical(): void
@@ -112,7 +112,7 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Enable SSL', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsValidStatus(): void
@@ -162,7 +162,7 @@ class ForceSslCheckTest extends TestCase
 
         // Should hit the fallback case
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('appears correct', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithForceSslStringValueZeroReturnsCritical(): void
@@ -202,7 +202,7 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('security', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('FORCE_SSL_CRITICAL', $healthCheckResult->description);
     }
 
     public function testWarningForAdminOnlyMentionsOption2(): void
@@ -212,7 +212,7 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('option 2', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithForceSslDisabledButHttpsReturnsWarning(): void
@@ -224,8 +224,7 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('HTTPS', $healthCheckResult->description);
-        $this->assertStringContainsString('Force SSL is disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithForceSslMinusOneButHttpsReturnsWarning(): void
@@ -237,8 +236,7 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('HTTPS', $healthCheckResult->description);
-        $this->assertStringContainsString('Force SSL is disabled', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL_WARNING', $healthCheckResult->description);
     }
 
     public function testWarningWhenHttpsButNoForceSslSuggestsEnabling(): void
@@ -250,6 +248,6 @@ class ForceSslCheckTest extends TestCase
         $healthCheckResult = $this->forceSslCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Enable Force SSL', $healthCheckResult->description);
+        $this->assertStringContainsString('FORCE_SSL_WARNING', $healthCheckResult->description);
     }
 }

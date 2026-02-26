@@ -36,6 +36,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -97,20 +98,20 @@ final class DefaultSecretCheck extends AbstractHealthCheck
 
         // Empty secret key - critical security vulnerability
         if (empty($secret)) {
-            return $this->critical('Secret key is empty. This is a critical security issue.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_DEFAULT_SECRET_CRITICAL'));
         }
 
         // Known default or weak secret - critical security vulnerability
         if (in_array($secret, self::WEAK_SECRETS, true)) {
-            return $this->critical('Secret key appears to be a default value. Generate a new unique secret.');
+            return $this->critical(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_DEFAULT_SECRET_CRITICAL_2'));
         }
 
         // Secret is too short - less secure but still functional
         if (strlen((string) $secret) < 16) {
-            return $this->warning('Secret key is shorter than recommended. Consider using a longer key.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_DEFAULT_SECRET_WARNING'));
         }
 
         // Secret appears to be unique and sufficiently long
-        return $this->good('Secret key is configured and appears unique.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_DEFAULT_SECRET_GOOD'));
     }
 }

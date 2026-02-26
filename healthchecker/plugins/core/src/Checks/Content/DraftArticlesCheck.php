@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Content;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -95,10 +96,10 @@ final class DraftArticlesCheck extends AbstractHealthCheck
 
         if ($draftCount > 20) {
             return $this->warning(
-                sprintf('%d unpublished/draft articles. Review and publish or delete old drafts.', $draftCount),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_DRAFT_ARTICLES_WARNING', $draftCount),
             );
         }
 
-        return $this->good(sprintf('%d unpublished/draft article(s).', $draftCount));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_CONTENT_DRAFT_ARTICLES_GOOD', $draftCount));
     }
 }

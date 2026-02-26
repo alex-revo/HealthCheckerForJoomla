@@ -77,7 +77,7 @@ class ReCaptchaCheckTest extends TestCase
         $healthCheckResult = $this->reCaptchaCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No CAPTCHA plugins are enabled', $healthCheckResult->description);
+        $this->assertStringContainsString('RECAPTCHA_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenCaptchaPluginEnabledButNotDefault(): void
@@ -93,7 +93,7 @@ class ReCaptchaCheckTest extends TestCase
         $healthCheckResult = $this->reCaptchaCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not set as default', $healthCheckResult->description);
+        $this->assertStringContainsString('RECAPTCHA_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenCaptchaPluginEnabledButDefaultEmpty(): void
@@ -109,7 +109,7 @@ class ReCaptchaCheckTest extends TestCase
         $healthCheckResult = $this->reCaptchaCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not set as default', $healthCheckResult->description);
+        $this->assertStringContainsString('RECAPTCHA_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenCaptchaProperlyConfigured(): void
@@ -125,7 +125,7 @@ class ReCaptchaCheckTest extends TestCase
         $healthCheckResult = $this->reCaptchaCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('configured for form protection', $healthCheckResult->description);
+        $this->assertStringContainsString('RECAPTCHA_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithMultipleCaptchaPluginsEnabled(): void

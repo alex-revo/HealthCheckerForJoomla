@@ -35,6 +35,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -90,16 +91,14 @@ final class CorsCheck extends AbstractHealthCheck
 
             // Wildcard allows any domain to make cross-origin requests - security risk
             if ($corsAllowOrigin === '*') {
-                return $this->warning(
-                    'CORS is enabled with wildcard (*) origin. Consider restricting to specific trusted domains for better security.',
-                );
+                return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_CORS_WARNING'));
             }
 
             // CORS is restricted to specific domains - good security
-            return $this->good(sprintf('CORS is enabled and restricted to: %s', $corsAllowOrigin));
+            return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SECURITY_CORS_GOOD', $corsAllowOrigin));
         }
 
         // CORS disabled - default browser same-origin policy applies
-        return $this->good('CORS is disabled. Cross-origin requests are blocked by default.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_CORS_GOOD_2'));
     }
 }

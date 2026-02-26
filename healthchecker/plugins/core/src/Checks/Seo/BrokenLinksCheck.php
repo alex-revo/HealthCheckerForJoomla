@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -96,7 +97,7 @@ final class BrokenLinksCheck extends AbstractHealthCheck
         $redirectInstalled = (int) $database->loadResult();
 
         if ($redirectInstalled === 0) {
-            return $this->good('Redirect component is not installed. Unable to check for tracked 404 errors.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD'));
         }
 
         // Query the redirect links table for unhandled 404 errors.
@@ -114,7 +115,7 @@ final class BrokenLinksCheck extends AbstractHealthCheck
             $count404 = (int) $database->loadResult();
         } catch (\Exception) {
             // Table might not exist if component was improperly installed/uninstalled
-            return $this->good('Could not check redirect links table.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD_2'));
         }
 
         // More than 50 404 errors indicates significant broken link issues.
@@ -122,26 +123,16 @@ final class BrokenLinksCheck extends AbstractHealthCheck
         // poor user experience. Site owner should review and create redirects
         // for important pages that moved or were deleted.
         if ($count404 > 50) {
-            return $this->warning(
-                sprintf(
-                    '%d unhandled 404 errors found in Redirect Manager. Review and create redirects to improve user experience and SEO.',
-                    $count404,
-                ),
-            );
+            return $this->warning(Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_WARNING', $count404));
         }
 
         // Small number of 404s is normal and acceptable. Pages get moved/deleted,
         // external sites link to wrong URLs. Informational only - not urgent.
         if ($count404 > 0) {
-            return $this->good(
-                sprintf(
-                    '%d unhandled 404 errors tracked in Redirect Manager. Consider creating redirects for important pages.',
-                    $count404,
-                ),
-            );
+            return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD_3', $count404));
         }
 
         // No tracked 404 errors - excellent link maintenance or new site.
-        return $this->good('No unhandled 404 errors found in Redirect Manager.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SEO_BROKEN_LINKS_GOOD_4'));
     }
 }

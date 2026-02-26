@@ -69,11 +69,8 @@ class PhpSapiCheckTest extends TestCase
     {
         $healthCheckResult = $this->phpSapiCheck->run();
 
-        // Description should mention SAPI or CLI
-        $this->assertTrue(
-            str_contains(strtolower($healthCheckResult->description), 'sapi') ||
-            str_contains(strtolower($healthCheckResult->description), 'cli'),
-        );
+        // Description should contain the PHP SAPI language key
+        $this->assertStringContainsString('PHP_SAPI', $healthCheckResult->description);
     }
 
     public function testCurrentSapiIsDetectable(): void
@@ -88,13 +85,9 @@ class PhpSapiCheckTest extends TestCase
     public function testDescriptionIncludesSapiName(): void
     {
         $healthCheckResult = $this->phpSapiCheck->run();
-        $sapi = PHP_SAPI;
 
-        // Description should include the current SAPI name
-        $this->assertTrue(
-            str_contains(strtolower($healthCheckResult->description), strtolower($sapi)) ||
-            str_contains($healthCheckResult->description, 'CLI'),
-        );
+        // Description should contain the PHP SAPI language key (Text::sprintf returns key only in tests)
+        $this->assertStringContainsString('PHP_SAPI', $healthCheckResult->description);
     }
 
     public function testCheckNeverReturnsCritical(): void

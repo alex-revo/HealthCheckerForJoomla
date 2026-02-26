@@ -265,10 +265,12 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_INSTALLED_WARNING'),
+                    );
                 }
 
-                return $this->good('Akeeba Backup is installed.');
+                return $this->good(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_INSTALLED_GOOD'));
             }
         };
         $installedCheck->setDatabase($database);
@@ -384,7 +386,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_NOT_INSTALLED'));
                 }
 
                 $query = $database->getQuery(true)
@@ -397,35 +399,39 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                     ->loadResult();
 
                 if (! $lastBackup) {
-                    return $this->critical('No completed backups found.');
+                    return $this->critical(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_LAST_BACKUP_CRITICAL_NONE'),
+                    );
                 }
 
                 $lastBackupTime = strtotime((string) $lastBackup);
                 if ($lastBackupTime === false) {
-                    return $this->warning('Unable to parse last backup timestamp.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_LAST_BACKUP_WARNING_PARSE'),
+                    );
                 }
 
                 $daysSinceBackup = (time() - $lastBackupTime) / 86400;
 
                 if ($daysSinceBackup > 7) {
-                    return $this->critical(sprintf(
-                        'Last backup was %.1f days ago (%s). Backups should run at least weekly.',
-                        $daysSinceBackup,
+                    return $this->critical(Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_LAST_BACKUP_CRITICAL',
+                        sprintf('%.1f', $daysSinceBackup),
                         date('Y-m-d H:i', $lastBackupTime),
                     ));
                 }
 
                 if ($daysSinceBackup > 3) {
-                    return $this->warning(sprintf(
-                        'Last backup was %.1f days ago (%s). Consider more frequent backups.',
-                        $daysSinceBackup,
+                    return $this->warning(Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_LAST_BACKUP_WARNING',
+                        sprintf('%.1f', $daysSinceBackup),
                         date('Y-m-d H:i', $lastBackupTime),
                     ));
                 }
 
-                return $this->good(sprintf(
-                    'Last backup completed %.1f days ago (%s).',
-                    $daysSinceBackup,
+                return $this->good(Text::sprintf(
+                    'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_LAST_BACKUP_GOOD',
+                    sprintf('%.1f', $daysSinceBackup),
                     date('Y-m-d H:i', $lastBackupTime),
                 ));
             }
@@ -545,7 +551,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_NOT_INSTALLED'));
                 }
 
                 $thirtyDaysAgo = date('Y-m-d H:i:s', strtotime('-30 days'));
@@ -560,7 +566,9 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                     ->loadResult();
 
                 if ($totalBackups === 0) {
-                    return $this->warning('No backups attempted in the last 30 days.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_SUCCESS_RATE_WARNING_NONE'),
+                    );
                 }
 
                 // Count successful backups
@@ -576,17 +584,17 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 $successRate = ($successfulBackups / $totalBackups) * 100;
 
                 if ($successRate < 90) {
-                    return $this->warning(sprintf(
-                        'Backup success rate is %.1f%% (%d of %d backups successful in last 30 days).',
-                        $successRate,
+                    return $this->warning(Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_SUCCESS_RATE_WARNING',
+                        sprintf('%.1f', $successRate),
                         $successfulBackups,
                         $totalBackups,
                     ));
                 }
 
-                return $this->good(sprintf(
-                    'Backup success rate is %.1f%% (%d of %d backups successful in last 30 days).',
-                    $successRate,
+                return $this->good(Text::sprintf(
+                    'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_SUCCESS_RATE_GOOD',
+                    sprintf('%.1f', $successRate),
                     $successfulBackups,
                     $totalBackups,
                 ));
@@ -707,7 +715,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_NOT_INSTALLED'));
                 }
 
                 $twentyFourHoursAgo = date('Y-m-d H:i:s', strtotime('-24 hours'));
@@ -727,13 +735,13 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                     ->loadResult();
 
                 if ($stuckCount > 0) {
-                    return $this->critical(sprintf(
-                        'Found %d stuck backup(s) that started over 24 hours ago and are still marked as running or failed.',
+                    return $this->critical(Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_STUCK_BACKUPS_CRITICAL',
                         $stuckCount,
                     ));
                 }
 
-                return $this->good('No stuck backups detected.');
+                return $this->good(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_STUCK_BACKUPS_GOOD'));
             }
         };
         $stuckBackupsCheck->setDatabase($database);
@@ -848,7 +856,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_NOT_INSTALLED'));
                 }
 
                 $query = $database->getQuery(true)
@@ -861,13 +869,13 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                     ->loadResult();
 
                 if ($missingCount > 0) {
-                    return $this->warning(sprintf(
-                        'Found %d completed backup(s) with missing files. Backup archives may have been deleted.',
+                    return $this->warning(Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_FILES_EXIST_WARNING',
                         $missingCount,
                     ));
                 }
 
-                return $this->good('All completed backup files exist.');
+                return $this->good(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_FILES_EXIST_GOOD'));
             }
         };
         $filesExistCheck->setDatabase($database);
@@ -979,7 +987,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_NOT_INSTALLED'));
                 }
 
                 $query = $database->getQuery(true)
@@ -993,7 +1001,12 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
 
                 $formattedSize = $this->formatBytes($totalSize);
 
-                return $this->good(sprintf('Total backup storage: %s', $formattedSize));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_BACKUP_SIZE_GOOD',
+                        $formattedSize,
+                    ),
+                );
             }
 
             /**
@@ -1126,7 +1139,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_NOT_INSTALLED'));
                 }
 
                 $query = $database->getQuery(true)
@@ -1137,10 +1150,17 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                     ->loadResult();
 
                 if ($profileCount === 0) {
-                    return $this->warning('No backup profiles found. Create a backup profile to enable backups.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_PROFILE_EXISTS_WARNING'),
+                    );
                 }
 
-                return $this->good(sprintf('%d backup profile(s) configured.', $profileCount));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_PROFILE_EXISTS_GOOD',
+                        $profileCount,
+                    ),
+                );
             }
         };
         $profileExistsCheck->setDatabase($database);
@@ -1256,7 +1276,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_NOT_INSTALLED'));
                 }
 
                 $query = $database->getQuery(true)
@@ -1268,10 +1288,14 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                     ->loadResult();
 
                 if (empty($configuration)) {
-                    return $this->warning('Default backup profile (ID 1) is not configured.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_PROFILE_CONFIGURED_WARNING'),
+                    );
                 }
 
-                return $this->good('Default backup profile is configured.');
+                return $this->good(
+                    Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_PROFILE_CONFIGURED_GOOD'),
+                );
             }
         };
         $profileConfiguredCheck->setDatabase($database);
@@ -1389,7 +1413,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_NOT_INSTALLED'));
                 }
 
                 $thirtyDaysAgo = date('Y-m-d H:i:s', strtotime('-30 days'));
@@ -1404,13 +1428,13 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                     ->loadResult();
 
                 if ($failedCount > 0) {
-                    return $this->warning(sprintf(
-                        '%d backup(s) failed in the last 30 days. Review Akeeba Backup logs for details.',
+                    return $this->warning(Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_FAILED_BACKUPS_WARNING',
                         $failedCount,
                     ));
                 }
 
-                return $this->good('No failed backups in the last 30 days.');
+                return $this->good(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_FAILED_BACKUPS_GOOD'));
             }
         };
         $failedBackupsCheck->setDatabase($database);
@@ -1534,7 +1558,7 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Backup is not installed.');
+                    return $this->warning(Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_NOT_INSTALLED'));
                 }
 
                 $thirtyDaysAgo = date('Y-m-d H:i:s', strtotime('-30 days'));
@@ -1550,18 +1574,20 @@ final class AkeebaBackupPlugin extends CMSPlugin implements SubscriberInterface
 
                 if ($backupCount === 0) {
                     return $this->critical(
-                        'No successful backups in the last 30 days. Schedule regular backups immediately.',
+                        Text::_('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_FREQUENCY_CRITICAL'),
                     );
                 }
 
                 if ($backupCount < 4) {
-                    return $this->warning(sprintf(
-                        'Only %d successful backup(s) in the last 30 days. Consider scheduling weekly backups.',
+                    return $this->warning(Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_FREQUENCY_WARNING',
                         $backupCount,
                     ));
                 }
 
-                return $this->good(sprintf('%d successful backup(s) in the last 30 days.', $backupCount));
+                return $this->good(
+                    Text::sprintf('PLG_HEALTHCHECKER_AKEEBABACKUP_CHECK_AKEEBA_BACKUP_FREQUENCY_GOOD', $backupCount),
+                );
             }
         };
         $frequencyCheck->setDatabase($database);

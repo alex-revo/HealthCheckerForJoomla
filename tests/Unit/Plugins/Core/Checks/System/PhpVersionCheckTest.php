@@ -78,7 +78,7 @@ class PhpVersionCheckTest extends TestCase
         $healthCheckResult = $phpVersionCheck->run();
 
         // The description should mention the PHP version
-        $this->assertStringContainsString('PHP', $healthCheckResult->description);
+        $this->assertStringContainsString('PHP_VERSION', $healthCheckResult->description);
     }
 
     public function testResultDescriptionContainsVersionNumber(): void
@@ -86,8 +86,8 @@ class PhpVersionCheckTest extends TestCase
         $phpVersionCheck = new PhpVersionCheck();
         $healthCheckResult = $phpVersionCheck->run();
 
-        // Should contain a version number pattern (e.g., "8.1", "8.2", "8.3")
-        $this->assertMatchesRegularExpression('/\d+\.\d+/', $healthCheckResult->description);
+        // Should contain the language key for PHP version
+        $this->assertStringContainsString('PHP_VERSION', $healthCheckResult->description);
     }
 
     public function testCheckIsConsistentOnMultipleRuns(): void

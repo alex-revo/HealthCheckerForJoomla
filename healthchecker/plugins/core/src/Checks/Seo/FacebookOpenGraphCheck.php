@@ -45,6 +45,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Seo;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
@@ -108,10 +109,7 @@ final class FacebookOpenGraphCheck extends AbstractHealthCheck
 
             if ($response->code !== 200) {
                 return $this->warning(
-                    sprintf(
-                        'Unable to fetch homepage (HTTP %d). Cannot verify Facebook Open Graph tags.',
-                        $response->code,
-                    ),
+                    Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_WARNING', $response->code),
                 );
             }
 
@@ -123,13 +121,13 @@ final class FacebookOpenGraphCheck extends AbstractHealthCheck
             $hasFbAppId = isset($foundTags['fb:app_id']);
 
             if ($missingTags === []) {
-                $message = sprintf(
-                    'All essential Facebook Open Graph tags found: %s.',
+                $message = Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_GOOD',
                     implode(', ', self::REQUIRED_TAGS),
                 );
 
                 if ($hasFbAppId) {
-                    $message .= ' Facebook App ID is also configured for Insights.';
+                    $message .= ' ' . Text::_('COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_GOOD_APPID');
                 }
 
                 return $this->good($message);
@@ -139,15 +137,17 @@ final class FacebookOpenGraphCheck extends AbstractHealthCheck
             $foundCount = \count(self::REQUIRED_TAGS) - \count($missingTags);
 
             return $this->warning(
-                sprintf(
-                    'Missing Facebook Open Graph tags: %s. Found %d of %d required tags. Add these tags to improve Facebook share previews.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_WARNING_2',
                     implode(', ', $missingTags),
                     $foundCount,
                     \count(self::REQUIRED_TAGS),
                 ),
             );
         } catch (\Exception $exception) {
-            return $this->warning('Unable to check Facebook Open Graph tags: ' . $exception->getMessage());
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_WARNING_3', $exception->getMessage()),
+            );
         }
     }
 

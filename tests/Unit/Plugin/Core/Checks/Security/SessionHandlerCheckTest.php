@@ -66,7 +66,7 @@ class SessionHandlerCheckTest extends TestCase
         $healthCheckResult = $this->sessionHandlerCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('none', $healthCheckResult->description);
+        $this->assertStringContainsString('SESSION_HANDLER_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenSessionHandlerIsDatabase(): void
@@ -76,7 +76,7 @@ class SessionHandlerCheckTest extends TestCase
         $healthCheckResult = $this->sessionHandlerCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', $healthCheckResult->description);
+        $this->assertStringContainsString('SESSION_HANDLER_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenSessionHandlerIsFilesystem(): void
@@ -86,7 +86,7 @@ class SessionHandlerCheckTest extends TestCase
         $healthCheckResult = $this->sessionHandlerCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('filesystem', $healthCheckResult->description);
+        $this->assertStringContainsString('SESSION_HANDLER_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodForOtherHandlers(): void
@@ -96,6 +96,6 @@ class SessionHandlerCheckTest extends TestCase
         $healthCheckResult = $this->sessionHandlerCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('redis', $healthCheckResult->description);
+        $this->assertStringContainsString('SESSION_HANDLER_GOOD', $healthCheckResult->description);
     }
 }

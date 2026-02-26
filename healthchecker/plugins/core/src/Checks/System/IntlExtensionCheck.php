@@ -39,6 +39,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -89,11 +90,9 @@ final class IntlExtensionCheck extends AbstractHealthCheck
     {
         // Intl provides enhanced internationalization but is not strictly required
         if (! extension_loaded('intl')) {
-            return $this->warning(
-                'Intl extension is not loaded. Some internationalization features may not work correctly.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_INTL_EXTENSION_WARNING'));
         }
 
-        return $this->good('Intl extension is loaded.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_INTL_EXTENSION_GOOD'));
     }
 }

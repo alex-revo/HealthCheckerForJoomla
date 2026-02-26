@@ -77,8 +77,7 @@ class HtaccessProtectionCheckTest extends TestCase
         $healthCheckResult = $this->htaccessProtectionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not found', $healthCheckResult->description);
-        $this->assertStringContainsString('htaccess.txt', $healthCheckResult->description);
+        $this->assertStringContainsString('HTACCESS_PROTECTION_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenHtaccessIsEmpty(): void
@@ -89,7 +88,7 @@ class HtaccessProtectionCheckTest extends TestCase
         $healthCheckResult = $this->htaccessProtectionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('empty', $healthCheckResult->description);
+        $this->assertStringContainsString('HTACCESS_PROTECTION_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenHtaccessHasNoRewriteEngine(): void
@@ -107,7 +106,7 @@ HTACCESS;
         $healthCheckResult = $this->htaccessProtectionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('rewriting', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('HTACCESS_PROTECTION_WARNING_3', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenHtaccessHasRewriteEngine(): void
@@ -126,8 +125,7 @@ HTACCESS;
         $healthCheckResult = $this->htaccessProtectionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('present', $healthCheckResult->description);
-        $this->assertStringContainsString('configured', $healthCheckResult->description);
+        $this->assertStringContainsString('HTACCESS_PROTECTION_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenRewriteEngineIsCaseInsensitive(): void
@@ -205,7 +203,7 @@ HTACCESS;
         $healthCheckResult = $this->htaccessProtectionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('empty', $healthCheckResult->description);
+        $this->assertStringContainsString('HTACCESS_PROTECTION_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithFullJoomlaHtaccess(): void
@@ -309,10 +307,7 @@ HTACCESS;
         $healthCheckResult = $this->htaccessProtectionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertTrue(
-            str_contains($healthCheckResult->description, 'htaccess') ||
-            str_contains($healthCheckResult->description, '.htaccess'),
-        );
+        $this->assertStringContainsString('HTACCESS_PROTECTION_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithRewriteEngineInComment(): void
@@ -339,6 +334,6 @@ HTACCESS;
         $healthCheckResult = $this->htaccessProtectionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('configured', $healthCheckResult->description);
+        $this->assertStringContainsString('HTACCESS_PROTECTION_GOOD', $healthCheckResult->description);
     }
 }

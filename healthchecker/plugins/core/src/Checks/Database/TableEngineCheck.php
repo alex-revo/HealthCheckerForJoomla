@@ -37,6 +37,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -112,8 +113,8 @@ final class TableEngineCheck extends AbstractHealthCheck
             $tableNames = array_map(fn($t) => $t->TABLE_NAME, $nonInnoDbTables);
 
             return $this->warning(
-                sprintf(
-                    '%d table(s) are not using InnoDB/MEMORY: %s',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_TABLE_ENGINE_WARNING',
                     count($nonInnoDbTables),
                     implode(', ', array_slice($tableNames, 0, 5)) .
                         (count($tableNames) > 5 ? '...' : ''),
@@ -121,6 +122,6 @@ final class TableEngineCheck extends AbstractHealthCheck
             );
         }
 
-        return $this->good('All Joomla tables are using InnoDB/MEMORY engine.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_DATABASE_TABLE_ENGINE_GOOD'));
     }
 }

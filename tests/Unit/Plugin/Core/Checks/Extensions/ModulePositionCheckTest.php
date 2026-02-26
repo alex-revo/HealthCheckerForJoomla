@@ -65,7 +65,7 @@ class ModulePositionCheckTest extends TestCase
         $healthCheckResult = $this->modulePositionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('check_error', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithNoActiveTemplateReturnsWarning(): void
@@ -76,7 +76,7 @@ class ModulePositionCheckTest extends TestCase
         $healthCheckResult = $this->modulePositionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Could not determine active template', $healthCheckResult->description);
+        $this->assertStringContainsString('MODULE_POSITIONS_WARNING', $healthCheckResult->description);
     }
 
     public function testRunWithMissingTemplateManifestReturnsWarning(): void
@@ -96,8 +96,7 @@ class ModulePositionCheckTest extends TestCase
         $healthCheckResult = $this->modulePositionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Template manifest not found', $healthCheckResult->description);
-        $this->assertStringContainsString('cassiopeia', $healthCheckResult->description);
+        $this->assertStringContainsString('MODULE_POSITIONS_WARNING_2', $healthCheckResult->description);
     }
 
     public function testRunWithTemplateWithoutPositionsReturnsGood(): void
@@ -129,7 +128,7 @@ XML;
         $healthCheckResult = $this->modulePositionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('does not define positions', $healthCheckResult->description);
+        $this->assertStringContainsString('MODULE_POSITIONS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunWithAllModulesInValidPositionsReturnsGood(): void
@@ -180,8 +179,7 @@ XML;
         $healthCheckResult = $this->modulePositionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('All 2 published modules', $healthCheckResult->description);
-        $this->assertStringContainsString('valid positions', $healthCheckResult->description);
+        $this->assertStringContainsString('MODULE_POSITIONS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithOrphanedModulesReturnsWarning(): void
@@ -236,11 +234,7 @@ XML;
         $healthCheckResult = $this->modulePositionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 published module(s)', $healthCheckResult->description);
-        $this->assertStringContainsString('not defined in template', $healthCheckResult->description);
-        $this->assertStringContainsString('<ul>', $healthCheckResult->description);
-        $this->assertStringContainsString('<li>Sidebar Module (sidebar-left)</li>', $healthCheckResult->description);
-        $this->assertStringContainsString('<li>Banner Module (banner)</li>', $healthCheckResult->description);
+        $this->assertStringContainsString('MODULE_POSITIONS_WARNING_3', $healthCheckResult->description);
     }
 
     public function testRunWithNoPublishedModulesReturnsGood(): void
@@ -278,7 +272,7 @@ XML;
         $healthCheckResult = $this->modulePositionCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('All 0 published modules', $healthCheckResult->description);
+        $this->assertStringContainsString('MODULE_POSITIONS_GOOD_2', $healthCheckResult->description);
     }
 
     public function testCheckNeverReturnsCritical(): void

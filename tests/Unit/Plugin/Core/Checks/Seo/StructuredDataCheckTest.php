@@ -65,8 +65,10 @@ class StructuredDataCheckTest extends TestCase
         $healthCheckResult = $this->structuredDataCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No structured data plugin', $healthCheckResult->description);
-        $this->assertStringContainsString('Consider adding', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_STRUCTURED_DATA_GOOD_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithStructuredDataPluginReturnsGood(): void
@@ -77,8 +79,10 @@ class StructuredDataCheckTest extends TestCase
         $healthCheckResult = $this->structuredDataCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('1 enabled plugin', $healthCheckResult->description);
-        $this->assertStringContainsString('Schema.org', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_STRUCTURED_DATA_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunWithMultipleStructuredDataPluginsReturnsGood(): void
@@ -89,7 +93,10 @@ class StructuredDataCheckTest extends TestCase
         $healthCheckResult = $this->structuredDataCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 enabled plugin', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_STRUCTURED_DATA_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunAlwaysReturnsGood(): void

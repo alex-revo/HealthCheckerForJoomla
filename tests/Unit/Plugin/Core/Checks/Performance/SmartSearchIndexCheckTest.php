@@ -54,7 +54,7 @@ class SmartSearchIndexCheckTest extends TestCase
         $healthCheckResult = $this->smartSearchIndexCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('database', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('check_error', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithSmartSearchDisabledReturnsGood(): void
@@ -66,7 +66,7 @@ class SmartSearchIndexCheckTest extends TestCase
         $healthCheckResult = $this->smartSearchIndexCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not enabled', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('smart_search_index_good', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithSmartSearchEnabledAndEmptyIndexReturnsWarning(): void
@@ -78,7 +78,7 @@ class SmartSearchIndexCheckTest extends TestCase
         $healthCheckResult = $this->smartSearchIndexCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('empty', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('smart_search_index_warning', strtolower($healthCheckResult->description));
     }
 
     public function testRunWithSmartSearchEnabledAndPopulatedIndexReturnsGood(): void
@@ -90,7 +90,7 @@ class SmartSearchIndexCheckTest extends TestCase
         $healthCheckResult = $this->smartSearchIndexCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('150', $healthCheckResult->description);
+        $this->assertStringContainsString('SMART_SEARCH_INDEX_GOOD_2', $healthCheckResult->description);
     }
 
     public function testRunWithLargeIndexReturnsGood(): void
@@ -102,7 +102,7 @@ class SmartSearchIndexCheckTest extends TestCase
         $healthCheckResult = $this->smartSearchIndexCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10000', $healthCheckResult->description);
+        $this->assertStringContainsString('SMART_SEARCH_INDEX_GOOD_2', $healthCheckResult->description);
     }
 
     public function testCheckNeverReturnsCritical(): void
@@ -124,6 +124,6 @@ class SmartSearchIndexCheckTest extends TestCase
 
         $healthCheckResult = $this->smartSearchIndexCheck->run();
 
-        $this->assertStringContainsString('indexer', strtolower($healthCheckResult->description));
+        $this->assertStringContainsString('smart_search_index_warning', strtolower($healthCheckResult->description));
     }
 }

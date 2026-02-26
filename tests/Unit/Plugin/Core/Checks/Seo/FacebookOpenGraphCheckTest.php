@@ -70,7 +70,10 @@ HTML;
         $healthCheckResult = $this->facebookOpenGraphCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('All essential', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsGoodWithFacebookAppId(): void
@@ -95,7 +98,10 @@ HTML;
         $healthCheckResult = $this->facebookOpenGraphCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Facebook App ID', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_GOOD_APPID',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenMissingOgTags(): void
@@ -116,7 +122,10 @@ HTML;
         $healthCheckResult = $this->facebookOpenGraphCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Missing', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenSomeTtagsMissing(): void
@@ -138,8 +147,10 @@ HTML;
         $healthCheckResult = $this->facebookOpenGraphCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('og:image', $healthCheckResult->description);
-        $this->assertStringContainsString('og:url', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_WARNING_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenHttpError(): void
@@ -150,7 +161,10 @@ HTML;
         $healthCheckResult = $this->facebookOpenGraphCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('HTTP 500', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWhenConnectionFails(): void
@@ -161,7 +175,10 @@ HTML;
         $healthCheckResult = $this->facebookOpenGraphCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('Unable to check', $healthCheckResult->description);
+        $this->assertStringContainsString(
+            'COM_HEALTHCHECKER_CHECK_SEO_FACEBOOK_OPEN_GRAPH_WARNING_3',
+            $healthCheckResult->description,
+        );
     }
 
     public function testDetectsContentBeforePropertyOrder(): void

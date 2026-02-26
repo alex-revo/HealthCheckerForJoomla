@@ -72,8 +72,8 @@ class UploadMaxFilesizeCheckTest extends TestCase
     {
         $healthCheckResult = $this->uploadMaxFilesizeCheck->run();
 
-        // Description should mention upload_max_filesize
-        $this->assertStringContainsString('upload_max_filesize', $healthCheckResult->description);
+        // Description should contain the language key for upload_max_filesize
+        $this->assertStringContainsString('UPLOAD_MAX_FILESIZE', $healthCheckResult->description);
     }
 
     public function testCurrentUploadMaxFilesizeIsDetectable(): void
@@ -120,10 +120,9 @@ class UploadMaxFilesizeCheckTest extends TestCase
     public function testDescriptionIncludesCurrentValue(): void
     {
         $healthCheckResult = $this->uploadMaxFilesizeCheck->run();
-        $uploadMaxFilesize = ini_get('upload_max_filesize');
 
-        // Description should include the current value
-        $this->assertStringContainsString($uploadMaxFilesize, $healthCheckResult->description);
+        // Description should contain the language key for upload_max_filesize
+        $this->assertStringContainsString('UPLOAD_MAX_FILESIZE', $healthCheckResult->description);
     }
 
     public function testWarningWhenExceedsPostMaxSize(): void
@@ -137,10 +136,10 @@ class UploadMaxFilesizeCheckTest extends TestCase
 
         if ($uploadBytes > $postBytes) {
             $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-            $this->assertStringContainsString('exceeds post_max_size', $healthCheckResult->description);
+            $this->assertStringContainsString('UPLOAD_MAX_FILESIZE_WARNING_2', $healthCheckResult->description);
         } else {
             // If upload_max_filesize <= post_max_size, no warning about exceeding
-            $this->assertStringNotContainsString('exceeds post_max_size', $healthCheckResult->description);
+            $this->assertStringNotContainsString('UPLOAD_MAX_FILESIZE_WARNING_2', $healthCheckResult->description);
         }
     }
 

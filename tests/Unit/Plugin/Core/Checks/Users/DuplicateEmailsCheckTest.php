@@ -64,7 +64,7 @@ class DuplicateEmailsCheckTest extends TestCase
         $healthCheckResult = $this->duplicateEmailsCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No duplicate', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_DUPLICATE_EMAILS_GOOD', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenDuplicatesFound(): void
@@ -85,6 +85,6 @@ class DuplicateEmailsCheckTest extends TestCase
         $healthCheckResult = $this->duplicateEmailsCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('2 email address', $healthCheckResult->description);
+        $this->assertSame('COM_HEALTHCHECKER_CHECK_USERS_DUPLICATE_EMAILS_WARNING', $healthCheckResult->description);
     }
 }

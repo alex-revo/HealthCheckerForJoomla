@@ -267,10 +267,14 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
-                return $this->good('Akeeba Admin Tools is installed.');
+                return $this->good(
+                    Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_INSTALLED_GOOD'),
+                );
             }
         };
         $installedCheck->setDatabase($database);
@@ -365,7 +369,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -377,10 +383,17 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                     ->loadResult();
 
                 if ($count === 0) {
-                    return $this->warning('No WAF rules are enabled.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_WAF_ENABLED_WARNING'),
+                    );
                 }
 
-                return $this->good(sprintf('%d WAF rules are active.', $count));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_WAF_ENABLED_GOOD',
+                        $count,
+                    ),
+                );
             }
         };
         $wafEnabledCheck->setDatabase($database);
@@ -475,7 +488,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -486,7 +501,12 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 $count = (int) $database->setQuery($query)
                     ->loadResult();
 
-                return $this->good(sprintf('%d security events in the last 7 days.', $count));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_SECURITY_EVENTS_GOOD',
+                        $count,
+                    ),
+                );
             }
         };
         $securityEventsCheck->setDatabase($database);
@@ -581,7 +601,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -592,7 +614,12 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 $count = (int) $database->setQuery($query)
                     ->loadResult();
 
-                return $this->good(sprintf('%d attacks blocked in the last 24 hours.', $count));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_BLOCKED_ATTACKS_GOOD',
+                        $count,
+                    ),
+                );
             }
         };
         $blockedAttacksCheck->setDatabase($database);
@@ -687,7 +714,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -698,7 +727,12 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 $count = (int) $database->setQuery($query)
                     ->loadResult();
 
-                return $this->good(sprintf('%d active IP bans.', $count));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_ACTIVE_BANS_GOOD',
+                        $count,
+                    ),
+                );
             }
         };
         $activeBansCheck->setDatabase($database);
@@ -794,7 +828,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -808,21 +844,38 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                     ->loadResult();
 
                 if (empty($lastScan)) {
-                    return $this->critical('No file integrity scans have been completed.');
+                    return $this->critical(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_SCAN_AGE_CRITICAL_NONE'),
+                    );
                 }
 
                 $lastScanTime = strtotime((string) $lastScan);
                 $daysSinceScan = (time() - $lastScanTime) / 86400;
 
                 if ($daysSinceScan > 30) {
-                    return $this->critical(sprintf('Last file integrity scan was %d days ago.', (int) $daysSinceScan));
+                    return $this->critical(
+                        Text::sprintf(
+                            'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_SCAN_AGE_CRITICAL',
+                            (int) $daysSinceScan,
+                        ),
+                    );
                 }
 
                 if ($daysSinceScan > 7) {
-                    return $this->warning(sprintf('Last file integrity scan was %d days ago.', (int) $daysSinceScan));
+                    return $this->warning(
+                        Text::sprintf(
+                            'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_SCAN_AGE_WARNING',
+                            (int) $daysSinceScan,
+                        ),
+                    );
                 }
 
-                return $this->good(sprintf('Last file integrity scan was %d days ago.', (int) $daysSinceScan));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_SCAN_AGE_GOOD',
+                        (int) $daysSinceScan,
+                    ),
+                );
             }
         };
         $scanAgeCheck->setDatabase($database);
@@ -919,7 +972,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 // Count high-threat unacknowledged alerts
@@ -933,7 +988,12 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                     ->loadResult();
 
                 if ($highThreat > 0) {
-                    return $this->critical(sprintf('%d high-threat file alerts require attention.', $highThreat));
+                    return $this->critical(
+                        Text::sprintf(
+                            'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_FILE_ALERTS_CRITICAL',
+                            $highThreat,
+                        ),
+                    );
                 }
 
                 // Count any unacknowledged alerts
@@ -946,10 +1006,17 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                     ->loadResult();
 
                 if ($anyAlerts > 0) {
-                    return $this->warning(sprintf('%d file alerts require review.', $anyAlerts));
+                    return $this->warning(
+                        Text::sprintf(
+                            'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_FILE_ALERTS_WARNING',
+                            $anyAlerts,
+                        ),
+                    );
                 }
 
-                return $this->good('No unacknowledged file alerts.');
+                return $this->good(
+                    Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_FILE_ALERTS_GOOD'),
+                );
             }
         };
         $fileAlertsCheck->setDatabase($database);
@@ -1044,7 +1111,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -1056,10 +1125,17 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                     ->loadResult();
 
                 if ($expired > 0) {
-                    return $this->warning(sprintf('%d expired temporary super user records found.', $expired));
+                    return $this->warning(
+                        Text::sprintf(
+                            'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_TEMP_SUPERUSERS_WARNING',
+                            $expired,
+                        ),
+                    );
                 }
 
-                return $this->good('No expired temporary super user records.');
+                return $this->good(
+                    Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_TEMP_SUPERUSERS_GOOD'),
+                );
             }
         };
         $tempSuperUsersCheck->setDatabase($database);
@@ -1155,7 +1231,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -1165,7 +1243,12 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 $count = (int) $database->setQuery($query)
                     ->loadResult();
 
-                return $this->good(sprintf('%d IP addresses in whitelist.', $count));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_IP_WHITELIST_GOOD',
+                        $count,
+                    ),
+                );
             }
         };
         $ipWhitelistCheck->setDatabase($database);
@@ -1260,7 +1343,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 // Total rules
@@ -1280,7 +1365,13 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 $enabled = (int) $database->setQuery($queryEnabled)
                     ->loadResult();
 
-                return $this->good(sprintf('%d of %d WAF rules enabled.', $enabled, $total));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_WAF_RULES_GOOD',
+                        $enabled,
+                        $total,
+                    ),
+                );
             }
         };
         $wafRulesCheck->setDatabase($database);
@@ -1376,7 +1467,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -1389,10 +1482,20 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                     ->loadResult();
 
                 if ($count > 10) {
-                    return $this->warning(sprintf('%d login failures in the last 24 hours.', $count));
+                    return $this->warning(
+                        Text::sprintf(
+                            'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_LOGIN_FAILURES_WARNING',
+                            $count,
+                        ),
+                    );
                 }
 
-                return $this->good(sprintf('%d login failures in the last 24 hours.', $count));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_LOGIN_FAILURES_GOOD',
+                        $count,
+                    ),
+                );
             }
         };
         $loginFailuresCheck->setDatabase($database);
@@ -1488,7 +1591,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -1500,7 +1605,12 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 $count = (int) $database->setQuery($query)
                     ->loadResult();
 
-                return $this->good(sprintf('%d geoblocking events in the last 7 days.', $count));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_GEOBLOCKING_GOOD',
+                        $count,
+                    ),
+                );
             }
         };
         $geoblockingCheck->setDatabase($database);
@@ -1596,7 +1706,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -1608,7 +1720,12 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 $count = (int) $database->setQuery($query)
                     ->loadResult();
 
-                return $this->good(sprintf('%d SQL injection attempts blocked in the last 7 days.', $count));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_SQLI_BLOCKS_GOOD',
+                        $count,
+                    ),
+                );
             }
         };
         $sqliBlocksCheck->setDatabase($database);
@@ -1704,7 +1821,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -1716,7 +1835,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 $count = (int) $database->setQuery($query)
                     ->loadResult();
 
-                return $this->good(sprintf('%d XSS attempts blocked in the last 7 days.', $count));
+                return $this->good(
+                    Text::sprintf('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_XSS_BLOCKS_GOOD', $count),
+                );
             }
         };
         $xssBlocksCheck->setDatabase($database);
@@ -1812,7 +1933,9 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 )->loadColumn();
 
                 if ($tables === []) {
-                    return $this->warning('Akeeba Admin Tools is not installed.');
+                    return $this->warning(
+                        Text::_('PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_NOT_INSTALLED'),
+                    );
                 }
 
                 $query = $database->getQuery(true)
@@ -1824,7 +1947,12 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
                 $count = (int) $database->setQuery($query)
                     ->loadResult();
 
-                return $this->good(sprintf('%d admin directory access attempts in the last 7 days.', $count));
+                return $this->good(
+                    Text::sprintf(
+                        'PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_CHECK_AKEEBA_ADMINTOOLS_ADMIN_ACCESS_GOOD',
+                        $count,
+                    ),
+                );
             }
         };
         $adminAccessCheck->setDatabase($database);

@@ -41,6 +41,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -114,8 +115,8 @@ final class InactiveUsersCheck extends AbstractHealthCheck
         // Warning threshold: More than 100 inactive users needs attention
         if ($inactiveCount > 100) {
             return $this->warning(
-                sprintf(
-                    '%d users have not logged in for over %d days. Consider reviewing inactive accounts.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_USERS_INACTIVE_USERS_WARNING',
                     $inactiveCount,
                     self::INACTIVE_DAYS,
                 ),
@@ -125,10 +126,10 @@ final class InactiveUsersCheck extends AbstractHealthCheck
         // Some inactive users exist but within acceptable range
         if ($inactiveCount > 0) {
             return $this->good(
-                sprintf('%d user(s) inactive for over %d days.', $inactiveCount, self::INACTIVE_DAYS),
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_INACTIVE_USERS_GOOD', $inactiveCount, self::INACTIVE_DAYS),
             );
         }
 
-        return $this->good('All active users have logged in recently.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_USERS_INACTIVE_USERS_GOOD_2'));
     }
 }

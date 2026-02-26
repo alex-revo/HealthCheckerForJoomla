@@ -36,6 +36,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -114,15 +115,18 @@ final class ServerVersionCheck extends AbstractHealthCheck
             // Compare against MariaDB minimum version requirement
             if (version_compare($numericVersion, self::MINIMUM_MARIADB_VERSION, '<')) {
                 return $this->warning(
-                    sprintf(
-                        'MariaDB %s is below recommended version %s.',
+                    Text::sprintf(
+                        'COM_HEALTHCHECKER_CHECK_DATABASE_SERVER_VERSION_WARNING',
+                        'MariaDB',
                         $numericVersion,
                         self::MINIMUM_MARIADB_VERSION,
                     ),
                 );
             }
 
-            return $this->good(sprintf('MariaDB %s meets requirements.', $numericVersion));
+            return $this->good(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_SERVER_VERSION_GOOD', 'MariaDB', $numericVersion),
+            );
         }
 
         // Extract numeric version from MySQL version string (format: X.Y.Z)
@@ -132,10 +136,17 @@ final class ServerVersionCheck extends AbstractHealthCheck
         // Compare against MySQL minimum version requirement
         if (version_compare($numericVersion, self::MINIMUM_MYSQL_VERSION, '<')) {
             return $this->warning(
-                sprintf('MySQL %s is below recommended version %s.', $numericVersion, self::MINIMUM_MYSQL_VERSION),
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_SERVER_VERSION_WARNING',
+                    'MySQL',
+                    $numericVersion,
+                    self::MINIMUM_MYSQL_VERSION,
+                ),
             );
         }
 
-        return $this->good(sprintf('MySQL %s meets requirements.', $numericVersion));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_SERVER_VERSION_GOOD', 'MySQL', $numericVersion),
+        );
     }
 }

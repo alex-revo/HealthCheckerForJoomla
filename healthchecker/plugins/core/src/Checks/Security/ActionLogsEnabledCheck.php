@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Security;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -93,11 +94,9 @@ final class ActionLogsEnabledCheck extends AbstractHealthCheck
             ->loadResult();
 
         if ($systemPluginEnabled !== 1) {
-            return $this->warning(
-                'System - Action Logs plugin is disabled. Enable it to track user activity for security auditing.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_ACTION_LOGS_ENABLED_WARNING'));
         }
 
-        return $this->good('Action Logs system plugin is enabled for security auditing.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SECURITY_ACTION_LOGS_ENABLED_GOOD'));
     }
 }

@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -94,20 +95,24 @@ final class PostMaxSizeCheck extends AbstractHealthCheck
     {
         $postMaxSize = ini_get('post_max_size');
         if ($postMaxSize === false) {
-            return $this->warning('Unable to retrieve post_max_size setting.');
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_POST_MAX_SIZE_WARNING'));
         }
 
         $bytes = $this->convertToBytes($postMaxSize);
 
         if ($bytes < self::MINIMUM_BYTES) {
-            return $this->critical(sprintf('post_max_size (%s) is below the minimum required 8M.', $postMaxSize));
+            return $this->critical(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_POST_MAX_SIZE_CRITICAL', $postMaxSize),
+            );
         }
 
         if ($bytes < self::RECOMMENDED_BYTES) {
-            return $this->warning(sprintf('post_max_size (%s) is below the recommended 32M.', $postMaxSize));
+            return $this->warning(
+                Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_POST_MAX_SIZE_WARNING_2', $postMaxSize),
+            );
         }
 
-        return $this->good(sprintf('post_max_size (%s) meets requirements.', $postMaxSize));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_POST_MAX_SIZE_GOOD', $postMaxSize));
     }
 
     /**

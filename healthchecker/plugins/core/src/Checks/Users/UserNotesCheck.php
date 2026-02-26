@@ -40,6 +40,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Users;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -108,9 +109,11 @@ final class UserNotesCheck extends AbstractHealthCheck
             ->loadResult();
 
         if ($totalNotes === 0) {
-            return $this->good('No user notes configured.');
+            return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_USERS_USER_NOTES_GOOD'));
         }
 
-        return $this->good(sprintf('%d user note(s) found across %d user(s).', $totalNotes, $usersWithNotes));
+        return $this->good(
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_USERS_USER_NOTES_GOOD_2', $totalNotes, $usersWithNotes),
+        );
     }
 }

@@ -35,6 +35,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Performance;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -97,14 +98,12 @@ final class GzipCompressionCheck extends AbstractHealthCheck
         if ($gzip === 0) {
             // Check if the required PHP extension is available
             if (! extension_loaded('zlib')) {
-                return $this->warning('Gzip compression is disabled and zlib extension is not available.');
+                return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_GZIP_COMPRESSION_WARNING'));
             }
 
-            return $this->warning(
-                'Gzip compression is disabled. Enable it in Global Configuration for better performance.',
-            );
+            return $this->warning(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_GZIP_COMPRESSION_WARNING_2'));
         }
 
-        return $this->good('Gzip compression is enabled.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_PERFORMANCE_GZIP_COMPRESSION_GOOD'));
     }
 }

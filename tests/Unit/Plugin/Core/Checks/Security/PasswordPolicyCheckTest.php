@@ -65,7 +65,7 @@ class PasswordPolicyCheckTest extends TestCase
         $healthCheckResult = $this->passwordPolicyCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('6 characters', $healthCheckResult->description);
+        $this->assertStringContainsString('PASSWORD_POLICY_CRITICAL', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenPasswordLengthShort(): void
@@ -78,7 +78,7 @@ class PasswordPolicyCheckTest extends TestCase
         $healthCheckResult = $this->passwordPolicyCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('10 characters', $healthCheckResult->description);
+        $this->assertStringContainsString('PASSWORD_POLICY_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsWarningWhenNoComplexity(): void
@@ -95,7 +95,7 @@ class PasswordPolicyCheckTest extends TestCase
         $healthCheckResult = $this->passwordPolicyCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('no complexity', $healthCheckResult->description);
+        $this->assertStringContainsString('PASSWORD_POLICY_WARNING', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWhenPasswordPolicyStrong(): void
@@ -109,7 +109,6 @@ class PasswordPolicyCheckTest extends TestCase
         $healthCheckResult = $this->passwordPolicyCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('12 characters', $healthCheckResult->description);
-        $this->assertStringContainsString('complexity', $healthCheckResult->description);
+        $this->assertStringContainsString('PASSWORD_POLICY_GOOD', $healthCheckResult->description);
     }
 }

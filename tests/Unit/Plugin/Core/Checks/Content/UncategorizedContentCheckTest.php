@@ -65,7 +65,10 @@ class UncategorizedContentCheckTest extends TestCase
         $healthCheckResult = $this->uncategorizedContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('not found', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_UNCATEGORIZED_CONTENT_GOOD',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsGoodWithFewUncategorizedArticles(): void
@@ -77,7 +80,10 @@ class UncategorizedContentCheckTest extends TestCase
         $healthCheckResult = $this->uncategorizedContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('5 article(s)', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_UNCATEGORIZED_CONTENT_GOOD_2',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsWarningWithManyUncategorizedArticles(): void
@@ -89,7 +95,10 @@ class UncategorizedContentCheckTest extends TestCase
         $healthCheckResult = $this->uncategorizedContentCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('15 published articles', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_UNCATEGORIZED_CONTENT_WARNING',
+            $healthCheckResult->description,
+        );
     }
 
     public function testRunReturnsGoodWithNoUncategorizedArticles(): void
@@ -101,6 +110,9 @@ class UncategorizedContentCheckTest extends TestCase
         $healthCheckResult = $this->uncategorizedContentCheck->run();
 
         $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-        $this->assertStringContainsString('No articles', $healthCheckResult->description);
+        $this->assertSame(
+            'COM_HEALTHCHECKER_CHECK_CONTENT_UNCATEGORIZED_CONTENT_GOOD_3',
+            $healthCheckResult->description,
+        );
     }
 }

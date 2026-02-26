@@ -34,6 +34,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -83,14 +84,14 @@ final class TempDirectoryCheck extends AbstractHealthCheck
 
         // Check if directory exists on filesystem
         if (! is_dir($config)) {
-            return $this->critical(sprintf('Temp directory does not exist: %s', $config));
+            return $this->critical(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_TEMP_DIRECTORY_CRITICAL', $config));
         }
 
         // Verify PHP has write permissions to the directory
         if (! is_writable($config)) {
-            return $this->critical(sprintf('Temp directory is not writable: %s', $config));
+            return $this->critical(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_TEMP_DIRECTORY_CRITICAL_2', $config));
         }
 
-        return $this->good('Temp directory exists and is writable.');
+        return $this->good(Text::_('COM_HEALTHCHECKER_CHECK_SYSTEM_TEMP_DIRECTORY_GOOD'));
     }
 }

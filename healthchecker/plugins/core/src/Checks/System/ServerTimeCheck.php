@@ -42,6 +42,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -112,8 +113,8 @@ final class ServerTimeCheck extends AbstractHealthCheck
             $serverTime = new \DateTimeImmutable('now', $dateTimeZone);
 
             return $this->good(
-                sprintf(
-                    'Server time: %s (%s). Unable to verify against external time source.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_SERVER_TIME_GOOD',
                     $serverTime->format('Y-m-d H:i:s'),
                     $timezone,
                 ),
@@ -134,8 +135,8 @@ final class ServerTimeCheck extends AbstractHealthCheck
         // Check against critical threshold (5 minutes)
         if ($diffSeconds > self::CRITICAL_THRESHOLD_SECONDS) {
             return $this->critical(
-                sprintf(
-                    'Server time is off by %s. Server: %s, Actual: %s (%s). Check NTP synchronization immediately.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_SERVER_TIME_CRITICAL',
                     $this->formatTimeDiff($diffSeconds),
                     $serverTimeLocal,
                     $externalTimeLocal,
@@ -147,8 +148,8 @@ final class ServerTimeCheck extends AbstractHealthCheck
         // Check against warning threshold (30 seconds)
         if ($diffSeconds > self::WARNING_THRESHOLD_SECONDS) {
             return $this->warning(
-                sprintf(
-                    'Server time is off by %s. Server: %s, Actual: %s (%s). Consider checking NTP synchronization.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_SERVER_TIME_WARNING',
                     $this->formatTimeDiff($diffSeconds),
                     $serverTimeLocal,
                     $externalTimeLocal,
@@ -158,8 +159,8 @@ final class ServerTimeCheck extends AbstractHealthCheck
         }
 
         return $this->good(
-            sprintf(
-                'Server time is accurate: %s (%s). Verified against %s (drift: %ds).',
+            Text::sprintf(
+                'COM_HEALTHCHECKER_CHECK_SYSTEM_SERVER_TIME_GOOD_2',
                 $serverTimeLocal,
                 $timezone,
                 $source,

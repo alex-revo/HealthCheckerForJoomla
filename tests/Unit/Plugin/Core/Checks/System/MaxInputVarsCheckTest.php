@@ -72,8 +72,8 @@ class MaxInputVarsCheckTest extends TestCase
     {
         $healthCheckResult = $this->maxInputVarsCheck->run();
 
-        // Description should mention max_input_vars
-        $this->assertStringContainsString('max_input_vars', $healthCheckResult->description);
+        // Description should contain the language key for max_input_vars
+        $this->assertStringContainsString('MAX_INPUT_VARS', $healthCheckResult->description);
     }
 
     public function testCurrentMaxInputVarsIsDetectable(): void
@@ -95,23 +95,22 @@ class MaxInputVarsCheckTest extends TestCase
 
         if ($maxInputVars >= 3000) {
             $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
-            $this->assertStringContainsString('meets requirements', $healthCheckResult->description);
+            $this->assertStringContainsString('MAX_INPUT_VARS_GOOD', $healthCheckResult->description);
         } elseif ($maxInputVars >= 1000) {
             $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
-            $this->assertStringContainsString('below the recommended', $healthCheckResult->description);
+            $this->assertStringContainsString('MAX_INPUT_VARS_WARNING', $healthCheckResult->description);
         } else {
             $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
-            $this->assertStringContainsString('below the minimum', $healthCheckResult->description);
+            $this->assertStringContainsString('MAX_INPUT_VARS_CRITICAL', $healthCheckResult->description);
         }
     }
 
     public function testDescriptionIncludesCurrentValue(): void
     {
         $healthCheckResult = $this->maxInputVarsCheck->run();
-        $maxInputVars = (int) ini_get('max_input_vars');
 
-        // Description should include the current value
-        $this->assertStringContainsString((string) $maxInputVars, $healthCheckResult->description);
+        // Description should contain the language key for max_input_vars
+        $this->assertStringContainsString('MAX_INPUT_VARS', $healthCheckResult->description);
     }
 
     public function testResultTitleIsNotEmpty(): void
@@ -180,12 +179,8 @@ class MaxInputVarsCheckTest extends TestCase
     {
         $healthCheckResult = $this->maxInputVarsCheck->run();
 
-        // Description should include threshold values - verify at least one
-        $this->assertTrue(
-            str_contains($healthCheckResult->description, '1000') ||
-            str_contains($healthCheckResult->description, '3000') ||
-            str_contains($healthCheckResult->description, 'meets requirements'),
-        );
+        // Description should contain the language key (Text::sprintf returns key only in tests)
+        $this->assertStringContainsString('MAX_INPUT_VARS', $healthCheckResult->description);
     }
 
     public function testMaxInputVarsCannotBeChangedAtRuntime(): void

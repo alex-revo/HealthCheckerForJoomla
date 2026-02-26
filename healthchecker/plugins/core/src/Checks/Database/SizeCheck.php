@@ -40,6 +40,7 @@ declare(strict_types=1);
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\Database;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -151,8 +152,8 @@ final class SizeCheck extends AbstractHealthCheck
         // Evaluate against thresholds
         if ($totalSizeMB >= self::CRITICAL_SIZE_MB) {
             return $this->critical(
-                sprintf(
-                    'Database is very large: %s across %d tables. Largest: %s. Consider archiving old data.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_SIZE_CRITICAL',
                     $totalSizeFormatted,
                     $tableCount,
                     implode(', ', $largestTableInfo),
@@ -162,8 +163,8 @@ final class SizeCheck extends AbstractHealthCheck
 
         if ($totalSizeMB >= self::WARNING_SIZE_MB) {
             return $this->warning(
-                sprintf(
-                    'Database is getting large: %s across %d tables. Largest: %s. Monitor growth.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_DATABASE_SIZE_WARNING',
                     $totalSizeFormatted,
                     $tableCount,
                     implode(', ', $largestTableInfo),
@@ -172,7 +173,7 @@ final class SizeCheck extends AbstractHealthCheck
         }
 
         return $this->good(
-            sprintf('Database size is healthy: %s across %d tables.', $totalSizeFormatted, $tableCount),
+            Text::sprintf('COM_HEALTHCHECKER_CHECK_DATABASE_SIZE_GOOD', $totalSizeFormatted, $tableCount),
         );
     }
 

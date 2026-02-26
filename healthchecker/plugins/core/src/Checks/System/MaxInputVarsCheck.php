@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 namespace MySitesGuru\HealthChecker\Plugin\Core\Checks\System;
 
+use Joomla\CMS\Language\Text;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -96,8 +97,8 @@ final class MaxInputVarsCheck extends AbstractHealthCheck
 
         if ($maxInputVars < self::MINIMUM_VARS) {
             return $this->critical(
-                sprintf(
-                    'max_input_vars (%d) is below the minimum required %d. Forms with many fields may lose data.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_INPUT_VARS_CRITICAL',
                     $maxInputVars,
                     self::MINIMUM_VARS,
                 ),
@@ -106,14 +107,14 @@ final class MaxInputVarsCheck extends AbstractHealthCheck
 
         if ($maxInputVars < self::RECOMMENDED_VARS) {
             return $this->warning(
-                sprintf(
-                    'max_input_vars (%d) is below the recommended %d. Large forms may have issues.',
+                Text::sprintf(
+                    'COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_INPUT_VARS_WARNING',
                     $maxInputVars,
                     self::RECOMMENDED_VARS,
                 ),
             );
         }
 
-        return $this->good(sprintf('max_input_vars (%d) meets requirements.', $maxInputVars));
+        return $this->good(Text::sprintf('COM_HEALTHCHECKER_CHECK_SYSTEM_MAX_INPUT_VARS_GOOD', $maxInputVars));
     }
 }
