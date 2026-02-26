@@ -9,6 +9,14 @@ description: >-
 
 A complete history of features, fixes, and improvements across every release.
 
+## Version 3.5
+
+### [3.5.0](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.5.0)&#x20;
+
+* \[Feature] Added update channel health check — verifies Joomla is configured to receive updates from the expected release channel ([#60](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/60)) (Thanks [@alex-revo](https://github.com/alex-revo))
+* \[Feature] Made Joomla version check channel-aware, so it validates against the correct version for your configured update channel (stable, testing, etc.) ([#61](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/61))
+* \[Fix] Added missing title language key for the update channel check
+
 ## Version 3.4
 
 ### [3.4.3](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.3)&#x20;
