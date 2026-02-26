@@ -11,6 +11,17 @@ A complete history of features, fixes, and improvements across every release.
 
 ## Version 3.4
 
+### [3.4.2](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.2)&#x20;
+
+* \[Security] Fixed XSS vulnerabilities and cleaned up code inconsistencies ([#57](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/57))
+* \[Internal] Updated documentation
+
+### [3.4.1](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.1)&#x20;
+
+* \[Feature] Export improvements ([#44](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/44)) (Thanks @alex-revo)
+* \[Internal] Moved changelog into VitePress documentation site
+* \[Internal] Fixed release script ordering
+
 ### [3.4.0](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.0)&#x20;
 
 * \[Feature] Dedicated Export page with format selection and filter options, including an "issues only" mode to export only warnings and critical results ([#50](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/50))
