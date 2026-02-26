@@ -163,7 +163,10 @@ final class UnusedModulesCheck extends AbstractHealthCheck
 
         if ($totalUnused > 0) {
             return $this->warning(
-                sprintf('%d published module(s) have no menu assignment — this is fine if they are loaded via {loadmodule} in articles.', $totalUnused),
+                sprintf(
+                    '%d published module(s) have no menu assignment — this is fine if they are loaded via {loadmodule} in articles.',
+                    $totalUnused,
+                ),
             );
         }
 
