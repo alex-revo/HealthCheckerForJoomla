@@ -58,8 +58,8 @@ class JoomlaCoreVersionCheckTest extends TestCase
 
     public function testRunReturnsGoodWhenNoUpdateAvailable(): void
     {
-        // Version stub returns 5.0.0
-        $database = MockDatabaseFactory::createWithResult(null);
+        // First query: #__updates returns null (no update), second query: params
+        $database = MockDatabaseFactory::createWithSequentialResults([null, '{"updatesource":"default"}']);
         $this->joomlaCoreVersionCheck->setDatabase($database);
 
         $healthCheckResult = $this->joomlaCoreVersionCheck->run();
@@ -68,15 +68,63 @@ class JoomlaCoreVersionCheckTest extends TestCase
         $this->assertStringContainsString('JOOMLA_CORE_VERSION_GOOD', $healthCheckResult->description);
     }
 
-    public function testRunReturnsWarningWhenUpdateAvailable(): void
+    public function testRunReturnsWarningWhenStableUpdateAvailable(): void
     {
-        // Current version from stub is 5.0.0, newer version available
-        $database = MockDatabaseFactory::createWithResult('5.1.0');
+        // Current version from stub is 5.0.0, newer stable version available, stable channel
+        $database = MockDatabaseFactory::createWithSequentialResults(['5.1.0', '{"updatesource":"default"}']);
         $this->joomlaCoreVersionCheck->setDatabase($database);
 
         $healthCheckResult = $this->joomlaCoreVersionCheck->run();
 
         $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
         $this->assertStringContainsString('JOOMLA_CORE_VERSION_WARNING', $healthCheckResult->description);
+    }
+
+    public function testRunReturnsGoodWhenTestingChannelWithPreRelease(): void
+    {
+        // Testing channel with pre-release available — should be GOOD
+        $database = MockDatabaseFactory::createWithSequentialResults(['5.1.0-beta1', '{"updatesource":"testing"}']);
+        $this->joomlaCoreVersionCheck->setDatabase($database);
+
+        $healthCheckResult = $this->joomlaCoreVersionCheck->run();
+
+        $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
+        $this->assertStringContainsString('JOOMLA_CORE_VERSION_GOOD_CHANNEL', $healthCheckResult->description);
+    }
+
+    public function testRunReturnsWarningWhenTestingChannelWithStableUpdate(): void
+    {
+        // Testing channel but a stable version is available — should still warn
+        $database = MockDatabaseFactory::createWithSequentialResults(['5.1.0', '{"updatesource":"testing"}']);
+        $this->joomlaCoreVersionCheck->setDatabase($database);
+
+        $healthCheckResult = $this->joomlaCoreVersionCheck->run();
+
+        $this->assertSame(HealthStatus::Warning, $healthCheckResult->healthStatus);
+    }
+
+    public function testRunReturnsGoodWhenNextChannelWithRcAvailable(): void
+    {
+        // Next major channel with RC available — should be GOOD
+        $database = MockDatabaseFactory::createWithSequentialResults(['6.0.0-rc1', '{"updatesource":"next"}']);
+        $this->joomlaCoreVersionCheck->setDatabase($database);
+
+        $healthCheckResult = $this->joomlaCoreVersionCheck->run();
+
+        $this->assertSame(HealthStatus::Good, $healthCheckResult->healthStatus);
+    }
+
+    public function testActionUrlSetOnWarning(): void
+    {
+        $this->assertNotNull($this->joomlaCoreVersionCheck->getActionUrl(HealthStatus::Warning));
+        $this->assertStringContainsString(
+            'com_joomlaupdate',
+            $this->joomlaCoreVersionCheck->getActionUrl(HealthStatus::Warning) ?? '',
+        );
+    }
+
+    public function testActionUrlNullOnGood(): void
+    {
+        $this->assertNull($this->joomlaCoreVersionCheck->getActionUrl(HealthStatus::Good));
     }
 }
