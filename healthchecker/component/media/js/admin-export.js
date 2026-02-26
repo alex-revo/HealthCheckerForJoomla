@@ -235,7 +235,8 @@
     }
 
     /**
-     * Handle form submission
+     * Handle form submission via POST to avoid 414 Request-URI Too Long errors
+     * when many checks/categories are selected (GitHub issue #58)
      */
     form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -245,26 +246,35 @@
 
         if (!baseUrl) return;
 
-        // Build URL with filter params as GET parameters
-        const url = new URL(baseUrl, window.location.origin);
-        url.searchParams.set('export_filtered', '1');
+        // Build a temporary POST form to submit filter data in the request body
+        // instead of query string params, which can exceed server URI length limits
+        const postForm = document.createElement('form');
+        postForm.method = 'POST';
+        postForm.action = baseUrl;
+        postForm.style.display = 'none';
 
-        const statusFilter = form.querySelector('input[name="export_status"]:checked').value;
-        url.searchParams.set('export_status', statusFilter);
+        function addHidden(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            postForm.appendChild(input);
+        }
 
-        // Add selected categories
-        const selectedCategories = form.querySelectorAll('input[name="export_categories[]"]:checked');
-        selectedCategories.forEach(function(cb) {
-            url.searchParams.append('export_categories[]', cb.value);
+        addHidden('export_filtered', '1');
+        addHidden('export_status', form.querySelector('input[name="export_status"]:checked').value);
+
+        form.querySelectorAll('input[name="export_categories[]"]:checked').forEach(function(cb) {
+            addHidden('export_categories[]', cb.value);
         });
 
-        // Add selected checks
-        const selectedChecks = form.querySelectorAll('input[name="export_checks[]"]:checked');
-        selectedChecks.forEach(function(cb) {
-            url.searchParams.append('export_checks[]', cb.value);
+        form.querySelectorAll('input[name="export_checks[]"]:checked').forEach(function(cb) {
+            addHidden('export_checks[]', cb.value);
         });
 
-        window.open(url.toString(), '_blank');
+        document.body.appendChild(postForm);
+        postForm.submit();
+        postForm.remove();
     });
 
     // Format card selection
