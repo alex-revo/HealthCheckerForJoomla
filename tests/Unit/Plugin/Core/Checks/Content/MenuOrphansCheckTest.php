@@ -58,7 +58,7 @@ class MenuOrphansCheckTest extends TestCase
 
     public function testRunReturnsGoodWhenNoOrphanedMenuItems(): void
     {
-        $database = MockDatabaseFactory::createWithResult(0);
+        $database = MockDatabaseFactory::createWithColumn([]);
         $this->menuOrphansCheck->setDatabase($database);
 
         $healthCheckResult = $this->menuOrphansCheck->run();
@@ -69,7 +69,7 @@ class MenuOrphansCheckTest extends TestCase
 
     public function testRunReturnsCriticalWhenOrphanedMenuItemsExist(): void
     {
-        $database = MockDatabaseFactory::createWithResult(3);
+        $database = MockDatabaseFactory::createWithColumn(['About Us', 'Contact', 'Old Blog Post']);
         $this->menuOrphansCheck->setDatabase($database);
 
         $healthCheckResult = $this->menuOrphansCheck->run();
@@ -77,17 +77,21 @@ class MenuOrphansCheckTest extends TestCase
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
         $this->assertStringContainsString('3 menu item(s)', $healthCheckResult->description);
         $this->assertStringContainsString('404', $healthCheckResult->description);
+        $this->assertStringContainsString('About Us', $healthCheckResult->description);
+        $this->assertStringContainsString('Contact', $healthCheckResult->description);
+        $this->assertStringContainsString('Old Blog Post', $healthCheckResult->description);
     }
 
     public function testRunReturnsCriticalWhenSingleOrphanedMenuItemExists(): void
     {
-        $database = MockDatabaseFactory::createWithResult(1);
+        $database = MockDatabaseFactory::createWithColumn(['Deleted Page']);
         $this->menuOrphansCheck->setDatabase($database);
 
         $healthCheckResult = $this->menuOrphansCheck->run();
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
         $this->assertStringContainsString('1 menu item(s)', $healthCheckResult->description);
+        $this->assertStringContainsString('Deleted Page', $healthCheckResult->description);
     }
 
     public function testRunFallsBackToSubstringIndexOnRegexpError(): void
@@ -95,12 +99,12 @@ class MenuOrphansCheckTest extends TestCase
         // First query throws exception (REGEXP_SUBSTR not supported), second succeeds with SUBSTRING_INDEX
         $database = MockDatabaseFactory::createWithSequentialQueries([
             [
-                'method' => 'loadResult',
+                'method' => 'loadColumn',
                 'exception' => new \RuntimeException('REGEXP_SUBSTR not supported'),
             ],
             [
-                'method' => 'loadResult',
-                'return' => 2,
+                'method' => 'loadColumn',
+                'return' => ['Legacy Page', 'Old Article'],
             ],
         ]);
         $this->menuOrphansCheck->setDatabase($database);
@@ -109,6 +113,7 @@ class MenuOrphansCheckTest extends TestCase
 
         $this->assertSame(HealthStatus::Critical, $healthCheckResult->healthStatus);
         $this->assertStringContainsString('2 menu item(s)', $healthCheckResult->description);
+        $this->assertStringContainsString('Legacy Page', $healthCheckResult->description);
     }
 
     public function testRunReturnsGoodWithFallbackWhenNoOrphans(): void
@@ -116,12 +121,12 @@ class MenuOrphansCheckTest extends TestCase
         // First query throws exception (REGEXP_SUBSTR not supported), second succeeds with 0 orphans
         $database = MockDatabaseFactory::createWithSequentialQueries([
             [
-                'method' => 'loadResult',
+                'method' => 'loadColumn',
                 'exception' => new \RuntimeException('REGEXP_SUBSTR not supported'),
             ],
             [
-                'method' => 'loadResult',
-                'return' => 0,
+                'method' => 'loadColumn',
+                'return' => [],
             ],
         ]);
         $this->menuOrphansCheck->setDatabase($database);

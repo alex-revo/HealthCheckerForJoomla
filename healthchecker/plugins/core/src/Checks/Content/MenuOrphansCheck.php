@@ -86,7 +86,7 @@ final class MenuOrphansCheck extends AbstractHealthCheck
         // REGEXP_SUBSTR extracts the article ID from the link parameter (handles SEF URLs).
         // The LEFT JOIN ensures we only count menu items where c.id IS NULL (article doesn't exist).
         $query = $database->getQuery(true)
-            ->select('COUNT(*)')
+            ->select($database->quoteName('m.title'))
             ->from($database->quoteName('#__menu', 'm'))
             ->leftJoin(
                 $database->quoteName('#__content', 'c') . ' ON ' .
@@ -103,14 +103,14 @@ final class MenuOrphansCheck extends AbstractHealthCheck
             ->where($database->quoteName('c.id') . ' IS NULL');
 
         try {
-            $orphanCount = (int) $database->setQuery($query)
-                ->loadResult();
+            $orphanTitles = $database->setQuery($query)
+                ->loadColumn();
         } catch (\Exception) {
             // Fallback to older MySQL versions without REGEXP_SUBSTR support.
             // Uses SUBSTRING_INDEX to extract the article ID from the link parameter.
             // First SUBSTRING_INDEX gets everything after 'id=', second gets everything before '&'.
             $query = $database->getQuery(true)
-                ->select('COUNT(*)')
+                ->select($database->quoteName('m.title'))
                 ->from($database->quoteName('#__menu', 'm'))
                 ->leftJoin(
                     $database->quoteName('#__content', 'c') . ' ON ' .
@@ -125,15 +125,21 @@ final class MenuOrphansCheck extends AbstractHealthCheck
                 ->where($database->quoteName('m.client_id') . ' = 0')
                 ->where($database->quoteName('c.id') . ' IS NULL');
 
-            $orphanCount = (int) $database->setQuery($query)
-                ->loadResult();
+            $orphanTitles = $database->setQuery($query)
+                ->loadColumn();
         }
 
-        if ($orphanCount > 0) {
+        if ($orphanTitles !== []) {
+            $list = '<ul><li>' . implode(
+                '</li><li>',
+                array_map(htmlspecialchars(...), $orphanTitles),
+            ) . '</li></ul>';
+
             return $this->critical(
                 sprintf(
-                    '%d menu item(s) point to non-existent articles. These will cause 404 errors for visitors.',
-                    $orphanCount,
+                    '%d menu item(s) point to non-existent articles. These will cause 404 errors for visitors:%s',
+                    \count($orphanTitles),
+                    $list,
                 ),
             );
         }
