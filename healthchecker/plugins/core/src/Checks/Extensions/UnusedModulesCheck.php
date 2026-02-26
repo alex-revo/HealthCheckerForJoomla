@@ -27,9 +27,10 @@ declare(strict_types=1);
  * on at least one page.
  *
  * WARNING: One or more published modules have no menu assignments. These
- * modules are published but will never be shown. Consider assigning them
- * to pages or unpublishing them. More than 5 unused modules suggests
- * module management needs attention.
+ * modules are published but won't appear on any page unless loaded via
+ * {loadmodule} in article content. If they aren't used that way, consider
+ * assigning them to pages or unpublishing them. More than 5 unassigned
+ * modules suggests module management needs attention.
  *
  * CRITICAL: This check does not return CRITICAL status.
  */
@@ -153,7 +154,7 @@ final class UnusedModulesCheck extends AbstractHealthCheck
 
             return $this->warning(
                 sprintf(
-                    '%d published module(s) have no menu assignment. Consider unpublishing or assigning them to pages. %s',
+                    '%d published module(s) have no menu assignment — if these are not loaded via {loadmodule} in articles, consider unpublishing or assigning them to pages. %s',
                     $totalUnused,
                     implode(', ', $moduleNames),
                 ),
@@ -161,7 +162,9 @@ final class UnusedModulesCheck extends AbstractHealthCheck
         }
 
         if ($totalUnused > 0) {
-            return $this->warning(sprintf('%d published module(s) have no menu assignment.', $totalUnused));
+            return $this->warning(
+                sprintf('%d published module(s) have no menu assignment — this is fine if they are loaded via {loadmodule} in articles.', $totalUnused),
+            );
         }
 
         return $this->good('All published modules have menu assignments.');
