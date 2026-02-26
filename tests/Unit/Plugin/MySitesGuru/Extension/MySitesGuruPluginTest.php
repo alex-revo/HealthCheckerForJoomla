@@ -152,7 +152,10 @@ class MySitesGuruPluginTest extends TestCase
 
     public function testOnCollectChecksAddsConnectionCheck(): void
     {
-        $mySitesGuruPlugin = new MySitesGuruPlugin(new \stdClass());
+        $mySitesGuruPlugin = new MySitesGuruPlugin(
+            dispatcher: new \stdClass(),
+            pluginParams: new \Joomla\Registry\Registry(),
+        );
         $collectChecksEvent = new CollectChecksEvent();
 
         $mySitesGuruPlugin->onCollectChecks($collectChecksEvent);

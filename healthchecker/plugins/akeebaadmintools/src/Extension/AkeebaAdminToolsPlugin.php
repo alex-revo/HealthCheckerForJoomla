@@ -16,6 +16,7 @@ use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Event\SubscriberInterface;
 use MySitesGuru\HealthChecker\Component\Administrator\Category\HealthCategory;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\ExportVisibility;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectCategoriesEvent;
@@ -1962,6 +1963,7 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
         // Filter checks based on plugin configuration
         foreach ($allChecks as $allCheck) {
             if ($this->isCheckEnabled($allCheck->getSlug())) {
+                $allCheck->setExportVisibility($this->getExportVisibility($allCheck->getSlug()));
                 $collectChecksEvent->addResult($allCheck);
             }
         }
@@ -1982,5 +1984,22 @@ final class AkeebaAdminToolsPlugin extends CMSPlugin implements SubscriberInterf
         // Get the toggle value (1 = enabled, 0 = disabled)
         // Default to 1 (enabled) if parameter not set
         return (bool) $this->params->get($paramName, 1);
+    }
+
+    /**
+     * Get the export visibility setting for a specific health check.
+     *
+     * @param string $slug The check slug
+     *
+     * @return ExportVisibility The configured visibility
+     *
+     * @since 3.5.0
+     */
+    private function getExportVisibility(string $slug): ExportVisibility
+    {
+        $paramName = 'export_' . str_replace('.', '_', $slug);
+        $value = $this->params->get($paramName, 'always');
+
+        return ExportVisibility::tryFrom($value) ?? ExportVisibility::Always;
     }
 }

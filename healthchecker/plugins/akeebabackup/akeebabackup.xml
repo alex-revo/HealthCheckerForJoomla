@@ -47,6 +47,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_backup_installed"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_backup_last_backup"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_BACKUP_LAST_BACKUP_TITLE"
@@ -55,6 +67,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_backup_last_backup"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -69,6 +93,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_backup_success_rate"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_backup_stuck_backups"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_BACKUP_STUCK_BACKUPS_TITLE"
@@ -77,6 +113,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_backup_stuck_backups"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -91,6 +139,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_backup_files_exist"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_backup_backup_size"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_BACKUP_BACKUP_SIZE_TITLE"
@@ -99,6 +159,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_backup_backup_size"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -113,6 +185,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_backup_profile_exists"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_backup_profile_configured"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_BACKUP_PROFILE_CONFIGURED_TITLE"
@@ -121,6 +205,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_backup_profile_configured"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -135,6 +231,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_backup_failed_backups"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_backup_frequency"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_BACKUP_FREQUENCY_TITLE"
@@ -143,6 +251,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_backup_frequency"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBABACKUP_EXPORT_NEVER</option>
                 </field>
             </fieldset>
         </fields>

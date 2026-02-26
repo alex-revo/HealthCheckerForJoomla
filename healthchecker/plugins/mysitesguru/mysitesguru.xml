@@ -28,6 +28,38 @@
         <language tag="es-ES">es-ES/plg_healthchecker_mysitesguru.sys.ini</language>
     </languages>
 
+    <config>
+        <fields name="params">
+            <fieldset
+                name="checks"
+                label="PLG_HEALTHCHECKER_MYSITESGURU_FIELDSET_CHECKS_LABEL"
+                description="PLG_HEALTHCHECKER_MYSITESGURU_FIELDSET_CHECKS_DESC"
+            >
+                <field
+                    name="check_mysitesguru_connection"
+                    type="radio"
+                    label="COM_HEALTHCHECKER_CHECK_MYSITESGURU_CONNECTION_TITLE"
+                    class="btn-group btn-group-yesno"
+                    default="1"
+                >
+                    <option value="1">JENABLED</option>
+                    <option value="0">JDISABLED</option>
+                </field>
+                <field
+                    name="export_mysitesguru_connection"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_MYSITESGURU_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_MYSITESGURU_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_MYSITESGURU_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_MYSITESGURU_EXPORT_NEVER</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+
     <updateservers>
         <server
             type="extension"

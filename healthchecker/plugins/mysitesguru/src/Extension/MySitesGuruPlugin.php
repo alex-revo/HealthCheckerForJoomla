@@ -17,6 +17,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Event\SubscriberInterface;
 use MySitesGuru\HealthChecker\Component\Administrator\Category\HealthCategory;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\ExportVisibility;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\AfterToolbarBuildEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\BeforeReportDisplayEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectCategoriesEvent;
@@ -133,7 +134,12 @@ final class MySitesGuruPlugin extends CMSPlugin implements SubscriberInterface
         $mySitesGuruConnectionCheck = new MySitesGuruConnectionCheck();
         $mySitesGuruConnectionCheck->setDatabase($this->getDatabase());
 
-        $collectChecksEvent->addResult($mySitesGuruConnectionCheck);
+        if ($this->isCheckEnabled($mySitesGuruConnectionCheck->getSlug())) {
+            $mySitesGuruConnectionCheck->setExportVisibility(
+                $this->getExportVisibility($mySitesGuruConnectionCheck->getSlug()),
+            );
+            $collectChecksEvent->addResult($mySitesGuruConnectionCheck);
+        }
     }
 
     /**
@@ -287,5 +293,38 @@ JS;
                 'style' => 'text-decoration:none',
             ])
             ->buttonClass('btn btn-primary healthchecker-no-external-icon');
+    }
+
+    /**
+     * Check if a specific health check is enabled in the plugin configuration.
+     *
+     * @param string $slug The check slug
+     *
+     * @return bool True if enabled
+     *
+     * @since 3.5.0
+     */
+    private function isCheckEnabled(string $slug): bool
+    {
+        $paramName = 'check_' . str_replace('.', '_', $slug);
+
+        return (bool) $this->params->get($paramName, 1);
+    }
+
+    /**
+     * Get the export visibility setting for a specific health check.
+     *
+     * @param string $slug The check slug
+     *
+     * @return ExportVisibility The configured visibility
+     *
+     * @since 3.5.0
+     */
+    private function getExportVisibility(string $slug): ExportVisibility
+    {
+        $paramName = 'export_' . str_replace('.', '_', $slug);
+        $value = $this->params->get($paramName, 'always');
+
+        return ExportVisibility::tryFrom($value) ?? ExportVisibility::Always;
     }
 }

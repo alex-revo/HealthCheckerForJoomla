@@ -47,6 +47,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_admintools_installed"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_admintools_waf_enabled"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_ADMINTOOLS_WAF_ENABLED_TITLE"
@@ -55,6 +67,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_admintools_waf_enabled"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -69,6 +93,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_admintools_security_events"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_admintools_blocked_attacks"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_ADMINTOOLS_BLOCKED_ATTACKS_TITLE"
@@ -77,6 +113,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_admintools_blocked_attacks"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -91,6 +139,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_admintools_active_bans"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_admintools_scan_age"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_ADMINTOOLS_SCAN_AGE_TITLE"
@@ -99,6 +159,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_admintools_scan_age"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -113,6 +185,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_admintools_file_alerts"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_admintools_temp_superusers"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_ADMINTOOLS_TEMP_SUPERUSERS_TITLE"
@@ -121,6 +205,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_admintools_temp_superusers"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -135,6 +231,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_admintools_ip_whitelist"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_admintools_waf_rules"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_ADMINTOOLS_WAF_RULES_TITLE"
@@ -143,6 +251,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_admintools_waf_rules"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -157,6 +277,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_admintools_login_failures"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_admintools_geoblocking"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_ADMINTOOLS_GEOBLOCKING_TITLE"
@@ -165,6 +297,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_admintools_geoblocking"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
                 </field>
 
                 <field
@@ -179,6 +323,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_admintools_sqli_blocks"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_admintools_xss_blocks"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_ADMINTOOLS_XSS_BLOCKS_TITLE"
@@ -190,6 +346,18 @@
                 </field>
 
                 <field
+                    name="export_akeeba_admintools_xss_blocks"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_akeeba_admintools_admin_access"
                     type="radio"
                     label="PLG_HEALTHCHECKER_AKEEBA_ADMINTOOLS_ADMIN_ACCESS_TITLE"
@@ -198,6 +366,18 @@
                 >
                     <option value="1">JENABLED</option>
                     <option value="0">JDISABLED</option>
+                </field>
+
+                <field
+                    name="export_akeeba_admintools_admin_access"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_AKEEBAADMINTOOLS_EXPORT_NEVER</option>
                 </field>
             </fieldset>
         </fields>
