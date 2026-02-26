@@ -66,6 +66,15 @@ final class DisabledExtensionsCheck extends AbstractHealthCheck
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/DisabledExtensionsCheck.php';
     }
 
+    public function getActionUrl(?HealthStatus $healthStatus = null): ?string
+    {
+        if ($healthStatus === HealthStatus::Warning) {
+            return '/administrator/index.php?option=com_installer&view=manage&filter[status]=0';
+        }
+
+        return null;
+    }
+
     /**
      * Performs the disabled extensions health check.
      *

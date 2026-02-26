@@ -74,6 +74,15 @@ final class OverrideCheck extends AbstractHealthCheck
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/OverrideCheck.php';
     }
 
+    public function getActionUrl(?HealthStatus $healthStatus = null): ?string
+    {
+        if ($healthStatus === HealthStatus::Warning) {
+            return '/administrator/index.php?option=com_templates&view=templates&client_id=0';
+        }
+
+        return null;
+    }
+
     /**
      * Perform the template override check.
      *

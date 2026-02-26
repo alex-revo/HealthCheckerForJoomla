@@ -69,6 +69,15 @@ final class PluginOrderCheck extends AbstractHealthCheck
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/PluginOrderCheck.php';
     }
 
+    public function getActionUrl(?HealthStatus $healthStatus = null): ?string
+    {
+        if ($healthStatus === HealthStatus::Warning) {
+            return '/administrator/index.php?option=com_plugins&view=plugins&filter[folder]=system';
+        }
+
+        return null;
+    }
+
     /**
      * Perform the plugin order check.
      *

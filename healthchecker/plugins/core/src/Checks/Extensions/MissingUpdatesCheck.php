@@ -67,6 +67,15 @@ final class MissingUpdatesCheck extends AbstractHealthCheck
         return 'https://github.com/mySites-guru/HealthCheckerForJoomla/blob/main/healthchecker/plugins/core/src/Checks/Extensions/MissingUpdatesCheck.php';
     }
 
+    public function getActionUrl(?HealthStatus $healthStatus = null): ?string
+    {
+        if ($healthStatus === HealthStatus::Warning || $healthStatus === HealthStatus::Critical) {
+            return '/administrator/index.php?option=com_installer&view=update';
+        }
+
+        return null;
+    }
+
     /**
      * Perform the missing updates check.
      *
