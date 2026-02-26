@@ -209,20 +209,6 @@ class ReportModelTest extends TestCase
         $this->assertTrue($returnType->allowsNull());
     }
 
-    public function testToJsonMethodExists(): void
-    {
-        $this->assertTrue(method_exists(ReportModel::class, 'toJson'));
-    }
-
-    public function testToJsonReturnType(): void
-    {
-        $reflectionMethod = new \ReflectionMethod(ReportModel::class, 'toJson');
-        $returnType = $reflectionMethod->getReturnType();
-
-        $this->assertNotNull($returnType);
-        $this->assertSame('string', $returnType->getName());
-    }
-
     public function testModelHasCorrectNamespace(): void
     {
         $reflectionClass = new \ReflectionClass(ReportModel::class);

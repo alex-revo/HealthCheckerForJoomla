@@ -204,9 +204,9 @@ final class MySitesGuruPlugin extends CMSPlugin implements SubscriberInterface
         }
 
         $logoUrl = Uri::root() . 'media/plg_healthchecker_mysitesguru/logo.png';
-        $bannerText = Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_TEXT');
-        $bannerLink = Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_LINK');
-        $dismissLabel = Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_DISMISS');
+        $bannerText = htmlspecialchars(Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_TEXT'), ENT_QUOTES, 'UTF-8');
+        $bannerLink = htmlspecialchars(Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_LINK'), ENT_QUOTES, 'UTF-8');
+        $dismissLabel = htmlspecialchars(Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_DISMISS'), ENT_QUOTES, 'UTF-8');
 
         // Banner HTML
         $html = <<<HTML
@@ -276,8 +276,8 @@ JS;
     public function onBeforeReportExportDisplay(BeforeReportExportDisplayEvent $beforeReportExportDisplayEvent): void
     {
         $logoUrl = Uri::root() . 'media/plg_healthchecker_mysitesguru/logo.png';
-        $bannerText = Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_TEXT');
-        $bannerLink = Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_LINK');
+        $bannerText = htmlspecialchars(Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_TEXT'), ENT_QUOTES, 'UTF-8');
+        $bannerLink = htmlspecialchars(Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_LINK'), ENT_QUOTES, 'UTF-8');
 
         $html = <<<HTML
         <div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; padding: 15px; margin: 20px 30px; display: flex; align-items: flex-start; gap: 15px;">

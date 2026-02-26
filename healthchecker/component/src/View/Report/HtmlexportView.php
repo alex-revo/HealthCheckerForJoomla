@@ -139,16 +139,16 @@ class HtmlexportView extends BaseHtmlView
      * @since   1.0.0
      */
     private function renderHtmlReport(
-        $results,
+        array $results,
         array $categories,
         array $providers,
-        $siteName,
+        string $siteName,
         string $reportDate,
         string $joomlaVersion,
-        $criticalCount,
-        $warningCount,
-        $goodCount,
-        $totalCount,
+        int $criticalCount,
+        int $warningCount,
+        int $goodCount,
+        int $totalCount,
         string $beforeExportHtml,
     ): void {
         ?>
@@ -422,7 +422,7 @@ class HtmlexportView extends BaseHtmlView
             </div>
             <div class="summary-card total">
                 <div class="count"><?php echo $totalCount; ?></div>
-                <div class="label">Total Checks</div>
+                <div class="label"><?php echo Text::_('COM_HEALTHCHECKER_TOTAL_CHECKS'); ?></div>
             </div>
         </div>
 
@@ -476,7 +476,10 @@ class HtmlexportView extends BaseHtmlView
                                     <?php endif; ?>
                                 </div>
                                 <div class="check-description">
-                                    <?php echo (string) $categoryResult->description; ?>
+                                    <?php
+                                        $descriptionSanitizer = new \MySitesGuru\HealthChecker\Component\Administrator\Service\DescriptionSanitizer();
+                    echo $descriptionSanitizer->sanitize((string) $categoryResult->description);
+                    ?>
                                 </div>
                                 <?php if ($categoryResult->docsUrl !== null): ?>
                                     <div class="check-footer">
