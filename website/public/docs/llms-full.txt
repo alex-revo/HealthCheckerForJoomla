@@ -291,6 +291,10 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
     // Optional URL methods (return null by default)
     public function getDocsUrl(?HealthStatus $healthStatus = null): ?string;   // Override to add "Docs" button
     public function getActionUrl(?HealthStatus $status = null): ?string;       // Override to add "Explore" button
+
+    // Export visibility
+    public function getExportVisibility(): ExportVisibility;                   // Override to set developer default
+    public function setExportVisibility(ExportVisibility $exportVisibility): void; // Called by plugin to apply admin config
 }
 ```
 
@@ -312,6 +316,8 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
 * `run()` - Wraps performCheck() with error handling
 * `getDocsUrl($healthStatus)` - Returns null by default (override to add "Docs" button, receives check status to allow conditional display)
 * `getActionUrl($status)` - Returns null by default (override to add "Explore" button, receives check status to allow conditional display)
+* `getExportVisibility()` - Returns `ExportVisibility::Always` by default; override to change the developer default, or call `setExportVisibility()` to apply an admin-configured value
+* `setExportVisibility($visibility)` - Stores an admin-configured override; when set, it takes precedence over `getExportVisibility()`
 
 ### Error Handling
 
@@ -444,8 +450,9 @@ final readonly class HealthCheckResult
         public string $slug,
         public string $category,
         public string $provider = 'core',
-        public ?string $docsUrl = null,    // @since 3.0.36
-        public ?string $actionUrl = null   // @since 3.0.36
+        public ?string $docsUrl = null,                                    // @since 3.0.36
+        public ?string $actionUrl = null,                                  // @since 3.0.36
+        public ExportVisibility $exportVisibility = ExportVisibility::Always // @since 3.4.0
     );
 
     public function toArray(): array;
@@ -463,6 +470,7 @@ final readonly class HealthCheckResult
 * `provider` - Provider slug
 * `docsUrl` - URL for documentation link (displays ? icon) *@since 3.0.36*
 * `actionUrl` - URL to navigate when row is clicked *@since 3.0.36*
+* `exportVisibility` - Controls whether this result appears in exports *@since 3.4.0*
 
 ### HealthStatus
 
@@ -476,6 +484,21 @@ enum HealthStatus: string
     case Good = 'good';
 }
 ```
+
+### ExportVisibility
+
+Enum controlling whether a check result is included in exports. *@since 3.4.0*
+
+```php
+enum ExportVisibility: string
+{
+    case Always     = 'always';  // Always included in exports (default)
+    case IssuesOnly = 'issues';  // Only included when Warning or Critical
+    case Never      = 'never';   // Never included in exports
+}
+```
+
+The value is set on the check object before execution (via `setExportVisibility()`) and propagated to the `HealthCheckResult`. The export layer filters results based on this value before generating JSON or HTML output.
 
 ### ProviderMetadata
 
@@ -2145,6 +2168,93 @@ final class ApiConfigCheck extends AbstractHealthCheck
 * Action URLs should be relative administrator paths (starting with `/administrator/`)
 * Documentation URLs can be absolute URLs to external documentation
 * Both `$healthStatus` and `$status` parameters are optional for backwards compatibility - existing checks without them will continue to work
+
+## Export Visibility
+
+Every check has an export visibility setting that controls whether its result is included in JSON and HTML exports. The check always runs and appears in the admin UI — this setting only affects exports.
+
+### The ExportVisibility Enum
+
+```php
+use MySitesGuru\HealthChecker\Component\Administrator\Check\ExportVisibility;
+
+enum ExportVisibility: string
+{
+    case Always     = 'always';  // Always included in exports (default)
+    case IssuesOnly = 'issues';  // Only included when Warning or Critical
+    case Never      = 'never';   // Never included in exports
+}
+```
+
+### Setting the Developer Default
+
+Override `getExportVisibility()` in your check class to change the default for that check:
+
+```php
+use MySitesGuru\HealthChecker\Component\Administrator\Check\ExportVisibility;
+
+final class InternalDiagnosticsCheck extends AbstractHealthCheck
+{
+    public function getExportVisibility(): ExportVisibility
+    {
+        // This check is for internal use only — never include it in exports
+        return ExportVisibility::Never;
+    }
+
+    // ...
+}
+```
+
+```php
+final class CacheStatusCheck extends AbstractHealthCheck
+{
+    public function getExportVisibility(): ExportVisibility
+    {
+        // Only worth exporting if there's a problem
+        return ExportVisibility::IssuesOnly;
+    }
+
+    // ...
+}
+```
+
+If you don't override `getExportVisibility()`, the default is `ExportVisibility::Always`.
+
+### Admin Override via Plugin Config
+
+Admins can override the developer default through the plugin settings page (the export visibility dropdown next to each check). This is handled automatically by the framework — your plugin's event handler should call `setExportVisibility()` before adding the check to the event:
+
+```php
+public function onCollectChecks(CollectChecksEvent $event): void
+{
+    $check = new ApiConnectionCheck();
+    $check->setDatabase($this->getDatabase());
+
+    // Apply admin-configured export visibility (read from plugin params)
+    $rawValue = $this->params->get('export_yourplugin_api_connection', 'always');
+    $visibility = ExportVisibility::tryFrom($rawValue) ?? ExportVisibility::Always;
+    $check->setExportVisibility($visibility);
+
+    $event->addResult($check);
+}
+```
+
+The corresponding XML field in your plugin manifest:
+
+```xml
+<field name="export_yourplugin_api_connection" type="list"
+    label="PLG_HEALTHCHECKER_YOURPLUGIN_EXPORT_VISIBILITY"
+    default="always"
+    class="form-select-sm">
+    <option value="always">PLG_HEALTHCHECKER_CORE_EXPORT_ALWAYS</option>
+    <option value="issues">PLG_HEALTHCHECKER_CORE_EXPORT_ISSUES_ONLY</option>
+    <option value="never">PLG_HEALTHCHECKER_CORE_EXPORT_NEVER</option>
+</field>
+```
+
+**Field naming convention**: `export_{provider}_{check_name}` — mirrors the `check_{provider}_{check_name}` enable/disable field, with `export_` prefix instead of `check_`.
+
+The admin-configured value always takes precedence over the developer default returned by `getExportVisibility()`.
 
 ## Check Slug Format
 
@@ -4097,24 +4207,15 @@ For more code examples and patterns, see:
 ---
 url: /docs/exporting-reports.md
 description: >-
-  Export Health Checker reports as JSON or HTML. Share results with clients,
-  hosting providers, or archive for compliance.
+  Export Health Checker reports as JSON, HTML, or Markdown. Filter by status,
+  category, or individual checks before downloading.
 ---
 
 # Exporting Reports
 
-Health Checker allows you to export your check results in multiple formats for sharing with your team, hosting provider, or for record-keeping.
+Health Checker lets you export your check results in multiple formats for sharing with your team, hosting provider, or for record-keeping. The dedicated Export page gives you full control over what gets included.
 
 ## Available Export Formats
-
-### JSON Export
-
-Structured data format ideal for:
-
-* Programmatic analysis
-* Integration with monitoring systems
-* Version control tracking
-* Automated processing
 
 ### HTML Export
 
@@ -4125,24 +4226,67 @@ Human-readable formatted report perfect for:
 * Archiving for compliance
 * Printing for offline review
 
+### JSON Export
+
+Structured data format ideal for:
+
+* Programmatic analysis
+* Integration with monitoring systems
+* Version control tracking
+* Automated processing
+
+### Markdown Export
+
+Plain text format suited for:
+
+* Pasting into support tickets
+* Client messages and chat apps
+* Documentation and wikis
+* Quick sharing without formatting overhead
+
 ## How to Export
 
-### From the Results Page
+### Using the Export Page
 
 1. Run a health check to generate results
-2. Review the results (optional)
-3. Click the export button in the toolbar:
-   * **Export JSON**: Download `health-check-report-YYYY-MM-DD.json`
-   * **Export HTML**: Download `health-check-report-YYYY-MM-DD.html`
+2. Click the **Export** button in the toolbar
+3. On the Export page, configure your options:
+   * **Format**: Choose HTML, JSON, or Markdown
+   * **Status filter**: Export all checks or only issues (warning and critical)
+   * **Categories**: Select which categories to include
+   * **Individual checks**: Toggle specific checks on or off
+4. Click **Download Report**
+
+The export runs all checks fresh and applies your selected filters before generating the file.
 
 ### File Naming
 
 Exported files are automatically named with the date:
 
-* `health-check-report-2026-01-12.json`
-* `health-check-report-2026-01-12.html`
+* `health-report-2026-01-12.html`
+* `health-report-2026-01-12.json`
+* `health-report-2026-01-12.md`
 
-This makes it easy to track reports over time.
+## Export Filters
+
+### Status Filter
+
+Choose between two modes:
+
+| Option | What's Included |
+|---|---|
+| **Full Report** | All checks regardless of result (default) |
+| **Issues Only** | Only checks with Warning or Critical status |
+
+"Issues Only" is useful when you want a focused report highlighting problems without the noise of passing checks.
+
+### Category Filter
+
+Select which categories to include in the export. All categories are included by default. Deselecting a category removes all its checks from the export.
+
+### Individual Check Filter
+
+For fine-grained control, expand any category to toggle individual checks on or off. This lets you build a custom report with exactly the checks that matter for your audience.
 
 ## JSON Export Format
 
@@ -4150,20 +4294,16 @@ This makes it easy to track reports over time.
 
 ```json
 {
-  "generated": "2026-01-12T15:30:00+00:00",
-  "site": {
-    "name": "My Joomla Site",
-    "url": "https://example.com",
-    "joomla_version": "5.2.0",
-    "php_version": "8.2.14"
-  },
+  "lastRun": "2026-01-12T15:30:00+00:00",
   "summary": {
-    "total": 133,
     "critical": 2,
     "warning": 15,
-    "good": 116
+    "good": 116,
+    "total": 133
   },
-  "checks": [
+  "categories": [...],
+  "providers": [...],
+  "results": [
     {
       "slug": "core.php_version",
       "title": "PHP Version Check",
@@ -4182,7 +4322,7 @@ This makes it easy to track reports over time.
 
 ```bash
 # Save weekly snapshots
-cp health-check-report-2026-01-12.json reports/week-02.json
+cp health-report-2026-01-12.json reports/week-02.json
 
 # Compare with previous week
 diff reports/week-01.json reports/week-02.json
@@ -4192,10 +4332,10 @@ diff reports/week-01.json reports/week-02.json
 
 ```bash
 # Check for critical issues
-jq '.summary.critical' health-check-report.json
+jq '.summary.critical' health-report.json
 
 # Extract only critical checks
-jq '.checks[] | select(.status=="critical")' report.json
+jq '.results[] | select(.status=="critical")' report.json
 ```
 
 **Integration with CI/CD**
@@ -4215,12 +4355,12 @@ fi
 
 The HTML export includes:
 
-* **Styled report**: Matches the admin interface design
+* **Styled report**: Clean design with status badges and summary cards
 * **Complete results**: All checks with full descriptions
-* **Summary statistics**: Count of critical/warning/good
-* **Metadata**: Site info, Joomla version, generation date
-* **Printable**: Optimized for printing on paper
-* **Self-contained**: No external dependencies
+* **Summary statistics**: Count of critical/warning/good results
+* **Metadata**: Site name, Joomla version, generation date
+* **Printable**: Print-optimized CSS
+* **Self-contained**: No external dependencies — one file, no CDN links
 
 ### Opening HTML Reports
 
@@ -4231,57 +4371,58 @@ The HTML file can be:
 * Printed to PDF for archiving
 * Hosted on a web server for team access
 
-### Example Use Cases
+## Markdown Export Format
 
-**Sharing with Hosting Provider**
+### Features
 
-```
-Subject: Site Health Check Results - Action Needed
+The Markdown export produces a plain text `.md` file with:
 
-Hi Support Team,
+* Summary statistics table
+* Results organized by category in tables
+* Status emoji indicators (🔴 🟡 🟢)
+* Links to documentation for each check
+* Provider attribution for third-party checks
 
-I've run a health check on my Joomla site and found
-some critical issues that may require server configuration
-changes. Please see the attached HTML report.
+### Use Cases
 
-The main concerns are:
-- PHP memory limit too low (line 15)
-- Missing required PHP extension (line 23)
+* Paste directly into GitHub issues, Slack, or Teams
+* Include in client communications
+* Add to project documentation or wikis
 
-Can you help resolve these?
+## Per-Check Export Visibility
 
-Attached: health-check-report-2026-01-12.html
-```
+Export visibility lets you exclude specific checks from exports without disabling them. The check still runs and appears in the admin UI — it just won't appear in exported reports.
 
-**Client Reporting**
+This is useful when sharing reports with clients or external parties and you want to omit checks that aren't relevant to them (such as server-level configuration checks) or checks that always pass and add noise.
 
-```
-Subject: Monthly Site Health Report - January 2026
+### Configuring Export Visibility
 
-Dear Client,
+1. Go to **Extensions → Plugins**
+2. Open the plugin that provides the check (e.g., "Health Checker - Core Checks")
+3. Find the check in the configuration list
+4. Set the **Export Visibility** dropdown next to the check
 
-Please find attached this month's automated health
-check report for your Joomla website.
+### Visibility Modes
 
-Summary:
-✓ 109 checks passed
-⚠ 15 warnings (detailed in report)
-✗ 2 critical issues (being addressed)
+| Option | Behaviour |
+|---|---|
+| **Always Export** | Included in every export regardless of result (default) |
+| **Issues Only** | Included only when the result is Warning or Critical |
+| **Never Export** | Never included in exports |
 
-We're working on resolving the critical issues and
-will update you by end of week.
+### Common Use Cases
 
-Attached: health-check-report-2026-01-12.html
-```
+* **Client reports**: Set server-environment checks (PHP version, MySQL config) to "Never Export" so clients only see application-level issues that need their attention
+* **Noise reduction**: Set checks that consistently pass (e.g., a check you've already resolved) to "Issues Only" to keep reports focused
+* **Example/demo checks**: Set any placeholder checks to "Never Export" so they don't appear in production reports
 
-**Compliance Documentation**
+### How It Affects Exports
 
-```
-# Create monthly archives
-mkdir -p compliance/2026/01/
-cp health-check-report-2026-01-12.html \
-   compliance/2026/01/monthly-health-check.html
-```
+The export summary counts only the checks included in the export. A check set to "Never Export" does not affect the critical/warning/good totals shown in the report header.
+
+::: tip Export Visibility vs Export Page Filters
+Export Visibility is a **per-check plugin setting** that applies globally to all exports. The Export page filters are **per-export choices** that let you further narrow results for a specific download. Both are applied — a check must pass both to appear in the output.
+:::
 
 ## Export Tips
 
@@ -4301,7 +4442,7 @@ Export reports:
 
 ```bash
 # Add to git (JSON format recommended)
-git add reports/health-check-$(date +%Y-%m-%d).json
+git add reports/health-report-$(date +%Y-%m-%d).json
 git commit -m "Health check: $(date +%Y-%m-%d)"
 ```
 
@@ -4309,7 +4450,7 @@ git commit -m "Health check: $(date +%Y-%m-%d)"
 
 ```bash
 # Compress old reports
-gzip reports/health-check-2025-*.{json,html}
+gzip reports/health-report-2025-*.{json,html,md}
 
 # Organize by year/month
 reports/
@@ -6470,6 +6611,38 @@ If you only care about security monitoring:
 1. Keep all **"Security Checks"** enabled
 2. Disable checks in other categories as needed
 3. This reduces execution time and focuses reports on security issues only
+
+## Controlling Export Visibility
+
+Beyond enabling or disabling a check entirely, you can control whether each check appears in exported reports. This lets a check continue running and showing results in the admin UI while keeping it out of the reports you share with clients or hosting providers.
+
+### How to Configure It
+
+Each check in the plugin configuration has an **Export Visibility** dropdown alongside the enable/disable toggle:
+
+1. Go to **Extensions → Plugins** and open the plugin
+2. Find the check you want to configure
+3. Set the **Export Visibility** dropdown:
+   * **Always Export** — included in every export (default for all checks)
+   * **Issues Only** — only included when the result is Warning or Critical
+   * **Never Export** — excluded from all exports
+4. Click **Save & Close**
+
+The check continues to run and its result is visible in the Health Checker dashboard. Only the export output is affected.
+
+### Example: Preparing a Client Report
+
+You manage a site for a client and want to send them an HTML report covering only application-level issues. Server configuration checks (PHP memory limits, MySQL settings) are things you handle on their behalf — there's no reason to include them in a client-facing report.
+
+1. Open the Core Checks plugin configuration
+2. In the **System & Hosting Checks** section, set the export visibility for server-level checks to **Never Export**
+3. Export the HTML report — it will contain only the checks relevant to the client
+
+### Notes
+
+* Export visibility has no effect on the admin dashboard — all enabled checks always appear there
+* The summary totals in an exported report (critical/warning/good counts) reflect only the checks that are included in that export
+* "Issues Only" is a good default for informational checks that rarely fail — the exported report stays focused on problems without losing those checks when they do trigger
 
 ## Impact on Performance
 

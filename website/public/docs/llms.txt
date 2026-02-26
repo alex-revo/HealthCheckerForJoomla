@@ -18,7 +18,7 @@ Comprehensive health monitoring for your Joomla 5+ site
 - [Running Health Checks](/docs/running-checks.md): How to execute health checks in Joomla admin. Learn the interface, filtering results, and interpreting the dashboard.
 - [Reading Results](/docs/reading-results.md): How to interpret health check findings. Understand status levels, take action on issues, and prioritize fixes.
 - [Managing Health Checks](/docs/guide/managing-checks.md): Enable or disable individual health checks via plugin configuration. Customize which checks run on your Joomla site.
-- [Exporting Reports](/docs/exporting-reports.md): Export Health Checker reports as JSON or HTML. Share results with clients, hosting providers, or archive for compliance.
+- [Exporting Reports](/docs/exporting-reports.md): Export Health Checker reports as JSON, HTML, or Markdown. Filter by status, category, or individual checks before downloading.
 - [Dashboard Widget](/docs/dashboard-widget.md): Health Checker dashboard widget for Joomla. See site health status at a glance from your admin dashboard.
 
 ### Health Checks Reference

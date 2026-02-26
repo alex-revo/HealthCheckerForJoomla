@@ -106,6 +106,38 @@ If you only care about security monitoring:
 2. Disable checks in other categories as needed
 3. This reduces execution time and focuses reports on security issues only
 
+## Controlling Export Visibility
+
+Beyond enabling or disabling a check entirely, you can control whether each check appears in exported reports. This lets a check continue running and showing results in the admin UI while keeping it out of the reports you share with clients or hosting providers.
+
+### How to Configure It
+
+Each check in the plugin configuration has an **Export Visibility** dropdown alongside the enable/disable toggle:
+
+1. Go to **Extensions → Plugins** and open the plugin
+2. Find the check you want to configure
+3. Set the **Export Visibility** dropdown:
+   * **Always Export** — included in every export (default for all checks)
+   * **Issues Only** — only included when the result is Warning or Critical
+   * **Never Export** — excluded from all exports
+4. Click **Save & Close**
+
+The check continues to run and its result is visible in the Health Checker dashboard. Only the export output is affected.
+
+### Example: Preparing a Client Report
+
+You manage a site for a client and want to send them an HTML report covering only application-level issues. Server configuration checks (PHP memory limits, MySQL settings) are things you handle on their behalf — there's no reason to include them in a client-facing report.
+
+1. Open the Core Checks plugin configuration
+2. In the **System & Hosting Checks** section, set the export visibility for server-level checks to **Never Export**
+3. Export the HTML report — it will contain only the checks relevant to the client
+
+### Notes
+
+* Export visibility has no effect on the admin dashboard — all enabled checks always appear there
+* The summary totals in an exported report (critical/warning/good counts) reflect only the checks that are included in that export
+* "Issues Only" is a good default for informational checks that rarely fail — the exported report stays focused on problems without losing those checks when they do trigger
+
 ## Impact on Performance
 
 Disabled checks are **completely skipped** during execution:
