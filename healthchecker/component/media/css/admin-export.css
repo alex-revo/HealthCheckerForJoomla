@@ -1,0 +1,216 @@
+/**
+ * Health Checker Component - Export Page Styles
+ *
+ * @copyright   (C) 2026 https://mySites.guru + Phil E. Taylor <phil@phil-taylor.com>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+/* Format selection cards */
+.export-format-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.export-format-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    text-align: center;
+}
+
+.export-format-card:hover {
+    border-color: #86b7fe;
+}
+
+.export-format-card.active {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+.export-format-card input[type="radio"] {
+    display: none;
+}
+
+.export-format-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+.export-format-card.active .export-format-icon {
+    color: #0d6efd;
+}
+
+.export-format-label {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.export-format-desc {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* Category grid */
+.export-category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.5rem;
+}
+
+.export-category-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+}
+
+.export-category-item:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.export-category-label {
+    flex: 1;
+}
+
+/* Per-check groups */
+#checkFilters {
+    display: flex;
+    flex-direction: column;
+}
+
+.export-check-category {
+    margin-bottom: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.export-check-category-header-wrapper {
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.export-check-category-header-toggle {
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.export-check-category-header-toggle:hover {
+    background: #e9ecef;
+}
+
+.export-check-category-actions {
+    flex-shrink: 0;
+}
+
+.export-check-list {
+    padding: 0.5rem 0.75rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.25rem;
+}
+
+.export-check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+/* Sticky sidebar - keep below Joomla header dropdowns */
+.card.sticky-top {
+    z-index: 1;
+}
+
+/* Loading state */
+.export-loading {
+    padding: 1rem;
+    color: #6c757d;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .export-format-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .export-category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .export-check-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark mode */
+[data-bs-theme="dark"] .export-format-card {
+    border-color: #495057;
+}
+
+[data-bs-theme="dark"] .export-format-card:hover {
+    border-color: #6ea8fe;
+}
+
+[data-bs-theme="dark"] .export-format-card.active {
+    border-color: #6ea8fe;
+    box-shadow: 0 0 0 3px rgba(110, 168, 254, 0.2);
+}
+
+[data-bs-theme="dark"] .export-format-icon {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+[data-bs-theme="dark"] .export-format-card.active .export-format-icon {
+    color: #6ea8fe;
+}
+
+[data-bs-theme="dark"] .export-format-desc {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+[data-bs-theme="dark"] .export-category-item {
+    border-color: #495057;
+}
+
+[data-bs-theme="dark"] .export-category-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .export-check-category {
+    border-color: #495057;
+}
+
+[data-bs-theme="dark"] .export-check-category-header-wrapper {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .export-check-category-header-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+}

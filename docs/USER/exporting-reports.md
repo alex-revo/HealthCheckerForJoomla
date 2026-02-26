@@ -1,20 +1,12 @@
 ---
-description: "Export Health Checker reports as JSON or HTML. Share results with clients, hosting providers, or archive for compliance."
+description: "Export Health Checker reports as JSON, HTML, or Markdown. Filter by status, category, or individual checks before downloading."
 ---
 
 # Exporting Reports
 
-Health Checker allows you to export your check results in multiple formats for sharing with your team, hosting provider, or for record-keeping.
+Health Checker lets you export your check results in multiple formats for sharing with your team, hosting provider, or for record-keeping. The dedicated Export page gives you full control over what gets included.
 
 ## Available Export Formats
-
-### JSON Export
-
-Structured data format ideal for:
-- Programmatic analysis
-- Integration with monitoring systems
-- Version control tracking
-- Automated processing
 
 ### HTML Export
 
@@ -24,23 +16,64 @@ Human-readable formatted report perfect for:
 - Archiving for compliance
 - Printing for offline review
 
+### JSON Export
+
+Structured data format ideal for:
+- Programmatic analysis
+- Integration with monitoring systems
+- Version control tracking
+- Automated processing
+
+### Markdown Export
+
+Plain text format suited for:
+- Pasting into support tickets
+- Client messages and chat apps
+- Documentation and wikis
+- Quick sharing without formatting overhead
+
 ## How to Export
 
-### From the Results Page
+### Using the Export Page
 
 1. Run a health check to generate results
-2. Review the results (optional)
-3. Click the export button in the toolbar:
-   - **Export JSON**: Download `health-check-report-YYYY-MM-DD.json`
-   - **Export HTML**: Download `health-check-report-YYYY-MM-DD.html`
+2. Click the **Export** button in the toolbar
+3. On the Export page, configure your options:
+   - **Format**: Choose HTML, JSON, or Markdown
+   - **Status filter**: Export all checks or only issues (warning and critical)
+   - **Categories**: Select which categories to include
+   - **Individual checks**: Toggle specific checks on or off
+4. Click **Download Report**
+
+The export runs all checks fresh and applies your selected filters before generating the file.
 
 ### File Naming
 
 Exported files are automatically named with the date:
-- `health-check-report-2026-01-12.json`
-- `health-check-report-2026-01-12.html`
+- `health-report-2026-01-12.html`
+- `health-report-2026-01-12.json`
+- `health-report-2026-01-12.md`
 
-This makes it easy to track reports over time.
+## Export Filters
+
+### Status Filter
+
+Choose between two modes:
+
+| Option | What's Included |
+|---|---|
+| **Full Report** | All checks regardless of result (default) |
+| **Issues Only** | Only checks with Warning or Critical status |
+
+"Issues Only" is useful when you want a focused report highlighting problems without the noise of passing checks.
+
+### Category Filter
+
+Select which categories to include in the export. All categories are included by default. Deselecting a category removes all its checks from the export.
+
+### Individual Check Filter
+
+For fine-grained control, expand any category to toggle individual checks on or off. This lets you build a custom report with exactly the checks that matter for your audience.
 
 ## JSON Export Format
 
@@ -48,20 +81,16 @@ This makes it easy to track reports over time.
 
 ```json
 {
-  "generated": "2026-01-12T15:30:00+00:00",
-  "site": {
-    "name": "My Joomla Site",
-    "url": "https://example.com",
-    "joomla_version": "5.2.0",
-    "php_version": "8.2.14"
-  },
+  "lastRun": "2026-01-12T15:30:00+00:00",
   "summary": {
-    "total": 133,
     "critical": 2,
     "warning": 15,
-    "good": 116
+    "good": 116,
+    "total": 133
   },
-  "checks": [
+  "categories": [...],
+  "providers": [...],
+  "results": [
     {
       "slug": "core.php_version",
       "title": "PHP Version Check",
@@ -79,7 +108,7 @@ This makes it easy to track reports over time.
 **Tracking Changes Over Time**
 ```bash
 # Save weekly snapshots
-cp health-check-report-2026-01-12.json reports/week-02.json
+cp health-report-2026-01-12.json reports/week-02.json
 
 # Compare with previous week
 diff reports/week-01.json reports/week-02.json
@@ -88,10 +117,10 @@ diff reports/week-01.json reports/week-02.json
 **Automated Monitoring**
 ```bash
 # Check for critical issues
-jq '.summary.critical' health-check-report.json
+jq '.summary.critical' health-report.json
 
 # Extract only critical checks
-jq '.checks[] | select(.status=="critical")' report.json
+jq '.results[] | select(.status=="critical")' report.json
 ```
 
 **Integration with CI/CD**
@@ -109,12 +138,12 @@ fi
 ### Features
 
 The HTML export includes:
-- **Styled report**: Matches the admin interface design
+- **Styled report**: Clean design with status badges and summary cards
 - **Complete results**: All checks with full descriptions
-- **Summary statistics**: Count of critical/warning/good
-- **Metadata**: Site info, Joomla version, generation date
-- **Printable**: Optimized for printing on paper
-- **Self-contained**: No external dependencies
+- **Summary statistics**: Count of critical/warning/good results
+- **Metadata**: Site name, Joomla version, generation date
+- **Printable**: Print-optimized CSS
+- **Self-contained**: No external dependencies — one file, no CDN links
 
 ### Opening HTML Reports
 
@@ -124,58 +153,26 @@ The HTML file can be:
 - Printed to PDF for archiving
 - Hosted on a web server for team access
 
-### Example Use Cases
+## Markdown Export Format
 
-**Sharing with Hosting Provider**
-```
-Subject: Site Health Check Results - Action Needed
+### Features
 
-Hi Support Team,
+The Markdown export produces a plain text `.md` file with:
+- Summary statistics table
+- Results organized by category in tables
+- Status emoji indicators (🔴 🟡 🟢)
+- Links to documentation for each check
+- Provider attribution for third-party checks
 
-I've run a health check on my Joomla site and found
-some critical issues that may require server configuration
-changes. Please see the attached HTML report.
+### Use Cases
 
-The main concerns are:
-- PHP memory limit too low (line 15)
-- Missing required PHP extension (line 23)
-
-Can you help resolve these?
-
-Attached: health-check-report-2026-01-12.html
-```
-
-**Client Reporting**
-```
-Subject: Monthly Site Health Report - January 2026
-
-Dear Client,
-
-Please find attached this month's automated health
-check report for your Joomla website.
-
-Summary:
-✓ 109 checks passed
-⚠ 15 warnings (detailed in report)
-✗ 2 critical issues (being addressed)
-
-We're working on resolving the critical issues and
-will update you by end of week.
-
-Attached: health-check-report-2026-01-12.html
-```
-
-**Compliance Documentation**
-```
-# Create monthly archives
-mkdir -p compliance/2026/01/
-cp health-check-report-2026-01-12.html \
-   compliance/2026/01/monthly-health-check.html
-```
+- Paste directly into GitHub issues, Slack, or Teams
+- Include in client communications
+- Add to project documentation or wikis
 
 ## Per-Check Export Visibility
 
-Export visibility lets you exclude specific checks from exports without disabling them. The check still runs and appears in the admin UI — it just won't appear in exported JSON or HTML reports.
+Export visibility lets you exclude specific checks from exports without disabling them. The check still runs and appears in the admin UI — it just won't appear in exported reports.
 
 This is useful when sharing reports with clients or external parties and you want to omit checks that aren't relevant to them (such as server-level configuration checks) or checks that always pass and add noise.
 
@@ -204,6 +201,10 @@ This is useful when sharing reports with clients or external parties and you wan
 
 The export summary counts only the checks included in the export. A check set to "Never Export" does not affect the critical/warning/good totals shown in the report header.
 
+::: tip Export Visibility vs Export Page Filters
+Export Visibility is a **per-check plugin setting** that applies globally to all exports. The Export page filters are **per-export choices** that let you further narrow results for a specific download. Both are applied — a check must pass both to appear in the output.
+:::
+
 ## Export Tips
 
 ### When to Export
@@ -220,14 +221,14 @@ Export reports:
 **For Version Control**
 ```bash
 # Add to git (JSON format recommended)
-git add reports/health-check-$(date +%Y-%m-%d).json
+git add reports/health-report-$(date +%Y-%m-%d).json
 git commit -m "Health check: $(date +%Y-%m-%d)"
 ```
 
 **For Long-Term Archives**
 ```bash
 # Compress old reports
-gzip reports/health-check-2025-*.{json,html}
+gzip reports/health-report-2025-*.{json,html,md}
 
 # Organize by year/month
 reports/

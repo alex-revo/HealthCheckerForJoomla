@@ -53,12 +53,25 @@ class MarkdownView extends BaseHtmlView
     public function display($tpl = null): void
     {
         $cmsApplication = Factory::getApplication();
+        $input = $cmsApplication->getInput();
 
         /** @var \MySitesGuru\HealthChecker\Component\Administrator\Model\ReportModel $model */
         $model = $this->getModel();
         $model->runChecks();
 
-        $results = $model->getResultsByCategory();
+        $isFiltered = $input->getInt('export_filtered', 0) === 1;
+        $statusFilter = $input->getString('export_status', 'all');
+        $categoryFilter = $input->get('export_categories', [], 'array');
+        $checkFilter = $input->get('export_checks', [], 'array');
+
+        if ($isFiltered) {
+            $results = $model->getFilteredExportResults($statusFilter, $categoryFilter, $checkFilter);
+            $exportCounts = $model->getCountsFromResults($results);
+        } else {
+            $results = $model->getExportableResultsByCategory();
+            $exportCounts = $model->getExportableCounts();
+        }
+
         $categories = $model->getRunner()
             ->getCategoryRegistry()
             ->all();
@@ -73,10 +86,10 @@ class MarkdownView extends BaseHtmlView
         $reportDate = date('F j, Y \a\t g:i A');
         $joomlaVersion = JVERSION;
 
-        $criticalCount = $model->getCriticalCount();
-        $warningCount = $model->getWarningCount();
-        $goodCount = $model->getGoodCount();
-        $totalCount = $model->getTotalCount();
+        $criticalCount = $exportCounts['critical'];
+        $warningCount = $exportCounts['warning'];
+        $goodCount = $exportCounts['good'];
+        $totalCount = $exportCounts['total'];
 
         header('Content-Type: text/markdown; charset=utf-8');
         header('Content-Disposition: attachment; filename="health-report-' . date('Y-m-d') . '.md"');

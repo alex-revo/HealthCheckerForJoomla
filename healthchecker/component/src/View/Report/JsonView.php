@@ -51,15 +51,24 @@ class JsonView extends BaseJsonView
     public function display($tpl = null): void
     {
         $cmsApplication = Factory::getApplication();
+        $input = $cmsApplication->getInput();
 
         /** @var \MySitesGuru\HealthChecker\Component\Administrator\Model\ReportModel $model */
         $model = $this->getModel();
         $model->runChecks();
 
+        $statusFilter = $input->getString('export_status', 'all');
+        $categoryFilter = $input->get('export_categories', [], 'array');
+        $checkFilter = $input->get('export_checks', [], 'array');
+
         header('Content-Type: application/json; charset=utf-8');
         header('Content-Disposition: attachment; filename="health-report-' . date('Y-m-d') . '.json"');
 
-        echo $model->toExportJson();
+        $isFiltered = $input->getInt('export_filtered', 0) === 1;
+
+        echo $isFiltered
+            ? $model->toFilteredExportJson($statusFilter, $categoryFilter, $checkFilter)
+            : $model->toExportJson();
 
         $cmsApplication->close();
     }

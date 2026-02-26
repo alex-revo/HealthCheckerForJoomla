@@ -14,7 +14,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Session\Session;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\AfterToolbarBuildEvent;
@@ -97,33 +96,12 @@ class HtmlView extends BaseHtmlView
             ->onclick('runHealthChecks(); return false;')
             ->buttonClass('btn btn-success');
 
-        $token = Session::getFormToken();
-        $jsonUrl = Route::_('index.php?option=com_healthchecker&view=report&format=json&' . $token . '=1', false);
-        $htmlUrl = Route::_('index.php?option=com_healthchecker&view=report&format=htmlexport&' . $token . '=1', false);
-        $markdownUrl = Route::_('index.php?option=com_healthchecker&view=report&format=markdown&' . $token . '=1', false);
-
-        $toolbarDropdownButton = $toolbar->dropdownButton('export')
+        $exportUrl = Route::_('index.php?option=com_healthchecker&view=export', false);
+        $toolbar->linkButton('export-report')
             ->text('COM_HEALTHCHECKER_EXPORT')
-            ->toggleSplit(false)
+            ->url($exportUrl)
             ->icon('icon-download')
-            ->buttonClass('btn btn-action');
-
-        $childBar = $toolbarDropdownButton->getChildToolbar();
-
-        $childBar->linkButton('export-json')
-            ->text('COM_HEALTHCHECKER_EXPORT_JSON')
-            ->url($jsonUrl)
-            ->icon('icon-code');
-
-        $childBar->linkButton('export-html')
-            ->text('COM_HEALTHCHECKER_EXPORT_HTML')
-            ->url($htmlUrl)
-            ->icon('icon-file');
-
-        $childBar->linkButton('export-markdown')
-            ->text('COM_HEALTHCHECKER_EXPORT_MARKDOWN')
-            ->url($markdownUrl)
-            ->icon('icon-file-alt');
+            ->buttonClass('btn btn-primary');
 
         $toolbar->linkButton('github')
             ->text('COM_HEALTHCHECKER_GITHUB')

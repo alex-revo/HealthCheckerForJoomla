@@ -39,16 +39,19 @@ return RectorConfig::configure()
             __DIR__ .
             '/healthchecker/component/src/Controller/DisplayController.php',
             __DIR__ . '/healthchecker/component/src/View/Report/HtmlView.php',
+            __DIR__ . '/healthchecker/component/src/View/Export/HtmlView.php',
         ],
         ParamTypeByMethodCallTypeRector::class => [
             __DIR__ .
             '/healthchecker/component/src/Controller/DisplayController.php',
             __DIR__ . '/healthchecker/component/src/View/Report/HtmlView.php',
+            __DIR__ . '/healthchecker/component/src/View/Export/HtmlView.php',
         ],
         ParamTypeByParentCallTypeRector::class => [
             __DIR__ .
             '/healthchecker/component/src/Controller/DisplayController.php',
             __DIR__ . '/healthchecker/component/src/View/Report/HtmlView.php',
+            __DIR__ . '/healthchecker/component/src/View/Export/HtmlView.php',
         ],
 
         // Joomla compatibility: Don't add type hints to $autoloadLanguage property

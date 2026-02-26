@@ -199,6 +199,142 @@ class ReportModel extends BaseDatabaseModel
     }
 
     /**
+     * Get exportable results filtered by export page parameters
+     *
+     * Applies additional filters on top of export visibility:
+     * - Status filter: 'issues' to include only warning/critical
+     * - Category filter: array of category slugs to include
+     * - Check filter: array of check slugs to include
+     *
+     * @param   string        $statusFilter      'all' or 'issues'
+     * @param   string[]      $categoryFilter    Category slugs to include (empty = all)
+     * @param   string[]      $checkFilter       Check slugs to include (empty = all)
+     *
+     * @return  array<string, HealthCheckResult[]>  Filtered results grouped by category slug
+     *
+     * @since   4.0.0
+     */
+    public function getFilteredExportResults(
+        string $statusFilter = 'all',
+        array $categoryFilter = [],
+        array $checkFilter = [],
+    ): array {
+        $results = $this->getExportableResultsByCategory();
+
+        // Filter by selected categories (empty = no categories = empty result)
+        $results = array_intersect_key($results, array_flip($categoryFilter));
+
+        // Filter by selected checks (empty = no checks = empty result)
+        if ($checkFilter !== []) {
+            $checkSet = array_flip($checkFilter);
+
+            foreach ($results as $category => $categoryResults) {
+                $results[$category] = array_filter(
+                    $categoryResults,
+                    static fn(HealthCheckResult $healthCheckResult): bool => isset($checkSet[$healthCheckResult->slug]),
+                );
+            }
+
+            $results = array_filter($results, static fn(array $r): bool => $r !== []);
+        }
+
+        // Filter by status
+        if ($statusFilter === 'issues') {
+            foreach ($results as $category => $categoryResults) {
+                $results[$category] = array_filter(
+                    $categoryResults,
+                    static fn(HealthCheckResult $healthCheckResult): bool => $healthCheckResult->healthStatus !== HealthStatus::Good,
+                );
+            }
+
+            $results = array_filter($results, static fn(array $r): bool => $r !== []);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get counts from a pre-filtered result set
+     *
+     * @param   array<string, HealthCheckResult[]>  $results  Results grouped by category
+     *
+     * @return  array{critical: int, warning: int, good: int, total: int}
+     *
+     * @since   4.0.0
+     */
+    public function getCountsFromResults(array $results): array
+    {
+        $counts = [
+            'critical' => 0,
+            'warning' => 0,
+            'good' => 0,
+            'total' => 0,
+        ];
+
+        foreach ($results as $result) {
+            foreach ($result as $categoryResult) {
+                $counts[$categoryResult->healthStatus->value]++;
+                $counts['total']++;
+            }
+        }
+
+        return $counts;
+    }
+
+    /**
+     * Export filtered results as JSON
+     *
+     * @param   string    $statusFilter    'all' or 'issues'
+     * @param   string[]  $categoryFilter  Category slugs to include
+     * @param   string[]  $checkFilter     Check slugs to include
+     *
+     * @return  string  Pretty-printed JSON
+     *
+     * @since   4.0.0
+     */
+    public function toFilteredExportJson(
+        string $statusFilter = 'all',
+        array $categoryFilter = [],
+        array $checkFilter = [],
+    ): string {
+        $results = $this->getFilteredExportResults($statusFilter, $categoryFilter, $checkFilter);
+        $counts = $this->getCountsFromResults($results);
+        $healthCheckRunner = $this->getRunner();
+
+        $flatResults = [];
+
+        foreach ($results as $result) {
+            foreach ($result as $categoryResult) {
+                $flatResults[] = $categoryResult->toArray();
+            }
+        }
+
+        $data = [
+            'lastRun' => $healthCheckRunner->getLastRun()?->format('c'),
+            'summary' => $counts,
+            'categories' => array_map(
+                fn(\MySitesGuru\HealthChecker\Component\Administrator\Category\HealthCategory $healthCategory): array => $healthCategory->toArray(),
+                $healthCheckRunner->getCategoryRegistry()
+                    ->all(),
+            ),
+            'providers' => array_map(
+                fn(\MySitesGuru\HealthChecker\Component\Administrator\Provider\ProviderMetadata $providerMetadata): array => $providerMetadata->toArray(),
+                $healthCheckRunner->getProviderRegistry()
+                    ->all(),
+            ),
+            'results' => $flatResults,
+        ];
+
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        if ($json === false) {
+            throw new \RuntimeException('Failed to encode health check results to JSON: ' . json_last_error_msg());
+        }
+
+        return $json;
+    }
+
+    /**
      * Get count of checks with critical status
      *
      * @return  int  Number of checks that returned a critical status
