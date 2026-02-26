@@ -11,6 +11,7 @@ Comprehensive health monitoring for your Joomla 5+ site
 - [Getting Started](/docs/getting-started.md): Quick start guide for Health Checker for Joomla. Install the extension and run your first health check in under 5 minutes.
 - [Introduction](/docs/introduction.md): Learn what Health Checker for Joomla does: 130+ automated checks for security, performance, SEO, database, and more.
 - [Installation](/docs/installation.md): Step-by-step installation guide for Health Checker for Joomla. Download, install via Joomla admin, and verify setup.
+- [Changelog](/docs/changelog.md): Complete history of features, fixes, and improvements across every release of Health Checker for Joomla.
 
 ### User Guide
 
