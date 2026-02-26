@@ -43,7 +43,7 @@ Text::script('COM_HEALTHCHECKER_ERROR');
      data-export-html-url="<?php echo htmlspecialchars($htmlUrl); ?>"
      data-export-markdown-url="<?php echo htmlspecialchars($markdownUrl); ?>"
 >
-    <form id="exportForm" method="post" target="_blank">
+    <form id="exportForm" method="post">
         <input type="hidden" name="<?php echo htmlspecialchars($token); ?>" value="1">
 
         <div class="row">
