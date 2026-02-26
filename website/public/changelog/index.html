@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Changelog - Health Checker for Joomla</title>
+        <meta
+            name="description"
+            content="Complete changelog and release history for Health Checker for Joomla. Track new features, bug fixes, security updates, and improvements across all versions."
+        />
+        <meta
+            name="keywords"
+            content="Joomla Health Checker changelog, release notes, version history, updates"
+        />
+        <meta
+            name="robots"
+            content="index, follow, max-snippet:-1"
+        />
+        <meta name="author" content="Phil E. Taylor, mySites.guru" />
+        <meta name="theme-color" content="#1e3a8a" />
+        <link rel="canonical" href="https://www.joomlahealthchecker.com/changelog/" />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.joomlahealthchecker.com/changelog/" />
+        <meta property="og:title" content="Changelog - Health Checker for Joomla" />
+        <meta property="og:description" content="Complete changelog and release history for Health Checker for Joomla." />
+        <meta property="og:image" content="https://www.joomlahealthchecker.com/social-preview.jpg?v=3" />
+        <meta property="og:site_name" content="Health Checker for Joomla" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Changelog - Health Checker for Joomla" />
+        <meta name="twitter:description" content="Complete changelog and release history for Health Checker for Joomla." />
+        <meta name="twitter:image" content="https://www.joomlahealthchecker.com/social-preview.jpg" />
+
+        <link
+            rel="icon"
+            type="image/png"
+            href="https://www.joomlahealthchecker.com/jhc-favicon-96x96.png?v=3"
+            sizes="96x96"
+        />
+        <link
+            rel="icon"
+            type="image/svg+xml"
+            href="https://www.joomlahealthchecker.com/jhc-favicon.svg?v=3"
+        />
+        <link
+            rel="shortcut icon"
+            href="https://www.joomlahealthchecker.com/jhc-favicon.ico?v=3"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="https://www.joomlahealthchecker.com/jhc-apple-touch-icon.png?v=3"
+        />
+
+        <link rel="stylesheet" href="/output.css?v=2" />
+        <script>
+            (function () {
+                const prefersDark = window.matchMedia(
+                    "(prefers-color-scheme: dark)",
+                ).matches;
+                if (prefersDark) {
+                    document.documentElement.classList.add("dark");
+                }
+            })();
+        </script>
+    </head>
+    <body
+        class="font-sans text-gray-700 bg-white dark:bg-gray-900 dark:text-gray-100 leading-relaxed"
+    >
+        <a
+            href="#main-content"
+            class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-joomla-primary focus:text-white focus:rounded-md"
+            >Skip to main content</a
+        >
+
+        <header
+            class="py-4 md:py-5 border-b border-gray-200 dark:border-gray-700"
+        >
+            <div class="max-w-6xl mx-auto px-4 md:px-6">
+                <div class="flex justify-between items-center">
+                    <a
+                        href="/"
+                        class="flex items-center gap-2 text-base md:text-lg font-semibold text-joomla-primary no-underline shrink-0"
+                        aria-label="Joomla Health Checker - Home"
+                    >
+                        <img
+                            src="/logo.svg"
+                            alt="Health Checker for Joomla logo"
+                            class="w-7 h-7 md:w-8 md:h-8"
+                        />
+                        <span class="hidden sm:inline"
+                            >Health Checker for Joomla</span
+                        >
+                        <span class="sm:hidden">Health Checker</span>
+                    </a>
+                    <button
+                        type="button"
+                        class="md:hidden p-2 text-joomla-primary dark:text-blue-400"
+                        onclick="
+                            document
+                                .getElementById('mobile-menu')
+                                .classList.toggle('hidden')
+                        "
+                        aria-label="Toggle menu"
+                    >
+                        <svg
+                            class="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"
+                            ></path>
+                        </svg>
+                    </button>
+                    <div class="hidden md:flex items-center gap-6">
+                        <a
+                            href="/docs/"
+                            class="inline-flex items-center justify-center py-2.5 text-joomla-primary font-medium text-sm no-underline hover:text-joomla-secondary transition-colors"
+                            >Documentation</a
+                        >
+                        <a
+                            href="/docs/developers/"
+                            class="inline-flex items-center justify-center py-2.5 text-joomla-primary font-medium text-sm no-underline hover:text-joomla-secondary transition-colors"
+                            >Extend</a
+                        >
+                        <a
+                            href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues"
+                            class="inline-flex items-center justify-center py-2.5 text-joomla-primary font-medium text-sm no-underline hover:text-joomla-secondary transition-colors"
+                            >Support</a
+                        >
+                        <a
+                            href="https://github.com/mySites-guru/HealthCheckerForJoomla"
+                            class="inline-flex items-center justify-center p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+                            aria-label="View on GitHub"
+                            title="View on GitHub"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                                    clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                        </a>
+                        <a
+                            href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/download/v3.3.5/pkg_healthchecker-3.3.5.zip"
+                            class="inline-flex items-center justify-center px-5 py-2.5 bg-joomla-primary text-white rounded-md font-medium text-sm no-underline hover:bg-joomla-secondary transition-colors dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+                            >Download Free</a
+                        >
+                    </div>
+                </div>
+                <div
+                    id="mobile-menu"
+                    class="hidden md:hidden mt-4 pb-2 border-t border-gray-100 pt-4"
+                >
+                    <div class="flex flex-col gap-3">
+                        <a
+                            href="/docs/"
+                            class="py-2 text-joomla-primary font-medium text-sm no-underline hover:text-joomla-secondary transition-colors"
+                            >Documentation</a
+                        >
+                        <a
+                            href="/docs/developers/"
+                            class="py-2 text-joomla-primary font-medium text-sm no-underline hover:text-joomla-secondary transition-colors"
+                            >Extend</a
+                        >
+                        <a
+                            href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues"
+                            class="py-2 text-joomla-primary font-medium text-sm no-underline hover:text-joomla-secondary transition-colors"
+                            >Support</a
+                        >
+                        <a
+                            href="https://github.com/mySites-guru/HealthCheckerForJoomla"
+                            class="inline-flex items-center gap-2 py-2 text-gray-600 font-medium text-sm no-underline hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+                        >
+                            <svg
+                                class="w-5 h-5"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                                    clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                            GitHub
+                        </a>
+                        <a
+                            href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/download/v3.3.5/pkg_healthchecker-3.3.5.zip"
+                            class="inline-flex items-center justify-center px-5 py-2.5 bg-joomla-primary text-white rounded-md font-medium text-sm no-underline hover:bg-joomla-secondary transition-colors dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+                            >Download Free</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main id="main-content">
+            <section class="py-12 md:py-16 border-b border-gray-100 dark:border-gray-800">
+                <div class="max-w-4xl mx-auto px-6">
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">Changelog</h1>
+                    <p class="text-lg text-gray-500 dark:text-gray-400">Release history and version notes for Health Checker for Joomla.</p>
+                </div>
+            </section>
+
+            <section class="py-12">
+                <div class="max-w-4xl mx-auto px-6">
+
+                    <!-- 3.3.x -->
+                    <div class="mb-12">
+                        <h2 class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-6">3.3.x Releases</h2>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.5" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.3.5</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 26, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Menu Orphans check now lists the specific menu item titles that are broken, making it easier to find and fix orphaned links (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/45" class="text-joomla-link hover:underline">#45</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Unused Modules check now mentions <code class="text-xs bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">{loadmodule}</code> usage, so modules loaded via content plugins are accounted for (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/47" class="text-joomla-link hover:underline">#47</a>)</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.4" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.3.4</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 25, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed false positive orphaned tables for extensions using non-standard SQL install file paths by parsing XML manifests to discover actual SQL locations (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/41" class="text-joomla-link hover:underline">#41</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed error when extension manifest lacks an install sql section</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.3" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.3.3</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 24, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Module Position check now lists orphaned modules in the warning description (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/40" class="text-joomla-link hover:underline">#40</a>)</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.2" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.3.2</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 22, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Added HealthStatus parameter to getDocsUrl() method, enabling status-aware documentation links (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/38" class="text-joomla-link hover:underline">#38</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Better error handling for ajax errors</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 shrink-0 mt-0.5">Breaking</span>
+                                    <span>Third-party plugins overriding getDocsUrl() must update their method signature</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.1" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.3.1</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 22, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>HTML markup now renders correctly in HTML export reports instead of displaying raw tags (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/36" class="text-joomla-link hover:underline">#36</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>HTML export now includes a link to the documentation (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/37" class="text-joomla-link hover:underline">#37</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Improved HTML export layout and formatting (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/37" class="text-joomla-link hover:underline">#37</a>)</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.0" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.3.0</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 17, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Added Core Directories health check - verifies essential Joomla directories exist and are accessible (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/31" class="text-joomla-link hover:underline">#31</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Added Index File health check - ensures index.html security files are present in key directories (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/32" class="text-joomla-link hover:underline">#32</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Standardized die() statements to die; for consistency (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/30" class="text-joomla-link hover:underline">#30</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Removed duplicate docblocks from performCheck() methods (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/29" class="text-joomla-link hover:underline">#29</a>)</span>
+                                </li>
+                            </ul>
+                        </article>
+                    </div>
+
+                    <!-- 3.2.x -->
+                    <div class="mb-12">
+                        <h2 class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-6">3.2.x Releases</h2>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.2.6" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.2.6</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 9, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed dark mode button visibility for Joomla 5 (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/27" class="text-joomla-link hover:underline">#27</a>)</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.2.5" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.2.5</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 7, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Added Yootheme plugin to website homepage (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/25" class="text-joomla-link hover:underline">#25</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Updated documentation and website</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.2.4" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.2.4</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 6, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed spinner alignment in pending check badges (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/24" class="text-joomla-link hover:underline">#24</a>)</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.2.3" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.2.3</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 6, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Add Community Plugins page and toolbar button (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/21" class="text-joomla-link hover:underline">#21</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Add YOOtheme Pro Health Checker plugin listing (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/23" class="text-joomla-link hover:underline">#23</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Add safe HTML formatting support for health check descriptions (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/14" class="text-joomla-link hover:underline">#14</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Add docsUrl and actionUrl properties to health check results</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Refactor action_url to support conditional display with visual buttons (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/17" class="text-joomla-link hover:underline">#17</a>, <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/19" class="text-joomla-link hover:underline">#19</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Add cache buster to AJAX requests (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/9" class="text-joomla-link hover:underline">#9</a>, <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/10" class="text-joomla-link hover:underline">#10</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Add installer scripts to clean up obsolete files on update (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/4" class="text-joomla-link hover:underline">#4</a>, <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/8" class="text-joomla-link hover:underline">#8</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Add LLMs.txt support for AI discoverability</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fix missing brute force protection translation key (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/2" class="text-joomla-link hover:underline">#2</a>, <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/3" class="text-joomla-link hover:underline">#3</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fix PasswordExpiryCheck false positive on fresh Joomla installs</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fix ActionLogsEnabledCheck false negative and remove bogus UserActionsLogCheck (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/5" class="text-joomla-link hover:underline">#5</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fix Page Cache check to detect browser caching setting correctly</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fix PasswordPolicyCheck to read from com_users component params</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fix null pointer access in database health checks</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fix HealthCheckInterface documentation (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/15" class="text-joomla-link hover:underline">#15</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Add missing translation for Media Manager Thumbnails check (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/16" class="text-joomla-link hover:underline">#16</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fix conflicting recommendations between health checks (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/20" class="text-joomla-link hover:underline">#20</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fix formatting recommendations (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/13" class="text-joomla-link hover:underline">#13</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Add alt text to logo images for accessibility</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Remove deprecated database.backup_age core check (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/6" class="text-joomla-link hover:underline">#6</a>, <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/7" class="text-joomla-link hover:underline">#7</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Remove redundant LegacyExtensionsCheck (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/11" class="text-joomla-link hover:underline">#11</a>, <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/12" class="text-joomla-link hover:underline">#12</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Remove bogus UserActionsLogCheck phantom check (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/5" class="text-joomla-link hover:underline">#5</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Add defensive permission checks to MySitesGuru plugin event handlers</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Comprehensive documentation rebuild and user guide updates</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Numerous code quality improvements, unit tests, and CI/CD enhancements</span>
+                                </li>
+                            </ul>
+                        </article>
+                    </div>
+
+                    <!-- 3.1.x -->
+                    <div class="mb-12">
+                        <h2 class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-6">3.1.x Releases</h2>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.5" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.1.5</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 5, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Refactored action_url system to support conditional display with visual buttons (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/17" class="text-joomla-link hover:underline">#17</a>, <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/19" class="text-joomla-link hover:underline">#19</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Rebuilt documentation</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.4" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.1.4</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 4, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Added missing translation for Media Manager Thumbnails check (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/16" class="text-joomla-link hover:underline">#16</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Fixed HealthCheckInterface documentation (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/15" class="text-joomla-link hover:underline">#15</a>)</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.3" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.1.3</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 4, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Rebuilt documentation</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.2" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.1.2</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">February 4, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 shrink-0 mt-0.5">Security</span>
+                                    <span>Added defensive permission checks to MySitesGuru plugin event handlers</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Updated documentation</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.1" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.1.1</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 30, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Added safe HTML formatting support for health check descriptions (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/14" class="text-joomla-link hover:underline">#14</a>, <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/13" class="text-joomla-link hover:underline">#13</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Build process now auto-commits minified assets during release</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Removed deprecated waitlist functionality</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.0" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.1.0</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 27, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Removed the Legacy Extensions health check, which was redundant (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/11" class="text-joomla-link hover:underline">#11</a>)</span>
+                                </li>
+                            </ul>
+                        </article>
+                    </div>
+
+                    <!-- 3.0.x -->
+                    <div class="mb-12">
+                        <h2 class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-6">3.0.x Releases</h2>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.40" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.40</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 27, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 shrink-0 mt-0.5">Performance</span>
+                                    <span>Added cache buster to AJAX requests to prevent stale responses (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/9" class="text-joomla-link hover:underline">#9</a>)</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.39" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.39</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 27, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-gray-400">Maintenance release</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.38" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.38</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 27, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Removed deprecated database.backup_age check (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/6" class="text-joomla-link hover:underline">#6</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Added installer scripts to clean up obsolete files (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/4" class="text-joomla-link hover:underline">#4</a>, <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/5" class="text-joomla-link hover:underline">#5</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Release notes now link to related GitHub issues</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.37" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.37</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 27, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Added missing translation key for brute force protection check (<a href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues/2" class="text-joomla-link hover:underline">#2</a>)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Consolidated website build scripts</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.36" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.36</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 25, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed PasswordExpiryCheck false positive on fresh Joomla installations</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed ActionLogsEnabledCheck false negative detection</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed Page Cache check to properly detect browser caching configuration</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed PasswordPolicyCheck to correctly read settings from com_users component params</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Removed bogus UserActionsLogCheck</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Added docsUrl and actionUrl properties to health check results</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Added SEO meta tags to documentation pages</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Added alt text to provider and category logo images</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.35" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.35</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 23, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed UnusedModulesCheck displaying object data instead of module names</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 shrink-0 mt-0.5">Feature</span>
+                                    <span>Added logo support for Akeeba Backup, Admin Tools, and mySites.guru provider plugins</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.34" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.34</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 23, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed broken documentation links</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Website updates and section simplification</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.33" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.33</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 23, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed detection of plugins using filesystem check rather than database query</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 shrink-0 mt-0.5">Security</span>
+                                    <span>Removed debug code from source files</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Improved code quality and expanded unit test coverage</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.32" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.32</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 23, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Fixed HttpFactory::getHttp method for improved HTTP client handling</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 shrink-0 mt-0.5">Fix</span>
+                                    <span>Added missing translation strings</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Deprecated curl_close() call removed for PHP 8.0+ compatibility</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Expanded unit test coverage with HTTP client mocking</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.31" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.31</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 23, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-gray-400">Maintenance release</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.30" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.30</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 23, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Fixed release script URL generation</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 shrink-0 mt-0.5">Internal</span>
+                                    <span>Updated documentation and website files</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article class="mb-8 pl-6 border-l-2 border-blue-200 dark:border-blue-900">
+                            <div class="mb-3">
+                                <a href="https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.29" class="text-xl font-semibold text-gray-900 dark:text-white no-underline hover:text-joomla-primary dark:hover:text-blue-400 transition-colors">v3.0.29</a>
+                                <span class="ml-3 text-sm text-gray-400 dark:text-gray-500">January 23, 2026</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300 list-none pl-0">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-gray-400">Initial public release</span>
+                                </li>
+                            </ul>
+                        </article>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+        <footer class="py-6">
+            <div class="max-w-6xl mx-auto px-6">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-gray-500"
+                >
+                    <p>
+                        &copy; 2026
+                        <a
+                            href="https://www.phil-taylor.com"
+                            target="_blank"
+                            class="text-gray-500 hover:text-joomla-link transition-colors"
+                            rel="noopener noreferrer"
+                        >
+                            Phil E. Taylor
+                        </a>
+                        /
+                        <a
+                            href="https://mySites.guru"
+                            target="_blank"
+                            class="text-gray-500 hover:text-joomla-link transition-colors"
+                            title="Manage multiple Joomla sites from one console"
+                            rel="noopener noreferrer"
+                        >
+                            mySites.guru
+                        </a>
+                    </p>
+                    <ul class="flex gap-6 list-none">
+                        <li>
+                            <a
+                                href="/docs/getting-started.html"
+                                class="text-gray-500 hover:text-joomla-link transition-colors"
+                                >Documentation</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="/docs/developers/"
+                                class="text-gray-500 hover:text-joomla-link transition-colors"
+                                >Developer Guide</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://github.com/mySites-guru/HealthCheckerForJoomla/issues"
+                                class="text-gray-500 hover:text-joomla-link transition-colors"
+                                >Support</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <p class="text-xs text-gray-400 text-center mt-6">
+                    This site is not affiliated with or endorsed by the Joomla!
+                    Project. It is not supported or warranted by the Joomla!
+                    Project or Open Source Matters.
+                </p>
+            </div>
+        </footer>
+    </body>
+</html>
