@@ -1,5 +1,6 @@
 services:
   frankenphp:
+    platform: linux/amd64
     image: philetaylor/base-frankenphp:latest
     container_name: healthchecker-frankenphp
     labels:
