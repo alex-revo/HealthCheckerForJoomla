@@ -11,6 +11,10 @@ A complete history of features, fixes, and improvements across every release.
 
 ## Version 3.5
 
+### [3.5.1](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.5.1)&#x20;
+
+* \[Feature] Added action URLs to Extensions category health checks, enabling one-click navigation to resolve extension issues ([#62](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/62)) (Thanks [@alex-revo](https://github.com/alex-revo))
+
 ### [3.5.0](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.5.0)&#x20;
 
 * \[Feature] Added update channel health check — verifies Joomla is configured to receive updates from the expected release channel ([#60](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/60)) (Thanks [@alex-revo](https://github.com/alex-revo))
