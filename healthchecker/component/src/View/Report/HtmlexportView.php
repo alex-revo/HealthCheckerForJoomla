@@ -60,7 +60,7 @@ class HtmlexportView extends BaseHtmlView
         $model = $this->getModel();
         $model->runChecks();
 
-        $results = $model->getResultsByCategory();
+        $results = $model->getExportableResultsByCategory();
         $categories = $model->getRunner()
             ->getCategoryRegistry()
             ->all();
@@ -72,10 +72,11 @@ class HtmlexportView extends BaseHtmlView
         $reportDate = date('F j, Y \a\t g:i A');
         $joomlaVersion = JVERSION;
 
-        $criticalCount = $model->getCriticalCount();
-        $warningCount = $model->getWarningCount();
-        $goodCount = $model->getGoodCount();
-        $totalCount = $model->getTotalCount();
+        $exportCounts = $model->getExportableCounts();
+        $criticalCount = $exportCounts['critical'];
+        $warningCount = $exportCounts['warning'];
+        $goodCount = $exportCounts['good'];
+        $totalCount = $exportCounts['total'];
 
         // Check if mySites.guru plugin is enabled (banner only shows if plugin enabled)
         $showMySitesGuruBanner = PluginHelper::isEnabled('healthchecker', 'mysitesguru');

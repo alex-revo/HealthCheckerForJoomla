@@ -87,4 +87,17 @@ interface HealthCheckInterface
      * @since 1.0.0
      */
     public function run(): HealthCheckResult;
+
+    /**
+     * Get the export visibility mode for this check.
+     *
+     * Controls whether this check's result is included in exported reports.
+     * Default is Always (included in all exports). Override in your check class
+     * to change the default, or use setExportVisibility() to override from config.
+     *
+     * @return ExportVisibility The export visibility mode
+     *
+     * @since 3.4.0
+     */
+    public function getExportVisibility(): ExportVisibility;
 }

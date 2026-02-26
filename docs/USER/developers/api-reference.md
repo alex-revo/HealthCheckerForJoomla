@@ -81,6 +81,10 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
     // Optional URL methods (return null by default)
     public function getDocsUrl(?HealthStatus $healthStatus = null): ?string;   // Override to add "Docs" button
     public function getActionUrl(?HealthStatus $status = null): ?string;       // Override to add "Explore" button
+
+    // Export visibility
+    public function getExportVisibility(): ExportVisibility;                   // Override to set developer default
+    public function setExportVisibility(ExportVisibility $exportVisibility): void; // Called by plugin to apply admin config
 }
 ```
 
@@ -99,6 +103,8 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
 - `run()` - Wraps performCheck() with error handling
 - `getDocsUrl($healthStatus)` - Returns null by default (override to add "Docs" button, receives check status to allow conditional display)
 - `getActionUrl($status)` - Returns null by default (override to add "Explore" button, receives check status to allow conditional display)
+- `getExportVisibility()` - Returns `ExportVisibility::Always` by default; override to change the developer default, or call `setExportVisibility()` to apply an admin-configured value
+- `setExportVisibility($visibility)` - Stores an admin-configured override; when set, it takes precedence over `getExportVisibility()`
 
 ### Error Handling
 
@@ -224,8 +230,9 @@ final readonly class HealthCheckResult
         public string $slug,
         public string $category,
         public string $provider = 'core',
-        public ?string $docsUrl = null,    // @since 3.0.36
-        public ?string $actionUrl = null   // @since 3.0.36
+        public ?string $docsUrl = null,                                    // @since 3.0.36
+        public ?string $actionUrl = null,                                  // @since 3.0.36
+        public ExportVisibility $exportVisibility = ExportVisibility::Always // @since 3.4.0
     );
 
     public function toArray(): array;
@@ -242,6 +249,7 @@ final readonly class HealthCheckResult
 - `provider` - Provider slug
 - `docsUrl` - URL for documentation link (displays ? icon) *@since 3.0.36*
 - `actionUrl` - URL to navigate when row is clicked *@since 3.0.36*
+- `exportVisibility` - Controls whether this result appears in exports *@since 3.4.0*
 
 ### HealthStatus
 
@@ -255,6 +263,21 @@ enum HealthStatus: string
     case Good = 'good';
 }
 ```
+
+### ExportVisibility
+
+Enum controlling whether a check result is included in exports. *@since 3.4.0*
+
+```php
+enum ExportVisibility: string
+{
+    case Always     = 'always';  // Always included in exports (default)
+    case IssuesOnly = 'issues';  // Only included when Warning or Critical
+    case Never      = 'never';   // Never included in exports
+}
+```
+
+The value is set on the check object before execution (via `setExportVisibility()`) and propagated to the `HealthCheckResult`. The export layer filters results based on this value before generating JSON or HTML output.
 
 ### ProviderMetadata
 

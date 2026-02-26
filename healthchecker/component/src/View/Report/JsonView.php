@@ -59,7 +59,7 @@ class JsonView extends BaseJsonView
         header('Content-Type: application/json; charset=utf-8');
         header('Content-Disposition: attachment; filename="health-report-' . date('Y-m-d') . '.json"');
 
-        echo $model->toJson();
+        echo $model->toExportJson();
 
         $cmsApplication->close();
     }

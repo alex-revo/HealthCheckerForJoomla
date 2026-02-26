@@ -57,6 +57,17 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
     protected ?Http $httpClient = null;
 
     /**
+     * Export visibility override set via plugin configuration.
+     *
+     * When set, this takes precedence over the value returned by
+     * getExportVisibility(). Set via setExportVisibility() by plugin
+     * event handlers that read export config from XML params.
+     *
+     * @since 3.4.0
+     */
+    private ?ExportVisibility $exportVisibility = null;
+
+    /**
      * Inject the Joomla database instance for use in database-dependent checks.
      *
      * This method is called by the HealthCheckRunner service before executing
@@ -233,6 +244,37 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
     }
 
     /**
+     * Get the export visibility mode for this check.
+     *
+     * Returns the config override if set via setExportVisibility(), otherwise
+     * returns the default (Always). Third-party plugins can override this method
+     * to return a different default for their checks.
+     *
+     * @return ExportVisibility The export visibility mode
+     *
+     * @since 3.4.0
+     */
+    public function getExportVisibility(): ExportVisibility
+    {
+        return $this->exportVisibility ?? ExportVisibility::Always;
+    }
+
+    /**
+     * Override the export visibility from plugin configuration.
+     *
+     * Called by plugin event handlers after reading the export visibility
+     * setting from XML params. This takes precedence over the class default.
+     *
+     * @param ExportVisibility $exportVisibility The visibility mode from config
+     *
+     * @since 3.4.0
+     */
+    public function setExportVisibility(ExportVisibility $exportVisibility): void
+    {
+        $this->exportVisibility = $exportVisibility;
+    }
+
+    /**
      * Get the human-readable translated title for this check.
      *
      * Automatically derives a language key from the slug and attempts to translate it.
@@ -316,6 +358,7 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
             provider: $this->getProvider(),
             docsUrl: $this->getDocsUrl(HealthStatus::Critical),
             actionUrl: $this->getActionUrl(HealthStatus::Critical),
+            exportVisibility: $this->getExportVisibility(),
         );
     }
 
@@ -343,6 +386,7 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
             provider: $this->getProvider(),
             docsUrl: $this->getDocsUrl(HealthStatus::Warning),
             actionUrl: $this->getActionUrl(HealthStatus::Warning),
+            exportVisibility: $this->getExportVisibility(),
         );
     }
 
@@ -369,6 +413,7 @@ abstract class AbstractHealthCheck implements HealthCheckInterface
             provider: $this->getProvider(),
             docsUrl: $this->getDocsUrl(HealthStatus::Good),
             actionUrl: $this->getActionUrl(HealthStatus::Good),
+            exportVisibility: $this->getExportVisibility(),
         );
     }
 }

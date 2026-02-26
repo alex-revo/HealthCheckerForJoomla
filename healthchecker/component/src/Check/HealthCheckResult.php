@@ -127,6 +127,18 @@ final class HealthCheckResult
          * @since 3.0.36
          */
         public readonly ?string $actionUrl = null,
+
+        /**
+         * Export visibility mode for this check result.
+         *
+         * Controls whether this result is included in exported reports.
+         * Always = include in all exports, IssuesOnly = only when warning/critical,
+         * Never = excluded from all exports.
+         *
+         * @var ExportVisibility The export visibility mode
+         * @since 3.4.0
+         */
+        public readonly ExportVisibility $exportVisibility = ExportVisibility::Always,
     ) {}
 
     /**
@@ -137,7 +149,7 @@ final class HealthCheckResult
      * string value. The title has all HTML stripped for security, while the
      * description is sanitized to allow only safe HTML formatting tags.
      *
-     * @return array{status: string, title: string, description: string, slug: string, category: string, provider: string, docsUrl: string|null, actionUrl: string|null}
+     * @return array{status: string, title: string, description: string, slug: string, category: string, provider: string, docsUrl: string|null, actionUrl: string|null, exportVisibility: string}
      *               Array representation of the result
      *
      * @since 1.0.0
@@ -155,6 +167,7 @@ final class HealthCheckResult
             'provider' => $this->provider,
             'docsUrl' => $this->docsUrl,
             'actionUrl' => $this->actionUrl,
+            'exportVisibility' => $this->exportVisibility->value,
         ];
     }
 
@@ -187,7 +200,7 @@ final class HealthCheckResult
      * This is used to reconstruct HealthCheckResult objects from cached JSON data.
      * It's the inverse of toArray() and provides a safe alternative to unserialize().
      *
-     * @param array{status: string, title: string, description: string, slug: string, category: string, provider?: string, docsUrl?: string|null, actionUrl?: string|null} $data
+     * @param array{status: string, title: string, description: string, slug: string, category: string, provider?: string, docsUrl?: string|null, actionUrl?: string|null, exportVisibility?: string} $data
      *               Array representation of the result (as produced by toArray())
      *
      * @return self The reconstructed HealthCheckResult object
@@ -205,6 +218,9 @@ final class HealthCheckResult
             provider: $data['provider'] ?? 'core',
             docsUrl: $data['docsUrl'] ?? null,
             actionUrl: $data['actionUrl'] ?? null,
+            exportVisibility: isset($data['exportVisibility']) ? ExportVisibility::from(
+                $data['exportVisibility'],
+            ) : ExportVisibility::Always,
         );
     }
 }

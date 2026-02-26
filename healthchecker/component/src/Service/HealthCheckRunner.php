@@ -17,6 +17,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck;
+use MySitesGuru\HealthChecker\Component\Administrator\Check\ExportVisibility;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckInterface;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
@@ -498,6 +499,67 @@ final class HealthCheckRunner
         }
 
         return $grouped;
+    }
+
+    /**
+     * Get results filtered by export visibility.
+     *
+     * Filters the results based on each result's exportVisibility setting:
+     * - Always: included in exports regardless of status
+     * - IssuesOnly: included only if status is Warning or Critical
+     * - Never: excluded from exports
+     *
+     * @return HealthCheckResult[] Filtered array of exportable results
+     *
+     * @since 3.4.0
+     */
+    public function getExportableResults(): array
+    {
+        return array_values(array_filter(
+            $this->results,
+            static fn(HealthCheckResult $healthCheckResult): bool => match ($healthCheckResult->exportVisibility) {
+                ExportVisibility::Always => true,
+                ExportVisibility::IssuesOnly => $healthCheckResult->healthStatus !== HealthStatus::Good,
+                ExportVisibility::Never => false,
+            },
+        ));
+    }
+
+    /**
+     * Get exportable results grouped by category in category sort order.
+     *
+     * Same as getResultsByCategory() but filtered by export visibility.
+     * Empty categories (after filtering) are excluded.
+     *
+     * @return array<string, HealthCheckResult[]> Category slug => array of exportable results
+     *
+     * @since 3.4.0
+     */
+    public function getExportableResultsByCategory(): array
+    {
+        $exportable = $this->getExportableResults();
+        $grouped = [];
+
+        foreach ($exportable as $result) {
+            $grouped[$result->category][] = $result;
+        }
+
+        $sortedCategories = $this->categoryRegistry->getSorted();
+        $sorted = [];
+
+        foreach ($sortedCategories as $sortedCategory) {
+            if (isset($grouped[$sortedCategory->slug])) {
+                $sorted[$sortedCategory->slug] = $grouped[$sortedCategory->slug];
+            }
+        }
+
+        foreach ($grouped as $slug => $results) {
+            if (! isset($sorted[$slug])) {
+                $sorted[$slug] = $results;
+            }
+        }
+
+        return $sorted;
     }
 
     /**

@@ -186,6 +186,93 @@ final class ApiConfigCheck extends AbstractHealthCheck
 - Documentation URLs can be absolute URLs to external documentation
 - Both `$healthStatus` and `$status` parameters are optional for backwards compatibility - existing checks without them will continue to work
 
+## Export Visibility
+
+Every check has an export visibility setting that controls whether its result is included in JSON and HTML exports. The check always runs and appears in the admin UI — this setting only affects exports.
+
+### The ExportVisibility Enum
+
+```php
+use MySitesGuru\HealthChecker\Component\Administrator\Check\ExportVisibility;
+
+enum ExportVisibility: string
+{
+    case Always     = 'always';  // Always included in exports (default)
+    case IssuesOnly = 'issues';  // Only included when Warning or Critical
+    case Never      = 'never';   // Never included in exports
+}
+```
+
+### Setting the Developer Default
+
+Override `getExportVisibility()` in your check class to change the default for that check:
+
+```php
+use MySitesGuru\HealthChecker\Component\Administrator\Check\ExportVisibility;
+
+final class InternalDiagnosticsCheck extends AbstractHealthCheck
+{
+    public function getExportVisibility(): ExportVisibility
+    {
+        // This check is for internal use only — never include it in exports
+        return ExportVisibility::Never;
+    }
+
+    // ...
+}
+```
+
+```php
+final class CacheStatusCheck extends AbstractHealthCheck
+{
+    public function getExportVisibility(): ExportVisibility
+    {
+        // Only worth exporting if there's a problem
+        return ExportVisibility::IssuesOnly;
+    }
+
+    // ...
+}
+```
+
+If you don't override `getExportVisibility()`, the default is `ExportVisibility::Always`.
+
+### Admin Override via Plugin Config
+
+Admins can override the developer default through the plugin settings page (the export visibility dropdown next to each check). This is handled automatically by the framework — your plugin's event handler should call `setExportVisibility()` before adding the check to the event:
+
+```php
+public function onCollectChecks(CollectChecksEvent $event): void
+{
+    $check = new ApiConnectionCheck();
+    $check->setDatabase($this->getDatabase());
+
+    // Apply admin-configured export visibility (read from plugin params)
+    $rawValue = $this->params->get('export_yourplugin_api_connection', 'always');
+    $visibility = ExportVisibility::tryFrom($rawValue) ?? ExportVisibility::Always;
+    $check->setExportVisibility($visibility);
+
+    $event->addResult($check);
+}
+```
+
+The corresponding XML field in your plugin manifest:
+
+```xml
+<field name="export_yourplugin_api_connection" type="list"
+    label="PLG_HEALTHCHECKER_YOURPLUGIN_EXPORT_VISIBILITY"
+    default="always"
+    class="form-select-sm">
+    <option value="always">PLG_HEALTHCHECKER_CORE_EXPORT_ALWAYS</option>
+    <option value="issues">PLG_HEALTHCHECKER_CORE_EXPORT_ISSUES_ONLY</option>
+    <option value="never">PLG_HEALTHCHECKER_CORE_EXPORT_NEVER</option>
+</field>
+```
+
+**Field naming convention**: `export_{provider}_{check_name}` — mirrors the `check_{provider}_{check_name}` enable/disable field, with `export_` prefix instead of `check_`.
+
+The admin-configured value always takes precedence over the developer default returned by `getExportVisibility()`.
+
 ## Check Slug Format
 
 **Format**: `{provider}.{check_name}`
