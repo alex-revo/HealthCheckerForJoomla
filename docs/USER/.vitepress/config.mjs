@@ -360,7 +360,8 @@ export default defineConfig({
         items: [
           { text: 'Quick Start', link: '/getting-started' },
           { text: 'Introduction', link: '/introduction' },
-          { text: 'Installation', link: '/installation' }
+          { text: 'Installation', link: '/installation' },
+          { text: 'Changelog', link: '/changelog' }
         ]
       },
       {
