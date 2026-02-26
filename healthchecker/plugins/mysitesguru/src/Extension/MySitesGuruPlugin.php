@@ -19,6 +19,7 @@ use Joomla\Event\SubscriberInterface;
 use MySitesGuru\HealthChecker\Component\Administrator\Category\HealthCategory;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\AfterToolbarBuildEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\BeforeReportDisplayEvent;
+use MySitesGuru\HealthChecker\Component\Administrator\Event\BeforeReportExportDisplayEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectCategoriesEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectChecksEvent;
 use MySitesGuru\HealthChecker\Component\Administrator\Event\CollectProvidersEvent;
@@ -79,6 +80,7 @@ final class MySitesGuruPlugin extends CMSPlugin implements SubscriberInterface
             HealthCheckerEvents::COLLECT_PROVIDERS->value => HealthCheckerEvents::COLLECT_PROVIDERS->getHandlerMethod(),
             HealthCheckerEvents::BEFORE_REPORT_DISPLAY->value => HealthCheckerEvents::BEFORE_REPORT_DISPLAY->getHandlerMethod(),
             HealthCheckerEvents::AFTER_TOOLBAR_BUILD->value => HealthCheckerEvents::AFTER_TOOLBAR_BUILD->getHandlerMethod(),
+            HealthCheckerEvents::BEFORE_REPORT_EXPORT_DISPLAY->value => HealthCheckerEvents::BEFORE_REPORT_EXPORT_DISPLAY->getHandlerMethod(),
         ];
     }
 
@@ -252,6 +254,38 @@ HTML;
 JS;
 
         $beforeReportDisplayEvent->addHtmlContent($html . "\n" . $js);
+    }
+
+    /**
+     * Inject mySites.guru promotional banner into the HTML export
+     *
+     * Adds a self-contained promotional banner to the HTML export report.
+     * Unlike the admin report banner, this one uses inline styles since
+     * the export is a standalone document with no external CSS.
+     *
+     * @param BeforeReportExportDisplayEvent $beforeReportExportDisplayEvent Event object for injecting HTML content
+     *
+     * @since 3.4.0
+     */
+    public function onBeforeReportExportDisplay(BeforeReportExportDisplayEvent $beforeReportExportDisplayEvent): void
+    {
+        $logoUrl = Uri::root() . 'media/plg_healthchecker_mysitesguru/logo.png';
+        $bannerText = Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_TEXT');
+        $bannerLink = Text::_('PLG_HEALTHCHECKER_MYSITESGURU_BANNER_LINK');
+
+        $html = <<<HTML
+        <div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; padding: 15px; margin: 20px 30px; display: flex; align-items: flex-start; gap: 15px;">
+            <div style="flex-shrink: 0;">
+                <img src="{$logoUrl}" alt="mySites.guru" style="width: 48px; height: 48px; border-radius: 4px;">
+            </div>
+            <div style="flex: 1; color: #333; font-size: 14px; line-height: 1.5;">
+                {$bannerText} -
+                <a href="https://mysites.guru" target="_blank" style="color: #333; text-decoration: underline;"><strong>{$bannerLink}</strong></a>
+            </div>
+        </div>
+HTML;
+
+        $beforeReportExportDisplayEvent->addHtmlContent($html);
     }
 
     /**

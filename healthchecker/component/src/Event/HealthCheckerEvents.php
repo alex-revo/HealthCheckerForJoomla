@@ -70,6 +70,17 @@ enum HealthCheckerEvents: string
     case AFTER_TOOLBAR_BUILD = 'onHealthCheckerAfterToolbarBuild';
 
     /**
+     * Event triggered before the HTML export report is rendered
+     *
+     * Plugins can listen to this event to inject content (banners, notices, etc.)
+     * into the standalone HTML export before it's rendered. Content should be
+     * self-contained with inline styles since the export has no external dependencies.
+     *
+     * @since 3.4.0
+     */
+    case BEFORE_REPORT_EXPORT_DISPLAY = 'onHealthCheckerBeforeReportExportDisplay';
+
+    /**
      * Get the standard handler method name for this event
      *
      * Returns the conventional plugin method name that should handle this event.
@@ -86,6 +97,7 @@ enum HealthCheckerEvents: string
             self::COLLECT_CHECKS => 'onCollectChecks',
             self::BEFORE_REPORT_DISPLAY => 'onBeforeReportDisplay',
             self::AFTER_TOOLBAR_BUILD => 'onAfterToolbarBuild',
+            self::BEFORE_REPORT_EXPORT_DISPLAY => 'onBeforeReportExportDisplay',
         };
     }
 }

@@ -40,7 +40,7 @@ class HealthCheckerEventsTest extends TestCase
     public function testEnumHasCorrectNumberOfCases(): void
     {
         $cases = HealthCheckerEvents::cases();
-        $this->assertCount(5, $cases);
+        $this->assertCount(6, $cases);
     }
 
     public function testAfterToolbarBuildEventValue(): void
