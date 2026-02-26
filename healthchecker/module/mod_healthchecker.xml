@@ -26,6 +26,8 @@
     <languages folder="language">
         <language tag="en-GB">en-GB/mod_healthchecker.ini</language>
         <language tag="en-GB">en-GB/mod_healthchecker.sys.ini</language>
+        <language tag="es-ES">es-ES/mod_healthchecker.ini</language>
+        <language tag="es-ES">es-ES/mod_healthchecker.sys.ini</language>
     </languages>
 
     <config>

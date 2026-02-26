@@ -24,6 +24,13 @@
         </files>
     </administration>
 
+    <languages folder="language">
+        <language tag="en-GB">en-GB/com_healthchecker.ini</language>
+        <language tag="en-GB">en-GB/com_healthchecker.sys.ini</language>
+        <language tag="es-ES">es-ES/com_healthchecker.ini</language>
+        <language tag="es-ES">es-ES/com_healthchecker.sys.ini</language>
+    </languages>
+
     <media destination="com_healthchecker" folder="media">
         <filename>joomla.asset.json</filename>
         <filename>mysitesguru-logo.png</filename>
