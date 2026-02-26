@@ -156,7 +156,8 @@ final class HealthCheckResult
      */
     public function toArray(): array
     {
-        $descriptionSanitizer = new DescriptionSanitizer();
+        static $descriptionSanitizer = null;
+        $descriptionSanitizer ??= new DescriptionSanitizer();
 
         return [
             'status' => $this->healthStatus->value,

@@ -36,10 +36,9 @@ $statsUrl = Route::_('index.php?option=com_healthchecker&task=ajax.stats&format=
 
 $moduleId = 'mod-healthchecker-' . $module->id;
 
-// Debug: Check cache setting
 $showRefreshButton = !empty($healthStats['enableCache']) || $params->get('enable_cache', '1') === '1';
 ?>
-<div class="mod-healthchecker p-3<?php echo $params->get('moduleclass_sfx', ''); ?>" id="<?php echo $moduleId; ?>" data-stats-url="<?php echo htmlspecialchars($statsUrl); ?>" data-last-checked-text="<?php echo htmlspecialchars(Text::_('MOD_HEALTHCHECKER_LAST_CHECKED')); ?>">
+<div class="mod-healthchecker p-3<?php echo htmlspecialchars((string) $params->get('moduleclass_sfx', '')); ?>" id="<?php echo $moduleId; ?>" data-stats-url="<?php echo htmlspecialchars($statsUrl); ?>" data-last-checked-text="<?php echo htmlspecialchars(Text::_('MOD_HEALTHCHECKER_LAST_CHECKED')); ?>">
     <!-- Loading State -->
     <div id="<?php echo $moduleId; ?>-loading" class="text-center py-3">
         <div class="spinner-border text-primary" role="status">

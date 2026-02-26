@@ -400,34 +400,9 @@ class ReportModel extends BaseDatabaseModel
     }
 
     /**
-     * Export all results as formatted JSON string
-     *
-     * Converts the complete health check report to a formatted JSON string suitable
-     * for download/export. Includes results, metadata, and statistics.
-     *
-     * @return  string  Pretty-printed JSON representation of all results
-     *
-     * @since   1.0.0
-     */
-    public function toJson(): string
-    {
-        $json = json_encode(
-            $this->getRunner()
-                ->toArray(),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
-        );
-
-        if ($json === false) {
-            throw new \RuntimeException('Failed to encode health check results to JSON: ' . json_last_error_msg());
-        }
-
-        return $json;
-    }
-
-    /**
      * Export only exportable results as formatted JSON string
      *
-     * Same as toJson() but filters results by export visibility before encoding.
+     * Filters results by export visibility before encoding.
      * Checks with ExportVisibility::Never are excluded, and checks with
      * ExportVisibility::IssuesOnly are excluded when their status is Good.
      *

@@ -111,7 +111,6 @@ class AjaxController extends BaseController
     {
         $cmsApplication = Factory::getApplication();
 
-
         if (! Session::checkToken('post') && ! Session::checkToken('get')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, Text::_('JINVALID_TOKEN'), true);
@@ -133,7 +132,7 @@ class AjaxController extends BaseController
 
         if ($category === '' || $category === '0') {
             $cmsApplication->setHeader('Content-Type', 'application/json');
-            echo new JsonResponse(null, 'Missing category', true);
+            echo new JsonResponse(null, Text::_('COM_HEALTHCHECKER_AJAX_MISSING_CATEGORY'), true);
             $cmsApplication->close();
             return;
         }
@@ -183,7 +182,6 @@ class AjaxController extends BaseController
     {
         $cmsApplication = Factory::getApplication();
 
-
         if (! Session::checkToken('get')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, Text::_('JINVALID_TOKEN'), true);
@@ -205,7 +203,7 @@ class AjaxController extends BaseController
 
         if ($slug === '' || $slug === '0') {
             $cmsApplication->setHeader('Content-Type', 'application/json');
-            echo new JsonResponse(null, 'Missing check slug', true);
+            echo new JsonResponse(null, Text::_('COM_HEALTHCHECKER_AJAX_MISSING_SLUG'), true);
             $cmsApplication->close();
             return;
         }
@@ -219,7 +217,7 @@ class AjaxController extends BaseController
 
             if ($result === null) {
                 $cmsApplication->setHeader('Content-Type', 'application/json');
-                echo new JsonResponse(null, 'Check not found: ' . $slug, true);
+                echo new JsonResponse(null, Text::sprintf('COM_HEALTHCHECKER_AJAX_CHECK_NOT_FOUND', $slug), true);
                 $cmsApplication->close();
                 return;
             }
@@ -260,7 +258,6 @@ class AjaxController extends BaseController
     public function stats(): void
     {
         $cmsApplication = Factory::getApplication();
-
 
         if (! Session::checkToken('get')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
@@ -330,7 +327,6 @@ class AjaxController extends BaseController
     {
         $cmsApplication = Factory::getApplication();
 
-
         if (! Session::checkToken('get')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
             echo new JsonResponse(null, Text::_('JINVALID_TOKEN'), true);
@@ -396,7 +392,6 @@ class AjaxController extends BaseController
     public function run(): void
     {
         $cmsApplication = Factory::getApplication();
-
 
         if (! Session::checkToken('get')) {
             $cmsApplication->setHeader('Content-Type', 'application/json');
