@@ -11,11 +11,10 @@ Extension checks review installed components, modules, plugins, and templates. O
 ## Core Updates (3 checks)
 
 ### Joomla Core Version
-Checks if Joomla is up to date.
+Checks if Joomla is up to date. This check is channel-aware: when the site uses a non-stable update channel (testing, next major) and only a pre-release version is available, it returns Good rather than Warning, since the channel concern is handled separately by the Update Channel check.
 
-- **Good**: Latest stable version
-- **Warning**: Minor version behind
-- **Critical**: Major version behind or unsupported version
+- **Good**: Latest version installed, or latest for configured channel
+- **Warning**: A newer stable version is available
 
 **Why it matters**: Updates contain security patches, bug fixes, and new features.
 
