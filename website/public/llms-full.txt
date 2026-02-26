@@ -1249,6 +1249,228 @@ Before releasing your health check plugin:
 ---
 
 ---
+url: /docs/changelog.md
+description: >-
+  Complete history of features, fixes, and improvements across every release of
+  Health Checker for Joomla.
+---
+
+# Changelog
+
+A complete history of features, fixes, and improvements across every release.
+
+## Version 3.4
+
+### [3.4.0](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.4.0)&#x20;
+
+* \[Feature] Dedicated Export page with format selection and filter options, including an "issues only" mode to export only warnings and critical results ([#50](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/50))
+* \[Feature] Markdown export format for sharing reports outside HTML ([#53](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/53))
+* \[Feature] Per-check export visibility settings, allowing checks to be hidden from exports ([#51](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/51))
+* \[Feature] BeforeReportExportDisplayEvent for plugins to inject custom banners into HTML exports ([#52](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/52))
+* \[Feature] Health check descriptions are now translatable via Joomla's language system
+* \[Internal] Rebuilt documentation for v3.3.7
+
+## Version 3.3
+
+### [3.3.6](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.6)&#x20;
+
+* \[Feature] Added Spanish (es-ES) translation and translations documentation ([#49](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/49)) (Thanks @alamarte)
+* \[Fix] Fixed false positive detection with DJ-Catalog2 ([#41](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/41)) (Thanks @blondie63)
+* \[Internal] Added changelog generator script and changelog page
+* \[Internal] Added platform constraint for FrankenPHP container
+
+### [3.3.5](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.5)&#x20;
+
+* \[Fix] Menu Orphans check now lists the specific menu item titles that are broken, making it easier to find and fix orphaned links ([#45](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/45))
+* \[Fix] Unused Modules check now mentions `{loadmodule}` usage, so modules loaded via content plugins are accounted for ([#47](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/47))
+
+### [3.3.4](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.4)&#x20;
+
+* \[Fix] Fixed false positive orphaned tables for extensions using non-standard SQL install file paths by parsing XML manifests to discover actual SQL locations ([#41](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/41))
+* \[Fix] Fixed error when extension manifest lacks an `<install><sql>` section
+
+### [3.3.3](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.3)&#x20;
+
+* \[Feature] Module Position check now lists orphaned modules in the warning description ([#40](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/40))
+
+### [3.3.2](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.2)&#x20;
+
+* \[Feature] Added HealthStatus parameter to `getDocsUrl()` method, enabling status-aware documentation links ([#38](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/38))
+* \[Fix] Better error handling for ajax errors
+
+### [3.3.1](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.1)&#x20;
+
+* \[Fix] HTML markup now renders correctly in HTML export reports instead of displaying raw tags ([#36](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/36))
+* \[Feature] HTML export now includes a link to the documentation ([#37](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/37))
+* \[Fix] Improved HTML export layout and formatting ([#37](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/37))
+
+### [3.3.0](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.3.0)&#x20;
+
+* \[Feature] Added Core Directories health check — verifies essential Joomla directories like `/images` exist and are accessible ([#31](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/31))
+* \[Feature] Added Index File health check — ensures `index.html` security files are present in key directories ([#32](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/32))
+* \[Internal] Standardized `die()` statements to `die;` for consistency ([#30](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/30))
+* \[Internal] Removed duplicate docblocks from `performCheck()` methods ([#29](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/29))
+
+## Version 3.2
+
+### [3.2.6](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.2.6)&#x20;
+
+* \[Fix] Fixed dark mode button visibility for Joomla 5 ([#27](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/27))
+
+### [3.2.5](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.2.5)&#x20;
+
+* \[Feature] Added Yootheme plugin to website homepage ([#25](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/25))
+* \[Internal] Updated documentation and website
+
+### [3.2.4](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.2.4)&#x20;
+
+* \[Fix] Fixed spinner alignment in pending check badges ([#24](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/24))
+
+### [3.2.3](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.2.3)&#x20;
+
+* \[Feature] Add Community Plugins page and toolbar button for discovering third-party extensions ([PR #21](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/21))
+* \[Feature] Add YOOtheme Pro Health Checker plugin listing to community plugins ([PR #23](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/23))
+* \[Feature] Add safe HTML formatting support for health check descriptions ([#14](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/14))
+* \[Feature] Add docsUrl and actionUrl properties to health check results for linking to documentation and Joomla admin pages
+* \[Feature] Refactor action\_url to support conditional display with visual buttons ([#17](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/17), [PR #19](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/19))
+* \[Feature] Add cache buster to AJAX requests to prevent stale cached responses ([#9](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/9), [PR #10](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/10))
+* \[Feature] Add installer scripts to clean up obsolete files on update ([#4](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/4), [PR #8](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/8))
+* \[Feature] Add LLMs.txt support for AI discoverability
+* \[Fix] Fix missing brute force protection translation key ([#2](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/2), [PR #3](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/3))
+* \[Fix] Fix PasswordExpiryCheck false positive on fresh Joomla installs
+* \[Fix] Fix ActionLogsEnabledCheck false negative and remove bogus UserActionsLogCheck ([#5](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/5))
+* \[Fix] Fix Page Cache check to detect browser caching setting correctly
+* \[Fix] Fix PasswordPolicyCheck to read from com\_users component params
+* \[Fix] Fix null pointer access in database health checks
+* \[Fix] Fix HealthCheckInterface documentation ([PR #15](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/15))
+* \[Fix] Add missing translation for Media Manager Thumbnails check ([#16](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/16))
+* \[Fix] Fix conflicting recommendations between health checks ([#20](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/20))
+* \[Fix] Fix formatting recommendations ([#13](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/13))
+* \[Fix] Add alt text to logo images for accessibility
+* \[Internal] Remove deprecated database.backup\_age core check ([#6](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/6), [PR #7](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/7))
+* \[Internal] Remove redundant LegacyExtensionsCheck ([#11](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/11), [PR #12](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/12))
+* \[Internal] Remove bogus UserActionsLogCheck phantom check ([#5](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/5))
+* \[Internal] Add defensive permission checks to MySitesGuru plugin event handlers
+* \[Internal] Comprehensive documentation rebuild and user guide updates
+* \[Internal] Numerous code quality improvements, unit tests, and CI/CD enhancements
+
+## Version 3.1
+
+### [3.1.5](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.5)&#x20;
+
+* \[Feature] Refactored action\_url system to support conditional display with visual buttons, improving the user interface for actionable health check results ([#17](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/17), [#19](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/19))
+* \[Internal] Rebuilt documentation for v3.1.5 release
+
+### [3.1.4](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.4)&#x20;
+
+* \[Fix] Added missing translation for Media Manager Thumbnails check ([#16](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/16))
+* \[Internal] Fixed HealthCheckInterface documentation ([#15](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/15))
+* \[Internal] Updated test coverage badge in README
+
+### [3.1.3](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.3)&#x20;
+
+* \[Internal] Rebuilt documentation
+
+### [3.1.2](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.2)&#x20;
+
+* \[Security] Added defensive permission checks to MySitesGuru plugin event handlers to prevent unauthorized access
+* \[Internal] Updated documentation
+
+### [3.1.1](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.1)&#x20;
+
+* \[Feature] Added safe HTML formatting support for health check descriptions, allowing basic formatting like `<code>`, `<strong>`, and `<em>` tags in check results ([#14](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/14), [#13](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/13))
+* \[Internal] Build process now auto-commits minified assets during release
+* \[Internal] Removed deprecated waitlist functionality and D1 database bindings from website
+* \[Internal] Code style fixes and documentation updates
+
+### [3.1.0](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.1.0)&#x20;
+
+* \[Internal] Removed the Legacy Extensions health check, which was redundant and no longer performing reliably ([#11](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/11))
+
+## Version 3.0
+
+### [3.0.40](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.40)&#x20;
+
+* \[Performance] Added cache buster to AJAX requests to prevent stale responses from browser or proxy caching ([#9](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/9))
+* \[Internal] Rebuilt documentation
+
+### [3.0.39](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.39)&#x20;
+
+* Maintenance release
+
+### [3.0.38](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.38)&#x20;
+
+* \[Fix] Removed deprecated `database.backup_age` check that relied on the obsolete `*_ak_stats` table ([#6](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/6))
+* \[Fix] Added installer scripts to clean up obsolete files when updating to a new version, including proper removal of `security.user_actions_log` ([#4](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/4), [#5](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/5))
+* \[Internal] Release notes now link to related GitHub issues, with automatic comments posted on closed issues
+
+### [3.0.37](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.37)&#x20;
+
+* \[Fix] #2 Added missing translation key for brute force protection check
+* \[Internal] Consolidated website build scripts
+* \[Internal] Updated documentation
+
+### [3.0.36](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.36)&#x20;
+
+* \[Fix] Fixed PasswordExpiryCheck false positive on fresh Joomla installations
+* \[Fix] Fixed ActionLogsEnabledCheck false negative detection
+* \[Fix] Fixed Page Cache check to properly detect browser caching configuration
+* \[Fix] Fixed PasswordPolicyCheck to correctly read settings from com\_users component params
+* \[Fix] Removed bogus UserActionsLogCheck that was reporting incorrect results
+* \[Feature] Added docsUrl and actionUrl properties to health check results, allowing checks to link to documentation and remediation actions
+* \[Feature] Added SEO meta tags to documentation pages
+* \[Fix] Added alt text to provider and category logo images for improved accessibility
+* \[Fix] Added alt text to dynamically rendered logo images
+* \[Internal] Documented getDocsUrl() and getActionUrl() methods in developer API reference
+* \[Internal] Updated documentation to reflect 129 checks (down from 130 after UserActionsLogCheck removal)
+* \[Internal] Changed GitHub toolbar button to link to CONTRIBUTING.md
+
+### [3.0.35](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.35)&#x20;
+
+* \[Fix] Fixed UnusedModulesCheck displaying object data instead of module names in warning messages
+* \[Feature] Added logo support for Akeeba Backup, Admin Tools, and mySites.guru provider plugins
+* \[Internal] Documentation and website updates
+
+### [3.0.34](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.34)&#x20;
+
+* \[Internal] Improved XML file formatting for better readability
+* \[Fix] Fixed broken documentation links (Thanks Marc)
+* \[Internal] Website updates and section simplification
+* \[Internal] Documentation rebuild
+
+### [3.0.33](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.33)&#x20;
+
+* \[Fix] Fixed detection of plugins using filesystem check rather than database query
+* \[Security] Removed debug code from source files
+* \[Internal] Removed hard-coded statistics
+* \[Internal] Improved code quality and expanded unit test coverage
+* \[Internal] Documentation rebuild
+
+### [3.0.32](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.32)&#x20;
+
+* \[Fix] Fixed HttpFactory::getHttp method for improved HTTP client handling
+* \[Fix] Added missing translation strings
+* \[Internal] Deprecated curl\_close() call removed for PHP 8.0+ compatibility
+* \[Internal] Code quality improvements via Rector
+* \[Internal] Expanded unit test coverage with HTTP client mocking
+* \[Internal] Documentation rebuild
+
+### [3.0.31](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.31)&#x20;
+
+* Maintenance release
+
+### [3.0.30](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.30)&#x20;
+
+* \[Internal] Fixed release script URL generation to correctly reference download package filenames
+* \[Internal] Updated documentation and website files
+
+### [3.0.29](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.0.29)&#x20;
+
+* Maintenance release
+
+---
+
+---
 url: /docs/code-quality.md
 description: >-
   Code quality commitment: PHPStan level 8, 100% test coverage, PSR-12

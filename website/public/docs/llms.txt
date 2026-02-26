@@ -56,6 +56,7 @@ Comprehensive health monitoring for your Joomla 5+ site
 
 ### About
 
+- [Changelog](/docs/changelog.md): Complete history of features, fixes, and improvements across every release of Health Checker for Joomla.
 - [Code Quality Commitment](/docs/code-quality.md): Code quality commitment: PHPStan level 8, 100% test coverage, PSR-12 standards, Rector, and security best practices.
 - [The Sponsor](/docs/sponsor.md): Health Checker for Joomla is sponsored by mySites.guru, providing Joomla monitoring and management services since 2012.
 - [License](/docs/license.md): Health Checker for Joomla is GPL v2+ licensed, same as Joomla itself. Free to use, modify, and distribute.
