@@ -19,7 +19,7 @@ This page provides a complete reference of all health checks included in Health 
 
 * [Content Quality](#content-quality) (11 checks)
 * [Database](#database) (18 checks)
-* [Extensions](#extensions) (13 checks)
+* [Extensions](#extensions) (14 checks)
 * [Performance](#performance) (10 checks)
 * [Security](#security) (21 checks)
 * [SEO](#seo) (12 checks)
@@ -94,6 +94,8 @@ Checks for extension updates, compatibility, and configuration issues.
 | **Search Plugins** | Search plugins enabled | No search plugins enabled | - |
 | **Template** | Using supported, up-to-date template | Template updates available | Template incompatible with Joomla |
 | **Unused Modules** | No unpublished modules detected | Many unpublished modules consuming resources | - |
+| **Update Channel** | Stable channel configured | Non-stable channel (next/custom) | - |
+| **Update Minimum Stability** | Minimum stability set to Stable | Minimum stability below Stable (Dev/Alpha/Beta/RC) | - |
 | **Update Sites** | All update sources accessible | Some update sites unreachable | Critical update sites failing |
 
 ***

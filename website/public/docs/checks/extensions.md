@@ -9,9 +9,9 @@ description: >-
 
 Extension checks review installed components, modules, plugins, and templates. Outdated or incompatible extensions are a common source of security vulnerabilities and compatibility issues.
 
-**Total checks in this category: 13**
+**Total checks in this category: 14**
 
-## Core Updates (3 checks)
+## Core Updates (4 checks)
 
 ### Joomla Core Version
 
@@ -50,6 +50,17 @@ Checks which update channel is configured.
 **Why it matters**: Non-stable channels may contain untested code.
 
 **How to check**: Components → Joomla Update → Options → Update Channel
+
+### Update Minimum Stability
+
+Checks the minimum stability level configured for Joomla updates. This is separate from the update channel — even on the default (stable) channel, a low minimum stability setting means Joomla may offer alpha, beta, or release candidate versions.
+
+* **Good**: Minimum stability is set to Stable
+* **Warning**: Minimum stability is set to Development, Alpha, Beta, or Release Candidate
+
+**Why it matters**: Pre-release versions may contain bugs, incomplete features, or unresolved security issues. Production sites should only receive stable releases.
+
+**How to fix**: Components → Joomla Update → Options → Minimum Stability → set to "Stable"
 
 ## Extension Health (5 checks)
 
