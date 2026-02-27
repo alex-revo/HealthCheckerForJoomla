@@ -4769,9 +4769,9 @@ description: >-
 
 Extension checks review installed components, modules, plugins, and templates. Outdated or incompatible extensions are a common source of security vulnerabilities and compatibility issues.
 
-**Total checks in this category: 13**
+**Total checks in this category: 14**
 
-## Core Updates (3 checks)
+## Core Updates (4 checks)
 
 ### Joomla Core Version
 
@@ -4810,6 +4810,17 @@ Checks which update channel is configured.
 **Why it matters**: Non-stable channels may contain untested code.
 
 **How to check**: Components → Joomla Update → Options → Update Channel
+
+### Update Minimum Stability
+
+Checks the minimum stability level configured for Joomla updates. This is separate from the update channel — even on the default (stable) channel, a low minimum stability setting means Joomla may offer alpha, beta, or release candidate versions.
+
+* **Good**: Minimum stability is set to Stable
+* **Warning**: Minimum stability is set to Development, Alpha, Beta, or Release Candidate
+
+**Why it matters**: Pre-release versions may contain bugs, incomplete features, or unresolved security issues. Production sites should only receive stable releases.
+
+**How to fix**: Components → Joomla Update → Options → Minimum Stability → set to "Stable"
 
 ## Extension Health (5 checks)
 
@@ -5977,7 +5988,7 @@ This page provides a complete reference of all health checks included in Health 
 
 * [Content Quality](#content-quality) (11 checks)
 * [Database](#database) (18 checks)
-* [Extensions](#extensions) (13 checks)
+* [Extensions](#extensions) (14 checks)
 * [Performance](#performance) (10 checks)
 * [Security](#security) (21 checks)
 * [SEO](#seo) (12 checks)
@@ -6052,6 +6063,8 @@ Checks for extension updates, compatibility, and configuration issues.
 | **Search Plugins** | Search plugins enabled | No search plugins enabled | - |
 | **Template** | Using supported, up-to-date template | Template updates available | Template incompatible with Joomla |
 | **Unused Modules** | No unpublished modules detected | Many unpublished modules consuming resources | - |
+| **Update Channel** | Stable channel configured | Non-stable channel (next/custom) | - |
+| **Update Minimum Stability** | Minimum stability set to Stable | Minimum stability below Stable (Dev/Alpha/Beta/RC) | - |
 | **Update Sites** | All update sources accessible | Some update sites unreachable | Critical update sites failing |
 
 ***
@@ -9855,6 +9868,7 @@ Health Checker for Joomla ships with English (en-GB) as the default language. Co
 | Language | Locale | Contributor | Link |
 |----------|--------|-------------|------|
 | English | en-GB | Phil E. Taylor | Built-in |
+| Russian | ru-RU | [alex-revo](https://github.com/alex-revo) | Built-in |
 | Spanish | es-ES | Andrés Restrepo | [alamarte.com](https://alamarte.com/descargas/traducciones/healthchecker) |
 
 ## How Joomla Loads Translations
