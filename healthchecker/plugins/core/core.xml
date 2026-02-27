@@ -2082,6 +2082,28 @@
                 </field>
 
                 <field
+                    name="check_extensions_joomla_update_stability"
+                    type="radio"
+                    label="PLG_HEALTHCHECKER_CORE_CHECK_EXTENSIONS_JOOMLA_UPDATE_STABILITY_TITLE"
+                    class="btn-group btn-group-yesno"
+                    default="1"
+                >
+                    <option value="1">JENABLED</option>
+                    <option value="0">JDISABLED</option>
+                </field>
+                <field
+                    name="export_extensions_joomla_update_stability"
+                    type="list"
+                    label="PLG_HEALTHCHECKER_CORE_EXPORT_VISIBILITY"
+                    default="always"
+                    class="form-select-sm"
+                >
+                    <option value="always">PLG_HEALTHCHECKER_CORE_EXPORT_ALWAYS</option>
+                    <option value="issues">PLG_HEALTHCHECKER_CORE_EXPORT_ISSUES_ONLY</option>
+                    <option value="never">PLG_HEALTHCHECKER_CORE_EXPORT_NEVER</option>
+                </field>
+
+                <field
                     name="check_extensions_language_packs"
                     type="radio"
                     label="PLG_HEALTHCHECKER_CORE_CHECK_EXTENSIONS_LANGUAGE_PACKS_TITLE"
