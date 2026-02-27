@@ -12,9 +12,8 @@ A complete history of features, fixes, and improvements across every release.
 ### [3.6.0](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.6.0) <Badge type="info" text="27 Feb 2026" />
 
 - [Feature] Added Joomla Update Minimum Stability check — warns when your update channel is set to a less stable release level ([#67](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/67))
-- [Fix] Resolved Joomla Update Channel detection issue ([#65](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/65)) (Thanks [[@alex-revo](https://github.com/alex-revo)](https://github.com/alex-revo))
-- [Fix] Removed sample doc_urls left over from development ([#64](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/64)) (Thanks [[@alex-revo](https://github.com/alex-revo)](https://github.com/alex-revo))
-- [Feature] Added Russian (ru-RU) translation ([#66](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/66)) (Thanks [[@alex-revo](https://github.com/alex-revo)](https://github.com/alex-revo))
+- [Fix] Resolved Joomla Update Channel detection issue ([#65](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/65)) (Thanks [@alex-revo](https://github.com/alex-revo))
+- [Feature] Added Russian (ru-RU) translation ([#66](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/66)) (Thanks [@alex-revo](https://github.com/alex-revo))
 
 ## Version 3.5
 
