@@ -14,6 +14,7 @@ Health Checker for Joomla ships with English (en-GB) as the default language. Co
 | Language | Locale | Contributor | Link |
 |----------|--------|-------------|------|
 | English | en-GB | Phil E. Taylor | Built-in |
+| Russian | ru-RU | [alex-revo](https://github.com/alex-revo) | Built-in |
 | Spanish | es-ES | Andrés Restrepo | [alamarte.com](https://alamarte.com/descargas/traducciones/healthchecker) |
 
 ## How Joomla Loads Translations
