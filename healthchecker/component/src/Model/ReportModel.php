@@ -12,6 +12,7 @@ namespace MySitesGuru\HealthChecker\Component\Administrator\Model;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Uri\Uri;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthCheckResult;
 use MySitesGuru\HealthChecker\Component\Administrator\Check\HealthStatus;
 use MySitesGuru\HealthChecker\Component\Administrator\Extension\HealthCheckerComponent;
@@ -42,6 +43,37 @@ class ReportModel extends BaseDatabaseModel
      * @since 1.0.0
      */
     private ?HealthCheckRunner $healthCheckRunner = null;
+
+    /**
+     * Generate an export filename that includes the site domain
+     *
+     * Extracts the domain from the Joomla site URL and includes it in the filename
+     * so exports from different sites are easily distinguishable when saved to the
+     * same folder.
+     *
+     * Example: health-report-example-com-2026-02-28.json
+     *
+     * @param   string  $extension  File extension without dot (e.g. 'json', 'html', 'md')
+     *
+     * @return  string  The filename string (without path)
+     *
+     * @since   4.0.0
+     */
+    public static function getExportFilename(string $extension): string
+    {
+        $host = parse_url(Uri::root(), PHP_URL_HOST);
+
+        if (! \is_string($host) || $host === '') {
+            $host = 'localhost';
+        }
+
+        // Sanitize: lowercase, replace non-alphanumeric chars with hyphens, collapse and trim
+        $slug = strtolower($host);
+        $slug = (string) preg_replace('/[^a-z0-9]+/', '-', $slug);
+        $slug = trim($slug, '-');
+
+        return 'health-report-' . $slug . '-' . date('Y-m-d') . '.' . $extension;
+    }
 
     /**
      * Execute all registered health checks
