@@ -17,15 +17,23 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use MySitesGuru\HealthChecker\Plugin\Core\Extension\CorePlugin;
 
 return new class implements ServiceProviderInterface {
     public function register(Container $container): void
     {
         $container->set(
             PluginInterface::class,
-            function (Container $container): \MySitesGuru\HealthChecker\Plugin\Core\Extension\CorePlugin {
-                $corePlugin = new CorePlugin(
+            function (Container $container): PluginInterface {
+                if (! class_exists(
+                    \MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck::class,
+                )) {
+                    return new \Joomla\CMS\Plugin\CMSPlugin(
+                        $container->get(DispatcherInterface::class),
+                        (array) PluginHelper::getPlugin('healthchecker', 'core'),
+                    );
+                }
+
+                $corePlugin = new \MySitesGuru\HealthChecker\Plugin\Core\Extension\CorePlugin(
                     $container->get(DispatcherInterface::class),
                     (array) PluginHelper::getPlugin('healthchecker', 'core'),
                 );
