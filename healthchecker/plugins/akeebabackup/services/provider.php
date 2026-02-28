@@ -15,7 +15,6 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use MySitesGuru\HealthChecker\Plugin\AkeebaBackup\Extension\AkeebaBackupPlugin;
 
 \defined('_JEXEC') || die;
 
@@ -63,17 +62,24 @@ return new class implements ServiceProviderInterface {
              *
              * @param Container $container The DI container for resolving dependencies
              *
-             * @return AkeebaBackupPlugin Fully configured plugin instance
+             * @return PluginInterface Fully configured plugin instance
              * @since  1.0.0
              */
-            function (
-                Container $container,
-            ): \MySitesGuru\HealthChecker\Plugin\AkeebaBackup\Extension\AkeebaBackupPlugin {
+            function (Container $container): PluginInterface {
+                if (! class_exists(
+                    \MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck::class,
+                )) {
+                    return new \Joomla\CMS\Plugin\CMSPlugin(
+                        $container->get(DispatcherInterface::class),
+                        (array) PluginHelper::getPlugin('healthchecker', 'akeebabackup'),
+                    );
+                }
+
                 // Resolve event dispatcher from container
                 $dispatcher = $container->get(DispatcherInterface::class);
 
                 // Create plugin instance with dispatcher and configuration
-                $akeebaBackupPlugin = new AkeebaBackupPlugin(
+                $akeebaBackupPlugin = new \MySitesGuru\HealthChecker\Plugin\AkeebaBackup\Extension\AkeebaBackupPlugin(
                     $dispatcher,
                     (array) PluginHelper::getPlugin('healthchecker', 'akeebabackup'),
                 );

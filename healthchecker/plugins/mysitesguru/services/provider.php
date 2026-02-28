@@ -15,7 +15,6 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use MySitesGuru\HealthChecker\Plugin\MySitesGuru\Extension\MySitesGuruPlugin;
 
 \defined('_JEXEC') || die;
 
@@ -65,13 +64,22 @@ return new class implements ServiceProviderInterface {
     {
         $container->set(
             PluginInterface::class,
-            function (Container $container): \MySitesGuru\HealthChecker\Plugin\MySitesGuru\Extension\MySitesGuruPlugin {
+            function (Container $container): PluginInterface {
+                if (! class_exists(
+                    \MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck::class,
+                )) {
+                    return new \Joomla\CMS\Plugin\CMSPlugin(
+                        $container->get(DispatcherInterface::class),
+                        (array) PluginHelper::getPlugin('healthchecker', 'mysitesguru'),
+                    );
+                }
+
                 // Get the event dispatcher for subscribing to Health Checker events
                 $dispatcher = $container->get(DispatcherInterface::class);
 
                 // Load plugin configuration (params) from database
                 // PluginHelper::getPlugin returns object with: name, type, element, folder, params
-                $mySitesGuruPlugin = new MySitesGuruPlugin(
+                $mySitesGuruPlugin = new \MySitesGuru\HealthChecker\Plugin\MySitesGuru\Extension\MySitesGuruPlugin(
                     $dispatcher,
                     (array) PluginHelper::getPlugin('healthchecker', 'mysitesguru'),
                 );

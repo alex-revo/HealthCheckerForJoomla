@@ -15,7 +15,6 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use MySitesGuru\HealthChecker\Plugin\AkeebaAdminTools\Extension\AkeebaAdminToolsPlugin;
 
 \defined('_JEXEC') || die;
 
@@ -76,13 +75,20 @@ return new class implements ServiceProviderInterface {
              *
              * @param Container $container The DI container for dependency retrieval
              *
-             * @return AkeebaAdminToolsPlugin Fully configured plugin instance
+             * @return PluginInterface Fully configured plugin instance
              */
-            function (
-                Container $container,
-            ): \MySitesGuru\HealthChecker\Plugin\AkeebaAdminTools\Extension\AkeebaAdminToolsPlugin {
+            function (Container $container): PluginInterface {
+                if (! class_exists(
+                    \MySitesGuru\HealthChecker\Component\Administrator\Check\AbstractHealthCheck::class,
+                )) {
+                    return new \Joomla\CMS\Plugin\CMSPlugin(
+                        $container->get(DispatcherInterface::class),
+                        (array) PluginHelper::getPlugin('healthchecker', 'akeebaadmintools'),
+                    );
+                }
+
                 $dispatcher = $container->get(DispatcherInterface::class);
-                $akeebaAdminToolsPlugin = new AkeebaAdminToolsPlugin(
+                $akeebaAdminToolsPlugin = new \MySitesGuru\HealthChecker\Plugin\AkeebaAdminTools\Extension\AkeebaAdminToolsPlugin(
                     $dispatcher,
                     (array) PluginHelper::getPlugin('healthchecker', 'akeebaadmintools'),
                 );

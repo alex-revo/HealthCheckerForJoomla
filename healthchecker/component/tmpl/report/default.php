@@ -54,6 +54,16 @@ $categoryUrl = Route::_('index.php?option=com_healthchecker&task=ajax.category&f
       data-text-good="<?php echo htmlspecialchars(Text::_('COM_HEALTHCHECKER_GOOD')); ?>"
       data-text-checking="<?php echo htmlspecialchars(Text::_('COM_HEALTHCHECKER_CHECKING')); ?>">
 
+    <?php if ($this->corePluginMissing): ?>
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">
+                <span class="fa fa-exclamation-triangle" aria-hidden="true"></span>
+                <?php echo Text::_('COM_HEALTHCHECKER_CORE_PLUGIN_MISSING_TITLE'); ?>
+            </h4>
+            <p><?php echo Text::_('COM_HEALTHCHECKER_CORE_PLUGIN_MISSING_DESC'); ?></p>
+        </div>
+    <?php endif; ?>
+
     <?php
     // Allow plugins to inject content (banners, notices) before the report.
     // Security note: This HTML comes from installed Joomla plugins which are trusted code
