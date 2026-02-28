@@ -40,7 +40,7 @@ class JsonView extends BaseJsonView
      * Executes all health checks, formats the complete report as JSON, and sends
      * it as a downloadable file with appropriate headers.
      *
-     * Filename format: health-report-YYYY-MM-DD.json
+     * Filename format: health-report-{domain}-YYYY-MM-DD.json
      *
      * This method terminates the application after sending the response.
      *
@@ -62,7 +62,7 @@ class JsonView extends BaseJsonView
         $checkFilter = $input->get('export_checks', [], 'array');
 
         header('Content-Type: application/json; charset=utf-8');
-        header('Content-Disposition: attachment; filename="health-report-' . date('Y-m-d') . '.json"');
+        header('Content-Disposition: attachment; filename="' . $model::getExportFilename('json') . '"');
 
         $isFiltered = $input->getInt('export_filtered', 0) === 1;
 

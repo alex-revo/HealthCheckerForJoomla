@@ -45,7 +45,7 @@ class HtmlexportView extends BaseHtmlView
      * HTML document with embedded styles. The document is sent as a downloadable file
      * with appropriate headers.
      *
-     * Filename format: health-report-YYYY-MM-DD.html
+     * Filename format: health-report-{domain}-YYYY-MM-DD.html
      *
      * This method terminates the application after sending the response.
      *
@@ -98,7 +98,7 @@ class HtmlexportView extends BaseHtmlView
         $beforeExportHtml = $beforeReportExportDisplayEvent->getHtmlContent();
 
         header('Content-Type: text/html; charset=utf-8');
-        header('Content-Disposition: attachment; filename="health-report-' . date('Y-m-d') . '.html"');
+        header('Content-Disposition: attachment; filename="' . $model::getExportFilename('html') . '"');
 
         $this->renderHtmlReport(
             $results,

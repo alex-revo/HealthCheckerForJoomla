@@ -42,7 +42,7 @@ class MarkdownView extends BaseHtmlView
      * Executes all health checks, gathers metadata, and renders a Markdown document.
      * The document is sent as a downloadable .md file with appropriate headers.
      *
-     * Filename format: health-report-YYYY-MM-DD.md
+     * Filename format: health-report-{domain}-YYYY-MM-DD.md
      *
      * This method terminates the application after sending the response.
      *
@@ -92,7 +92,7 @@ class MarkdownView extends BaseHtmlView
         $totalCount = $exportCounts['total'];
 
         header('Content-Type: text/markdown; charset=utf-8');
-        header('Content-Disposition: attachment; filename="health-report-' . date('Y-m-d') . '.md"');
+        header('Content-Disposition: attachment; filename="' . $model::getExportFilename('md') . '"');
 
         echo $this->renderMarkdownReport(
             $results,
