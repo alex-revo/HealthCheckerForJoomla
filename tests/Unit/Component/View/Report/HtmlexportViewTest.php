@@ -135,8 +135,8 @@ class HtmlexportViewTest extends TestCase
         $reflectionMethod = new \ReflectionMethod(HtmlexportView::class, 'renderHtmlReport');
         $parameters = $reflectionMethod->getParameters();
 
-        // Method has 11 parameters based on the source
-        $this->assertCount(11, $parameters);
+        // Method has 13 parameters based on the source
+        $this->assertCount(13, $parameters);
 
         // Check parameter names
         $paramNames = array_map(
@@ -153,7 +153,9 @@ class HtmlexportViewTest extends TestCase
         $this->assertContains('warningCount', $paramNames);
         $this->assertContains('goodCount', $paramNames);
         $this->assertContains('totalCount', $paramNames);
+        $this->assertContains('thirdPartyProviders', $paramNames);
         $this->assertContains('beforeExportHtml', $paramNames);
+        $this->assertContains('statusFilter', $paramNames);
     }
 
     public function testViewUsesModelForData(): void
@@ -324,6 +326,7 @@ class HtmlexportViewTest extends TestCase
             $results,
             [],
             [],
+            [],
             'Test Site',
             'January 1, 2026 at 12:00 PM',
             '5.2.0',
@@ -331,8 +334,8 @@ class HtmlexportViewTest extends TestCase
             0,
             1,
             1,
-            false,
             '',
+            'all',
         );
 
         return ob_get_clean();
