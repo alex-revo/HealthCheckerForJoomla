@@ -272,7 +272,28 @@ class MarkdownViewTest extends TestCase
             'custom' => new ProviderMetadata(slug: 'custom', name: 'Custom Plugin'),
         ];
 
-        $markdown = $this->renderReport([], thirdPartyProviders: $thirdParty);
+        $results = [
+            'system' => [
+                new HealthCheckResult(
+                    healthStatus: HealthStatus::Good,
+                    title: 'Akeeba Check',
+                    description: 'OK',
+                    slug: 'akeeba.backup',
+                    category: 'system',
+                    provider: 'akeeba',
+                ),
+                new HealthCheckResult(
+                    healthStatus: HealthStatus::Warning,
+                    title: 'Custom Check',
+                    description: 'Warn',
+                    slug: 'custom.test',
+                    category: 'system',
+                    provider: 'custom',
+                ),
+            ],
+        ];
+
+        $markdown = $this->renderReport($results, thirdPartyProviders: $thirdParty);
 
         $this->assertStringContainsString('Community plugins:', $markdown);
         $this->assertStringContainsString('[Akeeba Backup](https://akeeba.com)', $markdown);
@@ -375,6 +396,7 @@ class MarkdownViewTest extends TestCase
         int $warningCount = 0,
         int $goodCount = 0,
         int $totalCount = 0,
+        string $statusFilter = 'all',
     ): string {
         $markdownView = new MarkdownView();
         $reflectionMethod = new \ReflectionMethod(MarkdownView::class, 'renderMarkdownReport');
@@ -392,6 +414,7 @@ class MarkdownViewTest extends TestCase
             $warningCount,
             $goodCount,
             $totalCount,
+            $statusFilter,
         );
     }
 }
