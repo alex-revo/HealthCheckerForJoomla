@@ -13,6 +13,7 @@ namespace MySitesGuru\HealthChecker\Component\Administrator\View\Report;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -49,6 +50,13 @@ class HtmlView extends BaseHtmlView
     public string $beforeReportHtml = '';
 
     /**
+     * Whether the core healthchecker plugin is missing or disabled
+     *
+     * @since 3.7.0
+     */
+    public bool $corePluginMissing = false;
+
+    /**
      * Display the health check report view
      *
      * Loads component configuration, sets up the toolbar, and renders the template.
@@ -60,6 +68,9 @@ class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null): void
     {
+        // Check if the core plugin is installed and enabled
+        $this->corePluginMissing = ! PluginHelper::isEnabled('healthchecker', 'core');
+
         // Dispatch event to allow plugins to inject content before report display
         $beforeReportDisplayEvent = new BeforeReportDisplayEvent();
         Factory::getApplication()->getDispatcher()->dispatch(
