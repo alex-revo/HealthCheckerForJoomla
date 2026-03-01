@@ -1261,6 +1261,11 @@ A complete history of features, fixes, and improvements across every release.
 
 ## Version 3.7
 
+### [3.7.1](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.7.1)&#x20;
+
+* \[Internal] Updated Spanish (es-ES) translations to v3.7.0 ([#81](https://github.com/mySites-guru/HealthCheckerForJoomla/pull/81))
+* \[Internal] Rebuilt documentation for v3.7.1 release
+
 ### [3.7.0](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.7.0)&#x20;
 
 * \[Feature] Added Discover check that detects uninstalled extensions left on the filesystem, helping identify extensions that were unpacked but never fully installed ([#78](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/78)) (Thanks [@alex-revo](https://github.com/alex-revo))
