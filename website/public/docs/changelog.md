@@ -9,6 +9,12 @@ description: >-
 
 A complete history of features, fixes, and improvements across every release.
 
+## Version 3.7
+
+### [3.7.0](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.7.0)&#x20;
+
+* \[Feature] Added Discover check that detects uninstalled extensions left on the filesystem, helping identify extensions that were unpacked but never fully installed ([#78](https://github.com/mySites-guru/HealthCheckerForJoomla/issues/78)) (Thanks [@alex-revo](https://github.com/alex-revo))
+
 ## Version 3.6
 
 ### [3.6.3](https://github.com/mySites-guru/HealthCheckerForJoomla/releases/tag/v3.6.3)&#x20;
