@@ -271,7 +271,7 @@ class HtmlexportViewTest extends TestCase
         ]);
 
         $this->assertStringContainsString('href="https://example.com/docs/test"', $html);
-        $this->assertStringContainsString('Documentation', $html);
+        $this->assertStringContainsString('COM_HEALTHCHECKER_REPORT_DOCUMENTATION', $html);
     }
 
     public function testRenderHtmlReportHidesDocsLinkWhenDocsUrlIsNull(): void
@@ -289,7 +289,7 @@ class HtmlexportViewTest extends TestCase
         ]);
 
         $this->assertStringNotContainsString('<div class="check-footer">', $html);
-        $this->assertStringNotContainsString('>Documentation</a>', $html);
+        $this->assertStringNotContainsString('>COM_HEALTHCHECKER_REPORT_DOCUMENTATION</a>', $html);
     }
 
     public function testRenderHtmlReportEscapesDocsUrl(): void

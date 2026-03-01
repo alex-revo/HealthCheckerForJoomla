@@ -224,12 +224,12 @@
             markdown: 'Markdown'
         };
 
-        let summary = formatLabels[format] + ' format';
+        let summary = (Joomla.Text._('COM_HEALTHCHECKER_EXPORT_SUMMARY_FORMAT') || '%s format').replace('%s', formatLabels[format]);
         if (statusFilter === 'issues') {
-            summary += ', issues only';
+            summary += ', ' + (Joomla.Text._('COM_HEALTHCHECKER_EXPORT_SUMMARY_ISSUES_ONLY') || 'issues only');
         }
-        summary += '<br>' + selectedCategories + '/' + totalCategories + ' categories';
-        summary += ', ' + selectedChecks + '/' + totalChecks + ' checks';
+        summary += '<br>' + (Joomla.Text._('COM_HEALTHCHECKER_EXPORT_SUMMARY_CATEGORIES') || '%s/%s categories').replace('%s', selectedCategories).replace('%s', totalCategories);
+        summary += ', ' + (Joomla.Text._('COM_HEALTHCHECKER_EXPORT_SUMMARY_CHECKS') || '%s/%s checks').replace('%s', selectedChecks).replace('%s', totalChecks);
 
         exportSummary.innerHTML = summary;
     }

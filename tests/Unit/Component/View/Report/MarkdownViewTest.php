@@ -109,7 +109,7 @@ class MarkdownViewTest extends TestCase
     {
         $markdown = $this->renderReport([]);
 
-        $this->assertStringContainsString('January 1, 2026 at 12:00 PM', $markdown);
+        $this->assertStringContainsString('COM_HEALTHCHECKER_REPORT_GENERATED_ON', $markdown);
         $this->assertStringContainsString('Joomla 5.2.0', $markdown);
     }
 
@@ -117,7 +117,7 @@ class MarkdownViewTest extends TestCase
     {
         $markdown = $this->renderReport([], criticalCount: 2, warningCount: 3, goodCount: 10, totalCount: 15);
 
-        $this->assertStringContainsString('## Summary', $markdown);
+        $this->assertStringContainsString('## COM_HEALTHCHECKER_REPORT_SUMMARY', $markdown);
         $this->assertStringContainsString('| Status | Count |', $markdown);
         $this->assertStringContainsString('| 2 |', $markdown);
         $this->assertStringContainsString('| 3 |', $markdown);
@@ -235,7 +235,7 @@ class MarkdownViewTest extends TestCase
             'system' => [$healthCheckResult],
         ]);
 
-        $this->assertStringContainsString('[Docs](https://example.com/docs/test)', $markdown);
+        $this->assertStringContainsString('[COM_HEALTHCHECKER_REPORT_DOCS](https://example.com/docs/test)', $markdown);
     }
 
     public function testReportHidesDocsLinkWhenNull(): void
@@ -262,7 +262,7 @@ class MarkdownViewTest extends TestCase
         $this->assertStringContainsString('---', $markdown);
         $this->assertStringContainsString('[Health Checker for Joomla]', $markdown);
         $this->assertStringContainsString('[mySites.guru]', $markdown);
-        $this->assertStringContainsString('free GPL extension', $markdown);
+        $this->assertStringContainsString('COM_HEALTHCHECKER_REPORT_FREE_EXTENSION', $markdown);
     }
 
     public function testReportFooterIncludesThirdPartyPlugins(): void
@@ -295,7 +295,7 @@ class MarkdownViewTest extends TestCase
 
         $markdown = $this->renderReport($results, thirdPartyProviders: $thirdParty);
 
-        $this->assertStringContainsString('Community plugins:', $markdown);
+        $this->assertStringContainsString('COM_HEALTHCHECKER_REPORT_COMMUNITY_PLUGINS', $markdown);
         $this->assertStringContainsString('[Akeeba Backup](https://akeeba.com)', $markdown);
         $this->assertStringContainsString('Custom Plugin', $markdown);
     }
@@ -304,7 +304,7 @@ class MarkdownViewTest extends TestCase
     {
         $markdown = $this->renderReport([]);
 
-        $this->assertStringNotContainsString('Community plugins', $markdown);
+        $this->assertStringNotContainsString('COM_HEALTHCHECKER_REPORT_COMMUNITY_PLUGINS', $markdown);
     }
 
     public function testReportConvertsHtmlToMarkdown(): void
